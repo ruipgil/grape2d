@@ -1,4 +1,4 @@
-grape2d
+Grape2D
 =======
 
-A javascript game engine with support to 2D
+A javascript game engine for 2D games.
