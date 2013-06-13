@@ -48,6 +48,24 @@ Grape2D.Renderer = function (options) {
 	 */
 	this.halfHeight = 1;
 
+	/**
+	 * The color to use, when clearing the canvas.
+	 *
+	 * @type {number}
+	 * @private
+	 */
+	this.clearColor = 0x000000;
+
+	/**
+	 * Sets the opacity of the objects to render.
+	 * Values are between 0 and 255. Being 0 totally opaque (concrete
+	 * renderer may choose not to render the object), 
+	 *
+	 * @type {number}
+	 * @private
+	 */
+	this.opacity = 0xff;
+
 	//sets the properties according to the constrains
 	this.setWidth(options.width || 1);
 	this.setHeight(options.height || 1);
@@ -108,33 +126,56 @@ Grape2D.Renderer.prototype = {
 		return;
 	},
 	/**
-	 * Renders a square
+	 * Gets the clear color.
 	 *
-	 * @param  {Grape2D.Vector} topLeft the position of the top left corner
-	 * @param  {Grape2D.Vector} topRight the position of the top right corner
-	 * @param  {Grape2D.Vector} bottomRight the position of the bottom right corner
-	 * @param  {Grape2D.Vector} bottomLeft the position of the bottom left corner
-	 * @abstract
+	 * @return {number} the clear color
 	 */
-	renderRect: function (topLeft, topRight, bottomRight, bottomLeft) {},
+	getClearColor: function(){
+		return this.clearColor;
+	},
 	/**
-	 * Renders a polygon.
-	 * There are various geometric figures that can be represented by a polygon, such as rectangles and triangles. However if new instances needed be created to call this method then the usage of polygon is not recommended.
+	 * Sets the color to clear the scene.
 	 *
-	 * @param  {Array.<Grape2D.Vector>} vertex an array with the vertex of a concave polygon
-	 * @abstract
+	 * @param  {number} color The color.
 	 */
-	renderPolygon: function (vertex) {},
+	setClearColor: function(color){
+		this.clearColor = color;
+		return;
+	},
 	/**
-	 * Renders a triangle.
+	 * Gets the alpha component that is being added to the objects rendered.
 	 *
-	 * @param  {Grape2D.Vector} v1 the first vertex
-	 * @param  {Grape2D.Vector} v2 the second vertex
-	 * @param  {Grape2D.Vector} v3 the third vertex
+	 * @return {number} A number between 0 and 255.
+	 */
+	getOpacity: function(){
+		return this.opacity;
+	},
+	/**
+	 * Sets the opacity (alpha component) of the object that are gonna be
+	 * rendered.
+	 *
+	 * @param  {number} opacity A number between 0 (transparent) and 255 (opaque).
+	 */
+	setOpacity: function(opacity){
+		this.opacity = opacity;
+		return;
+	},
+	/**
+	 * Renders a shape outline.
+	 *
+	 * @param  {Grape2D.Shape} shape The shape to render
+	 * @param  {Grape2D.Vector} position The position to render
 	 * @abstract
 	 */
-	renderTriangle: function (v1, v2, v3) {},
-	renderColoredMaterial: function (material, position) {},
+	renderShape: function (shape, position) {},
+	/**
+	 * Renders a shape with a fill color. Similar to {@link Grape2D.Renderer.renderShape}, but fills the shape and don't renders the outline.
+	 *
+	 * @param  {Grape2D.Shape} material The shape to render.
+	 * @param  {number} position The color to fill the shape.
+	 * @abstract
+	 */
+	renderColoredShape: function (shape, color, position) {},
 	/**
 	 * Renders a texture.
 	 *
@@ -142,5 +183,15 @@ Grape2D.Renderer.prototype = {
 	 * @param  {Grape2D.Vector} position the position to render
 	 * @abstract
 	 */
-	renderTexture: function (texture, position) {}
+	renderTexture: function (texture, position) {},
+	/**
+	 * Prepares a render cycle.
+	 * @abstract
+	 */
+	start: function(){},
+	/**
+	 * Commits everything to render.
+	 * @abstract
+	 */
+	end: function(){}
 };
