@@ -1,0 +1,21 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "plugins": [],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    },
+    "opts": {
+        "template": "default",
+        "encoding": "utf8",
+        "destination": "./../../docs/api",
+        "recurse": false,
+        "tutorials": "",
+        "query": "",
+        "private": true,
+        "lenient": true
+    },
+    "jsVersion": 180
+}

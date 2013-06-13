@@ -1,0 +1,1 @@
+python ./jsdoc/build.py --include common

@@ -1,0 +1,9 @@
+[
+	"../src/Grape2D.js",
+	"../src/utils/Utils.js",
+	"../src/math/Math.js",
+	"../src/math/Color.js",
+	"../src/math/Vector.js",
+	"../src/renderers/Renderer.js"
+
+]
