@@ -8,9 +8,8 @@
         "monospaceLinks": false
     },
     "opts": {
-        "template": "default",
         "encoding": "utf8",
-        "destination": "./../../docs/api",
+        "destination": "../docs/api",
         "recurse": false,
         "tutorials": "",
         "query": "",

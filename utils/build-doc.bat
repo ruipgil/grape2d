@@ -1,1 +1,1 @@
-python ./jsdoc/build.py --include common
+python ./jsdoc/build.py --include common --conf ./jsdoc/conf.json

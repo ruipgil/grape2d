@@ -6,7 +6,7 @@ import os
 def main(argv=None):
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--include', action='append', required=True)
-	parser.add_argument('--conf', default='./conf.json')
+	parser.add_argument('--conf', default='./')
 
 	args = parser.parse_args()
 
@@ -25,6 +25,7 @@ def main(argv=None):
 	print(' * Generating jsdoc')
 
 	cmd = 'jsdoc -c '+args.conf+' '+sourcesStr
+	print(cmd)
 	os.system(cmd)
 
 if __name__ == "__main__":
