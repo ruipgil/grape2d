@@ -7,7 +7,7 @@
  *
  * @namespace
  */
-Grape2D.Utils = {
+Grape2D.utils = {
 	/**
 	 * Gets the document size, or by other words the size of the screen, as an object with width and height properties.
 	 * This is the maximum size of the "drawing surface".
@@ -24,7 +24,7 @@ Grape2D.Utils = {
 	/**
 	 * This is a semi-polyfill to request an animation frame, since it only changes this function in case it exists or don't.
 	 * This may be a ugly and a bad pratice, bad it's only executed once and gives more abstraction to the developer.
-	 * Once executed it will also place a polyfill into Grape2D.Utils.cancelAnimationFrame.
+	 * Once executed it will also place a polyfill into Grape2D.utils.cancelAnimationFrame.
 	 *
 	 * These polyfills are adapted from Erik's Moller requestAnimationFrame polyfill and fixed by Paul Irish and Tino Zijdel {@link https://gist.github.com/paulirish/1579671}
 	 *
@@ -59,8 +59,8 @@ Grape2D.Utils = {
 			};
 		}
 
-		Grape2D.Utils.requestAnimationFrame = requestPolyfill;
-		Grape2D.Utils.cancelAnimationFrame = cancelPolyfill;
+		Grape2D.utils.requestAnimationFrame = requestPolyfill;
+		Grape2D.utils.cancelAnimationFrame = cancelPolyfill;
 	},
 	/**
 	 * A semi-polyfill to cancel animations. Be aware that is function does nothing util the requestAnimationFrame polyfill is called. This makes sence because an animation should only be stopped when it's already runnning.

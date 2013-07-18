@@ -8,4 +8,5 @@
 Icon?
 ehthumbs.db
 Thumbs.db
-utils/npm/node_modules/*
+*.sublime-project
+*.sublime-workspace

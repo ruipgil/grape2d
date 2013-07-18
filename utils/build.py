@@ -17,12 +17,6 @@ def main(argv=None):
 
 	output = args.output
 
-	# merge
-
-	print(' * Building ' + output)
-
-	# enable sourcemaps support
-
 	fd, path = tempfile.mkstemp()
 	tmp = open(path, 'w')
 	sources = []

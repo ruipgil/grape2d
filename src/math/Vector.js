@@ -7,8 +7,8 @@
  * This is also very useful and may be used to represent
  * points.
  *
- * @param  {number} x the x component
- * @param  {number} y the y component
+ * @param  {number=} x the x component
+ * @param  {number=} y the y component
  *
  * @constructor
  * @public
@@ -17,15 +17,13 @@ Grape2D.Vector = function(x, y){
 	/**
 	 * The x component. The default value is 0.
 	 *
-	 * @type {number}
-	 * @private
+	 * @private {number}
 	 */
 	this.x = x || 0;
 	/**
 	 * The y component. The default value is 0.
 	 *
-	 * @type {number}
-	 * @private
+	 * @private {number}
 	 */
 	this.y = y || 0;
 };
@@ -51,7 +49,7 @@ Grape2D.Vector.prototype = {
 	/**
 	 * Gets the y component of the vector
 	 *
-	 * @return {number} the y component
+	 * @return {number} y component
 	 */
 	getY: function(){
 		return this.y;
@@ -59,7 +57,7 @@ Grape2D.Vector.prototype = {
 	/**
 	 * Sets the x component of the vector
 	 *
-	 * @param  {number} x the new value
+	 * @param  {number} y the new value
 	 */
 	setY: function(y){
 		this.y = y;
@@ -151,6 +149,21 @@ Grape2D.Vector.prototype = {
 		return Grape2D.Math.sqrt(this.x*this.x+this.y*this.y);
 	},
 	/**
+	 * Alias to {@link Grape2D.Vector#getMagnitude}
+	 */
+	length: function(){
+		return this.getMagnitude();
+	},
+	/**
+	 * Gets the length of the vector, before the calculation of its
+	 *   square root.
+	 *
+	 * @return {number} The length squared.
+	 */
+	lengthSquared: function(){
+		return this.x*this.x+this.y*this.y;
+	},
+	/**
 	 * Gets the angle that the vector makes with the x axis
 	 *
 	 * @return {number} the angle
@@ -216,6 +229,9 @@ Grape2D.Vector.prototype = {
 	distanceTo: function(vector){
 		return Grape2D.Math.sqrt(vector.x*this.x+vector.y*this.y);
 	},
+	sqDistanceTo: function(vector){
+		return vector.x*this.x+vector.y*this.y;
+	},
 	/**
 	 * Checks if the components of one vector are equal to the components to another one.
 	 *
@@ -263,10 +279,10 @@ Grape2D.Vector.prototype = {
  * @param  {Grape2D.Vector} a one point
  * @param  {Grape2D.Vector} b another point
  *
- * @return {Grape2D.Vector} vector with direction from a to b, normalized.
+ * @return {Grape2D.Vector} vector with direction from a to b.
  */
 Grape2D.Vector.createFromPoints = function(a,b){
-	return (new Grape2D.Vector(b.x-a.x, b.y-a.y)).normalize();
+	return (new Grape2D.Vector(b.x-a.x, b.y-a.y));
 };
 /**
  * Creates a vector from an angle and magnitude.

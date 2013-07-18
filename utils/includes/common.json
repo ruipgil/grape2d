@@ -1,9 +1,59 @@
 [
 	"../src/Grape2D.js",
+
+	"../src/utils/Polyfill.js",
 	"../src/utils/Utils.js",
+	"../src/utils/Clock.js",
+
 	"../src/math/Math.js",
-	"../src/math/Color.js",
 	"../src/math/Vector.js",
-	"../src/renderers/Renderer.js"
+	"../src/math/Matrix.js",
+
+	"../src/renderers/Renderer.js",
+	"../src/renderers/Canvas.js",
+	"../src/renderers/CanvasRenderer.js",
+	"../src/renderers/WireframeRenderer.js",
+
+	"../src/inputs/InputManager.js",
+	"../src/inputs/InputManagerEvent.js",
+
+	"../src/cameras/Camera.js",
+	"../src/cameras/AliasingCamera.js",
+
+	"../src/maps/Map.js",
+	"../src/maps/SimpleMap.js",
+
+	"../src/collisions/CollisionChecker.js",
+	"../src/collisions/GenericCollisionChecker.js",
+	"../src/collisions/SATCollisionChecker.js",
+	"../src/collisions/CollisionDispatcher.js",
+	"../src/collisions/CollisionCheckerSingleton.js",
+	
+	"../src/maps/BVHTree.js",
+	"../src/maps/TopDownBVHTree.js",
+	"../src/maps/TopDownBVHNode.js",
+	"../src/maps/BVHStrategy.js",
+	"../src/maps/MedianCutBVHStrategy.js",
+	"../src/maps/BVHStrategySingleton.js",
+	"../src/maps/BVFactory.js",
+	"../src/maps/AabbBVFactory.js",
+	"../src/maps/BVFactorySingleton.js",
+
+	"../src/textures/ITexture.js",
+	"../src/textures/Texture.js",
+	"../src/textures/VoidTexture.js",
+
+	"../src/objects/Object2D.js",
+	"../src/objects/Shape.js",
+	"../src/objects/AABB.js",
+	"../src/objects/Circle.js",
+	"../src/objects/Polygon.js",
+
+	"../src/scenes/Scene.js",
+	"../src/scenes/SceneGroup.js",
+	"../src/scenes/SceneLayer.js",
+
+	"../src/utils/Game.js",
+	"../src/utils/SimpleGame.js"
 
 ]

@@ -1,9 +1,31 @@
+/**
+ * Matrix defines a 3x3 matrix indicated to deal with 2D operations.
+ *
+ * @param  {number=} aa [description]
+ * @param  {number=} ab [description]
+ * @param  {number=} ac [description]
+ * @param  {number=} ba [description]
+ * @param  {number=} bb [description]
+ * @param  {number=} bc [description]
+ * @param  {number=} ca [description]
+ * @param  {number=} cb [description]
+ * @param  {number=} cc [description]
+ *
+ * @constructor
+ */
 Grape2D.Matrix = function(aa, ab, ac, ba, bb, bc, ca, cb, cc){
+	/**
+	 * Matrix elements.
+	 *
+	 * @type {Array.<number>}
+	 * @private
+	 */
 	this.v = [];
-	if(aa!==undefined)
+	if(aa!==undefined){
 		this.v = [ aa, ab, ac, ba, bb, bc, ca, cb, cc ];
-	else
+	}else{
 		this.identity();
+	}
 };
 
 Grape2D.Matrix.prototype = {

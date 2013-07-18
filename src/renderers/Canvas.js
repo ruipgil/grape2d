@@ -1,48 +1,69 @@
 /**
  * This is a simple abstraction of the canvas object,
  * may be used to do some optimizations
+ * @constructor
  */
-Grape2D.Canvas = function(options){
-	if(!options) options = {};
+Grape2D.Canvas = function(options) {
+	if (!options) options = {};
 	this.canvas = document.createElement("Canvas");
 	this.canvas.width = this.width = options.width || 300;
 	this.canvas.height = this.height = options.height || 150;
-	this.halfWidth = this.width/2;
-	this.halfHeight = this.height/2;
+	this.halfWidth = this.width / 2;
+	this.halfHeight = this.height / 2;
 	this.context = this.getContext();
 };
 
 Grape2D.Canvas.prototype = {
+	getWidth: function() {
+		return this.width;
+	},
+	getHalfWidth: function() {
+		return this.halfWidth;
+	},
+	setWidth: function(width) {
+		this.canvas.width = this.width = width;
+		this.halfWidth = this.width / 2;
+	},
+	getHeight: function() {
+		return this.height;
+	},
+	getHalfHeight: function() {
+		return this.halfHeight;
+	},
+	setHeight: function(height) {
+		this.canvas.height = this.height = height;
+		this.halfHeight = this.width / 2;
+	},
 	/** Canvas element **/
-	toDataURL : function(type, args){
+	toDataURL: function(type, args) {
 		return this.context.toDataURL(type, args);
 	},
-	getContext : function(){
+	getContext: function() {
 		return this.canvas.getContext("2d");
 	},
 	/** 2D Context **/
-	save : function(){
+	save: function() {
 		this.context.save();
 		return this;
 	},
-	restore : function(){
+	restore: function() {
 		this.context.restore();
 		return this;
 	},
 	/** Transformations **/
-	scale : function(x, y){
+	scale: function(x, y) {
 		this.context.scale(x, y);
 		return this;
 	},
-	rotate : function(angle){
+	rotate: function(angle) {
 		this.context.rotate(angle);
 		return this;
 	},
-	translate : function(x, y){
+	translate: function(x, y) {
 		this.context.translate(x, y);
 		return this;
 	},
-	transform : function(m11, m12, m21, m22, dx, dy){
+	transform: function(m11, m12, m21, m22, dx, dy) {
 		this.context.transform(m11, m12, m21, m22, dx, dy);
 		return this;
 	},
@@ -59,180 +80,179 @@ Grape2D.Canvas.prototype = {
 	 * @param sw: source width
 	 * @param sh: source height
 	 */
-	drawImage : function(image, dx, dy, dw, dh, sx, sy, sw, sh){
-		this.context.drawImage(image, sx || 0, sy || 0, sw || image.width, sh || image.height, dx, dy, dw || image.width, dh || image.height);
-		return this;
+	drawImage: function(image, sx, sy, sw, sh, dx, dy, dw, dh) {
+		this.context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
 	},
 	/** Compositing **/
-	setGlobalAlpha : function(value){
+	setGlobalAlpha: function(value) {
 		this.context.globalAlpha = value;
 		return this;
 	},
-	globalCompositeOperation : function(flag){
+	globalCompositeOperation: function(flag) {
 		this.context.globalCompositeOperation = flag;
 		return this;
 	},
 	/** Lines **/
-	setLineWidth : function(value){
+	setLineWidth: function(value) {
 		this.context.lineWidth = value;
 		return this;
 	},
-	setLineCap : function(value){
+	setLineCap: function(value) {
 		this.context.lineCap = value;
 		return this;
 	},
-	setLineJoin : function(value){
+	setLineJoin: function(value) {
 		this.context.lineJoin = value;
 		return this;
 	},
-	setMiterLimit : function(value){
+	setMiterLimit: function(value) {
 		this.context.miterLimit = value;
 		return this;
 	},
 	/** Colors **/
-	setStrokeStyle : function(value){
+	setStrokeStyle: function(value) {
 		this.context.strokeStyle = value;
 		return this;
 	},
-	setFillStyle : function(value){
+	setFillStyle: function(value) {
 		this.context.fillStyle = value;
 		return this;
 	},
-	setShadowOffsetX : function(value){
+	setShadowOffsetX: function(value) {
 		this.context.shadowOffsetX = value;
 		return this;
 	},
-	setShadowOffsetY : function(value){
+	setShadowOffsetY: function(value) {
 		this.context.shadowOffsetY = value;
 		return this;
 	},
-	setShadowBlur : function(value){
+	setShadowBlur: function(value) {
 		this.context.shadowBlur = value;
 		return this;
 	},
-	setShadowColor : function(value){
+	setShadowColor: function(value) {
 		this.context.shadowColor = value;
 		return this;
 	},
 
-	createLinearGradient : function(x0, y0, x1, y1){
+	createLinearGradient: function(x0, y0, x1, y1) {
 		return this.context.createLinearGradient(x0, y0, x1, y1);
 	},
-	createRadialGradient : function(x0, y0, r0, x1, y1, r1){
+	createRadialGradient: function(x0, y0, r0, x1, y1, r1) {
 		return this.context.createRadialGradient(x0, y0, r0, x1, y1, r1);
 	},
-	createPattern : function(image, repetition){
+	createPattern: function(image, repetition) {
 		return this.context.createPattern(image, repetition);
 	},
 	/** Paths **/
-	beginPath : function(){
+	beginPath: function() {
 		this.context.beginPath();
 		return this;
 	},
-	closePath : function(){
+	closePath: function() {
 		this.context.closePath();
 		return this;
 	},
-	fill : function(){
+	fill: function() {
 		this.context.fill();
 		return this;
 	},
-	stroke : function(){
+	stroke: function() {
 		this.context.stroke();
 		return this;
 	},
-	clip : function(){
+	clip: function() {
 		this.context.clip();
 		return this;
 	},
-	moveTo : function(x, y){
+	moveTo: function(x, y) {
 		this.context.moveTo(x, y);
 		return this;
 	},
-	lineTo : function(x, y){
+	lineTo: function(x, y) {
 		this.context.lineTo(x, y);
 		return this;
 	},
-	quadraticCurveTo : function(cpx, cpy, x, y){
+	quadraticCurveTo: function(cpx, cpy, x, y) {
 		this.context.quadraticCurveTo(cpx, cpy, x, y);
 		return this;
 	},
-	bezierCurveTo : function(cp1x, cp1y, cp2x, cp2y, x, y){
+	bezierCurveTo: function(cp1x, cp1y, cp2x, cp2y, x, y) {
 		this.context.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
 		return this;
 	},
-	arcTo : function(x1, y1, x2, y2, radius){
+	arcTo: function(x1, y1, x2, y2, radius) {
 		this.context.arcTo(x1, y1, x2, y2, radius);
 		return this;
 	},
-	arc : function(x, y, radius, startAngle, endAngle, CCW){
+	arc: function(x, y, radius, startAngle, endAngle, CCW) {
 		this.context.arc(x, y, radius, startAngle || 0, endAngle || Grape2D.Math.PIx2, CCW || false);
 		return this;
 	},
-	rect : function(x, y, w, h){
+	rect: function(x, y, w, h) {
 		this.context.rect(x, y, w, h);
 		return this;
 	},
-	isPointInPath : function(x, y){
+	isPointInPath: function(x, y) {
 		return this.context.isPointInPath(x, y);
 	},
 	/** Text **/
-	setFont : function(font){
+	setFont: function(font) {
 		this.context.font = font;
 		return this;
 	},
-	setTextAlign : function(value){
+	setTextAlign: function(value) {
 		this.context.textAlign = value;
 		return this;
 	},
-	setTextBaseline : function(baseline){
+	setTextBaseline: function(baseline) {
 		this.context.textBaseline = baseline;
 		return this;
 	},
-	fillText : function(text, x, y, maxWidth){
+	fillText: function(text, x, y, maxWidth) {
 		this.context.fillText(text, x, y);
 		return this;
 	},
-	strokeText : function(text, x, y, maxWidth){
+	strokeText: function(text, x, y, maxWidth) {
 		this.context.strokeText(text, x, y);
 		return this;
 	},
-	measureText : function(text){
+	measureText: function(text) {
 		return this.context.measureText(text);
 	},
 	/** Rectangles **/
-	clearRect : function(x, y, w, h){
+	clearRect: function(x, y, w, h) {
 		this.context.clearRect(x, y, w, h);
 		return this;
 	},
-	fillRect : function(x, y, w, h){
+	fillRect: function(x, y, w, h) {
 		this.context.fillRect(x, y, w, h);
 		return this;
 	},
-	strokeRect : function(x, y, w, h){
+	strokeRect: function(x, y, w, h) {
 		this.context.strokeRect(x, y, w, h);
 		return this;
 	},
 	/** Pixel manipulation **/
-	createImageData : function(sw, sh){
+	createImageData: function(sw, sh) {
 		return this.context.createImageData(sw, sh);
 	},
-	getImageData : function(imageData){
+	getImageData: function(imageData) {
 		return this.context.getImageData(imageData);
 	},
-	putImageData : function(imageData, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight){
+	putImageData: function(imageData, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight) {
 		this.context.putImageData(imageData, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight);
 		return this;
 	},
-	resize : function(w, h){
+	resize: function(w, h) {
 		this.width = this.canvas.width = w;
 		this.height = this.canvas.height = h;
 	},
-	appendOn : function(on){
+	appendOn: function(on) {
 		//this.canvas.style.position = 'absolute';
 		on.appendChild(this.canvas);
 	},
-	clear : function(){
+	clear: function() {
 		this.context.clearRect(0, 0, this.width, this.height);
 	}
 };

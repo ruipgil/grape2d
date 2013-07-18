@@ -1,75 +1,9 @@
 /**
- * @author rui_web@hotmail.com (Rui Gil)
- */
-
-/**
  * Renderers are used to render graphics to the screen.
  *
- * @param  {Object} options [description]
- * @constructor
- * @public
- *
- * @abstract
+ * @interface
  */
-Grape2D.Renderer = function (options) {
-	/**
-	 * The width of the renderer.
-	 * This is a cached value.
-	 * The width is supposed to be an int
-	 *
-	 * @type {number}
-	 * @private
-	 */
-	this.width = 1;
-	/**
-	 * The half width of the renderer. This is a cached value. The
-	 * half width is supposed to be an int
-	 *
-	 * @type {number}
-	 * @private
-	 */
-	this.halfWidth = 1;
-	/**
-	 * The height of the renderer.
-	 * This is a cached value.
-	 * The height is supposed to be an int
-	 *
-	 * @type {number}
-	 * @private
-	 */
-	this.height = 1;
-	/**
-	 * The half height of the renderer.
-	 * This is a cached value.
-	 * The half width is supposed to be an int
-	 *
-	 * @type {number}
-	 * @private
-	 */
-	this.halfHeight = 1;
-
-	/**
-	 * The color to use, when clearing the canvas.
-	 *
-	 * @type {number}
-	 * @private
-	 */
-	this.clearColor = 0x000000;
-
-	/**
-	 * Sets the opacity of the objects to render.
-	 * Values are between 0 and 255. Being 0 totally opaque (concrete
-	 * renderer may choose not to render the object), 
-	 *
-	 * @type {number}
-	 * @private
-	 */
-	this.opacity = 0xff;
-
-	//sets the properties according to the constrains
-	this.setWidth(options.width || 1);
-	this.setHeight(options.height || 1);
-};
+Grape2D.Renderer = function() {};
 
 Grape2D.Renderer.prototype = {
 	constructor: Grape2D.Renderer,
@@ -77,121 +11,145 @@ Grape2D.Renderer.prototype = {
 	 * Gets the renderer width.
 	 *
 	 * @return {number} the width
+	 * @public
 	 */
-	getWidth: function () {
-		return this.width;
-	},
+	getWidth: function() {},
 	/**
 	 * Gets the half width of the renderer.
 	 *
 	 * @return {number} the half width
+	 * @public
 	 */
-	getHalfWidth: function () {
-		return this.halfWidth;
-	},
+	getHalfWidth: function() {},
 	/**
 	 * Sets the width of the renderer and computes the half width.
 	 *
 	 * @param  {number} width the width
+	 * @public
 	 */
-	setWidth: function (width) {
-		this.width = Grape2D.Math.floor(width);
-		this.halfWidth = this.width >> 1;
-		return;
-	},
+	setWidth: function(width) {},
 	/**
 	 * Gets the renderer height
 	 *
 	 * @return {number} the height
+	 * @public
 	 */
-	getHeight: function () {
-		return this.height;
-	},
+	getHeight: function() {},
 	/**
 	 * Gets the half height of the renderer
 	 *
 	 * @return {number} the half width
+	 * @public
 	 */
-	getHalfHeight: function () {
-		return this.halfHeight;
-	},
+	getHalfHeight: function() {},
 	/**
 	 * Sets the height of the renderer and computes the half height.
 	 *
 	 * @param  {number} height the new height
+	 * @public
 	 */
-	setHeight: function (height) {
-		this.height = Grape2D.Math.floor(height);
-		this.halfHeight = this.height >> 1;
-		return;
-	},
+	setHeight: function(height) {},
 	/**
-	 * Gets the clear color.
+	 * Renders a texture to a position on the renderer.
 	 *
-	 * @return {number} the clear color
-	 */
-	getClearColor: function(){
-		return this.clearColor;
-	},
-	/**
-	 * Sets the color to clear the scene.
-	 *
-	 * @param  {number} color The color.
-	 */
-	setClearColor: function(color){
-		this.clearColor = color;
-		return;
-	},
-	/**
-	 * Gets the alpha component that is being added to the objects rendered.
-	 *
-	 * @return {number} A number between 0 and 255.
-	 */
-	getOpacity: function(){
-		return this.opacity;
-	},
-	/**
-	 * Sets the opacity (alpha component) of the object that are gonna be
-	 * rendered.
-	 *
-	 * @param  {number} opacity A number between 0 (transparent) and 255 (opaque).
-	 */
-	setOpacity: function(opacity){
-		this.opacity = opacity;
-		return;
-	},
-	/**
-	 * Renders a shape outline.
-	 *
-	 * @param  {Grape2D.Shape} shape The shape to render
-	 * @param  {Grape2D.Vector} position The position to render
-	 * @abstract
-	 */
-	renderShape: function (shape, position) {},
-	/**
-	 * Renders a shape with a fill color. Similar to {@link Grape2D.Renderer.renderShape}, but fills the shape and don't renders the outline.
-	 *
-	 * @param  {Grape2D.Shape} material The shape to render.
-	 * @param  {number} position The color to fill the shape.
-	 * @abstract
-	 */
-	renderColoredShape: function (shape, color, position) {},
-	/**
-	 * Renders a texture.
-	 *
-	 * @param  {Grape2D.Texture} texture the texture to render
+	 * @param  {Grape2D.ITexture} texture the texture to render
 	 * @param  {Grape2D.Vector} position the position to render
-	 * @abstract
+	 * @public
 	 */
-	renderTexture: function (texture, position) {},
+	renderTexture: function(texture, position) {},
 	/**
-	 * Prepares a render cycle.
-	 * @abstract
+	 * Renders an object to the renderer.
+	 *
+	 * @param  {!Grape2D.Object2D} obj Object to render.
+	 * @param  {!Grape2D.Camera} camera Camera to transform the coordinates.
+	 * @public
 	 */
-	start: function(){},
+	renderObject2D: function(obj, camera) {},
 	/**
-	 * Commits everything to render.
-	 * @abstract
+	 * Renders an image to the screen
+	 *
+	 * @param  {!Image} image DOM image.
+	 * @param  {!number} sx Start x coordinate of the image to render.
+	 * @param  {!number} sy Start y coordinate of the image to render.
+	 * @param  {!number} sw Width of the image to render.
+	 * @param  {!number} sh Height of the image to render.
+	 * @param  {!number} dx Start x coordinate in the renderer, for the image.
+	 * @param  {!number} dy Start y coordinate in the renderer, for the image.
+	 * @param  {!number} dw Width of the image in the renderer.
+	 * @param  {!number} dh Height of the image in the renderer.
+	 * @public
 	 */
-	end: function(){}
+	renderImage: function(image, sx, sy, sw, sh, dx, dy, dw, dh) {},
+	/**
+	 * Renders the wireframe of an AABB.
+	 *
+	 * @param  {!Grape2D.AABB} aabb The AABB to render.
+	 * @param  {!Grape2D.Camera} camera The camera to transfrom the coordinates.
+	 * @public
+	 */
+	renderAABB: function(aabb, camera) {},
+	/**
+	 * Renders the wireframe of a circle.
+	 *
+	 * @param  {!Grape2D.Circle} circle Circle to render.
+	 * @param  {!Grape2D.Camera} camera The camera to transfrom the coordinates.
+	 * @public
+	 */
+	renderCircle: function(circle, camera) {},
+	/**
+	 * Renders the wireframe of a polygon.
+	 *
+	 * @param  {!Grape2D.Polygon} polygon Polygon to render.
+	 * @param  {!Grape2D.Camera} camera The camera to transfrom the coordinates.
+	 * @public
+	 */
+	renderPolygon: function(polygon, camera) {},
+	/**
+	 * Renders text to the renderer.
+	 *
+	 * @param  {!string} text Text to render.
+	 * @param  {!Grape2D.Vector} position Top left corner of the text.
+	 * @public
+	 */
+	renderText: function(text, position) {},
+	/**
+	 * Prepares a render cycle. This method should be called once, at
+	 *   the begining of the rendering cycle.
+	 * @public
+	 */
+	start: function() {},
+	/**
+	 * Commits everything to render. This method should be called once,
+	 *   at the end of the rendering cycle.
+	 * @public
+	 */
+	end: function() {},
+	/**
+	 * Appends the renderer to a DOM element.
+	 *
+	 * @param  {!Element} elm The element to append to.
+	 * @public
+	 */
+	appendToDOMElement: function(elm) {},
+	/**
+	 * Gets the renderer DOM element.
+	 *
+	 * @return {!Element} Element
+	 * @public
+	 */
+	getDOMElement: function() {},
+	/**
+	 * Sets a new stroke color.
+	 *
+	 * @param  {string} color New color to use when stroking.
+	 * @public
+	 */
+	setStrokeColor: function(color) {},
+	/**
+	 * Sets a new fill color.
+	 *
+	 * @param  {string} color New color to use when filling.
+	 * @public
+	 */
+	setFillColor: function(color) {}
 };

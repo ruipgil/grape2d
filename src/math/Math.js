@@ -95,8 +95,11 @@ Grape2D.Math = {
 	/**
 	 * Get a random float
 	 *
-	 * @param  {number} min the min possible value between min and max, if max is defined. If not than it's the max value, between 0 and min.
-	 * @param  {number} max optional, the max possible value, between min and max
+	 * @param  {number} min the min possible value between min and max,
+	 *		if max is defined. If not than it's the max value, between
+	 *		0 and min.
+	 * @param  {number} max optional, the max possible value, between
+	 *		min and max.
 	 *
 	 * @return {number} a random float number.
 	 */
@@ -110,8 +113,11 @@ Grape2D.Math = {
 	/**
 	 * Get a random float
 	 *
-	 * @param  {number} min the min possible value between min and max, if max is defined. If not than it's the max value, between 0 and min.
-	 * @param  {number} max optional, the max possible value, between min and max
+	 * @param  {number} min the min possible value between min and max,
+	 *		if max is defined. If not than it's the max value, between
+	 *		0 and min.
+	 * @param  {number} max optional, the max possible value, between
+	 *		min and max.
 	 *
 	 * @return {number} a random integer number
 	 */
@@ -120,32 +126,43 @@ Grape2D.Math = {
 	},
 	/** @see Math.cos */
 	cos: Math.cos,
-	/** @see Math.cosh */
-	cosh: Math.cosh,
 	/** @see Math.sin */
 	sin: Math.sin,
-	/** @see Math.sinh */
-	sinh: Math.sinh,
 	/** @see Math.tan */
 	tan: Math.tan,
-	/** @see Math.tanh */
-	tanh: Math.tanh,
 	/** @see Math.sqrt */
 	sqrt: Math.sqrt,
 
 	/**
+	 * Clamps a number.
+	 *
+	 * @param  {number} x - The number to clamp.
+	 * @param  {number} min - Lower limmit.
+	 * @param  {number} max - Upper limit.
+	 *
+	 * @return {number} A number between min and max.
+	 */
+	clamp: function (x, min, max) {
+		return x < min ? min : (x > max ? max : x);
+	},
+
+	/**
 	 * Checks if two bounderies are overlaping
 	 *
-	 * @param  {object} a an object with min and max properties
-	 * @param  {object} b an object with min and max properties
+	 * @param  {Object} a an object with min and max properties
+	 * @param  {Object} b an object with min and max properties
 	 *
 	 * @return {(number|boolean)} false if they're not overlaping, number if they are
 	 */
 	overlaps: function (a, b) {
 		if (a.min <= b.min) {
 			return a.max - b.min;
-		}else{
+		} else {
 			return Grape2D.Math.overlaps(b, a);
 		}
+	},
+
+	sq: function(n){
+		return n*n;
 	}
 };

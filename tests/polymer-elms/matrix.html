@@ -1,0 +1,22 @@
+<element name="tk-element-property-public"
+	attributes="aa ab ac ba bb bc ca cb cc">
+	<template>
+		This is a <strong>{{owner}}</strong>'s tk-element. 
+		He likes the color <b style="color: {{color}}">{{color}}</b>.
+	</template>
+	<script>
+		Polymer.register(this, {
+			// These default values are overridden
+			// by the user's attribute values.
+			aa: 1,
+			ab: 0,
+			ac: 0,
+			ba: 0,
+			bb: 1,
+			bc: 0,
+			ca: 0,
+			cb: 0,
+			cc: 1
+		});
+	</script>
+</element>
