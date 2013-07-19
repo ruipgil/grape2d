@@ -7,7 +7,8 @@ Grape2D.BVFactorySingleton = {
 	/**
 	 * Factory being used.
 	 * 
-	 * @private {!Grape2D.BVFactory}
+	 * @type {!Grape2D.BVFactory}
+	 * @private
 	 * @static
 	 */
 	bvfactory: new Grape2D.AabbBVFactory(),

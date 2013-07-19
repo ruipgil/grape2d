@@ -7,7 +7,8 @@ Grape2D.BVHStrategySingleton = {
 	/**
 	 * Strategy in use.
 	 * 
-	 * @private {!Grape2D.BVHStrategy}
+	 * @type {!Grape2D.BVHStrategy}
+	 * @private
 	 * @static
 	 */
 	strategy: new Grape2D.MedianCutBVHStrategy(),
