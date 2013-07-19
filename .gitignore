@@ -10,3 +10,4 @@ ehthumbs.db
 Thumbs.db
 *.sublime-project
 *.sublime-workspace
+*.ignore
