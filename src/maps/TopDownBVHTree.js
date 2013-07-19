@@ -30,7 +30,7 @@ Grape2D.TopDownBVHTree.prototype = Object.create(Grape2D.BVHTree.prototype);
 /**
  * (Re)Builds the tree, based on the objects present on the stack.
  * 
- * @public
+ * @override
  */
 Grape2D.TopDownBVHTree.prototype.rebuild = function(){
 	this.rootNode = new Grape2D.TopDownBVHNode(null, this.objs);

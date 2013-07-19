@@ -52,5 +52,11 @@ Grape2D.Map.prototype = {
 	 * @param  {!Grape2D.Scene} scene - The scene, that the map represents.
 	 * @public
 	 */
-	update: function(dt, scene){}
+	update: function(dt, scene){},
+	/**
+	 * Reconstructs the internal representatio of the map, if needed be.
+	 *
+	 * @public
+	 */
+	rebuild: function(){}
 };
