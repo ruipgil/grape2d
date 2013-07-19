@@ -14,6 +14,12 @@
 	"../src/renderers/CanvasRenderer.js",
 	"../src/renderers/WireframeRenderer.js",
 
+	"../src/objects/Object2D.js",
+	"../src/objects/Shape.js",
+	"../src/objects/AABB.js",
+	"../src/objects/Circle.js",
+	"../src/objects/Polygon.js",
+
 	"../src/inputs/InputManager.js",
 	"../src/inputs/InputManagerEvent.js",
 
@@ -28,7 +34,7 @@
 	"../src/collisions/SATCollisionChecker.js",
 	"../src/collisions/CollisionDispatcher.js",
 	"../src/collisions/CollisionCheckerSingleton.js",
-	
+
 	"../src/maps/BVHTree.js",
 	"../src/maps/TopDownBVHTree.js",
 	"../src/maps/TopDownBVHNode.js",
@@ -42,12 +48,6 @@
 	"../src/textures/ITexture.js",
 	"../src/textures/Texture.js",
 	"../src/textures/VoidTexture.js",
-
-	"../src/objects/Object2D.js",
-	"../src/objects/Shape.js",
-	"../src/objects/AABB.js",
-	"../src/objects/Circle.js",
-	"../src/objects/Polygon.js",
 
 	"../src/scenes/Scene.js",
 	"../src/scenes/SceneGroup.js",
