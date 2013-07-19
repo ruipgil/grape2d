@@ -3396,12 +3396,14 @@ Grape2D.BVHTree.prototype = Object.create(Grape2D.Map.prototype);/**
 Grape2D.TopDownBVHTree = function(objs){
 	/**
 	 * Objects of the tree
-	 * @private {!Array.<Grape2D.Object2D>}
+	 * @type {!Array.<Grape2D.Object2D>}
+	 * @private
 	 */
 	this.objs = objs || [];
 	/**
 	 * The root node of the tree.
-	 * @private {?Grape2D.TopDownBVHNode}
+	 * @type {?Grape2D.TopDownBVHNode}
+	 * @private
 	 */
 	this.rootNode = null;
 	//builds the tree if needed be.
@@ -3463,13 +3465,13 @@ Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
 /**
  * Maximum depth of the tree.
  *
- * @constant {number}
+ * @constant {!number}
  * @public
  */
 Grape2D.TopDownBVHTree.MAX_DEPTH = 50;
 /**
  * Minimum of objects per leaf.
- * @constant {number}
+ * @constant {!number}
  * @public
  */
 Grape2D.TopDownBVHTree.DEFAULT_PER_LEAF = 2;/**
@@ -3776,7 +3778,8 @@ Grape2D.BVHStrategySingleton = {
 	/**
 	 * Strategy in use.
 	 * 
-	 * @private {!Grape2D.BVHStrategy}
+	 * @type {!Grape2D.BVHStrategy}
+	 * @private
 	 * @static
 	 */
 	strategy: new Grape2D.MedianCutBVHStrategy(),
@@ -3999,7 +4002,8 @@ Grape2D.BVFactorySingleton = {
 	/**
 	 * Factory being used.
 	 * 
-	 * @private {!Grape2D.BVFactory}
+	 * @type {!Grape2D.BVFactory}
+	 * @private
 	 * @static
 	 */
 	bvfactory: new Grape2D.AabbBVFactory(),
@@ -5223,9 +5227,10 @@ Grape2D.SimpleGame.prototype.start = function() {
 };
 /**
  * @override
+ * @suppress {undefinedVars}
  */
 Grape2D.SimpleGame.prototype.stop = function() {
-	//cancelAnimationFrame();
+	cancelAnimationFrame();
 };
 /**
  * @override
@@ -5244,7 +5249,7 @@ Grape2D.SimpleGame.prototype.update = function(dt) {
  */
 Grape2D.SimpleGame.prototype.animate = function() {
 	var that = this;
-	webkitRequestAnimationFrame(function() {
+	requestAnimationFrame(function() {
 		that.animate();
 	});
 	this.update(this.clock.update());
