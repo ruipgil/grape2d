@@ -35,7 +35,7 @@ Grape2D.Canvas = function(options) {
 	 * @type {!CanvasRenderingContext2D}
 	 * @private
 	 */
-	this.context = this.canvas.getContext("2D");
+	this.context = this.canvas.getContext("2d");
 };
 
 Grape2D.Canvas.prototype = {
@@ -710,6 +710,6 @@ Grape2D.Canvas.prototype = {
 	 * Clears the canvas.
 	 */
 	clear: function() {
-		this.context.clearRect(0, 0, this.width, this.height);
+		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	}
 };
