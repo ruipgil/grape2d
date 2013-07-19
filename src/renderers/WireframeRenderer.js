@@ -1,14 +1,21 @@
 /**
  * Only renders the wireframe of (the bounding box of)
  *   {@link Grape2D.Object2D}, using another {@link Grape2D.Renderer}, 
- *   such as {@link Grape2D.CanvasRenderer}. This class is a bridge, so in fact
- *   the renderer provided is the one that is being used.
+ *   such as {@link Grape2D.CanvasRenderer}. This class is a bridge,
+ *   so in fact the renderer provided is the one that is being used.
  *
- * @param  {Grape2D.Renderer} renderer The renderer to use.
- * @implements {Grape2D.Renderer}s
+ * @param  {!Grape2D.Renderer} renderer The renderer to use.
+ * 
+ * @implements {Grape2D.Renderer}
  * @constructor
  */
 Grape2D.WireframeRenderer = function (renderer) {
+	/**
+	 * Renderer to use as an helper.
+	 *
+	 * @type {!Grape2D.Renderer}
+	 * @private
+	 */
 	this.renderer = renderer;
 };
 

@@ -1,13 +1,19 @@
 /**
  * SceneLayer allow to render objects and update them, the objects are
  *   store using a {@link Grape2D.Map}.
- * This is the leaf object of the composite pattern.
+ *   This is the leaf object of the composite pattern.
  *
- * @constructor
  * @implements {Grape2D.Scene}
+ * @constructor
  */
 Grape2D.SceneLayer = function(options) {
 	options = options || {};
+	/**
+	 * Scene map.
+	 *
+	 * @type {!Grape2D.Map}
+	 * @private
+	 */
 	this.map = options.map || new Grape2D.SimpleMap();
 };
 
@@ -32,7 +38,7 @@ Grape2D.SceneLayer.prototype.render = function(renderer, camera) {
 /**
  * Gets the map being used.
  *
- * @return {Grape2D.Map} The map.
+ * @return {!Grape2D.Map} The map.
  * @public
  */
 Grape2D.SceneLayer.prototype.getMap = function() {

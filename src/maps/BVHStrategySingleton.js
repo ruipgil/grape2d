@@ -5,14 +5,16 @@
  */
 Grape2D.BVHStrategySingleton = {
 	/**
-	 * Strategy.
-	 * @private {Grape2D.BVHStrategy}
+	 * Strategy in use.
+	 * 
+	 * @private {!Grape2D.BVHStrategy}
 	 * @static
 	 */
 	strategy: new Grape2D.MedianCutBVHStrategy(),
 	/**
 	 * Sets a strategy.
-	 * @param  {Grape2D.BVHStrategy} strategy The new strategy.
+	 * 
+	 * @param  {!Grape2D.BVHStrategy} strategy The new strategy.
 	 * @static
 	 * @public
 	 */
@@ -21,7 +23,8 @@ Grape2D.BVHStrategySingleton = {
 	},
 	/**
 	 * Gets the strategy.
-	 * @return {Grape2D.BVHStrategy} The strategy
+	 * 
+	 * @return {!Grape2D.BVHStrategy} The strategy
 	 * @static
 	 * @public
 	 */

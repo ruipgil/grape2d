@@ -10,42 +10,42 @@ Grape2D.ITexture.prototype = {
 	/**
 	 * Gets the width.
 	 *
-	 * @return {number} Width
+	 * @return {!number} Width
 	 * @public
 	 */
 	getWidth: function() {},
 	/**
 	 * Gets the half width.
 	 *
-	 * @return {number} Half width
+	 * @return {!number} Half width
 	 * @public
 	 */
 	getHalfWidth: function() {},
 	/**
 	 * Sets the width.
 	 *
-	 * @param  {number} width New width.
+	 * @param  {!number} width New width.
 	 * @public
 	 */
 	setWidth: function(width) {},
 	/**
 	 * Gets height.
 	 *
-	 * @return {number} Height.
+	 * @return {!number} Height.
 	 * @public
 	 */
 	getHeight: function() {},
 	/**
 	 * Gets the half height.
 	 *
-	 * @return {number} Half height.
+	 * @return {!number} Half height.
 	 * @public
 	 */
 	getHalfHeight: function() {},
 	/**
 	 * Sets the height.
 	 *
-	 * @param  {number} height New height.
+	 * @param  {!number} height New height.
 	 * @public
 	 */
 	setHeight: function(height) {},

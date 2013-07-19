@@ -1,14 +1,16 @@
 /**
  * SceneGroup allow to group scenes together.
- * This is the composite object of the composite pattern.
+ *   This is the composite object of the composite pattern.
  *
- * @constructor
  * @implements {Grape2D.Scene}
+ * @constructor
  */
 Grape2D.SceneGroup = function () {
 	/**
 	 * Children of this scene.
-	 * @type {Array.<Grape2D.Scene>}
+	 * 
+	 * @type {!Array.<Grape2D.Scene>}
+	 * @private
 	 */
 	this.childs = [];
 };
@@ -31,8 +33,9 @@ Grape2D.SceneGroup.prototype.render = function (renderer, camera) {
 	}
 };
 /**
- * Adds a child scene
- * @param  {Grape2D.Scene} child Child scene.
+ * Adds a child scene.
+ * 
+ * @param  {!Grape2D.Scene} child Child scene.
  * @public
  */
 Grape2D.SceneGroup.prototype.addChild = function (child) {
@@ -41,7 +44,8 @@ Grape2D.SceneGroup.prototype.addChild = function (child) {
 /**
  * Removes a child scene.
  *
- * @param  {Grape2D.Scene} child Child to remove.
+ * @param  {!Grape2D.Scene} child Child to remove.
+ * @public
  */
 Grape2D.SceneGroup.prototype.removeChild = function (child) {
 	this.childs.splice(this.childs.indexOf(child), 1);

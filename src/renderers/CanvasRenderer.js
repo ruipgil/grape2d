@@ -4,8 +4,8 @@
  *   most stable and cross-browser.
  *
  * @param  {Object=} options Options to setup the renderer.
- * @param  {number=} options.width Width of the renderer.
- * @param  {number=} options.height Height of the renderer.
+ * @param  {!number=} options.width Width of the renderer.
+ * @param  {!number=} options.height Height of the renderer.
  *
  * @implements {Grape2D.Renderer}
  * @constructor
@@ -14,7 +14,8 @@ Grape2D.CanvasRenderer = function(options) {
 	/**
 	 * A canvas object
 	 *
-	 * @type {Grape2D.Canvas}
+	 * @type {!Grape2D.Canvas}
+	 * @private
 	 */
 	this.canvas = new Grape2D.Canvas(options);
 };
@@ -176,6 +177,7 @@ Grape2D.CanvasRenderer.prototype.getDOMElement = function() {
  * Gets the 2D context of teh canvas element.
  *
  * @return {!CanvasRenderingContext2D} Canvas 2D context.
+ * @public
  */
 Grape2D.CanvasRenderer.prototype.getContext = function() {
 	return this.canvas.context;

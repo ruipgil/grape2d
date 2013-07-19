@@ -11,14 +11,14 @@
 var Grape2D = {
 	vernum: /*@#version.num*/ 0 /*@#version#*/ ,
 	version: /*@#version.string*/ '' /*@#version#*/
-};// https://gist.github.com/paulirish/1579671
-// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
-
-// requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
-
-// MIT license
-
+};/**
+ * Credits for the requestAnimationFrame and cancelAnimationFrame
+ *   {@link https://gist.github.com/paulirish/1579671}
+ *   {@link http://paulirish.com/2011/requestanimationframe-for-smart-animating/}
+ *   {@link http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating}
+ *   requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel.
+ *   Under the MIT license.
+ */
 (function() {
 	var lastTime = 0;
 	var vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -44,73 +44,27 @@ var Grape2D = {
 			clearTimeout(id);
 		};
 }());/**
- * @author rui_web@hotmail.com (Rui Gil)
- */
-
-/**
  * Browser independent utils
  *
  * @namespace
  */
 Grape2D.utils = {
 	/**
-	 * Gets the document size, or by other words the size of the screen, as an object with width and height properties.
+	 * Gets the document size, or by other words the size of the screen,
+	 *   as an object with width and height properties.
 	 * This is the maximum size of the "drawing surface".
-	 *
-	 * @return {Object} the object with the width and height of the document
+	 * 
+	 * @return {!Object} the object with the width and height of the
+	 *   document
+	 * @public
+	 * @static
 	 */
-	getDocumentSize: function () {
+	getDocumentSize: function() {
 		return {
 			width: document.width || document.documentElement.clientWidth,
 			height: document.height || document.documentElement.clientHeight
 		};
-	},
-
-	/**
-	 * This is a semi-polyfill to request an animation frame, since it only changes this function in case it exists or don't.
-	 * This may be a ugly and a bad pratice, bad it's only executed once and gives more abstraction to the developer.
-	 * Once executed it will also place a polyfill into Grape2D.utils.cancelAnimationFrame.
-	 *
-	 * These polyfills are adapted from Erik's Moller requestAnimationFrame polyfill and fixed by Paul Irish and Tino Zijdel {@link https://gist.github.com/paulirish/1579671}
-	 *
-	 * @param  {Object} w Window object. This object may or may not contain the requestAnimationFrame. If null then the global object window is taken.
-	 */
-	requestAnimationFrame: function (w) {
-		var lastTime = 0;
-		var vendors = ['ms', 'moz', 'webkit', 'o'];
-		var requestPolyfill = null;
-		var cancelPolyfill = null;
-		w = w || window;
-		for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-			requestPolyfill = window[vendors[x] + 'RequestAnimationFrame'];
-			cancelPolyfill = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
-		}
-
-		if (!requestPolyfill) {
-			requestPolyfill = function (callback, element) {
-				var currTime = new Date().getTime();
-				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-				var id = window.setTimeout(function () {
-					callback(currTime + timeToCall);
-				}, timeToCall);
-				lastTime = currTime + timeToCall;
-				return id;
-			};
-		}
-
-		if (!cancelPolyfill) {
-			cancelPolyfill = function (id) {
-				clearTimeout(id);
-			};
-		}
-
-		Grape2D.utils.requestAnimationFrame = requestPolyfill;
-		Grape2D.utils.cancelAnimationFrame = cancelPolyfill;
-	},
-	/**
-	 * A semi-polyfill to cancel animations. Be aware that is function does nothing util the requestAnimationFrame polyfill is called. This makes sence because an animation should only be stopped when it's already runnning.
-	 */
-	cancelAnimationFrame: function () {}
+	}
 };/**
  * Clock is used to keep count of the time elapse between
  *   game frames.
@@ -128,6 +82,14 @@ Grape2D.utils.Clock = function () {
 
 Grape2D.utils.Clock.prototype = {
 	constructor: Grape2D.utils.Clock,
+	/**
+	 * Updates the game. Should be at the beggining
+	 *   of the frame.
+	 *
+	 * @return {!number} Time, in miliseconds, elapsed
+	 *   since the last update.
+	 * @public
+	 */
 	update: function () {
 		var now = new Date().getTime(),
 			t = now - this.lastFrame;
@@ -142,6 +104,13 @@ Grape2D.utils.Clock.prototype = {
 		this.lastFrame = now;
 		return t;
 	},
+	/**
+	 * Resets all properties, at least at each
+	 *   second passed.
+	 *
+	 * @param  {!number} time Current time.
+	 * @private
+	 */
 	reset: function (time) {
 		this.fps = this.frameCount;
 		this.timeEl = 0;
@@ -149,7 +118,9 @@ Grape2D.utils.Clock.prototype = {
 		this.end = time;
 	}
 };/**
- * Math describes the namespace that holds math functions and constants. Optimizations or browser specific functions for math should be implemented in this namespace
+ * Math describes the namespace that holds math functions and
+ *   constants. Optimizations or browser specific functions for math
+ *   sshould be implemented in this namespace.
  *
  * @namespace
  */
@@ -158,7 +129,8 @@ Grape2D.Math = {
 	/**
 	 * PI value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PI: 3.141592653589793,
@@ -166,7 +138,8 @@ Grape2D.Math = {
 	/**
 	 * Two PI value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PIx2: 6.283185307179586,
@@ -174,7 +147,8 @@ Grape2D.Math = {
 	/**
 	 * PI/2 value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PId2: 1.5707963267948966,
@@ -182,7 +156,8 @@ Grape2D.Math = {
 	/**
 	 * PI/4 value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PId4: 0.7853981633974483,
@@ -190,7 +165,8 @@ Grape2D.Math = {
 	/**
 	 * PI/6 value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PId6: 0.5235987755982988,
@@ -198,7 +174,8 @@ Grape2D.Math = {
 	/**
 	 * PI/8 value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PId8: 0.39269908169872414,
@@ -206,54 +183,58 @@ Grape2D.Math = {
 	/**
 	 * Returns the absolute value of a number
 	 *
-	 * @param {number} number
-	 * @return {number} returns the absolute number
+	 * @param {!number} number
+	 * @return {!number} returns the absolute number
+	 * @public
+	 * @static
 	 */
-	abs: function (number) {
+	abs: function(number) {
 		return Math.abs(number);
 	},
 	/**
 	 * Returns the floor of a number
 	 *
-	 * @param  {number} n the number
-	 *
-	 * @return {number} the floored number
+	 * @param  {!number} n the number
+	 * @return {!number} the floored number
+	 * @public
+	 * @static
 	 */
-	floor: function (n) {
+	floor: function(n) {
 		return~~ n;
 	},
 	/**
 	 * Returns the ceil of a number
 	 *
-	 * @param  {number} n the number
-	 *
-	 * @return {number} the ceiled number
+	 * @param  {!number} n the number
+	 * @return {!number} the ceiled number
 	 */
-	ceil: function (n) {
+	ceil: function(n) {
 		return Math.ceil(n);
 	},
 	/**
 	 * Rounds a number to the unit
 	 *
-	 * @param  {number} n the number
-	 *
-	 * @return {number} the rounded number
+	 * @param  {!number} n the number
+	 * @return {!number} the rounded number
+	 * @public
+	 * @static
 	 */
-	round: function (n) {
+	round: function(n) {
 		return~~ (n + 0.5);
 	},
 	/**
 	 * Get a random float
 	 *
-	 * @param  {number} min the min possible value between min and max,
-	 *		if max is defined. If not than it's the max value, between
-	 *		0 and min.
-	 * @param  {number} max optional, the max possible value, between
-	 *		min and max.
-	 *
-	 * @return {number} a random float number.
+	 * @param  {!number} min the min possible value between min and
+	 *   max, if max is defined. If not than it's the max value,
+	 *   between 0 and min.
+	 * @param  {?number} max optional, the max possible value, between
+	 *   min and max.
+	 * @return {!number} a random float number.
+	 * @public
+	 * @static
 	 */
-	randFloat: function (min, max) {
+	randFloat: function(min, max) {
 		if (!max) {
 			return Math.random() * min;
 		} else {
@@ -263,15 +244,16 @@ Grape2D.Math = {
 	/**
 	 * Get a random float
 	 *
-	 * @param  {number} min the min possible value between min and max,
-	 *		if max is defined. If not than it's the max value, between
-	 *		0 and min.
-	 * @param  {number} max optional, the max possible value, between
-	 *		min and max.
-	 *
-	 * @return {number} a random integer number
+	 * @param  {!number} min the min possible value between min and max,
+	 *   if max is defined. If not than it's the max value, between
+	 *   0 and min.
+	 * @param  {?number} max optional, the max possible value, between
+	 *   min and max.
+	 * @return {!number} a random integer number
+	 * @public
+	 * @static
 	 */
-	randInt: function (min, max) {
+	randInt: function(min, max) {
 		return Grape2D.Math.floor(Grape2D.Math.randFloat(min, max) + 0.5);
 	},
 	/** @see Math.cos */
@@ -286,61 +268,69 @@ Grape2D.Math = {
 	/**
 	 * Clamps a number.
 	 *
-	 * @param  {number} x - The number to clamp.
-	 * @param  {number} min - Lower limmit.
-	 * @param  {number} max - Upper limit.
-	 *
-	 * @return {number} A number between min and max.
+	 * @param  {!number} x The number to clamp.
+	 * @param  {!number} min Lower limmit.
+	 * @param  {!number} max Upper limit.
+	 * @return {!number} A number between min and max.
+	 * @public
+	 * @static
 	 */
-	clamp: function (x, min, max) {
+	clamp: function(x, min, max) {
 		return x < min ? min : (x > max ? max : x);
 	},
 
 	/**
 	 * Checks if two bounderies are overlaping
 	 *
-	 * @param  {Object} a an object with min and max properties
-	 * @param  {Object} b an object with min and max properties
-	 *
-	 * @return {(number|boolean)} false if they're not overlaping, number if they are
+	 * @param  {!Object} a an object with min and max properties
+	 * @param  {!Object} b an object with min and max properties
+	 * @return {!number} A positive number if they're overlaping. Zero
+	 *   if they're just in touch, negative number if they're not
+	 *   overlaping.
+	 * @public
+	 * @static
 	 */
-	overlaps: function (a, b) {
+	overlaps: function(a, b) {
 		if (a.min <= b.min) {
 			return a.max - b.min;
 		} else {
 			return Grape2D.Math.overlaps(b, a);
 		}
 	},
-
-	sq: function(n){
-		return n*n;
+	/**
+	 * Squares a number.
+	 *
+	 * @param  {!number} n Number to square
+	 * @return {!number} NUmber squared
+	 * @public
+	 * @static
+	 */
+	sq: function(n) {
+		return n * n;
 	}
 };/**
- * @author rui_web@hotmail.com (Rui Gil)
- */
-
-/**
  * Describes a math vector in the cartesian space (2D).
- * This is also very useful and may be used to represent
- * points.
+ *   This is also very useful and may be used to represent
+ *   points.
  *
- * @param  {number=} x the x component
- * @param  {number=} y the y component
+ * @param  {number=} x The x component
+ * @param  {number=} y The y component
  *
  * @constructor
- * @public
  */
-Grape2D.Vector = function(x, y){
+Grape2D.Vector = function(x, y) {
 	/**
 	 * The x component. The default value is 0.
 	 *
-	 * @private {number}
+	 * @type {number}
+	 * @private
 	 */
 	this.x = x || 0;
 	/**
 	 * The y component. The default value is 0.
 	 *
-	 * @private {number}
+	 * @type {number}
+	 * @private
 	 */
 	this.y = y || 0;
 };
@@ -348,45 +338,49 @@ Grape2D.Vector = function(x, y){
 Grape2D.Vector.prototype = {
 	constructor: Grape2D.Vector,
 	/**
-	 * Gets the x component of the vector
+	 * Gets the x component of the vector.
 	 *
-	 * @return {number} the x component
+	 * @return {!number} The x component.
+	 * @public
 	 */
-	getX: function(){
+	getX: function() {
 		return this.x;
 	},
 	/**
-	 * Sets the x component of the vector
+	 * Sets the x component of the vector.
 	 *
-	 * @param  {number} x the new value
+	 * @param  {!number} x The new value.
+	 * @public
 	 */
-	setX: function(x){
+	setX: function(x) {
 		this.x = x;
 	},
 	/**
-	 * Gets the y component of the vector
+	 * Gets the y component of the vector.
 	 *
-	 * @return {number} y component
+	 * @return {!number} The y component.
+	 * @public
 	 */
-	getY: function(){
+	getY: function() {
 		return this.y;
 	},
 	/**
-	 * Sets the x component of the vector
+	 * Sets the y component of the vector.
 	 *
-	 * @param  {number} y the new value
+	 * @param  {!number} y The new value.
+	 * @public
 	 */
-	setY: function(y){
+	setY: function(y) {
 		this.y = y;
 	},
 	/**
-	 * Sets this vector with the same component of another one.
+	 * Sets this vector with the same components of another one.
 	 *
-	 * @param  {Grape2D.Vector} vector the vector to copy
-	 *
-	 * @return {Grape2D.Vector} this vector
+	 * @param  {!Grape2D.Vector} vector The vector to copy.
+	 * @return {!Grape2D.Vector} This vector.
+	 * @public
 	 */
-	set: function(vector){
+	set: function(vector) {
 		this.x = vector.x;
 		this.y = vector.y;
 		return this;
@@ -394,11 +388,11 @@ Grape2D.Vector.prototype = {
 	/**
 	 * Adds the components of another vector to this.
 	 *
-	 * @param  {Grape2D.Vector} vector the vector to add
-	 *
-	 * @return {Grape2D.Vector} this vector
+	 * @param  {!Grape2D.Vector} vector The vector to add.
+	 * @return {!Grape2D.Vector} This vector.
+	 * @public
 	 */
-	add: function(vector){
+	add: function(vector) {
 		this.x += vector.x;
 		this.y += vector.y;
 		return this;
@@ -406,35 +400,35 @@ Grape2D.Vector.prototype = {
 	/**
 	 * Subtracts the components of another vector to this.
 	 *
-	 * @param  {Grape2D.Vector} vector the vector to subtract
-	 *
-	 * @return {Grape2D.Vector} this vector
+	 * @param  {!Grape2D.Vector} vector The vector to subtract.
+	 * @return {!Grape2D.Vector} This vector.
+	 * @public
 	 */
-	sub: function(vector){
+	sub: function(vector) {
 		this.x -= vector.x;
 		this.y -= vector.y;
 		return this;
 	},
 	/**
-	 * Multiplies components by a scalar
+	 * Multiplies components by a scalar.
 	 *
-	 * @param  {number} scalar the number to multiply
-	 *
-	 * @return {Grape2D.Vector} this vector
+	 * @param  {!number} scalar The number to multiply.
+	 * @return {!Grape2D.Vector} This vector.
+	 * @public
 	 */
-	multiplyByScalar: function(scalar){
+	multiplyByScalar: function(scalar) {
 		this.x *= scalar;
 		this.y *= scalar;
 		return this;
 	},
 	/**
-	 * Divides components by a scalar
+	 * Divides components by a scalar.
 	 *
-	 * @param  {number} scalar the number to divide
-	 *
-	 * @return {Grape2D.Vector} this vector
+	 * @param  {!number} scalar The number to divide.
+	 * @return {!Grape2D.Vector} This vector.
+	 * @public
 	 */
-	divideByScalar: function(scalar){
+	divideByScalar: function(scalar) {
 		this.x /= scalar;
 		this.y /= scalar;
 		return this;
@@ -443,147 +437,169 @@ Grape2D.Vector.prototype = {
 	 * Inverts the components of the vector. It's the same as
 	 *   multiply by -1.
 	 *
-	 * @return {Grape2D.Vector} this vector
+	 * @return {!Grape2D.Vector} This vector.
+	 * @public
 	 */
-	negate: function(){
+	negate: function() {
 		return this.multiplyByScalar(-1);
 	},
 	/**
 	 * Normalizes the vector. So that each component have a value
 	 *   between 0 and 1.
 	 *
-	 * @return {Grape2D.Vector} this vector
+	 * @return {!Grape2D.Vector} This vector.
+	 * @public
 	 */
-	normalize: function(){
+	normalize: function() {
 		return this.divideByScalar(this.getMagnitude());
 	},
 	/**
 	 * Gets the magnitude (length) of a vector.
 	 *
-	 * @return {number} the magnitude of the vector.
+	 * @return {!number} The magnitude of the vector.
+	 * @public
 	 */
-	getMagnitude: function(){
-		return Grape2D.Math.sqrt(this.x*this.x+this.y*this.y);
+	getMagnitude: function() {
+		return Grape2D.Math.sqrt(this.x * this.x + this.y * this.y);
 	},
 	/**
-	 * Alias to {@link Grape2D.Vector#getMagnitude}
+	 * {@see Grape2D.Vector.getMagnitude}
+	 * @public
 	 */
-	length: function(){
+	length: function() {
 		return this.getMagnitude();
 	},
 	/**
 	 * Gets the length of the vector, before the calculation of its
 	 *   square root.
 	 *
-	 * @return {number} The length squared.
+	 * @return {!number} The length squared.
+	 * @public
 	 */
-	lengthSquared: function(){
-		return this.x*this.x+this.y*this.y;
+	lengthSquared: function() {
+		return this.x * this.x + this.y * this.y;
 	},
 	/**
-	 * Gets the angle that the vector makes with the x axis
+	 * Gets the angle that the vector makes with the x axis.
 	 *
-	 * @return {number} the angle
+	 * @return {!number} The angle.
+	 * @public
 	 */
-	getAngle: function(){
+	getAngle: function() {
 		var angle = 1;
-		if(this.y<0){
+		if (this.y < 0) {
 			angle = -1;
 		}
-		return Math.acos(this.x/this.length())*angle;
+		return Math.acos(this.x / this.length()) * angle;
 	},
 	/**
 	 * Gets the dot product of this and another vector.
 	 *
-	 * @param  {Grape2D.Vector} vector another vector
-	 *
-	 * @return {number} the dot product
+	 * @param  {!Grape2D.Vector} vector Another vector.
+	 * @return {!number} The dot product.
+	 * @public
 	 */
-	dot: function(vector){
-		return this.x*vector.x+this.y*vector.y;
+	dot: function(vector) {
+		return this.x * vector.x + this.y * vector.y;
 	},
 	/**
 	 * Projects this vector into other. This operation
 	 *   don't changes the values of the objects.
 	 *
-	 * @param  {Grape2D.Vector} vector the vector to project onto
-	 *
-	 * @return {Grape2D.Vector} the vector resulting from the projection.
+	 * @param  {!Grape2D.Vector} vector The vector to project onto.
+	 * @return {!Grape2D.Vector} The vector resulting from the
+	 *   projection.
+	 * @public
 	 */
-	project: function(vector){
+	project: function(vector) {
 		var dp = this.dot(vector),
 			proj = new Grape2D.Vector();
-		proj.x = dp*vector.x;
-		proj.y = dp*vector.y;
+		proj.x = dp * vector.x;
+		proj.y = dp * vector.y;
 		return proj;
 	},
 	/**
 	 * Calculates the right normal of the vector.
 	 *
-	 * @return {Grape2D.Vector} the right normal vector
+	 * @return {!Grape2D.Vector} The right normal vector.
+	 * @public
 	 */
-	rightNormal: function(){
+	rightNormal: function() {
 		return new Grape2D.Vector(-this.y, this.x);
 	},
 	/**
 	 * Checks if two vectors are parallel.
 	 *
-	 * @param  {Grape2D.Vector} vector vector to check
-	 *
-	 * @return {boolean} true if the vector is parallel to 
-	 *   this one, false otherwise
+	 * @param  {!Grape2D.Vector} vector vector to check.
+	 * @return {!boolean} true if the vector is parallel to
+	 *   this one, false otherwise.
+	 * @public
 	 */
-	isParallelTo: function(vector){
+	isParallelTo: function(vector) {
 		return Grape2D.Math.abs(vector.x) == Grape2D.Math.abs(this.x) && Grape2D.Math.abs(vector.y) == Grape2D.Math.abs(this.x);
 	},
 	/**
 	 * Calculates the distance between this and another vector
 	 *
-	 * @param  {Grape2D.Vector} vector the other vector
-	 *
-	 * @return {number} the distance
+	 * @param  {!Grape2D.Vector} vector The other vector.
+	 * @return {!number} The distance.
+	 * @public
 	 */
-	distanceTo: function(vector){
-		return Grape2D.Math.sqrt(vector.x*this.x+vector.y*this.y);
-	},
-	sqDistanceTo: function(vector){
-		return vector.x*this.x+vector.y*this.y;
+	distanceTo: function(vector) {
+		return Grape2D.Math.sqrt(vector.x * this.x + vector.y * this.y);
 	},
 	/**
-	 * Checks if the components of one vector are equal to the components to another one.
+	 * Calculates the squared distace between this and another vector.
 	 *
-	 * @param  {Grape2D.Vector} vector the other vector
-	 *
-	 * @return {boolean} true if they're components are not equal
+	 * @param  {!Grape2D.Vector} vector The other vector.
+	 * @return {!number} The distance squared.
+	 * @public
 	 */
-	equals: function(vector){
+	sqDistanceTo: function(vector) {
+		return vector.x * this.x + vector.y * this.y;
+	},
+	/**
+	 * Checks if the components of one vector are equal to the
+	 *   components to another one.
+	 *
+	 * @param  {!Grape2D.Vector} vector The other vector.
+	 * @return {!boolean} True if they're components are not equal.
+	 * @public
+	 */
+	equals: function(vector) {
 		return this.x == vector.x && this.y == vector.y;
 	},
 	/**
 	 * Creates a new vector with the same components.
 	 *
-	 * @return {Grape2D.Vector} a new vector with the same components as this one.
+	 * @return {!Grape2D.Vector} a new vector with the same components
+	 *   as this one.
+	 * @public
 	 */
-	clone: function(){
+	clone: function() {
 		return new Grape2D.Vector(this.x, this.y);
 	},
 	/**
 	 * Creates a string for this class.
 	 *
-	 * @return {string} a string representing this class
+	 * @return {!string} A string representing this class.
+	 * @public
 	 */
-	toString: function(){
-		return "Grape2D.Vector ("+this.x+","+this.y+")";
+	toString: function() {
+		return "Grape2D.Vector (" + this.x + "," + this.y + ")";
 	},
 	/**
-	 * Applies the result of a given function, where the component is an argument, to the respective component.
-	 * This can be useful to minimize code or just simplify it. As an example, {@linkcode someVector.use(Grape.Math.sqrt)}
+	 * Applies the result of a given function, where the component is
+	 *   an argument, to the respective component. This can be useful
+	 *   to minimize code or just simplify it. As an example, <code>
+	 *   someVector.use(Grape.Math.sqrt)</code>
 	 *
-	 * @param  {Function} fn a function that receives a number and returns a number.
-	 *
-	 * @return {Grape2D.Vector} this vector.
+	 * @param  {!Function} fn A function that receives a number and
+	 *   returns a number.
+	 * @return {!Grape2D.Vector} This vector.
+	 * @public
 	 */
-	use: function(fn){
+	use: function(fn) {
 		this.x = fn(this.x);
 		this.y = fn(this.y);
 		return this;
@@ -593,117 +609,193 @@ Grape2D.Vector.prototype = {
 /**
  * Creates a vector from two points (points are represented as vectors).
  *
- * @param  {Grape2D.Vector} a one point
- * @param  {Grape2D.Vector} b another point
- *
- * @return {Grape2D.Vector} vector with direction from a to b.
+ * @param  {!Grape2D.Vector} a One point.
+ * @param  {!Grape2D.Vector} b Another point.
+ * @return {!Grape2D.Vector} Vector with direction from a to b.
+ * @public
+ * @static
  */
-Grape2D.Vector.createFromPoints = function(a,b){
-	return (new Grape2D.Vector(b.x-a.x, b.y-a.y));
+Grape2D.Vector.createFromPoints = function(a, b) {
+	return (new Grape2D.Vector(b.x - a.x, b.y - a.y));
 };
 /**
  * Creates a vector from an angle and magnitude.
  *
- * @param  {number} angle angle of the vector against the x axis.
- * @param  {number} magnitude magnitude (length) of the vector.
- *
- * @return {Grape2D.Vector} vector with the given angle and magnitude.
+ * @param  {!number} angle angle of the vector against the x axis.
+ * @param  {!number} magnitude magnitude (length) of the vector.
+ * @return {!Grape2D.Vector} vector with the given angle and magnitude.
+ * @public
+ * @static
  */
-Grape2D.Vector.createFromAngle = function(angle, magnitude){
-	return new Grape2D.Vector(magnitude*Grape2D.Math.cos(angle), magnitude*Grape2D.Math.sin(angle));
+Grape2D.Vector.createFromAngle = function(angle, magnitude) {
+	return new Grape2D.Vector(magnitude * Grape2D.Math.cos(angle), magnitude * Grape2D.Math.sin(angle));
 };/**
  * Matrix defines a 3x3 matrix indicated to deal with 2D operations.
+ *   If it's instantiated with no arguments then, it becomes the
+ *   identity matrix.
  *
- * @param  {number=} aa [description]
- * @param  {number=} ab [description]
- * @param  {number=} ac [description]
- * @param  {number=} ba [description]
- * @param  {number=} bb [description]
- * @param  {number=} bc [description]
- * @param  {number=} ca [description]
- * @param  {number=} cb [description]
- * @param  {number=} cc [description]
+ * @param  {!number=} aa Element of the first row and first line.
+ * @param  {!number=} ab Element of the second row and first line.
+ * @param  {!number=} ac Element of the third row and first line.
+ * @param  {!number=} ba Element of the first row and second line.
+ * @param  {!number=} bb Element of the second row and second line.
+ * @param  {!number=} bc Element of the third row and second line.
+ * @param  {!number=} ca Element of the first row and third line.
+ * @param  {!number=} cb Element of the second row and third line.
+ * @param  {!number=} cc Element of the third row and third line.
  *
  * @constructor
  */
-Grape2D.Matrix = function(aa, ab, ac, ba, bb, bc, ca, cb, cc){
+Grape2D.Matrix = function(aa, ab, ac, ba, bb, bc, ca, cb, cc) {
 	/**
 	 * Matrix elements.
 	 *
-	 * @type {Array.<number>}
+	 * @type {!Array.<number>}
 	 * @private
 	 */
 	this.v = [];
-	if(aa!==undefined){
-		this.v = [ aa, ab, ac, ba, bb, bc, ca, cb, cc ];
-	}else{
+	if (aa !== undefined) {
+		this.v = [aa, ab, ac, ba, bb, bc, ca, cb, cc];
+	} else {
 		this.identity();
 	}
 };
 
 Grape2D.Matrix.prototype = {
 	constructor: Grape2D.Matrix,
-	set: function(aa, ab, ac, ba, bb, bc, ca, cb, cc){
+	/**
+	 * Sets the matrix with new elements.
+	 *
+	 * @param  {!number=} aa Element of the first row and first line.
+	 * @param  {!number=} ab Element of the second row and first line.
+	 * @param  {!number=} ac Element of the third row and first line.
+	 * @param  {!number=} ba Element of the first row and second line.
+	 * @param  {!number=} bb Element of the second row and second line.
+	 * @param  {!number=} bc Element of the third row and second line.
+	 * @param  {!number=} ca Element of the first row and third line.
+	 * @param  {!number=} cb Element of the second row and third line.
+	 * @param  {!number=} cc Element of the third row and third line.
+	 * @return {!Grape2D.Matrix} This matrix.
+	 * @public
+	 */
+	set: function(aa, ab, ac, ba, bb, bc, ca, cb, cc) {
 		var tv = this.v;
 		tv[0] = tv[4] = tv[8] = 1;
 		tv[1] = tv[2] = tv[3] = tv[5] = tv[6] = tv[7] = 0;
 		return this;
 	},
-	add: function(matrix){
-		for(var i=0; i<9; i++)
-			this.v[i]+=matrix.v[i];
+	/**
+	 * Adds to this matrix another one.
+	 *
+	 * @param  {Grape2D.Matrix} matrix Matrix to add.
+	 * @return {!Grape2D.Matrix} This matrix.
+	 * @public
+	 */
+	add: function(matrix) {
+		for (var i = 0; i < 9; i++)
+			this.v[i] += matrix.v[i];
 		return this;
 	},
-	identity: function(){
-		this.v = [ 1, 0, 0, 0, 1, 0, 0, 0, 1 ];
+	/**
+	 * Sets this matrix as the identity matrix.
+	 *
+	 * @return {!Grape2D.Matrix} This matrix.
+	 * @public
+	 */
+	identity: function() {
+		this.v = [1, 0, 0, 0, 1, 0, 0, 0, 1];
 		return this;
 	},
-	invert: function(){
-		var det = this.determinant(), v=this.v;
+	/**
+	 * Inverts the matrix.
+	 *
+	 * @return {!Grape2D.Matrix} This matrix.
+	 * @public
+	 */
+	invert: function() {
+		var det = this.determinant(),
+			v = this.v;
 		this.v = [
-			v[4]*v[8]-v[5]*v[7],
-			v[2]*v[7]-v[1]*v[8],
-			v[1]*v[5]-v[2]*v[4],
+			v[4] * v[8] - v[5] * v[7],
+			v[2] * v[7] - v[1] * v[8],
+			v[1] * v[5] - v[2] * v[4],
 
-			v[5]*v[6]-v[8]*v[3],
-			v[0]*v[8]-v[2]*v[6],
-			v[2]*v[3]-v[0]*v[5],
+			v[5] * v[6] - v[8] * v[3],
+			v[0] * v[8] - v[2] * v[6],
+			v[2] * v[3] - v[0] * v[5],
 
-			v[3]*v[7]-v[4]*v[6],
-			v[1]*v[6]-v[0]*v[7],
-			v[0]*v[4]-v[1]*v[3]
+			v[3] * v[7] - v[4] * v[6],
+			v[1] * v[6] - v[0] * v[7],
+			v[0] * v[4] - v[1] * v[3]
 		];
-		return this.multiplyByScalar(1/det);
+		return this.multiplyByScalar(1 / det);
 	},
-	determinant: function(){
+	/**
+	 * Computes the determinant of the matrix.
+	 *
+	 * @return {!number} Determinant.
+	 * @public
+	 */
+	determinant: function() {
 		var tv = this.v;
-		return tv[0]*(tv[4]*tv[8]-tv[5]*tv[7])-tv[1]*(tv[3]*tv[8]-tv[5]*tv[6])+tv[2]*(tv[3]*tv[7]-tv[4]*tv[6]);
+		return tv[0] * (tv[4] * tv[8] - tv[5] * tv[7]) - tv[1] * (tv[3] * tv[8] - tv[5] * tv[6]) + tv[2] * (tv[3] * tv[7] - tv[4] * tv[6]);
 	},
-	multiplyByVector: function(v){
+	/**
+	 * Multiplies by a vector. Since Grape2D doesn't support 3D vectors
+	 *   the third element of the vector is 1.
+	 *
+	 * @param  {!Grape2D.Vector} v Vector to multiply by.
+	 * @return {!Grape2D.Vector} A new vector, result of the
+	 *   multiplication.
+	 * @public
+	 */
+	multiplyByVector: function(v) {
 		return new Grape2D.Vector(
-			this.v[0]*v.x+this.v[1]*v.y+this.v[2],
-			this.v[3]*v.x+this.v[4]*v.y+this.v[5]
+			this.v[0] * v.x + this.v[1] * v.y + this.v[2],
+			this.v[3] * v.x + this.v[4] * v.y + this.v[5]
 		);
 	},
-	multiplyByScalar: function(scalar){
-		this.v[0]*=scalar;
-		this.v[1]*=scalar;
-		this.v[2]*=scalar;
+	/**
+	 * Multiplies by a scalar number.
+	 *
+	 * @param  {!number} scalar Scalar to multiply by.
+	 * @return {!Grape2D.Matrix} This matrix.
+	 * @public
+	 */
+	multiplyByScalar: function(scalar) {
+		this.v[0] *= scalar;
+		this.v[1] *= scalar;
+		this.v[2] *= scalar;
 
-		this.v[3]*=scalar;
-		this.v[4]*=scalar;
-		this.v[5]*=scalar;
+		this.v[3] *= scalar;
+		this.v[4] *= scalar;
+		this.v[5] *= scalar;
 
-		this.v[6]*=scalar;
-		this.v[7]*=scalar;
-		this.v[8]*=scalar;
+		this.v[6] *= scalar;
+		this.v[7] *= scalar;
+		this.v[8] *= scalar;
 		return this;
 	},
-	multiplyByMatrix: function(matrix){
-		var v = this.v, m = matrix.v,
-			aa = v[0]*m[0]+v[1]*m[3]+v[2]*m[6], ab = v[0]*m[1]+v[1]*m[4]+v[2]*m[7], ac = v[0]*m[2]+v[1]*m[5]+v[2]*m[8],
-			ba = v[3]*m[0]+v[4]*m[3]+v[5]*m[6], bb = v[3]*m[1]+v[4]*m[4]+v[5]*m[7], bc = v[3]*m[2]+v[4]*m[5]+v[5]*m[8],
-			ca = v[6]*m[0]+v[7]*m[3]+v[8]*m[6], cb = v[6]*m[1]+v[7]*m[4]+v[8]*m[7], cc = v[6]*m[2]+v[7]*m[5]+v[8]*m[8];
+	/**
+	 * Multiplies by other matrix.
+	 *
+	 * @param  {!Grape2D.Matrix} matrix Matrix to multiply by.
+	 * @return {!Grape2D.Matrix} The new matrix, result of the
+	 *   multiplication.
+	 * @public
+	 */
+	multiplyByMatrix: function(matrix) {
+		var v = this.v,
+			m = matrix.v,
+			aa = v[0] * m[0] + v[1] * m[3] + v[2] * m[6],
+			ab = v[0] * m[1] + v[1] * m[4] + v[2] * m[7],
+			ac = v[0] * m[2] + v[1] * m[5] + v[2] * m[8],
+			ba = v[3] * m[0] + v[4] * m[3] + v[5] * m[6],
+			bb = v[3] * m[1] + v[4] * m[4] + v[5] * m[7],
+			bc = v[3] * m[2] + v[4] * m[5] + v[5] * m[8],
+			ca = v[6] * m[0] + v[7] * m[3] + v[8] * m[6],
+			cb = v[6] * m[1] + v[7] * m[4] + v[8] * m[7],
+			cc = v[6] * m[2] + v[7] * m[5] + v[8] * m[8];
 
 		return new Grape2D.Matrix(
 			aa, ab, ac,
@@ -711,27 +803,46 @@ Grape2D.Matrix.prototype = {
 			ca, cb, cc
 		);
 	},
-	transpose: function(){
+	/**
+	 * Transposes the matrix.
+	 *
+	 * @return {!Grape2D.Matrix} This matrix.
+	 * @public
+	 */
+	transpose: function() {
 		var tmp, m = this.v;
-		tmp = m[1]; m[1] = m[3]; m[3] = tmp;
-		tmp = m[2]; m[2] = m[6]; m[6] = tmp;
-		tmp = m[5]; m[5] = m[7]; m[7] = tmp;
+		tmp = m[1];
+		m[1] = m[3];
+		m[3] = tmp;
+		tmp = m[2];
+		m[2] = m[6];
+		m[6] = tmp;
+		tmp = m[5];
+		m[5] = m[7];
+		m[7] = tmp;
 
 		return this;
 	},
-	rotate: function(angle){
-		return;
-	},
-	setRendererTransform: function(renderer){
-		renderer.transform(this.v[0], this.v[1], this.v[2], this.v[3], this.v[4], this.v[5]);
-	},
-	clone: function(){
+	/**
+	 * Clones the matrix. Instantiating another one with the same
+	 *   elements.
+	 *
+	 * @return {!Grape2D.Matrix} Equivalent matrix.
+	 * @public
+	 */
+	clone: function() {
 		return new Grape2D.Matrix(this.v[0], this.v[1], this.v[2], this.v[3], this.v[4], this.v[5], this.v[6], this.v[7], this.v[8]);
 	},
-	toString: function(){
-		return "Grape2D.Matrix\n"+this.v[0]+" "+this.v[1]+" "+this.v[2]+"\n"+
-			this.v[3]+" "+this.v[4]+" "+this.v[5]+"\n"+
-			this.v[6]+" "+this.v[7]+" "+this.v[8];
+	/**
+	 * Represents the matrix as a string.
+	 *
+	 * @return {!string} Matrix as a string.
+	 * @public
+	 */
+	toString: function() {
+		return "Grape2D.Matrix\n" + this.v[0] + " " + this.v[1] + " " + this.v[2] + "\n" +
+			this.v[3] + " " + this.v[4] + " " + this.v[5] + "\n" +
+			this.v[6] + " " + this.v[7] + " " + this.v[8];
 	}
 
 };/**
@@ -746,50 +857,50 @@ Grape2D.Renderer.prototype = {
 	/**
 	 * Gets the renderer width.
 	 *
-	 * @return {number} the width
+	 * @return {!number} the width
 	 * @public
 	 */
 	getWidth: function() {},
 	/**
 	 * Gets the half width of the renderer.
 	 *
-	 * @return {number} the half width
+	 * @return {!number} the half width
 	 * @public
 	 */
 	getHalfWidth: function() {},
 	/**
 	 * Sets the width of the renderer and computes the half width.
 	 *
-	 * @param  {number} width the width
+	 * @param  {!number} width the width
 	 * @public
 	 */
 	setWidth: function(width) {},
 	/**
 	 * Gets the renderer height
 	 *
-	 * @return {number} the height
+	 * @return {!number} the height
 	 * @public
 	 */
 	getHeight: function() {},
 	/**
 	 * Gets the half height of the renderer
 	 *
-	 * @return {number} the half width
+	 * @return {!number} the half width
 	 * @public
 	 */
 	getHalfHeight: function() {},
 	/**
 	 * Sets the height of the renderer and computes the half height.
 	 *
-	 * @param  {number} height the new height
+	 * @param  {!number} height the new height
 	 * @public
 	 */
 	setHeight: function(height) {},
 	/**
 	 * Renders a texture to a position on the renderer.
 	 *
-	 * @param  {Grape2D.ITexture} texture the texture to render
-	 * @param  {Grape2D.Vector} position the position to render
+	 * @param  {!Grape2D.ITexture} texture The texture to render
+	 * @param  {!Grape2D.Vector} position The position to render
 	 * @public
 	 */
 	renderTexture: function(texture, position) {},
@@ -820,7 +931,8 @@ Grape2D.Renderer.prototype = {
 	 * Renders the wireframe of an AABB.
 	 *
 	 * @param  {!Grape2D.AABB} aabb The AABB to render.
-	 * @param  {!Grape2D.Camera} camera The camera to transfrom the coordinates.
+	 * @param  {!Grape2D.Camera} camera The camera to transfrom the
+	 *   coordinates.
 	 * @public
 	 */
 	renderAABB: function(aabb, camera) {},
@@ -828,7 +940,8 @@ Grape2D.Renderer.prototype = {
 	 * Renders the wireframe of a circle.
 	 *
 	 * @param  {!Grape2D.Circle} circle Circle to render.
-	 * @param  {!Grape2D.Camera} camera The camera to transfrom the coordinates.
+	 * @param  {!Grape2D.Camera} camera The camera to transfrom the
+	 *   coordinates.
 	 * @public
 	 */
 	renderCircle: function(circle, camera) {},
@@ -836,7 +949,8 @@ Grape2D.Renderer.prototype = {
 	 * Renders the wireframe of a polygon.
 	 *
 	 * @param  {!Grape2D.Polygon} polygon Polygon to render.
-	 * @param  {!Grape2D.Camera} camera The camera to transfrom the coordinates.
+	 * @param  {!Grape2D.Camera} camera The camera to transfrom the
+	 *   coordinates.
 	 * @public
 	 */
 	renderPolygon: function(polygon, camera) {},
@@ -877,271 +991,728 @@ Grape2D.Renderer.prototype = {
 	/**
 	 * Sets a new stroke color.
 	 *
-	 * @param  {string} color New color to use when stroking.
+	 * @param  {!string} color New color to use when stroking.
 	 * @public
 	 */
 	setStrokeColor: function(color) {},
 	/**
 	 * Sets a new fill color.
 	 *
-	 * @param  {string} color New color to use when filling.
+	 * @param  {!string} color New color to use when filling.
 	 * @public
 	 */
 	setFillColor: function(color) {}
 };/**
  * This is a simple abstraction of the canvas object,
- * may be used to do some optimizations
+ *   may be used to do some optimizations.
+ *
  * @constructor
  */
 Grape2D.Canvas = function(options) {
 	if (!options) options = {};
+	/**
+	 * Canvas DOM element.
+	 *
+	 * @type {!Element}
+	 * @private
+	 */
 	this.canvas = document.createElement("Canvas");
-	this.canvas.width = this.width = options.width || 300;
-	this.canvas.height = this.height = options.height || 150;
-	this.halfWidth = this.width / 2;
-	this.halfHeight = this.height / 2;
-	this.context = this.getContext();
+	this.canvas.width = options.width || 300;
+	this.canvas.height = options.height || 150;
+	/**
+	 * Half width of the canvas.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.halfWidth = this.canvas.width / 2;
+	/**
+	 * Half height of the canvas.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.halfHeight = this.canvas.height / 2;
+	/**
+	 * Context of the canvas.
+	 *
+	 * @type {!CanvasRenderingContext2D}
+	 * @private
+	 */
+	this.context = this.canvas.getContext("2D");
 };
 
 Grape2D.Canvas.prototype = {
+	/**
+	 * Gets canvas width.
+	 *
+	 * @return {!number} Canvas width.
+	 */
 	getWidth: function() {
-		return this.width;
+		return this.canvas.width;
 	},
+	/**
+	 * Gets canvas half width.
+	 *
+	 * @return {!number} Canvas half width.
+	 */
 	getHalfWidth: function() {
 		return this.halfWidth;
 	},
+	/**
+	 * Sets canvas width.
+	 *
+	 * @param  {!number} width New canvas width.
+	 */
 	setWidth: function(width) {
-		this.canvas.width = this.width = width;
-		this.halfWidth = this.width / 2;
+		this.canvas.width = width;
+		this.halfWidth = width / 2;
 	},
+	/**
+	 * Gets canvas height.
+	 *
+	 * @return {!number} Canvas height.
+	 */
 	getHeight: function() {
 		return this.height;
 	},
+	/**
+	 * Gets canvas half height.
+	 *
+	 * @return {!number} Canvas half height.
+	 */
 	getHalfHeight: function() {
 		return this.halfHeight;
 	},
+	/**
+	 * Sets canvas height.
+	 *
+	 * @param  {!number} height New canvas height.
+	 */
 	setHeight: function(height) {
-		this.canvas.height = this.height = height;
-		this.halfHeight = this.width / 2;
+		this.canvas.height = height;
+		this.halfHeight = height / 2;
 	},
-	/** Canvas element **/
+	// Canvas element
+	/**
+	 * @public
+	 */
 	toDataURL: function(type, args) {
-		return this.context.toDataURL(type, args);
+		return this.canvas.toDataURL(type, args);
 	},
+	/**
+	 * Gets canvas context.
+	 *
+	 * @return {!CanvasRenderingContext2D} Canvas context.
+	 */
 	getContext: function() {
-		return this.canvas.getContext("2d");
+		return this.context;
 	},
-	/** 2D Context **/
+	// 2D Context
+	/**
+	 * Saves the state of the canvas.
+	 *
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	save: function() {
 		this.context.save();
 		return this;
 	},
+	/**
+	 * Restores a saved state.
+	 *
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	restore: function() {
 		this.context.restore();
 		return this;
 	},
-	/** Transformations **/
+	// Transformations
+	/**
+	 * Scales the canvas. Not the DOM element. Equivalent
+	 *   to apply a scale matrix.
+	 *
+	 * @param  {!number} x X scale.
+	 * @param  {!number} y Y scale.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	scale: function(x, y) {
 		this.context.scale(x, y);
 		return this;
 	},
+	/**
+	 * Rotates the canvas. Not the DOM element. Equivalent
+	 *   to apply a rotation matrix.
+	 *
+	 * @param  {!number} angle Angle to rotate.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	rotate: function(angle) {
 		this.context.rotate(angle);
 		return this;
 	},
+	/**
+	 * Translate the canvas. Not the DOM element. Equivalent
+	 *   to apply a translation matrix.
+	 *
+	 * @param  {!number} x Translation in the X axis.
+	 * @param  {!number} y Translation in the Y axis.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	translate: function(x, y) {
 		this.context.translate(x, y);
 		return this;
 	},
+	/**
+	 * Sets a transformation matrix.
+	 *
+	 * @param  {!number} m11 Element.
+	 * @param  {!number} m12 Element.
+	 * @param  {!number} m21 Element.
+	 * @param  {!number} m22 Element.
+	 * @param  {!number} dx Element.
+	 * @param  {!number} dy Element.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	transform: function(m11, m12, m21, m22, dx, dy) {
 		this.context.transform(m11, m12, m21, m22, dx, dy);
 		return this;
 	},
-	/** Image drawing **/
+	// Image drawing
 	/**
 	 * Draws an image to the canvas.
-	 * @param image: HTMLImageElement, HTMLCanvasElement or HTMLVideoElement
-	 * @param dx: destination x
-	 * @param dy: destination y
-	 * @param dw: destination width
-	 * @param dh: destination height
-	 * @param sx: source x
-	 * @param sy: source y
-	 * @param sw: source width
-	 * @param sh: source height
+	 *
+	 * @param {!(HTMLImageElement|HTMLCanvasElement|HTMLVideoElement)}
+	 *   image Image to draw.
+	 * @param {!number} dx Destination x
+	 * @param {!number} dy Destination y
+	 * @param {!number} dw Destination width
+	 * @param {!number} dh Destination height
+	 * @param {!number} sx Source x
+	 * @param {!number} sy Source y
+	 * @param {!number} sw Source width
+	 * @param {!number} sh Source height
+	 * @return {!Grape2D.Canvas} This canvas.
 	 */
 	drawImage: function(image, sx, sy, sw, sh, dx, dy, dw, dh) {
 		this.context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
+		return this;
 	},
-	/** Compositing **/
+	// Compositing
+	/**
+	 * Sets the global alpha property.
+	 *
+	 * @param  {!number} value New alpha value.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setGlobalAlpha: function(value) {
 		this.context.globalAlpha = value;
 		return this;
 	},
+	/**
+	 * Performs a composition operation, according to a flag. The
+	 *   available flags are:
+	 *   <ul>
+	 *   <li>source-over
+	 *   <li>source-in
+	 *   <li>source-out
+	 *   <li>source-atop
+	 *   <li>destination-over
+	 *   <li>destination-in
+	 *   <li>destination-out
+	 *   <li>destination-atop
+	 *   <li>lighter
+	 *   <li>copy
+	 *   <li>xor
+	 *
+	 * @param  {!string} flag An valid flag.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	globalCompositeOperation: function(flag) {
 		this.context.globalCompositeOperation = flag;
 		return this;
 	},
-	/** Lines **/
+	// Lines
+	/**
+	 * Sets the line width
+	 *
+	 * @param  {!number} value New line width value.s
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setLineWidth: function(value) {
 		this.context.lineWidth = value;
 		return this;
 	},
+	/**
+	 * Sets the type of line cap. The available options are:
+	 *   <ul>
+	 *   <li>butt
+	 *   <li>round
+	 *   <li>square
+	 *
+	 * @param  {!string} value A valid line cap option.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setLineCap: function(value) {
 		this.context.lineCap = value;
 		return this;
 	},
+	/**
+	 * Sets the line join. The available options are:
+	 *   <ul>
+	 *   <li>round
+	 *   <li>bevel
+	 *   <li>miter
+	 *
+	 * @param  {!string} value A valid line join option.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setLineJoin: function(value) {
 		this.context.lineJoin = value;
 		return this;
 	},
+	/**
+	 * Sets the miter limit.
+	 *
+	 * @param  {!number} value Miter limit value.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setMiterLimit: function(value) {
 		this.context.miterLimit = value;
 		return this;
 	},
 	/** Colors **/
+	/**
+	 * Sets the stroke style.
+	 *
+	 * @param  {!string} value Stroke color. In a valid CSS3 format.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setStrokeStyle: function(value) {
 		this.context.strokeStyle = value;
 		return this;
 	},
+	/**
+	 * Sets the fill style.
+	 *
+	 * @param  {!string} value Fill color. In a valid CSS3 format.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setFillStyle: function(value) {
 		this.context.fillStyle = value;
 		return this;
 	},
+	/**
+	 * Sets the shadow offset in the x axis.
+	 *
+	 * @param  {!number} value Shadow offset, at the x axis
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setShadowOffsetX: function(value) {
 		this.context.shadowOffsetX = value;
 		return this;
 	},
+	/**
+	 * Sets the shadow offset in the y axis.
+	 *
+	 * @param  {!number} value Shadow offset, at the y axis.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setShadowOffsetY: function(value) {
 		this.context.shadowOffsetY = value;
 		return this;
 	},
+	/**
+	 * Sets the shadow blur value.
+	 *
+	 * @param  {!number} value Shadow blur.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setShadowBlur: function(value) {
 		this.context.shadowBlur = value;
 		return this;
 	},
+	/**
+	 * Sets the shadow color.
+	 *
+	 * @param  {!string} value Shadow color in a valid CSS3 format.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setShadowColor: function(value) {
 		this.context.shadowColor = value;
 		return this;
 	},
-
+	/**
+	 * Creates a line gradient in the canvas.
+	 *
+	 * @param  {!number} x0 Start x.
+	 * @param  {!number} y0 Start y.
+	 * @param  {!number} x1 End x.
+	 * @param  {!number} y1 End y.
+	 * @return {?CanvasGradient} Result gradient.
+	 */
 	createLinearGradient: function(x0, y0, x1, y1) {
 		return this.context.createLinearGradient(x0, y0, x1, y1);
 	},
+	/**
+	 * Creates a radial gradient.
+	 *
+	 * @param  {!number} x0 X.
+	 * @param  {!number} y0 Y.
+	 * @param  {!number} r0 Radius.
+	 * @param  {!number} x1 X.
+	 * @param  {!number} y1 Y.
+	 * @param  {!number} r1 Radius.
+	 * @return {?CanvasGradient} Result gradient.
+	 */
 	createRadialGradient: function(x0, y0, r0, x1, y1, r1) {
 		return this.context.createRadialGradient(x0, y0, r0, x1, y1, r1);
 	},
+	/**
+	 * Creates a pattern. There are 4 available options:
+	 *   <ul>
+	 *   <li>repeat
+	 *   <li>repeat-x
+	 *   <li>repeat-y
+	 *   <li>no-repeat
+	 *
+	 * @param  {?(HTMLImageElement|HTMLCanvasElement)}
+	 *   image Image
+	 * @param  {!string} repetition Valid repetition.
+	 * @return {?CanvasPattern} Result pattern.
+	 */
 	createPattern: function(image, repetition) {
 		return this.context.createPattern(image, repetition);
 	},
-	/** Paths **/
+	// Paths
+	/**
+	 * Starts a path.
+	 *
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	beginPath: function() {
 		this.context.beginPath();
 		return this;
 	},
+	/**
+	 * Closes a path.
+	 *
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	closePath: function() {
 		this.context.closePath();
 		return this;
 	},
+	/**
+	 * Fills the canvas.
+	 *
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	fill: function() {
 		this.context.fill();
 		return this;
 	},
+	/**
+	 * Stroke the canvas.
+	 *
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	stroke: function() {
 		this.context.stroke();
 		return this;
 	},
+	/**
+	 * Clips the canvas
+	 *
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	clip: function() {
 		this.context.clip();
 		return this;
 	},
+	/**
+	 * Moves to a position to start a line/shape.
+	 *
+	 * @param  {!number} x X coordinate.
+	 * @param  {!number} y Y coordinate.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	moveTo: function(x, y) {
 		this.context.moveTo(x, y);
 		return this;
 	},
+	/**
+	 * Creates a line to a position.
+	 *
+	 * @param  {!number} x End x coordinate.
+	 * @param  {!number} y End y coordinate.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	lineTo: function(x, y) {
 		this.context.lineTo(x, y);
 		return this;
 	},
+	/**
+	 * Creates a quadratic curve.
+	 *
+	 * @param  {!number} cpx CPX.
+	 * @param  {!number} cpy CPY
+	 * @param  {!number} x X.
+	 * @param  {!number} y Y.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	quadraticCurveTo: function(cpx, cpy, x, y) {
 		this.context.quadraticCurveTo(cpx, cpy, x, y);
 		return this;
 	},
+	/**
+	 * Creates a bezier curve.
+	 *
+	 * @param  {!number} cp1x CP1X.
+	 * @param  {!number} cp1y CP1Y.
+	 * @param  {!number} cp2x CP2X.
+	 * @param  {!number} cp2y CP2Y.
+	 * @param  {!number} x X.
+	 * @param  {!number} y Y.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	bezierCurveTo: function(cp1x, cp1y, cp2x, cp2y, x, y) {
 		this.context.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y);
 		return this;
 	},
+	/**
+	 * Creates an arc to a position.
+	 *
+	 * @param  {!number} x1 Start x.
+	 * @param  {!number} y1 Start y.
+	 * @param  {!number} x2 End x.
+	 * @param  {!number} y2 End y.
+	 * @param  {!number} radius Radius of the arc.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	arcTo: function(x1, y1, x2, y2, radius) {
 		this.context.arcTo(x1, y1, x2, y2, radius);
 		return this;
 	},
+	/**
+	 * Creates an arc.
+	 *
+	 * @param  {!number} x Center x.
+	 * @param  {!number} y Center y.
+	 * @param  {!number} radius Arc radius.
+	 * @param  {!number=} startAngle Start angle.
+	 * @param  {!number=} endAngle End angle.
+	 * @param  {!boolean=} CCW True for counter clock wise.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	arc: function(x, y, radius, startAngle, endAngle, CCW) {
 		this.context.arc(x, y, radius, startAngle || 0, endAngle || Grape2D.Math.PIx2, CCW || false);
 		return this;
 	},
+	/**
+	 * Creates a rectangle.
+	 *
+	 * @param  {!number} x X coordinate of the top left corner.
+	 * @param  {!number} y Y coordinate of the top left corner.
+	 * @param  {!number} w Width of the rectangle.
+	 * @param  {!number} h Height of the rectangle.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	rect: function(x, y, w, h) {
 		this.context.rect(x, y, w, h);
 		return this;
 	},
+	/**
+	 * Checks if the point is in the current path.
+	 *
+	 * @param  {!number} x X coordinate.
+	 * @param  {!number} y Y coordinate.
+	 * @return {!boolean} True if it's in the path.
+	 */
 	isPointInPath: function(x, y) {
 		return this.context.isPointInPath(x, y);
 	},
-	/** Text **/
+	// Text
+	/**
+	 * Sets the font type.
+	 *
+	 * @param  {!string} font New font.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setFont: function(font) {
 		this.context.font = font;
 		return this;
 	},
+	/**
+	 * Set the text align. The available options are:
+	 *   <ul>
+	 *   <li>start
+	 *   <li>end
+	 *   <li>left
+	 *   <li>right
+	 *   <li>center
+	 *
+	 * @param  {!string} value A valid align option.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setTextAlign: function(value) {
 		this.context.textAlign = value;
 		return this;
 	},
+	/**
+	 * Sets the baseline. The available options are:
+	 *   <ul>
+	 *   <li>top
+	 *   <li>hanging
+	 *   <li>middle
+	 *   <li>alphabetic
+	 *   <li>ideographic
+	 *   <li>bottom
+	 *
+	 * @param  {!string} baseline A valid option.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	setTextBaseline: function(baseline) {
 		this.context.textBaseline = baseline;
 		return this;
 	},
-	fillText: function(text, x, y, maxWidth) {
+	/**
+	 * Fills the text.
+	 *
+	 * @param  {!string} text Text to fill.
+	 * @param  {!number} x X.
+	 * @param  {!number} y Y.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
+	fillText: function(text, x, y) {
 		this.context.fillText(text, x, y);
 		return this;
 	},
-	strokeText: function(text, x, y, maxWidth) {
+	/**
+	 * Stroke text.
+	 *
+	 * @param  {!string} text Text to stroke.
+	 * @param  {!number} x X.
+	 * @param  {!number} y Y.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
+	strokeText: function(text, x, y) {
 		this.context.strokeText(text, x, y);
 		return this;
 	},
+	/**
+	 * Measures a text.
+	 *
+	 * @param  {!string} text Text to measure.
+	 * @return {?TextMetrics} Text metrics
+	 */
 	measureText: function(text) {
 		return this.context.measureText(text);
 	},
-	/** Rectangles **/
+	// Rectangles
+	/**
+	 * Clears a rectangle.
+	 *
+	 * @param  {!number} x Start x.
+	 * @param  {!number} y Start y.
+	 * @param  {!number} w Width.
+	 * @param  {!number} h Height.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	clearRect: function(x, y, w, h) {
 		this.context.clearRect(x, y, w, h);
 		return this;
 	},
+	/**
+	 * Fills a rectangle.
+	 *
+	 * @param  {!number} x Start x.
+	 * @param  {!number} y Start y.
+	 * @param  {!number} w Width.
+	 * @param  {!number} h Height.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	fillRect: function(x, y, w, h) {
 		this.context.fillRect(x, y, w, h);
 		return this;
 	},
+	/**
+	 * Strokes a rectangle.
+	 *
+	 * @param  {!number} x Start x.
+	 * @param  {!number} y Start y.
+	 * @param  {!number} w Width.
+	 * @param  {!number} h Height.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	strokeRect: function(x, y, w, h) {
 		this.context.strokeRect(x, y, w, h);
 		return this;
 	},
 	/** Pixel manipulation **/
+	/**
+	 * Creates an image data.
+	 *
+	 * @param  {!number} sw Source width.
+	 * @param  {!number} sh Source height.
+	 * @return {?ImageData} Image data.
+	 */
 	createImageData: function(sw, sh) {
 		return this.context.createImageData(sw, sh);
 	},
-	getImageData: function(imageData) {
-		return this.context.getImageData(imageData);
+	/**
+	 * Gets canvas data as an image.
+	 *
+	 * @param  {!number} sx Source x.
+	 * @param  {!number} sy Source y.
+	 * @param  {!number} sw Source width.
+	 * @param  {!number} sh Source height.
+	 * @return {?ImageData} Image data.
+	 */
+	getImageData: function(sx, sy, sw, sh) {
+		return this.context.getImageData(sx, sy, sw, sh);
 	},
+	/**
+	 * Puts image data into the canvas.
+	 *
+	 * @param  {!ImageData} imageData Image data.
+	 * @param  {!number} dx Destination x.
+	 * @param  {!number} dy Destination y.
+	 * @param  {!number} dirtyX Dirty x.
+	 * @param  {!number} dirtyY Dirty y.
+	 * @param  {!number} dirtyWidth Dirty width.
+	 * @param  {!number} dirtyHeight Dirty height.
+	 * @return {?Grape2D.Canvas} This canvas.
+	 */
 	putImageData: function(imageData, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight) {
 		this.context.putImageData(imageData, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight);
 		return this;
 	},
+	/**
+	 * Resizes the canvas.
+	 *
+	 * @param  {!number} w New width.
+	 * @param  {!number} h New height.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	resize: function(w, h) {
-		this.width = this.canvas.width = w;
-		this.height = this.canvas.height = h;
+		this.setWidth(w);
+		this.setHeight(h);
+		return this;
 	},
+	/**
+	 * Appends canvas to a DOM element.
+	 *
+	 * @param  {!Element} on Element to append to.
+	 * @return {!Grape2D.Canvas} This canvas.
+	 */
 	appendOn: function(on) {
-		//this.canvas.style.position = 'absolute';
 		on.appendChild(this.canvas);
+		return this;
 	},
+	/**
+	 * Clears the canvas.
+	 */
 	clear: function() {
 		this.context.clearRect(0, 0, this.width, this.height);
 	}
@@ -1151,8 +1722,8 @@ Grape2D.Canvas.prototype = {
  *   most stable and cross-browser.
  *
  * @param  {Object=} options Options to setup the renderer.
- * @param  {number=} options.width Width of the renderer.
- * @param  {number=} options.height Height of the renderer.
+ * @param  {!number=} options.width Width of the renderer.
+ * @param  {!number=} options.height Height of the renderer.
  *
  * @implements {Grape2D.Renderer}
  * @constructor
@@ -1161,7 +1732,8 @@ Grape2D.CanvasRenderer = function(options) {
 	/**
 	 * A canvas object
 	 *
-	 * @type {Grape2D.Canvas}
+	 * @type {!Grape2D.Canvas}
+	 * @private
 	 */
 	this.canvas = new Grape2D.Canvas(options);
 };
@@ -1323,6 +1895,7 @@ Grape2D.CanvasRenderer.prototype.getDOMElement = function() {
  * Gets the 2D context of teh canvas element.
  *
  * @return {!CanvasRenderingContext2D} Canvas 2D context.
+ * @public
  */
 Grape2D.CanvasRenderer.prototype.getContext = function() {
 	return this.canvas.context;
@@ -1341,14 +1914,21 @@ Grape2D.CanvasRenderer.prototype.setFillColor = function(color) {
 };/**
  * Only renders the wireframe of (the bounding box of)
  *   {@link Grape2D.Object2D}, using another {@link Grape2D.Renderer}, 
- *   such as {@link Grape2D.CanvasRenderer}. This class is a bridge, so in fact
- *   the renderer provided is the one that is being used.
+ *   such as {@link Grape2D.CanvasRenderer}. This class is a bridge,
+ *   so in fact the renderer provided is the one that is being used.
  *
- * @param  {Grape2D.Renderer} renderer The renderer to use.
- * @implements {Grape2D.Renderer}s
+ * @param  {!Grape2D.Renderer} renderer The renderer to use.
+ * 
+ * @implements {Grape2D.Renderer}
  * @constructor
  */
 Grape2D.WireframeRenderer = function (renderer) {
+	/**
+	 * Renderer to use as an helper.
+	 *
+	 * @type {!Grape2D.Renderer}
+	 * @private
+	 */
 	this.renderer = renderer;
 };
 
@@ -1471,22 +2051,63 @@ Grape2D.WireframeRenderer.prototype.setStrokeColor = function(color) {
  */
 Grape2D.WireframeRenderer.prototype.setFillColor = function(color) {
 	this.renderer.setFillColor(color);
-};/* global Grape2D */
-/**
- * Managers inputs.
+};/**
+ * Managers inputs, giving an easy to use interface.
+ *   An input manager can only be listening to a single renderer
+ *   at once.
  *
  * @param  {!Grape2D.Renderer} renderer Renderer to listen.
- *
  * @constructor
  */
 Grape2D.InputManager = function(renderer) {
-
+	/**
+	 * Mouse up callback stack.
+	 *
+	 * @type {!Array.<Function>}
+	 * @private
+	 */
 	this.mouseUp = [];
+	/**
+	 * Mouse down callback stack.
+	 *
+	 * @type {!Array.<Function>}
+	 * @private
+	 */
 	this.mouseDown = [];
+	/**
+	 * Mouse move callback stack.
+	 *
+	 * @type {!Array.<Function>}
+	 * @private
+	 */
 	this.mouseMove = [];
+	/**
+	 * Mouse over callback stack.
+	 *
+	 * @type {!Array.<Function>}
+	 * @private
+	 */
 	this.mouseOver = [];
+	/**
+	 * Mouse out callback stack.
+	 *
+	 * @type {!Array.<Function>}
+	 * @private
+	 */
 	this.mouseOut = [];
+	/**
+	 * Mouse wheel callback stack.
+	 *
+	 * @type {!Array.<Function>}
+	 * @private
+	 */
 	this.mouseWheel = [];
+	/**
+	 * Resize callback stack.
+	 *
+	 * @type {!Array.<Function>}
+	 * @private
+	 */
 	this.resize = [];
 	/**
 	 * Renderer
@@ -1495,6 +2116,7 @@ Grape2D.InputManager = function(renderer) {
 	 * @private
 	 */
 	this.rendererBinding = renderer;
+	//binds this input manager to the renderer.
 	this.bindToRenderer(renderer);
 };
 
@@ -1533,84 +2155,217 @@ Grape2D.InputManager.prototype = {
 		dom.addEventListener('keyup', Grape2D.InputManager.clickBind(this));
 		dom.addEventListener('keypress', Grape2D.InputManager.clickBind(this));*/
 	},
+	/**
+	 * Gets the mouse up callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.<Function>} Callback stack.
+	 * @public
+	 */
 	getMouseUpBindStack: function() {
 		return this.mouseUp;
 	},
+	/**
+	 * Adds a callback to the mouse up event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
 	addMouseUp: function(callback) {
 		this.mouseUp.push(callback);
 	},
+	/**
+	 * Removes a callback from the mouse up callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
 	removeMouseUp: function(callback) {
 		var indx = this.mouseUp.indexOf(callback);
 		if (indx >= 1) {
 			this.mouseUp.splice(this.mouseUp.indexOf(callback), 1);
 		}
 	},
+	/**
+	 * Gets the mouse down callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.<Function>} Callback stack.
+	 * @public
+	 */
 	getMouseDownBindStack: function() {
 		return this.mouseDown;
 	},
+	/**
+	 * Adds a callback to the mouse down event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
 	addMouseDown: function(callback) {
 		this.mouseDown.push(callback);
 	},
+	/**
+	 * Removes a callback from the mouse down callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
 	removeMouseDown: function(callback) {
 		var indx = this.mouseDown.indexOf(callback);
 		if (indx >= 1) {
 			this.mouseDown.splice(this.mouseDown.indexOf(callback), 1);
 		}
 	},
+	/**
+	 * Gets the mouse move callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.<Function>} Callback stack.
+	 * @public
+	 */
 	getMouseMoveBindStack: function() {
 		return this.mouseMove;
 	},
+	/**
+	 * Adds a callback to the mouse move event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
 	addMouseMove: function(callback) {
 		this.mouseMove.push(callback);
 	},
+	/**
+	 * Removes a callback from the mouse move callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
 	removeMouseMove: function(callback) {
 		var indx = this.mouseMove.indexOf(callback);
 		if (indx >= 1) {
 			this.mouseMove.splice(this.mouseMove.indexOf(callback), 1);
 		}
 	},
+	/**
+	 * Gets the mouse over callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.<Function>} Callback stack.
+	 * @public
+	 */
 	getMouseOverBindStack: function() {
 		return this.mouseOver;
 	},
+	/**
+	 * Adds a callback to the mouse over event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
 	addMouseOver: function(callback) {
 		this.mouseOver.push(callback);
 	},
+	/**
+	 * Removes a callback from the mouse over callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
 	removeMouseOver: function(callback) {
 		var indx = this.mouseOver.indexOf(callback);
 		if (indx >= 1) {
 			this.mouseOver.splice(this.mouseOver.indexOf(callback), 1);
 		}
 	},
+	/**
+	 * Gets the mouse out callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.<Function>} Callback stack.
+	 * @public
+	 */
 	getMouseOutBindStack: function() {
 		return this.mouseOut;
 	},
+	/**
+	 * Adds a callback to the mouse out event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
 	addMouseOut: function(callback) {
 		this.mouseOut.push(callback);
 	},
+	/**
+	 * Removes a callback from the mouse out callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
 	removeMouseOut: function(callback) {
 		var indx = this.mouseOut.indexOf(callback);
 		if (indx >= 1) {
 			this.mouseOut.splice(this.mouseOut.indexOf(callback), 1);
 		}
 	},
+	/**
+	 * Gets the mouse wheel callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.<Function>} Callback stack.
+	 * @public
+	 */
 	getMouseWheelBindStack: function() {
 		return this.mouseWheel;
 	},
+	/**
+	 * Adds a callback to the mouse wheel event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
 	addMouseWheel: function(callback) {
 		this.mouseWheel.push(callback);
 	},
+	/**
+	 * Removes a callback from the mouse wheel callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
 	removeMouseWheel: function(callback) {
 		var indx = this.mouseWheel.indexOf(callback);
 		if (indx >= 1) {
 			this.mouseWheel.splice(this.mouseWheel.indexOf(callback), 1);
 		}
 	},
+	/**
+	 * Gets the resize callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.<Function>} Callback stack.
+	 * @public
+	 */
 	getResizeBindStack: function() {
 		return this.resize;
 	},
+	/**
+	 * Adds a callback to the resize event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
 	addResize: function(callback) {
 		this.resize.push(callback);
 	},
+	/**
+	 * Removes a callback from the resize callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
 	removeResize: function(callback) {
 		var indx = this.resize.indexOf(callback);
 		if (indx >= 1) {
@@ -1619,7 +2374,18 @@ Grape2D.InputManager.prototype = {
 	}
 
 };
-
+/**
+ * This function creates a callback function to be
+ *   called when an event occurs.
+ *
+ * @param  {!Grape2D.Renderer} binding Renderer where the input
+ *   manager is bound.
+ * @param  {!Array.<Function>} stck List of references to an input
+ *   manager callback stack.
+ * @return {!Function} Callback to an event.
+ * @protected
+ * @static
+ */
 Grape2D.InputManager.bindFn = function(binding, stck) {
 	var fn = function(ev) {
 		var i = 0,
@@ -1631,25 +2397,49 @@ Grape2D.InputManager.bindFn = function(binding, stck) {
 
 	return fn;
 };
-
+/**
+ * Registry of non-spcific events.
+ *
+ * @type {!Object}
+ * @private
+ * @static
+ */
 Grape2D.InputManager.globalRegistry = {
 	keyDown: {},
 	keyUp: {},
 	keyPress: {}
 };/**
- * Event.
+ * Costum event.
  *
- * @param  {Event} ev The DOM event.
- * @param  {Grape2D.Renderer} bind Renderer where the event happened.
+ * @param  {!Event} ev The DOM event.
+ * @param  {!Grape2D.Renderer} bind Renderer where the event happened.
  * @constructor
  */
 Grape2D.InputManagerEvent = function(bind, ev) {
+	/**
+	 * Raw event.
+	 *
+	 * @type {!Event}
+	 * @private
+	 */
 	this.raw = ev;
+	/**
+	 * Place where the event was fired.
+	 *
+	 * @type {!Grape2D.Renderer}
+	 * @private
+	 */
 	this.bind = bind
 };
 
 Grape2D.InputManagerEvent.prototype = {
 	constructor: Grape2D.InputManagerEvent,
+	/**
+	 * Gets the raw event.
+	 *
+	 * @return {!Event} The event fired.
+	 * @public
+	 */
 	getRaw: function() {
 		return this.raw;
 	}
@@ -1658,43 +2448,44 @@ Grape2D.InputManagerEvent.prototype = {
  *   A camera doesn't rotate or scale objects in the x and y axis,
  *   only the coordinates are changed to the transformation defined.
  *
- * @param {Grape2D.Vector} options.scale - The scale to be applied. There
+ * @param {!Object=} options Setup options.
+ * @param {!Grape2D.Vector=} options.scale The scale to be applied. There
  *		are two ways to define the scale. This method is one, the other
  *		is defined it directly in the transformation. If the two are set,
  *		then the two are applied.
- * @param {Grape2D.Vector} options.lookAt - Defines the (center) position,
+ * @param {!Grape2D.Vector=} options.lookAt Defines the (center) position,
  *		to where the camera is looking at.
- * @param {Grape2D.Matrix} options.transformation - Transformation matrix
+ * @param {!Grape2D.Matrix=} options.transformation Transformation matrix
  *		to be applied to the object coordinates.
- *
  * @constructor
  */
-Grape2D.Camera = function (options) {
+Grape2D.Camera = function(options) {
+	options = options || {};
 	/**
 	 * Scale relative to the camera initialization.
 	 *
-	 * @type {Grape2D.Vector}
+	 * @type {!Grape2D.Vector}
 	 * @private
 	 */
 	this.rscale = new Grape2D.Vector(1, 1);
 	/**
 	 * Scale set by the user, should be defined in the matrix.
 	 *
-	 * @type {Grape2D.Vector}
+	 * @type {!Grape2D.Vector}
 	 * @private
 	 */
 	this.scale = options.scale || new Grape2D.Vector(1, 1);
 	/**
 	 * The position to where the camera is looking at.
 	 *
-	 * @type {Grape2D.Vector}
+	 * @type {!Grape2D.Vector}
 	 * @private
 	 */
 	this.lookAt = options.lookAt || new Grape2D.Vector();
 	/**
 	 * The transformation matrix to aply to the object coordinates.
 	 *
-	 * @type {Grape2D.Matrix}
+	 * @type {!Grape2D.Matrix}
 	 * @private
 	 */
 	this.transformation = options.transformation || new Grape2D.Matrix();
@@ -1702,14 +2493,14 @@ Grape2D.Camera = function (options) {
 	/**
 	 * Computed matrix
 	 *
-	 * @type {Grape2D.Matrix}
+	 * @type {!Grape2D.Matrix}
 	 * @private
 	 */
 	this.cM = new Grape2D.Matrix();
 	/**
 	 * Inverse of the computed matrix
 	 *
-	 * @type {Grape2D.Matrix}
+	 * @type {!Grape2D.Matrix}
 	 * @private
 	 */
 	this.icM = new Grape2D.Matrix();
@@ -1723,7 +2514,7 @@ Grape2D.Camera.prototype = {
 	 *
 	 * @protected
 	 */
-	computeMatrix: function () {
+	computeMatrix: function() {
 		this.cM = this.transformation.clone();
 		//This operations should work fine, and it avoids a multiplication
 		//between the _cM matrix and a vector when converting coordinates
@@ -1742,13 +2533,12 @@ Grape2D.Camera.prototype = {
 	 * System (WCS), to get a vector in the Viewport (Renderer) Coordinate
 	 * System (VSC).
 	 *
-	 * @param  {Grape2D.Renderer} renderer - The viewport.
-	 * @param  {Grape2D.Vector} vector - Vector in the WCS.
-	 *
-	 * @return {Grape2D.Vector} A vector in the VCS
+	 * @param  {!Grape2D.Renderer} renderer The viewport.
+	 * @param  {!Grape2D.Vector} vector Vector in the WCS.
+	 * @return {!Grape2D.Vector} A vector in the VCS
 	 * @public
 	 */
-	wcsToViewport: function (renderer, vector) {
+	wcsToViewport: function(renderer, vector) {
 		var v = this.cM.multiplyByVector(vector.clone().sub(this.lookAt));
 
 		v.x += renderer.getHalfWidth();
@@ -1760,13 +2550,12 @@ Grape2D.Camera.prototype = {
 	 * Applies the transformation, on a vector in the Viewport Coordinate
 	 * System (VCS), to get a vector in the World Coordinate System (WSC).
 	 *
-	 * @param  {Grape2D.Renderer} renderer - The viewport.
-	 * @param  {Grape2D.Vector} vector - Vector in the VCS.
-	 *
-	 * @return {Grape2D.Vector} A vector in the WCS
+	 * @param  {!Grape2D.Renderer} renderer The viewport.
+	 * @param  {!Grape2D.Vector} vector Vector in the VCS.
+	 * @return {!Grape2D.Vector} A vector in the WCS
 	 * @public
 	 */
-	viewportToWcs: function (renderer, vector) {
+	viewportToWcs: function(renderer, vector) {
 		var v = vector.clone();
 
 		v.x -= renderer.getHalfWidth();
@@ -1779,10 +2568,10 @@ Grape2D.Camera.prototype = {
 	/**
 	 * Sets a new scale.
 	 *
-	 * @param  {Grape2D.Vector} scale - The new scale.
+	 * @param  {!Grape2D.Vector} scale The new scale.
 	 * @public
 	 */
-	rescale: function (scale) {
+	rescale: function(scale) {
 		this.rscale.x = scale.x / this.scale.x;
 		this.rscale.y = scale.y / this.scale.y;
 		this.computeMatrix();
@@ -1790,42 +2579,41 @@ Grape2D.Camera.prototype = {
 	/**
 	 * Sets the center position to where the camera is looking at.
 	 *
-	 * @param  {Grape2D.Vector} position - The new look at.
+	 * @param  {!Grape2D.Vector} position The new look at.
 	 * @public
 	 */
-	setLookAt: function (position) {
+	setLookAt: function(position) {
 		this.lookAt.set(position);
 	},
 	/**
 	 * Gets the look at property.
 	 *
-	 * @return {Grape2D.Vector} The look at.
+	 * @return {!Grape2D.Vector} The look at.
 	 */
-	getLookAt: function () {
+	getLookAt: function() {
 		return this.lookAt;
 	},
 	/**
 	 * Gets the current scale. Scale defined in the transformation is
 	 * not taken into account.
 	 *
-	 * @return {Grape2D.Vector} Scale
+	 * @return {!Grape2D.Vector} Scale
 	 */
-	getScale: function () {
+	getScale: function() {
 		return this.scale;
 	},
 	/**
-	 * Creates a shape, based on the camera transformation and 
+	 * Creates a shape, based on the camera transformation and
 	 *   renderer properties.
 	 *
-	 * @param  {Grape2D.Renderer} renderer The renderer.
-	 *
-	 * @return {Grape2D.Shape} A bounding volume representing the 
+	 * @param  {!Grape2D.Renderer} renderer The renderer.
+	 * @return {!Grape2D.Shape} A bounding volume representing the
 	 *   camera view region.
 	 */
-	computeShape: function (renderer) {
+	computeShape: function(renderer) {
 		var pos = new Grape2D.Vector().set(this.lookAt),
-			w = renderer.getWidth()/this.scale.x,
-			h = renderer.getHeight()/this.scale.y;
+			w = renderer.getWidth() / this.scale.x,
+			h = renderer.getHeight() / this.scale.y;
 
 		return new Grape2D.AABB({
 			position: pos,
@@ -1834,10 +2622,12 @@ Grape2D.Camera.prototype = {
 		});
 	}
 };/**
- * [ description]
+ * An aliasing camera avoid drawing objects in "half-points",
+ *   for example an object to be drawn in the viewport at
+ *   x=0.5 this camera will draw the object at floor(x).
  *
- * @param  {[type]} options [description]
- *
+ * @param  {!Object} options Setup options. See {@link Grape2D.Camera}
+ *   constructor for more details.
  * @extends {Grape2D.Camera}
  * @constructor
  */
@@ -1851,17 +2641,17 @@ Grape2D.AliasingCamera.prototype = Object.create(Grape2D.Camera.prototype);
  *   {@link Grape2D.Camera.wcsToViewport} to avoid anti-aliasing by
  *   the renderer. However this method is more specific for the
  *   {@link Grape2D.CanvasRenderer}.
+ *   
  * @override
  */
 Grape2D.AliasingCamera.prototype.wcsToViewport = function(renderer, vector){
 	return Grape2D.Camera.prototype.wcsToViewport.call(this, renderer, vector).use(Grape2D.Math.floor);
 };/**
- * @classdesc Map describes the structure that holds the objects of a scene.
- *            It's an interface, so all implementation details should be
- *            described in higher level classes.
+ * Map describes the structure that holds the objects of a scene.
+ *   It's an interface, so all implementation details should be
+ *   described in higher level classes.
  *
  * @interface
- * @class
  */
 Grape2D.Map = function(){};
 
@@ -1870,36 +2660,30 @@ Grape2D.Map.prototype = {
 	/**
 	 * Adds an object to the map.
 	 *
-	 * @param  {Grape2D.Object2D} obj2d - The object to e added.
-	 *
+	 * @param  {!Grape2D.Object2D} obj2d - The object to e added.
 	 * @public
 	 */
 	add: function(obj2d){},
 	/**
 	 * Removes an object from the map.
 	 *
-	 * @param  {Grape2D.Object2D} obj2d - The object to remove.
-	 *
+	 * @param  {!Grape2D.Object2D} obj2d - The object to remove.
 	 * @public
 	 */
 	remove: function(obj2d){},
 	/**
 	 * Query the shape region, in this map.
 	 *
-	 * @param  {Grape2D.Shape} shape - The shape to query.
-	 *
-	 * @return {Array.<Grape2D.Object2D>} All the objects inside the shape.
-	 *
+	 * @param  {!Grape2D.Shape} shape - The shape to query.
+	 * @return {!Array.<Grape2D.Object2D>} All the objects inside the shape.
 	 * @public
 	 */
 	query: function(shape){},
 	/**
 	 * Query the point in this map.
 	 *
-	 * @param  {Grape2D.Vector} vector - The vector to query.
-	 *
-	 * @return {Array.<Grape2D.Object2D>} All objects that contains the point.
-	 *
+	 * @param  {!Grape2D.Vector} vector - The vector to query.
+	 * @return {!Array.<Grape2D.Object2D>} All objects that contains the point.
 	 * @public
 	 */
 	queryPoint: function(vector){},
@@ -1912,9 +2696,8 @@ Grape2D.Map.prototype = {
 	/**
 	 * Updates all the objects of the map.
 	 *
-	 * @param  {number} dt - Time elapsed.
-	 * @param  {Grape2D.Scene} scene - The scene, that the map represents.
-	 *
+	 * @param  {!number} dt - Time elapsed.
+	 * @param  {!Grape2D.Scene} scene - The scene, that the map represents.
 	 * @public
 	 */
 	update: function(dt, scene){}
@@ -1928,7 +2711,9 @@ Grape2D.Map.prototype = {
 Grape2D.SimpleMap = function () {
 	/**
 	 * Objects of the map.
-	 * @private {Array.<Grape2D.Object2D>}
+	 * 
+	 * @type {!Array.<Grape2D.Object2D>}
+	 * @private
 	 */
 	this.objs = [];
 };
@@ -1975,8 +2760,8 @@ Grape2D.SimpleMap.prototype.update = function (dt, scene) {
 		this.objs[i].update(dt, scene);
 	}
 };/**
- * Collides objects, and returns just if they're colliding, giving
- *   no other information.
+ * Collides objects, and returns just if they're colliding, returning
+ *   only a bollean giving no other information about the collision.
  *
  * @interface
  */
@@ -1987,109 +2772,109 @@ Grape2D.CollisionChecker.prototype = {
 	/**
 	 * Collides an AABB against another AABB.
 	 *
-	 * @param  {Grape2D.AABB} aabb1 An AABB.
-	 * @param  {Grape2D.AABB} aabb2 The other AABB.
-	 *
-	 * @return {boolean} True if they're colliding.
+	 * @param  {!Grape2D.AABB} aabb1 An AABB.
+	 * @param  {!Grape2D.AABB} aabb2 The other AABB.
+	 * @return {!boolean} True if they're colliding.
+	 * @public
 	 */
 	aabbVsAabb: function(aabb1, aabb2) {},
 	/**
 	 * Collides an AABB against a Circle.
 	 *
-	 * @param  {Grape2D.AABB} aabb An AABB.
-	 * @param  {Grape2D.Circle} circle A circle.
-	 *
-	 * @return {boolean} True if they're colliding.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @return {!boolean} True if they're colliding.
+	 * @public
 	 */
 	aabbVsCircle: function(aabb, circle) {},
 	/**
 	 * Collides an AABB against a Polygon.
 	 *
-	 * @param  {Grape2D.AABB} aabb An AABB.
-	 * @param  {Grape2D.Polygon} polygon A polygon.
-	 *
-	 * @return {boolean} True if they're colliding.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @return {!boolean} True if they're colliding.
+	 * @public
 	 */
 	aabbVsPolygon: function(aabb, polygon) {},
 	/**
 	 * Checks if a point is inside an AABB.
 	 *
-	 * @param  {Grape2D.AABB} aabb An AABB.
-	 * @param  {Grape2D.Vector} point A point.
-	 *
-	 * @return {boolean} True if the point is inside the AABB.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @param  {!Grape2D.Vector} point A point.
+	 * @return {!boolean} True if the point is inside the AABB.
+	 * @public
 	 */
 	aabbVsPoint: function(aabb, point) {},
 	/**
 	 * Collides a Circle against an AABB.
 	 *
-	 * @param  {Grape2D.Circle} circle A circle.
-	 * @param  {Grape2D.AABB} aabb An AABB.
-	 *
-	 * @return {boolean} True if they're colliding.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @return {!boolean} True if they're colliding.
+	 * @public
 	 */
 	circleVsAabb: function(circle, aabb) {},
 	/**
 	 * Collides a Circle against another Circle.
 	 *
-	 * @param  {Grape2D.Circle} circle1 A circle.
-	 * @param  {Grape2D.Circle} circle2 Another cicle.
-	 *
-	 * @return {boolean} True if they're colliding.
+	 * @param  {!Grape2D.Circle} circle1 A circle.
+	 * @param  {!Grape2D.Circle} circle2 Another cicle.
+	 * @return {!boolean} True if they're colliding.
+	 * @public
 	 */
 	circleVsCircle: function(circle1, circle2) {},
 	/**
 	 * Collides a Circle against a polygon.
 	 *
-	 * @param  {Grape2D.Circle} circle A circle.
-	 * @param  {Grape2D.Polygon} polygon A polygon.
-	 *
-	 * @return {boolean} True if they're colliding.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @return {!boolean} True if they're colliding.
+	 * @public
 	 */
 	circleVsPolygon: function(circle, polygon) {},
 	/**
 	 * Checks if a point is inside an Circle.
 	 *
-	 * @param  {Grape2D.Circle} circle A circle.
-	 * @param  {Grape2D.Vector} point A point.
-	 *
-	 * @return {boolean} True if the point is inside the circle.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @param  {!Grape2D.Vector} point A point.
+	 * @return {!boolean} True if the point is inside the circle.
+	 * @public
 	 */
 	circleVsPoint: function(circle, point) {},
 	/**
 	 * Collides a Polygon against an AABB.
 	 *
-	 * @param  {Grape2D.Polygon} polygon A polygon.
-	 * @param  {Grape2D.AABB} aabb An AABB.
-	 *
-	 * @return {boolean} True if they're colliding.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @return {!boolean} True if they're colliding.
+	 * @public
 	 */
 	polygonVsAabb: function(polygon, aabb) {},
 	/**
 	 * Collides a Polygon against a circle.
 	 *
-	 * @param  {Grape2D.Polygon} polygon A polygon.
-	 * @param  {Grape2D.Circle} circle A circle.
-	 *
-	 * @return {boolean} True if they're colliding.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @return {!boolean} True if they're colliding.
+	 * @public
 	 */
 	polygonVsCircle: function(polygon, circle) {},
 	/**
 	 * Collides a Polygon against another Polygon.
 	 *
-	 * @param  {Grape2D.Polygon} polygon1 A polygon.
-	 * @param  {Grape2D.Polygon} polygon2 A polygon.
-	 *
-	 * @return {boolean} True if they're colliding.
+	 * @param  {!Grape2D.Polygon} polygon1 A polygon.
+	 * @param  {!Grape2D.Polygon} polygon2 A polygon.
+	 * @return {!boolean} True if they're colliding.
+	 * @public
 	 */
 	polygonVsPolygon: function(polygon1, polygon2) {},
 	/**
 	 * Checks if a point is inside a polygon.
 	 *
-	 * @param  {Grape2D.Polygon} polygon A polygon.
-	 * @param  {Grape2D.Vector} point A point.
-	 *
-	 * @return {boolean} True if the point is inside the polygon.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @param  {!Grape2D.Vector} point A point.
+	 * @return {!boolean} True if the point is inside the polygon.
+	 * @public
 	 */
 	polygonVsPoint: function(polygon, point) {}
 
@@ -2211,6 +2996,7 @@ Grape2D.GenericCollisionChecker.prototype.polygonVsPoint = function(polygon, poi
 };/**
  * Concrete collision checker, that implements the SAT algorithm.
  *
+ *
  * @extends {Grape2D.GenericCollisionChecker}
  * @constructor
  */
@@ -2241,6 +3027,14 @@ Grape2D.SATCollisionChecker.prototype.polygonVsPolygon = function(polygon1, poly
 	}
 	return true;
 };
+/**
+ * Computes the axis of a polygon.
+ *
+ * @param  {!Grape2D.Polygon} polygon Polygon to compute the axis.
+ * @return {!Array.<!Grape2D.Vector>} Array of vectors with the direction of
+ *   the axis, perpendicular to the side, and normalized.
+ * @public
+ */
 Grape2D.SATCollisionChecker.prototype.computeAxis = function(polygon) {
 	var res = [],
 		list = polygon.getVertexList(),
@@ -2251,6 +3045,15 @@ Grape2D.SATCollisionChecker.prototype.computeAxis = function(polygon) {
 	}
 	return res;
 };
+/**
+ * Select the unique axis in a list.
+ *
+ * @param  {!Array.<!Grape2D.Vector>} listA A list of axis.
+ * @param  {!Array.<!Grape2D.Vector>} listB A list of axis.
+ * @return {!Array.<!Grape2D.Vector>} All different axis that are in both
+ *   params.
+ * @public
+ */
 Grape2D.SATCollisionChecker.prototype.selectAxis = function(listA, listB) {
 	var res = [],
 		e;
@@ -2272,12 +3075,14 @@ Grape2D.SATCollisionChecker.prototype.selectAxis = function(listA, listB) {
 	return res;
 };
 /**
- * [ description]
+ * Compute the interval that a set of vertexes represent, in an axis.
  *
- * @param  {Array.<Grape2D.Vector>} vertexList [description]
- * @param  {Array.<Grape2D.Vector>} axis [description]
- *
- * @return {[type]} [description]
+ * @param  {!Array.<!Grape2D.Vector>} vertexList List of vertexes.
+ * @param  {!Array.<!Grape2D.Vector>} axis Axis to receive the
+ *   projection of the vertexes.
+ * @return {!Object} An object with the properties <code>min</code> and
+ *   <code>max</code>
+ * @public
  */
 Grape2D.SATCollisionChecker.prototype.computeIntervals = function(vertexList, axis) {
 	var intrvByAxis = [],
@@ -2311,7 +3116,13 @@ Grape2D.SATCollisionChecker.prototype.computeIntervals = function(vertexList, ax
 	}
 	return intrvByAxis;
 };
-
+/**
+ * Cache of the predefined set of AABB axis.
+ *
+ * @type {!Array.<Grape2D.Vector>}
+ * @private
+ * @static
+ */
 Grape2D.SATCollisionChecker.aabbAxis = [new Grape2D.Vector(1, 0), new Grape2D.Vector(0, 1)];/**
  * Dispatch the collisions, providing a simple interface.
  *
@@ -2321,52 +3132,177 @@ Grape2D.CollisionDispatcher = {
 	/**
 	 * Collides an AABB against another AABB.
 	 *
-	 * @param  {Grape2D.CollisionChecker} cchecker Checker of the collision.
-	 * @param  {Grape2D.AABB} aabb1 An AABB.
-	 * @param  {Grape2D.AABB} aabb2 Another AABB.
-	 * @return {boolean} Result of the collision.
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.AABB} aabb1 An AABB.
+	 * @param  {!Grape2D.AABB} aabb2 Another AABB.
+	 * @return {!boolean} Result of the collision.
 	 * @static
 	 * @private
 	 */
 	aabbVsAabb: function(cchecker, aabb1, aabb2) {
 		return cchecker.aabbVsAabb(aabb1, aabb2);
 	},
+	/**
+	 * Collides an AABB against a Circle.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @return {!boolean} Result of the collision.
+	 * @static
+	 * @private
+	 */
 	aabbVsCircle: function(cchecker, aabb, circle) {
 		return cchecker.aabbVsCircle(aabb, circle);
 	},
+	/**
+	 * Collides an AABB against a Polygon.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @return {!boolean} Result of the collision.
+	 * @static
+	 * @private
+	 */
 	aabbVsPolygon: function(cchecker, aabb, polygon) {
 		return cchecker.aabbVsPolygon(aabb, polygon);
 	},
+	/**
+	 * Checks if a point is inside an AABB.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @param  {!Grape2D.Vector} point A point.
+	 * @return {!boolean} True if inside.
+	 * @static
+	 * @private
+	 */
 	aabbVsPoint: function(cchecker, aabb, point) {
 		return cchecker.aabbVsPoint(aabb, point);
 	},
-
+	/**
+	 * Collides a Circle against an AABB.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @return {!boolean} Result of the collision.
+	 * @static
+	 * @private
+	 */
 	circleVsAabb: function(cchecker, circle, aabb) {
 		return cchecker.circleVsAabb(circle, aabb);
 	},
+	/**
+	 * Collides a Circle against another Circle.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Circle} circle1 A circle.
+	 * @param  {!Grape2D.Circle} circle2 A circle.
+	 * @return {!boolean} Result of the collision.
+	 * @static
+	 * @private
+	 */
 	circleVsCircle: function(cchecker, circle1, circle2) {
 		return cchecker.circleVsCircle(circle1, circle2);
 	},
+	/**
+	 * Collides a circle against a polygon.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @return {!boolean} Result of the collision.
+	 * @static
+	 * @private
+	 */
 	circleVsPolygon: function(cchecker, circle, polygon) {
-		return cchecker.aabbVsPolygon(circle, polygon);
+		return cchecker.circleVsPolygon(circle, polygon);
 	},
+	/**
+	 * Checks if a point is inside a circle.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @param  {!Grape2D.Vector} point A point.
+	 * @return {!boolean} True if inside.
+	 * @static
+	 * @private
+	 */
 	circleVsPoint: function(cchecker, circle, point) {
 		return cchecker.circleVsPoint(circle, point);
 	},
-
+	/**
+	 * Collides a polygon against an AABB.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @return {!boolean} Result of the collision.
+	 * @static
+	 * @private
+	 */
 	polygonVsAabb: function(cchecker, polygon, aabb) {
 		return cchecker.polygonVsAabb(polygon, aabb);
 	},
+	/**
+	 * Collides a polygon against a circle.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @return {!boolean} Result of the collision.
+	 * @static
+	 * @private
+	 */
 	polygonVsCircle: function(cchecker, polygon, circle) {
 		return cchecker.polygonVsCircle(polygon, circle);
 	},
+	/**
+	 * Collides a polygon against another polygon.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Polygon} polygon1 A polygon.
+	 * @param  {!Grape2D.Polygon} polygon2 Another polygon.
+	 * @return {!boolean} Result of the collision.
+	 * @static
+	 * @private
+	 */
 	polygonVsPolygon: function(cchecker, polygon1, polygon2) {
 		return cchecker.polygonVsPolygon(polygon1, polygon2);
 	},
+	/**
+	 * Checks if a point is inside a polygon.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @param  {!Grape2D.Vector} point A point.
+	 * @return {!boolean} True if inside.
+	 * @static
+	 * @private
+	 */
 	polygonVsPoint: function(cchecker, polygon, point) {
-		return cchecker.aabbVsPolygon(polygon, point);
+		return cchecker.polygonVsPoint(polygon, point);
 	},
+	/**
+	 * Object used to dispatch the collision.
+	 *
+	 * @type {!Object}
+	 * @private
+	 * @static
+	 */
 	dcache: {},
+	/**
+	 * Dispatches a collision between two primitives.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker A collision checker.
+	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} a Shape to test.
+	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} b Shape to collide with the first
+	 *   one, or a point to check it it's inside.
+	 * @return {!boolean} Result of the collision.
+	 * @public
+	 */
 	dispatch: function(cchecker, a, b) {
 		return Grape2D.CollisionDispatcher.dcache[a.getStaticType()][b.getStaticType()](cchecker, a, b);
 	}
@@ -2392,7 +3328,7 @@ Grape2D.CollisionDispatcher.dcache = {
 		"Point": Grape2D.CollisionDispatcher.polygonVsPoint
 	}
 }/**
- * Singleton to store the in use collision checker strategy.
+ * Singleton to store the in-use collision checker strategy.
  *
  * @class
  */
@@ -2400,14 +3336,15 @@ Grape2D.CollisionCheckerSingleton = {
 	/**
 	 * Collision checker instance.
 	 *
-	 * @private {Grape2D.CollisionChecker}
+	 * @type {!Grape2D.CollisionChecker}
+	 * @private
 	 * @static
 	 */
-	instance: new Grape2D.GenericCollisionChecker(),
+	instance: new Grape2D.SATCollisionChecker(),
 	/**
 	 * Gets the collision checker instance.
 	 *
-	 * @return {Grape2D.CollisionChecker} The instance.
+	 * @return {!Grape2D.CollisionChecker} The instance.
 	 * @public
 	 * @static
 	 */
@@ -2417,7 +3354,7 @@ Grape2D.CollisionCheckerSingleton = {
 	/**
 	 * Sets the collision checker instance.
 	 *
-	 * @param  {Grape2D.CollisionChecker} instance The new instance.
+	 * @param  {!Grape2D.CollisionChecker} instance The new instance.
 	 * @public
 	 * @static
 	 */
@@ -2429,23 +3366,21 @@ Grape2D.CollisionCheckerSingleton = {
 	 *   <code>shapeA.collide(Grape2D.CollisionCheckerSingleton.getInstance(),
 	 *   shapeB);</code>
 	 *
-	 * @param  {Grape2D.Shape} a Shape
-	 * @param  {Grape2D.Shape} b Another shape
-	 *
-	 * @return {boolean} Result of the collision test.
+	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} a Shape or point
+	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} b Another shape or point
+	 * @return {!boolean} Result of the collision test.
 	 * @public
 	 * @static
 	 */
 	collide: function(a, b){
 		return Grape2D.CollisionDispatcher.dispatch(Grape2D.CollisionCheckerSingleton.instance, a, b);
-	},
-	contains: function(a, p){}
+	}
 };/**
  * A bounding volume hierarchy (BVH) organizes a bounding volumes according
  *   to an hierarchy.
- * @interface
+ *   
  * @extends {Grape2D.Map}
- * @class
+ * @interface
  */
 Grape2D.BVHTree = function(){};
 
@@ -2455,18 +3390,18 @@ Grape2D.BVHTree.prototype = Object.create(Grape2D.Map.prototype);/**
  *
  * @param  {?Array.<Grape2D.Object2D>} objs List with objects. If objects are provided then tree will be build.
  *
- * @constructor
  * @implements {Grape2D.BVHTree}
+ * @constructor
  */
 Grape2D.TopDownBVHTree = function(objs){
 	/**
 	 * Objects of the tree
-	 * @private {Array.<Grape2D.Object2D>}
+	 * @private {!Array.<Grape2D.Object2D>}
 	 */
 	this.objs = objs || [];
 	/**
 	 * The root node of the tree.
-	 * @private {Grape2D.TopDownBVHNode}
+	 * @private {?Grape2D.TopDownBVHNode}
 	 */
 	this.rootNode = null;
 	//builds the tree if needed be.
@@ -2476,7 +3411,11 @@ Grape2D.TopDownBVHTree = function(objs){
 };
 
 Grape2D.TopDownBVHTree.prototype = Object.create(Grape2D.BVHTree.prototype);
-
+/**
+ * (Re)Builds the tree, based on the objects present on the stack.
+ * 
+ * @public
+ */
 Grape2D.TopDownBVHTree.prototype.rebuild = function(){
 	this.rootNode = new Grape2D.TopDownBVHNode(null, this.objs);
 };
@@ -2520,12 +3459,25 @@ Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
 	for(var i=0; i<this.objs.length; i++){
 		this.objs[i].update(dt, scene);
 	}
-};/**
+};
+/**
+ * Maximum depth of the tree.
+ *
+ * @constant {number}
+ * @public
+ */
+Grape2D.TopDownBVHTree.MAX_DEPTH = 50;
+/**
+ * Minimum of objects per leaf.
+ * @constant {number}
+ * @public
+ */
+Grape2D.TopDownBVHTree.DEFAULT_PER_LEAF = 2;/**
  * Node of a top down BVH.
  *
  * @param  {?Grape2D.TopDownBVHNode} parent Parent node, or null, it it's
  *   the root node.
- * @param  {Array.<Grape2D.Object2D>} objects Objects to be added to the
+ * @param  {!Array.<Grape2D.Object2D>} objects Objects to be added to the
  *   node.
  *
  * @constructor
@@ -2533,38 +3485,56 @@ Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
 Grape2D.TopDownBVHNode = function(parent, objects) {
 	/**
 	 * Bounding volume.
-	 * @private {Grape2D.Shape}
+	 *
+	 * @type {!Grape2D.Shape}
+	 * @private
 	 */
-	this.bv = null;
+	this.bv = Grape2D.BVFactorySingleton.getPlaceHolder();
 	/**
 	 * True if it's a leaf (end point of a tree), false if it's a node.
-	 * @private {boolean}
+	 *
+	 * @type {!boolean}
+	 * @private
 	 */
 	this.leaf = false;
 	/**
-	 * Objects of a leaf
-	 * @private {Array.<Grape2D.Object2D>}
+	 * Objects of a leaf.
+	 *
+	 * @type {!Array.<Grape2D.Object2D>}
+	 * @private
 	 */
 	this.objects = [];
 
 	/**
 	 * Parent node.
-	 * @private {?Grape2D.TopDownBVHNode}
+	 *
+	 * @type {?Grape2D.TopDownBVHNode}
+	 * @private
 	 */
 	this.parent = parent;
 	/**
 	 * Left child of a node.
-	 * @private {?Grape2D.TopDownBVHNode}
+	 *
+	 * @type {?Grape2D.TopDownBVHNode}
+	 * @private
 	 */
 	this.left = null;
 	/**
 	 * Right child of a node.
-	 * @private {?Grape2D.TopDownBVHNode}
+	 *
+	 * @type {?Grape2D.TopDownBVHNode}
+	 * @private
 	 */
 	this.right = null;
-
-	this.depth = parent?parent.getDepth()+1:0;
-	//debugger;
+	/**
+	 * Depth of the current node.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.depth = parent ? parent.getDepth() + 1 : 0;
+	//computes what kind of node this is,
+	//and what to do with it.
 	this.compute(objects);
 };
 
@@ -2573,14 +3543,13 @@ Grape2D.TopDownBVHNode.prototype = {
 	/**
 	 * Makes this instance a leaf or a node.
 	 *
-	 * @param  {Array.<Grape2D.Object2D>} objects List of objects to separate
-	 *   through the node.
-	 *
+	 * @param  {!Array.<Grape2D.Object2D>} objects List of objects
+	 *   to separate through the node.
 	 * @public
 	 */
 	compute: function(objects) {
 
-		if (objects.length <= Grape2D.TopDownBVHNode.DEFAULT_PER_LEAF || this.depth >= Grape2D.TopDownBVHNode.MAX_DEPTH) {
+		if (objects.length <= Grape2D.TopDownBVHTree.DEFAULT_PER_LEAF || this.depth >= Grape2D.TopDownBVHTree.MAX_DEPTH) {
 			//this instance will be a leaf
 			this.leaf = true;
 			for (var i = 0; i < objects.length; i++) {
@@ -2603,7 +3572,7 @@ Grape2D.TopDownBVHNode.prototype = {
 	/**
 	 * Checks if it's a leaf
 	 *
-	 * @return {boolean} True if it's a leaf.
+	 * @return {!boolean} True if it's a leaf.
 	 * @public
 	 */
 	isLeaf: function() {
@@ -2612,7 +3581,7 @@ Grape2D.TopDownBVHNode.prototype = {
 	/**
 	 * Gets the bounding volume.
 	 *
-	 * @return {Grape2D.Shape} The bounding volume.
+	 * @return {!Grape2D.Shape} The bounding volume.
 	 * @public
 	 */
 	getBoundingVolume: function() {
@@ -2630,7 +3599,7 @@ Grape2D.TopDownBVHNode.prototype = {
 	/**
 	 * Gets the objects, if it's a leaf.
 	 *
-	 * @return {Array.<Grape2D.Object2D>} List of the objects.
+	 * @return {!Array.<Grape2D.Object2D>} List of the objects.
 	 * @public
 	 */
 	getObjects: function() {
@@ -2656,6 +3625,15 @@ Grape2D.TopDownBVHNode.prototype = {
 	getRight: function() {
 		return this.left;
 	},
+	/**
+	 * Queries a shape or a point to find if it is colliding.
+	 *   If so, returns the {@link Grape2D.Object2D} that are colliding with
+	 *   the shape.
+	 *
+	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} shape Shape of to query.
+	 * @return {!Array.<Grape2D.Object2D>} Objects that are colliding with
+	 *   the shape.
+	 */
 	query: function(shape) {
 		var res = [],
 			i;
@@ -2682,50 +3660,19 @@ Grape2D.TopDownBVHNode.prototype = {
 		}
 		return res;
 	},
-	queryPoint: function(vector) {
-		var res = [],
-			i;
-		if (this.leaf) {
-			for (i = 0; i < this.objects.length; i++) {
-				if (Grape2D.CollisionCheckerSingleton.contains(vector, this.objects[i].getBoundingBox())) {
-					res.push(this.objects[i]);
-				}
-			}
-		} else {
-			if (Grape2D.CollisionCheckerSingleton.contains(vector, this.bv)) {
-				var list = this.left.queryPoint(vector);
-				for (i = 0; i < list.length; i++) {
-					res.push(list[i]);
-				}
-
-				list = this.right.queryPoint(vector);
-				for (i = 0; i < list.length; i++) {
-					res.push(list[i]);
-				}
-
-				return res;
-			} else {
-				return res;
-			}
-		}
-	},
-	getDepth: function(){
+	/**
+	 * Gets the depth of the node, in the context of the tree.
+	 *
+	 * @return {!number} Depth of the node.
+	 */
+	getDepth: function() {
 		return this.depth;
 	}
-};
-
-/**
- * Minimum of objects per leaf.
- * @constant {number}
- */
-Grape2D.TopDownBVHNode.DEFAULT_PER_LEAF = 2;
-
-Grape2D.TopDownBVHNode.MAX_DEPTH = 50;/**
+};/**
  * A BVH Strategy is used to sort and divide objects according to a 
  *   set of rules.
  *
  * @interface
- * @class
  */
 Grape2D.BVHStrategy = function(){};
 Grape2D.BVHStrategy.prototype = {
@@ -2733,10 +3680,9 @@ Grape2D.BVHStrategy.prototype = {
 	/**
 	 * Applies the strategy to the a set of objects.
 	 *
-	 * @param  {Array.<Grape2D.Object2D>} objects List of objects to
+	 * @param  {!Array.<Grape2D.Object2D>} objects List of objects to
 	 *   separate.
-	 *
-	 * @return {Object} An object with left and right properties,
+	 * @return {!Object} An object with left and right properties,
 	 *   each property is an array, that contains {@link Grape2D.Object2D}
 	 *   or are empty.
 	 * @public
@@ -2746,10 +3692,11 @@ Grape2D.BVHStrategy.prototype = {
  * The median cut algorithm splits the set in two equal parts, along the
  *   selected axis. It creates a more balanced tree. However unbalanced
  *   trees perform better.
+ *
  * @implements {Grape2D.BVHStrategy}
  * @constructor
  */
-Grape2D.MedianCutBVHStrategy = function () {};
+Grape2D.MedianCutBVHStrategy = function() {};
 
 Grape2D.MedianCutBVHStrategy.prototype = Object.create(Grape2D.BVHStrategy.prototype);
 
@@ -2762,11 +3709,11 @@ Grape2D.MedianCutBVHStrategy.prototype = Object.create(Grape2D.BVHStrategy.proto
  * <li> Objects at the left of the axis will be places at the left side,
  *   the others at the right side.
  * <ol>
- * Heuristic described by Gino van den Bergen (gino@dtecta.com), from his GDC conference titled "Physics for Game Programmers:
-Spatial Data Structures".
+ * Heuristic described by Gino van den Bergen (gino@dtecta.com), from his GDC
+ *   conference titled "Physics for Game Programmers: Spatial Data Structures".
  * @override
  */
-Grape2D.MedianCutBVHStrategy.prototype.solve = function (objects) {
+Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 	var result = {
 		left: [],
 		right: []
@@ -2780,41 +3727,41 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function (objects) {
 		temp;
 
 
-	for(var i=0; i<objects.length; i++){
+	for (var i = 0; i < objects.length; i++) {
 		temp = objects[i].getBoundingBoxPosition();
-		if(minX>temp.getX()){
+		if (minX > temp.getX()) {
 			minX = temp.getX();
 		}
-		if(maxX<temp.getX()){
+		if (maxX < temp.getX()) {
 			maxX = temp.getX();
 		}
-		if(minY>temp.getY()){
+		if (minY > temp.getY()) {
 			minY = temp.getY();
 		}
-		if(maxY<temp.getY()){
+		if (maxY < temp.getY()) {
 			maxY = temp.getY();
 		}
 	}
 
-	if( (minX+maxX)>=(minY+maxY) ){
-		axis = (maxX+minX)/2;
+	if ((minX + maxX) >= (minY + maxY)) {
+		axis = (maxX + minX) / 2;
 
-		for(i=0; i<objects.length; i++){
+		for (i = 0; i < objects.length; i++) {
 			temp = objects[i].getBoundingBoxPosition();
-			if(temp.getX()>axis){
+			if (temp.getX() > axis) {
 				result.right.push(objects[i]);
-			}else{
+			} else {
 				result.left.push(objects[i]);
 			}
 		}
-	}else{
-		axis = (maxY+minY)/2;
+	} else {
+		axis = (maxY + minY) / 2;
 
-		for(i=0; i<objects.length; i++){
+		for (i = 0; i < objects.length; i++) {
 			temp = objects[i].getBoundingBoxPosition();
-			if(temp.getY()>axis){
+			if (temp.getY() > axis) {
 				result.right.push(objects[i]);
-			}else{
+			} else {
 				result.left.push(objects[i]);
 			}
 		}
@@ -2827,14 +3774,16 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function (objects) {
  */
 Grape2D.BVHStrategySingleton = {
 	/**
-	 * Strategy.
-	 * @private {Grape2D.BVHStrategy}
+	 * Strategy in use.
+	 * 
+	 * @private {!Grape2D.BVHStrategy}
 	 * @static
 	 */
 	strategy: new Grape2D.MedianCutBVHStrategy(),
 	/**
 	 * Sets a strategy.
-	 * @param  {Grape2D.BVHStrategy} strategy The new strategy.
+	 * 
+	 * @param  {!Grape2D.BVHStrategy} strategy The new strategy.
 	 * @static
 	 * @public
 	 */
@@ -2843,7 +3792,8 @@ Grape2D.BVHStrategySingleton = {
 	},
 	/**
 	 * Gets the strategy.
-	 * @return {Grape2D.BVHStrategy} The strategy
+	 * 
+	 * @return {!Grape2D.BVHStrategy} The strategy
 	 * @static
 	 * @public
 	 */
@@ -2852,7 +3802,7 @@ Grape2D.BVHStrategySingleton = {
 	}
 };/**
  * Creates bounding volumes based in an input object.
- * @class
+ * 
  * @interface
  */
 Grape2D.BVFactory = function() {};
@@ -2861,29 +3811,52 @@ Grape2D.BVFactory.prototype = {
 	constructor: Grape2D.BVFactory,
 	/**
 	 * Creates a shape, based on the type set, from an {@link Grape2D.AABB}.
-	 * @param  {Grape2D.AABB} aabb The object.
-	 * @return {Grape2D.Shape} Shape based on the type.
+	 * 
+	 * @param  {!Grape2D.AABB} aabb The object.
+	 * @return {!Grape2D.Shape} Shape based on the type of the factory.
 	 * @public
 	 */
 	createFromAABB: function(aabb) {},
 	/**
 	 * Creates a shape, based on the type set, from an {@link Grape2D.Circle}.
-	 * @param  {Grape2D.Circle} circle The object.
-	 * @return {Grape2D.Shape} Shape based on the type.
+	 * 
+	 * @param  {!Grape2D.Circle} circle The object.
+	 * @return {!Grape2D.Shape} Shape based on the type of the factory.
 	 * @public
 	 */
 	createFromCircle: function(circle) {},
 	/**
 	 * Creates a shape, based on the type set, from an {@link Grape2D.Polygon}.
-	 * @param  {Grape2D.Polygon} polygon The object.
-	 * @return {Grape2D.Shape} Shape based on the type.
+	 * 
+	 * @param  {!Grape2D.Polygon} polygon The object.
+	 * @return {!Grape2D.Shape} Shape based on the type of the factory.
 	 * @public
 	 */
 	createFromPolygon: function(polygon) {},
-
-	createSceneBV: function(renderer, camera) {}
+	/**
+	 * Creates a shape for a scene, based on the renderer and the camera
+	 *   being used.
+	 *
+	 * @param  {!Grape2D.Renderer} renderer Renderer to where the scene
+	 *   will be rendered.
+	 * @param  {!Grape2D.Camera} camera Camera that is capturing the scene.
+	 * @return {!Grape2D.Shape} Shape based on the type of the factory.
+	 * @public
+	 */
+	createSceneBV: function(renderer, camera) {},
+	/**
+	 * Returns a place holder shape, of the type of the factory.
+	 *   It should only be used to avoid using <code>null</code> to represent
+	 *   bounding volumes temporarily. Shouldn't create a new instance every
+	 *   time this method is called.
+	 *
+	 * @return {!Grape2D.Shape} A shape has a place holder.
+	 * @public
+	 */
+	getPlaceHolder: function(){}
 };/**
  * Creates bounding volumes based in an input object.
+ *
  * @implements {Grape2D.BVFactory}
  * @constructor
  */
@@ -2944,15 +3917,24 @@ Grape2D.AabbBVFactory.prototype.createFromPolygon = function(polygon) {
 		height: y
 	});
 };
-
+/**
+ * @override
+ */
 Grape2D.AabbBVFactory.prototype.createSceneBV = function(renderer, camera) {
 	return new Grape2D.AABB({
 		position: camera.getLookAt(),
-		width: renderer.getWidth()/camera.getScale().getX(),
-		height: renderer.getHeight()/camera.getScale().getY()
+		width: renderer.getWidth() / camera.getScale().getX(),
+		height: renderer.getHeight() / camera.getScale().getY()
 	});
 };
-
+/**
+ * Merge two AABBs into one, so that the one created bounds
+ *   the other two.
+ *
+ * @param  {!Grape2D.AABB} aabb1 An AABB.
+ * @param  {!Grape2D.AABB} aabb2 Another AABB.
+ * @return {!Grape2D.AABB} An AABB that bounds the other two.
+ */
 Grape2D.AabbBVFactory.prototype.merge = function(aabb1, aabb2) {
 	//bdebugger;
 	var dx = aabb2.getPosition().getX() - aabb1.getPosition().getX(),
@@ -2991,7 +3973,24 @@ Grape2D.AabbBVFactory.prototype.merge = function(aabb1, aabb2) {
 		height: h,
 		position: position
 	});
-};/**
+};
+/**
+ * @override
+ */
+Grape2D.AabbBVFactory.prototype.getPlaceHolder = function() {
+	return Grape2D.AabbBVFactory.PLACE_HOLDER;
+};
+/**
+ * Static palce holder for {@link Grape2D.AabbBVFactory.getPlaceHolder}
+ *
+ * @type {Grape2D.AABB}
+ * @private
+ * @static
+ */
+Grape2D.AabbBVFactory.PLACE_HOLDER = new Grape2D.AABB({
+	width: 0,
+	height: 0
+});/**
  * Holds the current bounding volume factory {@link Grape2D.BVFactory}
  *
  * @class
@@ -2999,13 +3998,15 @@ Grape2D.AabbBVFactory.prototype.merge = function(aabb1, aabb2) {
 Grape2D.BVFactorySingleton = {
 	/**
 	 * Factory being used.
-	 * @private {Grape2D.BVFactory}
+	 * 
+	 * @private {!Grape2D.BVFactory}
 	 * @static
 	 */
 	bvfactory: new Grape2D.AabbBVFactory(),
 	/**
 	 * Gets the factory
-	 * @return {Grape2D.BVFactory} A bounding volume factory instance.
+	 * 
+	 * @return {!Grape2D.BVFactory} A bounding volume factory instance.
 	 * @public
 	 * @static
 	 */
@@ -3014,7 +4015,9 @@ Grape2D.BVFactorySingleton = {
 	},
 	/**
 	 * Sets the factory
-	 * @param  {Grape2D.BVFactory} factory A bounding volume factory instance.
+	 * 
+	 * @param  {!Grape2D.BVFactory} factory A bounding volume factory
+	 *   instance.
 	 * @public
 	 * @static
 	 */
@@ -3023,13 +4026,25 @@ Grape2D.BVFactorySingleton = {
 	},
 	/**
 	 * Sintax sugar for <code>shape.createBV(Grape2D.BVFactorySingleton.getFactory())</code>.
-	 * @param  {Grape2D.Shape} shape Shape to create a bounding volume
-	 * @return {Grape2D.Shape} Bounding volume.
+	 * 
+	 * @param  {!Grape2D.Shape} shape Shape to create a bounding volume
+	 * @return {!Grape2D.Shape} Bounding volume.
 	 * @public
 	 * @static
 	 */
 	create: function(shape){
 		return shape.createBV(Grape2D.BVFactorySingleton.bvfactory);
+	},
+	/**
+	 * Returns a place holder shape, of the type of the factory.
+	 *   It should only be used to avoid using <code>null</code>
+	 *
+	 * @return {!Grape2D.Shape} A shape has a place holder.
+	 * @public
+	 * @static
+	 */
+	getPlaceHolder: function(){
+		return Grape2D.BVFactorySingleton.bvfactory.getPlaceHolder();
 	}
 };/**
  * Describes a texture.
@@ -3043,42 +4058,42 @@ Grape2D.ITexture.prototype = {
 	/**
 	 * Gets the width.
 	 *
-	 * @return {number} Width
+	 * @return {!number} Width
 	 * @public
 	 */
 	getWidth: function() {},
 	/**
 	 * Gets the half width.
 	 *
-	 * @return {number} Half width
+	 * @return {!number} Half width
 	 * @public
 	 */
 	getHalfWidth: function() {},
 	/**
 	 * Sets the width.
 	 *
-	 * @param  {number} width New width.
+	 * @param  {!number} width New width.
 	 * @public
 	 */
 	setWidth: function(width) {},
 	/**
 	 * Gets height.
 	 *
-	 * @return {number} Height.
+	 * @return {!number} Height.
 	 * @public
 	 */
 	getHeight: function() {},
 	/**
 	 * Gets the half height.
 	 *
-	 * @return {number} Half height.
+	 * @return {!number} Half height.
 	 * @public
 	 */
 	getHalfHeight: function() {},
 	/**
 	 * Sets the height.
 	 *
-	 * @param  {number} height New height.
+	 * @param  {!number} height New height.
 	 * @public
 	 */
 	setHeight: function(height) {},
@@ -3096,10 +4111,10 @@ Grape2D.ITexture.prototype = {
  *   a renderer, with high efficiency. The efficiency comes
  *   from the fact that a cached image can be renderer faster.
  *
- * @param {Object=} options Object with the options to instantiate a texture.
- * @param {Image=} options.image Loads a DOM image object to the buffer.
+ * @param {!Object=} options Object with the options to instantiate a texture.
+ * @param {!Image=} options.image Loads a DOM image object to the buffer.
  *		This is the first choice, when providing other options.
- * @param {Grape2D.Texture=} options.useTexture With this method the
+ * @param {!Grape2D.Texture=} options.useTexture With this method the
  *		same buffer is shared by the texture provided.
  *
  * @implements {Grape2D.ITexture}
@@ -3110,28 +4125,28 @@ Grape2D.Texture = function(options) {
 	/**
 	 * The width of the texture.
 	 *
-	 * @type {number}
+	 * @type {!number}
 	 * @private
 	 */
 	this.width = 2;
 	/**
 	 * The half width.
 	 *
-	 * @type {number}
+	 * @type {!number}
 	 * @private
 	 */
 	this.hwidth = 1;
 	/**
 	 * The height.
 	 *
-	 * @type {number}
+	 * @type {!number}
 	 * @private
 	 */
 	this.height = 2;
 	/**
 	 * The half width.
 	 *
-	 * @type {number}
+	 * @type {!number}
 	 * @private
 	 */
 	this.hheight = 1;
@@ -3139,7 +4154,7 @@ Grape2D.Texture = function(options) {
 	/**
 	 * The canvas buffer. It is always a 2D renderer.
 	 *
-	 * @type {Grape2D.CanvasRenderer}
+	 * @type {!Grape2D.CanvasRenderer}
 	 * @private
 	 */
 	this.buffer = new Grape2D.CanvasRenderer();
@@ -3203,7 +4218,7 @@ Grape2D.Texture.prototype.getBuffer = function() {
  * Changes the internal buffer and load an image, with it's
  *   current dimensions. The dimensions.
  *
- * @param  {Image} image - The DOM image object with the image.
+ * @param  {!Image} image The DOM image object with the image.
  *		The image must be loaded. Unexpected results if not.
  * @protected
  */
@@ -3220,18 +4235,15 @@ Grape2D.Texture.prototype.bufferImage = function(image) {
 Grape2D.Texture.prototype.render = function(renderer, position){
 	renderer.renderTexture(this, position);
 };
-
 /**
  * Creates a Texture and loads an image asynchronously.
  *
- * @param  {string} src - The complete path to the image.
- * @param  {Function} callback - A function to be called after the
+ * @param  {!string} src - The complete path to the image.
+ * @param  {!Function} callback - A function to be called after the
  *		onload event of the image.
- *
- * @return {Grape2D.Texture} The texture object, initialy it has
+ * @return {!Grape2D.Texture} The texture object, initialy it has
  *		an empty buffer, the buffer will have the image only after
- *		the image has done loaded
- *
+ *		the image has done loaded.
  * @static
  */
 Grape2D.Texture.createFromImage = function(src, callback) {
@@ -3298,32 +4310,27 @@ Grape2D.VoidTexture.prototype.setHeight = function(height){
 Grape2D.VoidTexture.prototype.render = function(){
 	return;
 };/**
- * @author rui_web@hotmail.com (Rui Gil)
- */
-/**
- * Constructs a new instance of Object2D.
+ * Object2D represents an object of the scene.
+ *   An Object2D is a simple scene object which the main
+ *   purpose is to render a texture at a position. More
+ *   complex behaviors should be implemented by others
+ *   objects that inherit from Object2D.
  *
- * @classdesc Object2D represents an object of the scene.
- *            An Object2D is a simple scene object which the main
- *            purpose is to render a texture at a position. More
- *            complex behaviors should be implemented by others
- *            objects that inherit from Object2D.
- *
- * @param {?Grape2D.Vector} options.position - The position of the shape
- * @param {?boolean} options.visible - True to render the object, false
+ * @param {!Grape2D.Vector=} options.position The position of the shape
+ * @param {!boolean=} options.visible True to render the object, false
  *		otherwise.
- * @param {!Grape2D.Texture} options.texture - The texture of the object.
- * @param {?Grape2D.Vector} options.textureOffset - The offset position
+ * @param {!Grape2D.Texture} options.texture The texture of the object.
+ * @param {!Grape2D.Vector=} options.textureOffset The offset position
  *		of the texture relative to the objects position.
- * @param {!Grape2D.Shape} options.boundingBox - The primary use of the
+ * @param {!Grape2D.Shape} options.boundingBox The primary use of the
  *		bounding box is to select the items to display in the renderer,
  *		other behaviors such as collision detection can be done with
  *		this property, in some simple cases.
- * @param {?Grape2D.Vector} options.boundingBoxOffset - The offset
+ * @param {!Grape2D.Vector=} options.boundingBoxOffset The offset
  *		position of the bounding box relative to the objects position.
- * @param {?boolean} options.castShadow - Used by the IlluminatedRenderer
+ * @param {!boolean=} options.castShadow Used by the IlluminatedRenderer
  *		to render this object shadow.
- * @param {?boolean} options.receiveLight - Used by the IlluminatedRenderer
+ * @param {!boolean=} options.receiveLight Used by the IlluminatedRenderer
  *		to render the objects texture with a light overlay, if set to true.
  *
  * @constructor
@@ -3341,7 +4348,7 @@ Grape2D.Object2D = function (options) {
 	/**
 	 * Visible property.
 	 *
-	 * @type {boolean}
+	 * @type {!boolean}
 	 * @private
 	 */
 	this.visible = options.visible || true;
@@ -3349,21 +4356,21 @@ Grape2D.Object2D = function (options) {
 	/**
 	 * The texture of the object.
 	 *
-	 * @type {Grape2D.Texture}
+	 * @type {!Grape2D.Texture}
 	 * @private
 	 */
 	this.texture = options.texture;
 	/**
 	 * The offset of the texture.
 	 *
-	 * @type {Grape2D.Vector}
+	 * @type {!Grape2D.Vector}
 	 * @private
 	 */
 	this.textureOffset = options.textureOffset || new Grape2D.Vector();
 	/**
 	 * The position of the texture. It is computed from the object's position and the texture offset.
 	 *
-	 * @type {Grape2D.Vector}
+	 * @type {!Grape2D.Vector}
 	 * @private
 	 */
 	this.texturePosition = new Grape2D.Vector();
@@ -3372,14 +4379,14 @@ Grape2D.Object2D = function (options) {
 	/**
 	 * Object's bounding box.
 	 *
-	 * @type {Grape2D.Shape}
+	 * @type {!Grape2D.Shape}
 	 * @private
 	 */
 	this.boundingBox = options.boundingBox;
 	/**
 	 * Bounding box offset.
 	 *
-	 * @type {Grape2D.Vector}
+	 * @type {!Grape2D.Vector}
 	 * @private
 	 */
 	this.boundingBoxOffset = options.boundingBoxOffset || new Grape2D.Vector();
@@ -3389,14 +4396,14 @@ Grape2D.Object2D = function (options) {
 	/**
 	 * Object cast shadow.
 	 *
-	 * @type {boolean}
+	 * @type {!boolean}
 	 * @private
 	 */
 	this.castShadow = options.castShadow || false;
 	/**
 	 * Object can receive light.
 	 *
-	 * @type {boolean}
+	 * @type {!boolean}
 	 * @private
 	 */
 	this.receiveLight = options.receiveLight || false;
@@ -3408,7 +4415,8 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Checks if the object should be rendered.
 	 *
-	 * @return {boolean} True if it can be rendered.
+	 * @return {!boolean} True if it can be rendered.
+	 * @public
 	 */
 	isVisible: function () {
 		return this.visible;
@@ -3416,24 +4424,28 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Sets if an object should be rendered.
 	 *
-	 * @param  {boolean} visible True, so that it renders, false otherwise.
+	 * @param  {!boolean} visible True, so that it renders, false
+	 *   otherwise.
+	 * @public
 	 */
 	setVisible: function (visible) {
 		this.visible = visible;
 		return;
 	},
 	/**
-	 * Gets the material of the object.
+	 * Gets the texture of the object.
 	 *
-	 * @return {Grape2D.Texture} The material of the object.
+	 * @return {!Grape2D.Texture} The texture of the object.
+	 * @public
 	 */
 	getTexture: function () {
 		return this.texture;
 	},
 	/**
-	 * Sets the material of the object.
+	 * Sets the texture of the object.
 	 *
-	 * @param  {Grape2D.Texture} texture The material.
+	 * @param  {!Grape2D.Texture} texture The texture.
+	 * @public
 	 */
 	setTexture: function (texture) {
 		this.texture = texture;
@@ -3442,7 +4454,8 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Gets the bounding box of the object.
 	 *
-	 * @return {Grape2D.Shape} The shape of the object.
+	 * @return {!Grape2D.Shape} The shape of the object.
+	 * @public
 	 */
 	getBoundingBox: function () {
 		return this.boundingBox;
@@ -3452,18 +4465,19 @@ Grape2D.Object2D.prototype = {
 	 * Also, the position of the new bounding box, will be transformed
 	 *   in the default offset of the bounding box.
 	 *
-	 * @param  {Grape2D.Shape} boundingBox The bounding box.
+	 * @param  {!Grape2D.Shape} boundingBox The bounding box.
+	 * @public
 	 */
 	setBoundingBox: function (boundingBox) {
 		this.boundingBox = boundingBox;
-		//this.boundingBoxOffset.set(boundingBox.getPosition());
 		this.computeBoundingBoxPosition();
 		return;
 	},
 	/**
 	 * Checks if the object can cast shadows.
 	 *
-	 * @return {boolean} True if it cast shadows, false otherwise.
+	 * @return {!boolean} True if it cast shadows, false otherwise.
+	 * @public
 	 */
 	canCastShadow: function () {
 		return this.castShadow;
@@ -3471,7 +4485,9 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Sets if an object can cast shadows.
 	 *
-	 * @param  {boolean} castShadow True to cast shadows, false otherwise.
+	 * @param  {!boolean} castShadow True to cast shadows, false
+	 *   otherwise.
+	 * @public
 	 */
 	setCastShadow: function (castShadow) {
 		this.castShadow = castShadow;
@@ -3480,7 +4496,8 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Checks if an object can receive light.
 	 *
-	 * @return {boolean} True if it receives light.
+	 * @return {!boolean} True if it receives light.
+	 * @public
 	 */
 	canReceiveLight: function () {
 		return this.receiveLight;
@@ -3488,16 +4505,19 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Sets if the object can receive light.
 	 *
-	 * @param  {boolean} receiveLight True if it receives light.
+	 * @param  {!boolean} receiveLight True if it receives light.
+	 * @public
 	 */
 	setReceiveLight: function (receiveLight) {
 		this.receiveLight = receiveLight;
 		return;
 	},
 	/**
-	 * Gets the object position. Be careful, because it returns the vector used by the object, and not a copy. Use it wisely.
+	 * Gets the object position. Be careful, because it returns the
+	 *   vector used by the object, and not a copy. Use it wisely.
 	 *
-	 * @return {Grape2D.Vector} The position of the object.
+	 * @return {!Grape2D.Vector} The position of the object.
+	 * @public
 	 */
 	getPosition: function () {
 		return this.position;
@@ -3505,7 +4525,8 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Sets the object position.
 	 *
-	 * @param  {Grape2D.Vector} position The position of the object.
+	 * @param  {!Grape2D.Vector} position The position of the object.
+	 * @public
 	 */
 	setPosition: function (position) {
 		this.position.set(position);
@@ -3515,8 +4536,8 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Sets the texture offset.
 	 *
-	 * @param  {Grape2D.Vector} offset - The offset of the texture, from the object's position.
-	 *
+	 * @param  {!Grape2D.Vector} offset The offset of the texture, from
+	 *   the object's position.
 	 * @public
 	 */
 	setTextureOffset: function (offset) {
@@ -3526,7 +4547,8 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Gets the texture offset
 	 *
-	 * @return {Grape2D.Vector} The texture offset.
+	 * @return {!Grape2D.Vector} The texture offset.
+	 * @public
 	 */
 	getTextureOffset: function () {
 		return this.textureOffset;
@@ -3534,8 +4556,8 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Sets the bounding box offset.
 	 *
-	 * @param  {Grape2D.Vector} offset - The offset of the bounding box, from the object's position.
-	 *
+	 * @param  {!Grape2D.Vector} offset The offset of the bounding
+	 *   box, from the object's position.
 	 * @public
 	 */
 	setBoundingBoxOffset: function (offset) {
@@ -3545,13 +4567,15 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Gets the bounding box offset
 	 *
-	 * @return {Grape2D.Vector} The bounding box offset.
+	 * @return {!Grape2D.Vector} The bounding box offset.
+	 * @public
 	 */
 	getBoundingBoxOffset: function () {
 		return this.boundingBoxOffset;
 	},
 	/**
-	 * Computes the bounding box position, from the object's position and bounding box offset.
+	 * Computes the bounding box position, from the object's position
+	 *   and bounding box offset.
 	 * @protected
 	 */
 	computeBoundingBoxPosition: function () {
@@ -3561,14 +4585,15 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Gets the bounding box position.
 	 *
-	 * @return {Grape2D.Vector} The center position of the bounding box.
+	 * @return {!Grape2D.Vector} The center position of the bounding box.
 	 * @public
 	 */
 	getBoundingBoxPosition: function () {
 		return this.boundingBox.getPosition();
 	},
 	/**
-	 * Computes the texture position of the object, from the object's position and texture offset.
+	 * Computes the texture position of the object, from the object's
+	 *   position and texture offset.
 	 * @protected
 	 */
 	computeTexturePosition: function () {
@@ -3577,7 +4602,7 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Gets the texture position.
 	 *
-	 * @return {Grape2D.Vector} The position of the texture
+	 * @return {!Grape2D.Vector} The position of the texture
 	 * @public
 	 */
 	getTexturePosition: function () {
@@ -3586,41 +4611,41 @@ Grape2D.Object2D.prototype = {
 	/**
 	 * Renders the object to a renderer.
 	 *
-	 * @param  {!Grape2D.Renderer} renderer - The place to render the object.
-	 * @param  {!Grape2D.Camera} camera - The camera, that will transform the positions.
-	 *
+	 * @param  {!Grape2D.Renderer} renderer The place to render the
+	 *   object.
+	 * @param  {!Grape2D.Camera} camera The camera, that will
+	 *   transform the positions.
 	 * @public
 	 */
 	render: function (renderer, camera) {
 		renderer.renderObject2D(this, camera);
 	},
 	/**
-	 * Updates the object.
+	 * Updates the object. This method should be refined in further
+	 *   subclasses if needed be.
 	 *
-	 * @param  {number} dt - Time interval.
-	 * @param  {Grape2D.Scene} scene - Scene where this object is.
-	 *
+	 * @param  {!number} dt Time interval.
+	 * @param  {!Grape2D.Scene} scene Scene where this object is.
 	 * @public
 	 */
 	update: function (dt, scene) {}
 };/**
- * Abstract class to shapes.
- * @classdesc Shape is an abstract class that describes "physical", objects.
- *            The main objective of a Shape is to serve as a bounding box. It
- *            should play the main role when selecting the objects to render,
- *            when it comes to collision detection and/or to detect user
- *            interaction with an object.
+ * Shape is an abstract class that describes "physical", objects.
+ *   The main objective of a Shape is to serve as a bounding box. It
+ *   should play the main role when selecting the objects to render,
+ *   when it comes to collision detection and/or to detect user
+ *   interaction with an object.
  *
- * @param {?Grape2D.Vector} options.position - The position of the shape.
- * 
+ * @param {!Grape2D.Vector=} options.position The position of the shape.
+ *
  * @constructor
  */
-Grape2D.Shape = function (options) {
+Grape2D.Shape = function(options) {
 	options = options || {};
 	/**
 	 * Shape's position.
 	 *
-	 * @type {Grape2D.Vector}
+	 * @type {!Grape2D.Vector}
 	 * @protected
 	 */
 	this.position = options.position || new Grape2D.Vector();
@@ -3631,49 +4656,60 @@ Grape2D.Shape.prototype = {
 	/**
 	 * Gets the position of the object.
 	 *
-	 * @return {Grape2D.Vector} The center position of the shape.
+	 * @return {!Grape2D.Vector} The center position of the shape.
 	 * @public
 	 */
-	getPosition: function(){
+	getPosition: function() {
 		return this.position;
 	},
 	/**
 	 * Set the position of the shape.
 	 *
-	 * @param  {Grape2D.Vector} position - The new position of the shape
-	 *
+	 * @param  {!Grape2D.Vector} position The new position of the shape.
 	 * @public
 	 */
-	setPosition: function(position){
+	setPosition: function(position) {
 		this.position.set(position);
 	},
 	/**
 	 * Renders the wireframe of the shape.
 	 *
-	 * @param  {Grape2D.Vector} renderer - The renderer to render the shape's wireframe.
-	 * @param  {Grape2D.Camera} camera - The camera to transform the positions.
-	 *
+	 * @param  {!Grape2D.Vector} renderer The renderer to render the
+	 *   shape's wireframe.
+	 * @param  {!Grape2D.Camera} camera The camera to transform the
+	 *   positions.
 	 * @public
 	 */
-	render: function (renderer, camera) {},
+	render: function(renderer, camera) {},
 	/**
-	 * Creates a bounding volume, based in this one and in a {@link Grape2D.BVFactory}
+	 * Creates a bounding volume, based in this one and in a
+	 *   {@link Grape2D.BVFactory}.
 	 *
-	 * @param  {Grape2D.BVFactory} bvfactory The bounding volume factory
-	 *
-	 * @return {Grape2D.Shape} The shape created by the {@link Grape2D.BVFactory}
+	 * @param  {!Grape2D.BVFactory} bvfactory The bounding volume
+	 *   factory.
+	 * @return {!Grape2D.Shape} The shape created by the
+	 *   {@link Grape2D.BVFactory}.
+	 * @public
 	 */
-	createBV: function(bvfactory){},
-	getStaticType: function(){}
+	createBV: function(bvfactory) {},
+	/**
+	 * Gets teh static type of the shape. This method must be overriden,
+	 *   for specific shapes.
+	 *
+	 * @return {!string} The type of the shape.
+	 * @public
+	 */
+	getStaticType: function() {}
 };/**
- * Creates a new aabb instance.
- * @classdesc AABB (standing for Axis Align Bounding Box), represent
- *            rectangular shapes.
+ * AABB (standing for Axis Align Bounding Box), represents
+ *   rectangular shapes.
  *
- * @param {?Grape2D.Vector} options.position - The position of the polygon
- * @param {!number} options.width - Width of the AABB.
- * @param {!number} options.height - Height of the AABB.
- *
+ * @param {!Object} options Setup options. See {@link Grape2D.Shape}
+ * @param {?Grape2D.Vector} options.position - The position of the
+ *   polygon.
+ * @param {!number} options.width Width of the AABB.
+ * @param {!number} options.height Height of the AABB.
+ * 
  * @extends Grape2D.Shape
  * @constructor
  */
@@ -3682,28 +4718,28 @@ Grape2D.AABB = function(options){
 	/**
 	 * Shape's width.
 	 *
-	 * @type {number}
+	 * @type {!number}
 	 * @private
 	 */
 	this.width = options.width;
 	/**
 	 * Shape's half width.
 	 *
-	 * @type {number}
+	 * @type {!number}
 	 * @private
 	 */
 	this.hwidth = this.width/2;
 	/**
 	 * Shapes's height.
 	 *
-	 * @type {number}
+	 * @type {!number}
 	 * @private
 	 */
 	this.height = options.height;
 	/**
 	 * Shapes's half height.
 	 *
-	 * @type {number}
+	 * @type {!number}
 	 * @private
 	 */
 	this.hheight = this.height/2;
@@ -3713,7 +4749,7 @@ Grape2D.AABB.prototype = Object.create(Grape2D.Shape.prototype);
 /**
  * Gets the width of the AABB.
  *
- * @return {number} The width of the AABB.
+ * @return {!number} The width of the AABB.
  * @public
  */
 Grape2D.AABB.prototype.getWidth = function(){
@@ -3722,7 +4758,7 @@ Grape2D.AABB.prototype.getWidth = function(){
 /**
  * Gets the height of the AABB.
  *
- * @return {number} The height of the AABB.
+ * @return {!number} The height of the AABB.
  * @public
  */
 Grape2D.AABB.prototype.getHeight = function(){
@@ -3731,7 +4767,7 @@ Grape2D.AABB.prototype.getHeight = function(){
 /**
  * Gets the half width (width/2) of the AABB.
  *
- * @return {number} Half width of the AABB.
+ * @return {!number} Half width of the AABB.
  * @public
  */
 Grape2D.AABB.prototype.getHalfWidth = function(){
@@ -3740,7 +4776,7 @@ Grape2D.AABB.prototype.getHalfWidth = function(){
 /**
  * Gets the half height (height/2) of the AABB.
  *
- * @return {number} Half height of the AABB.
+ * @return {!number} Half height of the AABB.
  * @public
  */
 Grape2D.AABB.prototype.getHalfHeight = function(){
@@ -3749,7 +4785,7 @@ Grape2D.AABB.prototype.getHalfHeight = function(){
 /**
  * Sets the width of the AABB.
  *
- * @param  {number} width - The width of the AABB.
+ * @param  {!number} width The width of the AABB.
  * @public
  */
 Grape2D.AABB.prototype.setWidth = function(width){
@@ -3759,7 +4795,7 @@ Grape2D.AABB.prototype.setWidth = function(width){
 /**
  * Sets the height of the AABB.
  *
- * @param  {number} height - The height of the AABB.
+ * @param  {!number} height The height of the AABB.
  * @public
  */
 Grape2D.AABB.prototype.setHeight = function(height){
@@ -3767,7 +4803,7 @@ Grape2D.AABB.prototype.setHeight = function(height){
 	this.hheight = this.height;
 };
 /**
- * @see Grape2D.Shape#render
+ * @override
  */
 Grape2D.AABB.prototype.render = function(renderer, camera){
 	renderer.renderAABB(this, camera);
@@ -3784,14 +4820,21 @@ Grape2D.AABB.prototype.createBV = function(bvfactory){
 Grape2D.AABB.prototype.getStaticType = function(){
 	return Grape2D.AABB.TYPE;
 };
+/**
+ * Type of the shape.
+ *
+ * @type {!string}
+ * @static
+ * @private
+ */
 Grape2D.AABB.TYPE = "AABB";/**
- * Creates a new circle instance.
- * @classdesc Circle describes a circle shape. A circle is defined by
- *            it's radius.
+ * Circle describes a circle shape. A circle is defined by
+ *   it's radius.
  *
- * @param {?Grape2D.Vector} options.position - The position of the polygon
- * @param {!number} options.radius - radius of the circle.
- *
+ * @param {!Object} options Setup options. See {@link Grape2D.Shape}
+ * @param {?Grape2D.Vector} options.position The position of the
+ *   polygon
+ * @param {!number} options.radius Radius of the circle.
  * @extends Grape2D.Shape
  * @constructor
  */
@@ -3800,7 +4843,7 @@ Grape2D.Circle = function(options){
 	/**
 	 * Circle's radius.
 	 *
-	 * @type {number}
+	 * @type {!number}
 	 * @private
 	 */
 	this.radius = options.radius;
@@ -3811,7 +4854,7 @@ Grape2D.Circle.prototype = Object.create(Grape2D.Shape.prototype);
 /**
  * Gets the radius of the circle.
  *
- * @return {number} The radius of the circle.
+ * @return {!number} The radius of the circle.
  * @public
  */
 Grape2D.Circle.prototype.getRadius = function(){
@@ -3820,14 +4863,14 @@ Grape2D.Circle.prototype.getRadius = function(){
 /**
  * Sets the radius of the circle.
  *
- * @param  {number} radius - The new radius of the circle
+ * @param  {!number} radius - The new radius of the circle
  * @public
  */
 Grape2D.Circle.prototype.setRadius = function(radius){
 	this.radius = radius;
 };
 /**
- * @see Grape2D.Shape#render
+ * @override
  */
 Grape2D.Circle.prototype.render = function(renderer, camera){
 	renderer.renderCircle(this, camera);
@@ -3844,14 +4887,20 @@ Grape2D.Circle.prototype.createBV = function(bvfactory){
 Grape2D.Circle.prototype.getStaticType = function(){
 	return Grape2D.Circle.TYPE;
 };
-Grape2D.Circle.TYPE = "Circle";/**
- * Creates a new polygon instance.
- * @classdesc Polygon describes a polygon shape. A list of vertexes should
- *            should be provided or set afterwards.
+/**
+ * Type of the shape.
  *
- * @param {?Grape2D.Vector} options.position - The position of the polygon
- * @param {!Array.<Grape2D.Vector>} options.vertexList - A list with the
- *			vertexes of the polygon.
+ * @type {!string}
+ * @static
+ * @private
+ */
+Grape2D.Circle.TYPE = "Circle";/**
+ * Polygon describes a polygon shape. A list of vertexes should
+ *   should be provided or set afterwards.
+ *
+ * @param {!Grape2D.Vector=} options.position The position of the polygon
+ * @param {!Array.<!Grape2D.Vector>} options.vertexList A list with the
+ *   vertexes of the polygon.
  *
  * @extends Grape2D.Shape
  * @constructor
@@ -3861,7 +4910,7 @@ Grape2D.Polygon = function(options){
 	/**
 	 * Polygon's vertexes.
 	 *
-	 * @type {Array.<Grape2D.Vector>}
+	 * @type {!Array.<!Grape2D.Vector>}
 	 * @private
 	 */
 	this.vertexList = options.vertexList;
@@ -3872,7 +4921,7 @@ Grape2D.Polygon.prototype = Object.create(Grape2D.Shape.prototype);
 /**
  * Gets the list of vertexes.
  *
- * @return {Array.<Grape2D.Vector>} The array with the vertexes.
+ * @return {!Array.<!Grape2D.Vector>} The array with the vertexes.
  * @public
  */
 Grape2D.Polygon.prototype.getVertexList = function(){
@@ -3881,14 +4930,15 @@ Grape2D.Polygon.prototype.getVertexList = function(){
 /**
  * Sets a list of vertexes.
  *
- * @param  {Array.<Grape2D.Vector>} vertexList - A list with the new vertexes.
+ * @param  {!Array.<!Grape2D.Vector>} vertexList A list with the new
+ *   vertexes.
  * @public
  */
 Grape2D.Polygon.prototype.setVertexList = function(vertexList){
 	this.vertexList = vertexList;
 };
 /**
- * @see Grape2D.Shape#render
+ * @override
  */
 Grape2D.Polygon.prototype.render = function(renderer, camera){
 	renderer.renderPolygon(this, camera);
@@ -3905,12 +4955,19 @@ Grape2D.Polygon.prototype.createBV = function(bvfactory){
 Grape2D.Polygon.prototype.getStaticType = function(){
 	return Grape2D.Polygon.TYPE;
 };
+/**
+ * Type of the shape.
+ *
+ * @type {!string}
+ * @static
+ * @private
+ */
 Grape2D.Polygon.TYPE = "Polygon";/**
  * A scene controls, at a high level, the running of the game.
- * Being responsible for the updating and rendering.
- * This is the component object of what is a composite pattern.
+ *   Being responsible for the updating and rendering.
+ *   This is the component object of what is a composite pattern.
+ * 
  * @interface
- * @class
  */
 Grape2D.Scene = function () {};
 
@@ -3919,30 +4976,32 @@ Grape2D.Scene.prototype = {
 	/**
 	 * Updates the scene.
 	 *
-	 * @param  {number} dt Time elapsed since the last update.
+	 * @param  {!number} dt Time elapsed since the last update.
 	 * @public
 	 */
 	update: function (dt) {},
 	/**
 	 * Renders the scene to a renderer.
 	 *
-	 * @param  {Grape2D.Renderer} renderer Place to render the scene.
-	 * @param  {Grape2D.Camera} camera Camera to transform the coordinates
+	 * @param  {!Grape2D.Renderer} renderer Place to render the scene.
+	 * @param  {!Grape2D.Camera} camera Camera to transform the coordinates
 	 *   and to select the objects to be rendered.
 	 * @public
 	 */
 	render: function (renderer, camera) {}
 };/**
  * SceneGroup allow to group scenes together.
- * This is the composite object of the composite pattern.
+ *   This is the composite object of the composite pattern.
  *
- * @constructor
  * @implements {Grape2D.Scene}
+ * @constructor
  */
 Grape2D.SceneGroup = function () {
 	/**
 	 * Children of this scene.
-	 * @type {Array.<Grape2D.Scene>}
+	 * 
+	 * @type {!Array.<Grape2D.Scene>}
+	 * @private
 	 */
 	this.childs = [];
 };
@@ -3965,8 +5024,9 @@ Grape2D.SceneGroup.prototype.render = function (renderer, camera) {
 	}
 };
 /**
- * Adds a child scene
- * @param  {Grape2D.Scene} child Child scene.
+ * Adds a child scene.
+ * 
+ * @param  {!Grape2D.Scene} child Child scene.
  * @public
  */
 Grape2D.SceneGroup.prototype.addChild = function (child) {
@@ -3975,20 +5035,27 @@ Grape2D.SceneGroup.prototype.addChild = function (child) {
 /**
  * Removes a child scene.
  *
- * @param  {Grape2D.Scene} child Child to remove.
+ * @param  {!Grape2D.Scene} child Child to remove.
+ * @public
  */
 Grape2D.SceneGroup.prototype.removeChild = function (child) {
 	this.childs.splice(this.childs.indexOf(child), 1);
 };/**
  * SceneLayer allow to render objects and update them, the objects are
  *   store using a {@link Grape2D.Map}.
- * This is the leaf object of the composite pattern.
+ *   This is the leaf object of the composite pattern.
  *
- * @constructor
  * @implements {Grape2D.Scene}
+ * @constructor
  */
 Grape2D.SceneLayer = function(options) {
 	options = options || {};
+	/**
+	 * Scene map.
+	 *
+	 * @type {!Grape2D.Map}
+	 * @private
+	 */
 	this.map = options.map || new Grape2D.SimpleMap();
 };
 
@@ -4013,7 +5080,7 @@ Grape2D.SceneLayer.prototype.render = function(renderer, camera) {
 /**
  * Gets the map being used.
  *
- * @return {Grape2D.Map} The map.
+ * @return {!Grape2D.Map} The map.
  * @public
  */
 Grape2D.SceneLayer.prototype.getMap = function() {
@@ -4029,29 +5096,41 @@ Grape2D.Game.prototype = {
 	constructor: Grape2D.Game,
 	/**
 	 * Sets up the game. It should be executed before any other method.
+	 *
+	 * @public
 	 */
 	setup: function() {},
 	/**
 	 * Starts the animation process.
+	 *
+	 * @public
 	 */
 	start: function() {},
 	/**
 	 * Stop the animation process.
+	 *
+	 * @public
 	 */
 	stop: function() {},
 	/**
 	 * Renders what needed be, to the right places.
+	 *
+	 * @public
 	 */
 	render: function() {},
 	/**
 	 * Updates the game, between frames.
 	 *
-	 * @param  {number} dt The miliseconds elapsed since the last
+	 * @param  {!number} dt The miliseconds elapsed since the last
 	 *   animation call.
+	 *
+	 * @public
 	 */
 	update: function(dt) {},
 	/**
 	 * Calls the others methods, and "prepare" the next frame.
+	 *
+	 * @public
 	 */
 	animate: function() {}
 };/**

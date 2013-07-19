@@ -1,8 +1,10 @@
 /**
- * [ description]
+ * An aliasing camera avoid drawing objects in "half-points",
+ *   for example an object to be drawn in the viewport at
+ *   x=0.5 this camera will draw the object at floor(x).
  *
- * @param  {[type]} options [description]
- *
+ * @param  {!Object} options Setup options. See {@link Grape2D.Camera}
+ *   constructor for more details.
  * @extends {Grape2D.Camera}
  * @constructor
  */
@@ -16,6 +18,7 @@ Grape2D.AliasingCamera.prototype = Object.create(Grape2D.Camera.prototype);
  *   {@link Grape2D.Camera.wcsToViewport} to avoid anti-aliasing by
  *   the renderer. However this method is more specific for the
  *   {@link Grape2D.CanvasRenderer}.
+ *   
  * @override
  */
 Grape2D.AliasingCamera.prototype.wcsToViewport = function(renderer, vector){

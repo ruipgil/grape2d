@@ -1,11 +1,11 @@
-// https://gist.github.com/paulirish/1579671
-// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
-
-// requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
-
-// MIT license
-
+/**
+ * Credits for the requestAnimationFrame and cancelAnimationFrame
+ *   {@link https://gist.github.com/paulirish/1579671}
+ *   {@link http://paulirish.com/2011/requestanimationframe-for-smart-animating/}
+ *   {@link http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating}
+ *   requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel.
+ *   Under the MIT license.
+ */
 (function() {
 	var lastTime = 0;
 	var vendors = ['ms', 'moz', 'webkit', 'o'];

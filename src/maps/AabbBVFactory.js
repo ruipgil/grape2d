@@ -1,5 +1,6 @@
 /**
  * Creates bounding volumes based in an input object.
+ *
  * @implements {Grape2D.BVFactory}
  * @constructor
  */
@@ -60,15 +61,24 @@ Grape2D.AabbBVFactory.prototype.createFromPolygon = function(polygon) {
 		height: y
 	});
 };
-
+/**
+ * @override
+ */
 Grape2D.AabbBVFactory.prototype.createSceneBV = function(renderer, camera) {
 	return new Grape2D.AABB({
 		position: camera.getLookAt(),
-		width: renderer.getWidth()/camera.getScale().getX(),
-		height: renderer.getHeight()/camera.getScale().getY()
+		width: renderer.getWidth() / camera.getScale().getX(),
+		height: renderer.getHeight() / camera.getScale().getY()
 	});
 };
-
+/**
+ * Merge two AABBs into one, so that the one created bounds
+ *   the other two.
+ *
+ * @param  {!Grape2D.AABB} aabb1 An AABB.
+ * @param  {!Grape2D.AABB} aabb2 Another AABB.
+ * @return {!Grape2D.AABB} An AABB that bounds the other two.
+ */
 Grape2D.AabbBVFactory.prototype.merge = function(aabb1, aabb2) {
 	//bdebugger;
 	var dx = aabb2.getPosition().getX() - aabb1.getPosition().getX(),
@@ -108,3 +118,20 @@ Grape2D.AabbBVFactory.prototype.merge = function(aabb1, aabb2) {
 		position: position
 	});
 };
+/**
+ * @override
+ */
+Grape2D.AabbBVFactory.prototype.getPlaceHolder = function() {
+	return Grape2D.AabbBVFactory.PLACE_HOLDER;
+};
+/**
+ * Static palce holder for {@link Grape2D.AabbBVFactory.getPlaceHolder}
+ *
+ * @type {Grape2D.AABB}
+ * @private
+ * @static
+ */
+Grape2D.AabbBVFactory.PLACE_HOLDER = new Grape2D.AABB({
+	width: 0,
+	height: 0
+});

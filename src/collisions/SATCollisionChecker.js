@@ -1,6 +1,7 @@
 /**
  * Concrete collision checker, that implements the SAT algorithm.
  *
+ *
  * @extends {Grape2D.GenericCollisionChecker}
  * @constructor
  */
@@ -31,6 +32,14 @@ Grape2D.SATCollisionChecker.prototype.polygonVsPolygon = function(polygon1, poly
 	}
 	return true;
 };
+/**
+ * Computes the axis of a polygon.
+ *
+ * @param  {!Grape2D.Polygon} polygon Polygon to compute the axis.
+ * @return {!Array.<!Grape2D.Vector>} Array of vectors with the direction of
+ *   the axis, perpendicular to the side, and normalized.
+ * @public
+ */
 Grape2D.SATCollisionChecker.prototype.computeAxis = function(polygon) {
 	var res = [],
 		list = polygon.getVertexList(),
@@ -41,6 +50,15 @@ Grape2D.SATCollisionChecker.prototype.computeAxis = function(polygon) {
 	}
 	return res;
 };
+/**
+ * Select the unique axis in a list.
+ *
+ * @param  {!Array.<!Grape2D.Vector>} listA A list of axis.
+ * @param  {!Array.<!Grape2D.Vector>} listB A list of axis.
+ * @return {!Array.<!Grape2D.Vector>} All different axis that are in both
+ *   params.
+ * @public
+ */
 Grape2D.SATCollisionChecker.prototype.selectAxis = function(listA, listB) {
 	var res = [],
 		e;
@@ -62,12 +80,14 @@ Grape2D.SATCollisionChecker.prototype.selectAxis = function(listA, listB) {
 	return res;
 };
 /**
- * [ description]
+ * Compute the interval that a set of vertexes represent, in an axis.
  *
- * @param  {Array.<Grape2D.Vector>} vertexList [description]
- * @param  {Array.<Grape2D.Vector>} axis [description]
- *
- * @return {[type]} [description]
+ * @param  {!Array.<!Grape2D.Vector>} vertexList List of vertexes.
+ * @param  {!Array.<!Grape2D.Vector>} axis Axis to receive the
+ *   projection of the vertexes.
+ * @return {!Object} An object with the properties <code>min</code> and
+ *   <code>max</code>
+ * @public
  */
 Grape2D.SATCollisionChecker.prototype.computeIntervals = function(vertexList, axis) {
 	var intrvByAxis = [],
@@ -101,5 +121,11 @@ Grape2D.SATCollisionChecker.prototype.computeIntervals = function(vertexList, ax
 	}
 	return intrvByAxis;
 };
-
+/**
+ * Cache of the predefined set of AABB axis.
+ *
+ * @type {!Array.<Grape2D.Vector>}
+ * @private
+ * @static
+ */
 Grape2D.SATCollisionChecker.aabbAxis = [new Grape2D.Vector(1, 0), new Grape2D.Vector(0, 1)];

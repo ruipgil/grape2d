@@ -1,5 +1,7 @@
 /**
- * Math describes the namespace that holds math functions and constants. Optimizations or browser specific functions for math should be implemented in this namespace
+ * Math describes the namespace that holds math functions and
+ *   constants. Optimizations or browser specific functions for math
+ *   sshould be implemented in this namespace.
  *
  * @namespace
  */
@@ -8,7 +10,8 @@ Grape2D.Math = {
 	/**
 	 * PI value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PI: 3.141592653589793,
@@ -16,7 +19,8 @@ Grape2D.Math = {
 	/**
 	 * Two PI value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PIx2: 6.283185307179586,
@@ -24,7 +28,8 @@ Grape2D.Math = {
 	/**
 	 * PI/2 value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PId2: 1.5707963267948966,
@@ -32,7 +37,8 @@ Grape2D.Math = {
 	/**
 	 * PI/4 value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PId4: 0.7853981633974483,
@@ -40,7 +46,8 @@ Grape2D.Math = {
 	/**
 	 * PI/6 value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PId6: 0.5235987755982988,
@@ -48,7 +55,8 @@ Grape2D.Math = {
 	/**
 	 * PI/8 value, with a 15 decimal aproximation
 	 *
-	 * @type {number}
+	 * @type {!number}
+	 * @public
 	 * @constant
 	 */
 	PId8: 0.39269908169872414,
@@ -56,54 +64,58 @@ Grape2D.Math = {
 	/**
 	 * Returns the absolute value of a number
 	 *
-	 * @param {number} number
-	 * @return {number} returns the absolute number
+	 * @param {!number} number
+	 * @return {!number} returns the absolute number
+	 * @public
+	 * @static
 	 */
-	abs: function (number) {
+	abs: function(number) {
 		return Math.abs(number);
 	},
 	/**
 	 * Returns the floor of a number
 	 *
-	 * @param  {number} n the number
-	 *
-	 * @return {number} the floored number
+	 * @param  {!number} n the number
+	 * @return {!number} the floored number
+	 * @public
+	 * @static
 	 */
-	floor: function (n) {
+	floor: function(n) {
 		return~~ n;
 	},
 	/**
 	 * Returns the ceil of a number
 	 *
-	 * @param  {number} n the number
-	 *
-	 * @return {number} the ceiled number
+	 * @param  {!number} n the number
+	 * @return {!number} the ceiled number
 	 */
-	ceil: function (n) {
+	ceil: function(n) {
 		return Math.ceil(n);
 	},
 	/**
 	 * Rounds a number to the unit
 	 *
-	 * @param  {number} n the number
-	 *
-	 * @return {number} the rounded number
+	 * @param  {!number} n the number
+	 * @return {!number} the rounded number
+	 * @public
+	 * @static
 	 */
-	round: function (n) {
+	round: function(n) {
 		return~~ (n + 0.5);
 	},
 	/**
 	 * Get a random float
 	 *
-	 * @param  {number} min the min possible value between min and max,
-	 *		if max is defined. If not than it's the max value, between
-	 *		0 and min.
-	 * @param  {number} max optional, the max possible value, between
-	 *		min and max.
-	 *
-	 * @return {number} a random float number.
+	 * @param  {!number} min the min possible value between min and
+	 *   max, if max is defined. If not than it's the max value,
+	 *   between 0 and min.
+	 * @param  {?number} max optional, the max possible value, between
+	 *   min and max.
+	 * @return {!number} a random float number.
+	 * @public
+	 * @static
 	 */
-	randFloat: function (min, max) {
+	randFloat: function(min, max) {
 		if (!max) {
 			return Math.random() * min;
 		} else {
@@ -113,15 +125,16 @@ Grape2D.Math = {
 	/**
 	 * Get a random float
 	 *
-	 * @param  {number} min the min possible value between min and max,
-	 *		if max is defined. If not than it's the max value, between
-	 *		0 and min.
-	 * @param  {number} max optional, the max possible value, between
-	 *		min and max.
-	 *
-	 * @return {number} a random integer number
+	 * @param  {!number} min the min possible value between min and max,
+	 *   if max is defined. If not than it's the max value, between
+	 *   0 and min.
+	 * @param  {?number} max optional, the max possible value, between
+	 *   min and max.
+	 * @return {!number} a random integer number
+	 * @public
+	 * @static
 	 */
-	randInt: function (min, max) {
+	randInt: function(min, max) {
 		return Grape2D.Math.floor(Grape2D.Math.randFloat(min, max) + 0.5);
 	},
 	/** @see Math.cos */
@@ -136,33 +149,44 @@ Grape2D.Math = {
 	/**
 	 * Clamps a number.
 	 *
-	 * @param  {number} x - The number to clamp.
-	 * @param  {number} min - Lower limmit.
-	 * @param  {number} max - Upper limit.
-	 *
-	 * @return {number} A number between min and max.
+	 * @param  {!number} x The number to clamp.
+	 * @param  {!number} min Lower limmit.
+	 * @param  {!number} max Upper limit.
+	 * @return {!number} A number between min and max.
+	 * @public
+	 * @static
 	 */
-	clamp: function (x, min, max) {
+	clamp: function(x, min, max) {
 		return x < min ? min : (x > max ? max : x);
 	},
 
 	/**
 	 * Checks if two bounderies are overlaping
 	 *
-	 * @param  {Object} a an object with min and max properties
-	 * @param  {Object} b an object with min and max properties
-	 *
-	 * @return {(number|boolean)} false if they're not overlaping, number if they are
+	 * @param  {!Object} a an object with min and max properties
+	 * @param  {!Object} b an object with min and max properties
+	 * @return {!number} A positive number if they're overlaping. Zero
+	 *   if they're just in touch, negative number if they're not
+	 *   overlaping.
+	 * @public
+	 * @static
 	 */
-	overlaps: function (a, b) {
+	overlaps: function(a, b) {
 		if (a.min <= b.min) {
 			return a.max - b.min;
 		} else {
 			return Grape2D.Math.overlaps(b, a);
 		}
 	},
-
-	sq: function(n){
-		return n*n;
+	/**
+	 * Squares a number.
+	 *
+	 * @param  {!number} n Number to square
+	 * @return {!number} NUmber squared
+	 * @public
+	 * @static
+	 */
+	sq: function(n) {
+		return n * n;
 	}
 };

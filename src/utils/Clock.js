@@ -15,6 +15,14 @@ Grape2D.utils.Clock = function () {
 
 Grape2D.utils.Clock.prototype = {
 	constructor: Grape2D.utils.Clock,
+	/**
+	 * Updates the game. Should be at the beggining
+	 *   of the frame.
+	 *
+	 * @return {!number} Time, in miliseconds, elapsed
+	 *   since the last update.
+	 * @public
+	 */
 	update: function () {
 		var now = new Date().getTime(),
 			t = now - this.lastFrame;
@@ -29,6 +37,13 @@ Grape2D.utils.Clock.prototype = {
 		this.lastFrame = now;
 		return t;
 	},
+	/**
+	 * Resets all properties, at least at each
+	 *   second passed.
+	 *
+	 * @param  {!number} time Current time.
+	 * @private
+	 */
 	reset: function (time) {
 		this.fps = this.frameCount;
 		this.timeEl = 0;

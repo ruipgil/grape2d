@@ -4,18 +4,18 @@
  *
  * @param  {?Array.<Grape2D.Object2D>} objs List with objects. If objects are provided then tree will be build.
  *
- * @constructor
  * @implements {Grape2D.BVHTree}
+ * @constructor
  */
 Grape2D.TopDownBVHTree = function(objs){
 	/**
 	 * Objects of the tree
-	 * @private {Array.<Grape2D.Object2D>}
+	 * @private {!Array.<Grape2D.Object2D>}
 	 */
 	this.objs = objs || [];
 	/**
 	 * The root node of the tree.
-	 * @private {Grape2D.TopDownBVHNode}
+	 * @private {?Grape2D.TopDownBVHNode}
 	 */
 	this.rootNode = null;
 	//builds the tree if needed be.
@@ -25,7 +25,11 @@ Grape2D.TopDownBVHTree = function(objs){
 };
 
 Grape2D.TopDownBVHTree.prototype = Object.create(Grape2D.BVHTree.prototype);
-
+/**
+ * (Re)Builds the tree, based on the objects present on the stack.
+ * 
+ * @public
+ */
 Grape2D.TopDownBVHTree.prototype.rebuild = function(){
 	this.rootNode = new Grape2D.TopDownBVHNode(null, this.objs);
 };
@@ -70,3 +74,16 @@ Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
 		this.objs[i].update(dt, scene);
 	}
 };
+/**
+ * Maximum depth of the tree.
+ *
+ * @constant {number}
+ * @public
+ */
+Grape2D.TopDownBVHTree.MAX_DEPTH = 50;
+/**
+ * Minimum of objects per leaf.
+ * @constant {number}
+ * @public
+ */
+Grape2D.TopDownBVHTree.DEFAULT_PER_LEAF = 2;

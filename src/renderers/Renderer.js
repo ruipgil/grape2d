@@ -10,50 +10,50 @@ Grape2D.Renderer.prototype = {
 	/**
 	 * Gets the renderer width.
 	 *
-	 * @return {number} the width
+	 * @return {!number} the width
 	 * @public
 	 */
 	getWidth: function() {},
 	/**
 	 * Gets the half width of the renderer.
 	 *
-	 * @return {number} the half width
+	 * @return {!number} the half width
 	 * @public
 	 */
 	getHalfWidth: function() {},
 	/**
 	 * Sets the width of the renderer and computes the half width.
 	 *
-	 * @param  {number} width the width
+	 * @param  {!number} width the width
 	 * @public
 	 */
 	setWidth: function(width) {},
 	/**
 	 * Gets the renderer height
 	 *
-	 * @return {number} the height
+	 * @return {!number} the height
 	 * @public
 	 */
 	getHeight: function() {},
 	/**
 	 * Gets the half height of the renderer
 	 *
-	 * @return {number} the half width
+	 * @return {!number} the half width
 	 * @public
 	 */
 	getHalfHeight: function() {},
 	/**
 	 * Sets the height of the renderer and computes the half height.
 	 *
-	 * @param  {number} height the new height
+	 * @param  {!number} height the new height
 	 * @public
 	 */
 	setHeight: function(height) {},
 	/**
 	 * Renders a texture to a position on the renderer.
 	 *
-	 * @param  {Grape2D.ITexture} texture the texture to render
-	 * @param  {Grape2D.Vector} position the position to render
+	 * @param  {!Grape2D.ITexture} texture The texture to render
+	 * @param  {!Grape2D.Vector} position The position to render
 	 * @public
 	 */
 	renderTexture: function(texture, position) {},
@@ -84,7 +84,8 @@ Grape2D.Renderer.prototype = {
 	 * Renders the wireframe of an AABB.
 	 *
 	 * @param  {!Grape2D.AABB} aabb The AABB to render.
-	 * @param  {!Grape2D.Camera} camera The camera to transfrom the coordinates.
+	 * @param  {!Grape2D.Camera} camera The camera to transfrom the
+	 *   coordinates.
 	 * @public
 	 */
 	renderAABB: function(aabb, camera) {},
@@ -92,7 +93,8 @@ Grape2D.Renderer.prototype = {
 	 * Renders the wireframe of a circle.
 	 *
 	 * @param  {!Grape2D.Circle} circle Circle to render.
-	 * @param  {!Grape2D.Camera} camera The camera to transfrom the coordinates.
+	 * @param  {!Grape2D.Camera} camera The camera to transfrom the
+	 *   coordinates.
 	 * @public
 	 */
 	renderCircle: function(circle, camera) {},
@@ -100,7 +102,8 @@ Grape2D.Renderer.prototype = {
 	 * Renders the wireframe of a polygon.
 	 *
 	 * @param  {!Grape2D.Polygon} polygon Polygon to render.
-	 * @param  {!Grape2D.Camera} camera The camera to transfrom the coordinates.
+	 * @param  {!Grape2D.Camera} camera The camera to transfrom the
+	 *   coordinates.
 	 * @public
 	 */
 	renderPolygon: function(polygon, camera) {},
@@ -141,14 +144,14 @@ Grape2D.Renderer.prototype = {
 	/**
 	 * Sets a new stroke color.
 	 *
-	 * @param  {string} color New color to use when stroking.
+	 * @param  {!string} color New color to use when stroking.
 	 * @public
 	 */
 	setStrokeColor: function(color) {},
 	/**
 	 * Sets a new fill color.
 	 *
-	 * @param  {string} color New color to use when filling.
+	 * @param  {!string} color New color to use when filling.
 	 * @public
 	 */
 	setFillColor: function(color) {}

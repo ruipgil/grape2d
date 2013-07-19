@@ -8,7 +8,9 @@
 Grape2D.SimpleMap = function () {
 	/**
 	 * Objects of the map.
-	 * @private {Array.<Grape2D.Object2D>}
+	 * 
+	 * @type {!Array.<Grape2D.Object2D>}
+	 * @private
 	 */
 	this.objs = [];
 };
