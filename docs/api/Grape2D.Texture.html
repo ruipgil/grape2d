@@ -32,10 +32,6 @@
     Texture
     </h2>
     
-        <div class="class-description">Texture represents an "image", ready to be rendered to 
-           a renderer, with high efficiency. The efficiency comes
-           from the fact that a cached image can be renderer faster.</div>
-    
 </header>  
 
 <article>
@@ -51,6 +47,12 @@
 </dt>
 <dd>
     
+    
+    <div class="description">
+        Texture represents an "image", ready to be rendered to
+  a renderer, with high efficiency. The efficiency comes
+  from the fact that a cached image can be renderer faster.
+    </div>
     
 
     
@@ -154,9 +156,9 @@
             
                 <td class="attributes">
                 
-                    
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+                    
                 
                     
                 
@@ -188,9 +190,9 @@
             
                 <td class="attributes">
                 
-                    
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+                    
                 
                     
                 
@@ -199,7 +201,7 @@
             
             
             
-            <td class="description last">With this method the 
+            <td class="description last">With this method the
 		same buffer is shared by the texture provided.</td>
         </tr>
 	
@@ -237,7 +239,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 14
+        textures/Texture.js, line 15
     </li></ul></dd>
     
     
@@ -327,7 +329,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 51
+        textures/Texture.js, line 52
     </li></ul></dd>
     
     
@@ -391,7 +393,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 36
+        textures/Texture.js, line 37
     </li></ul></dd>
     
     
@@ -455,7 +457,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 43
+        textures/Texture.js, line 44
     </li></ul></dd>
     
     
@@ -519,7 +521,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 29
+        textures/Texture.js, line 30
     </li></ul></dd>
     
     
@@ -583,7 +585,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 22
+        textures/Texture.js, line 23
     </li></ul></dd>
     
     
@@ -720,7 +722,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 157
+        textures/Texture.js, line 141
     </li></ul></dd>
     
     
@@ -747,7 +749,7 @@
 <div class="param-desc">
     The texture object, initialy it has
 		an empty buffer, the buffer will have the image only after
-		the image has done loaded
+		the image has done loaded.
 </div>
 
 
@@ -780,7 +782,7 @@
     
     
     <div class="description">
-        Changes the internal buffer and load an image, with it's 
+        Changes the internal buffer and load an image, with it's
   current dimensions. The dimensions.
     </div>
     
@@ -863,7 +865,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 135
+        textures/Texture.js, line 117
     </li></ul></dd>
     
     
@@ -932,7 +934,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 124
+        textures/Texture.js, line 106
     </li></ul></dd>
     
     
@@ -982,16 +984,12 @@
         
             
 <dt>
-    <h4 class="name" id="getHalfHeight"><span class="type-signature"></span>getHalfHeight<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    <h4 class="name" id="getHalfHeight"><span class="type-signature"></span>getHalfHeight<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
-    
-    <div class="description">
-        Gets the half height of the texture.
-    </div>
     
 
     
@@ -1023,419 +1021,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 115
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    The half height.
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getHalfWidth"><span class="type-signature"></span>getHalfWidth<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the half width of the texture.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 106
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    The half width.
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getHeight"><span class="type-signature"></span>getHeight<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the height of the texture.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 77
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Texture's height.
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getWidth"><span class="type-signature"></span>getWidth<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the width of the texture.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 68
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Texture's width.
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="setHeight"><span class="type-signature"></span>setHeight<span class="signature">(height)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Sets the height of the texture.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>height</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">The new height.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 96
+        textures/Texture.js, line 97
     </li></ul></dd>
     
     
@@ -1463,70 +1049,18 @@
         
             
 <dt>
-    <h4 class="name" id="setWidth"><span class="type-signature"></span>setWidth<span class="signature">(width)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getHalfWidth"><span class="type-signature"></span>getHalfWidth<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
-    <div class="description">
-        Sets the texture's width and computes the half width.
-    </div>
-    
 
     
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>width</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">The new width.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -1552,7 +1086,332 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Texture.js, line 86
+        textures/Texture.js, line 91
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getHeight"><span class="type-signature"></span>getHeight<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        textures/Texture.js, line 71
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getWidth"><span class="type-signature"></span>getWidth<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        textures/Texture.js, line 65
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        textures/Texture.js, line 127
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setHeight"><span class="type-signature"></span>setHeight<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        textures/Texture.js, line 84
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setWidth"><span class="type-signature"></span>setWidth<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        textures/Texture.js, line 77
     </li></ul></dd>
     
     
@@ -1593,13 +1452,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{number}</li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Jul 12 2013 19:31:14 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Jul 19 2013 18:25:07 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

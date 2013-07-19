@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: SimpleMap</title>
+    <title>JSDoc: Class: InputManagerEvent</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: SimpleMap</h1>
+    <h1 class="page-title">Class: InputManagerEvent</h1>
     
     
 
@@ -29,11 +29,8 @@
     <h2>
         <span class="ancestors"><a href="Grape2D.html">Grape2D</a>.</span>
     
-    SimpleMap
+    InputManagerEvent
     </h2>
-    
-        <div class="class-description">SimpleMap, represents a proof of concept. This is a simple map,
-           that just implements a simple array to store objects.</div>
     
 </header>  
 
@@ -44,18 +41,93 @@
     
         
 <dt>
-    <h4 class="name" id="SimpleMap"><span class="type-signature"></span>new SimpleMap<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="InputManagerEvent"><span class="type-signature"></span>new InputManagerEvent<span class="signature">(ev, bind)</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
+    <div class="description">
+        Costum event.
+    </div>
+    
 
     
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>ev</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Event</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The DOM event.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>bind</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.html#Renderer">Grape2D.Renderer</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Renderer where the event happened.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -81,7 +153,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        maps/SimpleMap.js, line 8
+        inputs/InputManagerEvent.js, line 8
     </li></ul></dd>
     
     
@@ -125,14 +197,14 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="objs"><span class="type-signature">&lt;private> </span>objs<span class="type-signature"> :!Array.&lt;<a href="Grape2D.Object2D.html">Grape2D.Object2D</a>></span></h4>
+    <h4 class="name" id="bind"><span class="type-signature">&lt;private> </span>bind<span class="type-signature"> :<a href="Grape2D.html#Renderer">Grape2D.Renderer</a></span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        Objects of the map.
+        Place where the event was fired.
     </div>
     
     
@@ -141,7 +213,7 @@
         <ul>
             <li>
                 
-<span class="param-type">!Array.&lt;<a href="Grape2D.Object2D.html">Grape2D.Object2D</a>></span>
+<span class="param-type"><a href="Grape2D.html#Renderer">Grape2D.Renderer</a></span>
 
 
             </li>
@@ -171,7 +243,71 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        maps/SimpleMap.js, line 15
+        inputs/InputManagerEvent.js, line 22
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="raw"><span class="type-signature">&lt;private> </span>raw<span class="type-signature"> :Event</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Raw event.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">Event</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        inputs/InputManagerEvent.js, line 15
     </li></ul></dd>
     
     
@@ -195,72 +331,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="add"><span class="type-signature"></span>add<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        maps/SimpleMap.js, line 23
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="clear"><span class="type-signature"></span>clear<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getRaw"><span class="type-signature"></span>getRaw<span class="signature">()</span><span class="type-signature"> &rarr; {Event}</span></h4>
     
     
 </dt>
@@ -268,7 +339,7 @@
     
     
     <div class="description">
-        Not implemented.
+        Gets the raw event.
     </div>
     
 
@@ -301,7 +372,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        maps/SimpleMap.js, line 49
+        inputs/InputManagerEvent.js, line 33
     </li></ul></dd>
     
     
@@ -322,270 +393,28 @@
     
     
     
+    <h5>Returns:</h5>
     
-    
-</dd>
-
-        
             
-<dt>
-    <h4 class="name" id="query"><span class="type-signature"></span>query<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
+<div class="param-desc">
+    The event fired.
+</div>
 
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        maps/SimpleMap.js, line 35
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Event</span>
+
+
+	</dd>
 </dl>
 
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
         
-            
-<dt>
-    <h4 class="name" id="queryPoint"><span class="type-signature"></span>queryPoint<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Not implemented.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        maps/SimpleMap.js, line 42
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="remove"><span class="type-signature"></span>remove<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        maps/SimpleMap.js, line 29
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        maps/SimpleMap.js, line 55
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
     
     
 </dd>
@@ -612,7 +441,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Jul 19 2013 18:25:06 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Jul 19 2013 18:25:05 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

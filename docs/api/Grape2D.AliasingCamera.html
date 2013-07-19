@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: AABB</title>
+    <title>JSDoc: Class: AliasingCamera</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: AABB</h1>
+    <h1 class="page-title">Class: AliasingCamera</h1>
     
     
 
@@ -29,7 +29,7 @@
     <h2>
         <span class="ancestors"><a href="Grape2D.html">Grape2D</a>.</span>
     
-    AABB
+    AliasingCamera
     </h2>
     
 </header>  
@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="AABB"><span class="type-signature"></span>new AABB<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="AliasingCamera"><span class="type-signature"></span>new AliasingCamera<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -49,8 +49,9 @@
     
     
     <div class="description">
-        AABB (standing for Axis Align Bounding Box), represents
-  rectangular shapes.
+        An aliasing camera avoid drawing objects in "half-points",
+  for example an object to be drawn in the viewport at
+  x=0.5 this camera will draw the object at floor(x).
     </div>
     
 
@@ -100,130 +101,8 @@
             
             
             
-            <td class="description last">Setup options. See <a href="Grape2D.Shape.html">Grape2D.Shape</a>
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>position</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                    &lt;nullable><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">The position of the
-  polygon.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>width</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">Width of the AABB.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>height</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">Height of the AABB.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
+            <td class="description last">Setup options. See <a href="Grape2D.Camera.html">Grape2D.Camera</a>
+  constructor for more details.</td>
         </tr>
 	
 	
@@ -254,7 +133,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 14
+        cameras/AliasingCamera.js, line 11
     </li></ul></dd>
     
     
@@ -286,7 +165,7 @@
         <h3 class="subsection-title">Extends</h3>
         
         <ul>
-            <li><a href="Grape2D.Shape.html">Grape2D.Shape</a></li>
+            <li><a href="Grape2D.Camera.html">Grape2D.Camera</a></li>
         </ul>
     
     
@@ -304,14 +183,14 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="TYPE"><span class="type-signature">&lt;private, static> </span>TYPE<span class="type-signature"> :string</span></h4>
+    <h4 class="name" id="cM"><span class="type-signature">&lt;private> </span>cM<span class="type-signature"> :<a href="Grape2D.Matrix.html">Grape2D.Matrix</a></span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        Type of the shape.
+        Computed matrix
     </div>
     
     
@@ -320,7 +199,7 @@
         <ul>
             <li>
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="Grape2D.Matrix.html">Grape2D.Matrix</a></span>
 
 
             </li>
@@ -336,6 +215,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#cM">Grape2D.Camera#cM</a>
+    </li></dd>
+    
     
     
     
@@ -350,7 +234,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 128
+        cameras/Camera.js, line 54
     </li></ul></dd>
     
     
@@ -368,14 +252,14 @@
         
             
 <dt>
-    <h4 class="name" id="height"><span class="type-signature">&lt;private> </span>height<span class="type-signature"> :number</span></h4>
+    <h4 class="name" id="icM"><span class="type-signature">&lt;private> </span>icM<span class="type-signature"> :<a href="Grape2D.Matrix.html">Grape2D.Matrix</a></span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        Shapes's height.
+        Inverse of the computed matrix
     </div>
     
     
@@ -384,7 +268,7 @@
         <ul>
             <li>
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="Grape2D.Matrix.html">Grape2D.Matrix</a></span>
 
 
             </li>
@@ -400,6 +284,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#icM">Grape2D.Camera#icM</a>
+    </li></dd>
+    
     
     
     
@@ -414,7 +303,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 36
+        cameras/Camera.js, line 61
     </li></ul></dd>
     
     
@@ -432,142 +321,14 @@
         
             
 <dt>
-    <h4 class="name" id="hheight"><span class="type-signature">&lt;private> </span>hheight<span class="type-signature"> :number</span></h4>
+    <h4 class="name" id="lookAt"><span class="type-signature">&lt;private> </span>lookAt<span class="type-signature"> :<a href="Grape2D.Vector.html">Grape2D.Vector</a></span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        Shapes's half height.
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 43
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="hwidth"><span class="type-signature">&lt;private> </span>hwidth<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Shape's half width.
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 29
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="position"><span class="type-signature">&lt;protected> </span>position<span class="type-signature"> :<a href="Grape2D.Vector.html">Grape2D.Vector</a></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Shape's position.
+        The position to where the camera is looking at.
     </div>
     
     
@@ -594,7 +355,7 @@
     
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Shape.html#position">Grape2D.Shape#position</a>
+        <a href="Grape2D.Camera.html#lookAt">Grape2D.Camera#lookAt</a>
     </li></dd>
     
     
@@ -611,7 +372,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Shape.js, line 20
+        cameras/Camera.js, line 39
     </li></ul></dd>
     
     
@@ -629,14 +390,14 @@
         
             
 <dt>
-    <h4 class="name" id="width"><span class="type-signature">&lt;private> </span>width<span class="type-signature"> :number</span></h4>
+    <h4 class="name" id="rscale"><span class="type-signature">&lt;private> </span>rscale<span class="type-signature"> :<a href="Grape2D.Vector.html">Grape2D.Vector</a></span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        Shape's width.
+        Scale relative to the camera initialization.
     </div>
     
     
@@ -645,7 +406,7 @@
         <ul>
             <li>
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
 
 
             </li>
@@ -661,6 +422,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#rscale">Grape2D.Camera#rscale</a>
+    </li></dd>
+    
     
     
     
@@ -675,7 +441,145 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 22
+        cameras/Camera.js, line 25
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="scale"><span class="type-signature">&lt;private> </span>scale<span class="type-signature"> :<a href="Grape2D.Vector.html">Grape2D.Vector</a></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Scale set by the user, should be defined in the matrix.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#scale">Grape2D.Camera#scale</a>
+    </li></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        cameras/Camera.js, line 32
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="transformation"><span class="type-signature">&lt;private> </span>transformation<span class="type-signature"> :<a href="Grape2D.Matrix.html">Grape2D.Matrix</a></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The transformation matrix to aply to the object coordinates.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="Grape2D.Matrix.html">Grape2D.Matrix</a></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#transformation">Grape2D.Camera#transformation</a>
+    </li></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        cameras/Camera.js, line 46
     </li></ul></dd>
     
     
@@ -699,72 +603,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="createBV"><span class="type-signature"></span>createBV<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 112
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getHalfHeight"><span class="type-signature"></span>getHalfHeight<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    <h4 class="name" id="computeMatrix"><span class="type-signature">&lt;protected> </span>computeMatrix<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -772,280 +611,7 @@
     
     
     <div class="description">
-        Gets the half height (height/2) of the AABB.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 80
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Half height of the AABB.
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getHalfWidth"><span class="type-signature"></span>getHalfWidth<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the half width (width/2) of the AABB.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 71
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Half width of the AABB.
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getHeight"><span class="type-signature"></span>getHeight<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the height of the AABB.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 62
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    The height of the AABB.
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getPosition"><span class="type-signature"></span>getPosition<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Grape2D.Vector.html">Grape2D.Vector</a>}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the position of the object.
+        Computes the matrix for better performances.
     </div>
     
 
@@ -1066,7 +632,7 @@
     
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Shape.html#getPosition">Grape2D.Shape#getPosition</a>
+        <a href="Grape2D.Camera.html#computeMatrix">Grape2D.Camera#computeMatrix</a>
     </li></dd>
     
     
@@ -1083,94 +649,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Shape.js, line 31
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    The center position of the shape.
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getStaticType"><span class="type-signature"></span>getStaticType<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 118
+        cameras/Camera.js, line 72
     </li></ul></dd>
     
     
@@ -1198,7 +677,7 @@
         
             
 <dt>
-    <h4 class="name" id="getWidth"><span class="type-signature"></span>getWidth<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    <h4 class="name" id="computeShape"><span class="type-signature"></span>computeShape<span class="signature">(renderer)</span><span class="type-signature"> &rarr; {<a href="Grape2D.Shape.html">Grape2D.Shape</a>}</span></h4>
     
     
 </dt>
@@ -1206,163 +685,8 @@
     
     
     <div class="description">
-        Gets the width of the AABB.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 53
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    The width of the AABB.
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 106
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="setHeight"><span class="type-signature"></span>setHeight<span class="signature">(height)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Sets the height of the AABB.
+        Creates a shape, based on the camera transformation and
+  renderer properties.
     </div>
     
 
@@ -1396,13 +720,13 @@
 	
         <tr>
             
-                <td class="name"><code>height</code></td>
+                <td class="name"><code>renderer</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="Grape2D.html#Renderer">Grape2D.Renderer</a></span>
 
 
             
@@ -1412,7 +736,7 @@
             
             
             
-            <td class="description last">The height of the AABB.</td>
+            <td class="description last">The renderer.</td>
         </tr>
 	
 	
@@ -1429,6 +753,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#computeShape">Grape2D.Camera#computeShape</a>
+    </li></dd>
+    
     
     
     
@@ -1443,7 +772,345 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 99
+        cameras/Camera.js, line 168
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    A bounding volume representing the
+  camera view region.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="Grape2D.Shape.html">Grape2D.Shape</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getLookAt"><span class="type-signature"></span>getLookAt<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Grape2D.Vector.html">Grape2D.Vector</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the look at property.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#getLookAt">Grape2D.Camera#getLookAt</a>
+    </li></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        cameras/Camera.js, line 148
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The look at.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getScale"><span class="type-signature"></span>getScale<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Grape2D.Vector.html">Grape2D.Vector</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the current scale. Scale defined in the transformation is
+not taken into account.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#getScale">Grape2D.Camera#getScale</a>
+    </li></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        cameras/Camera.js, line 157
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Scale
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="rescale"><span class="type-signature"></span>rescale<span class="signature">(scale)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets a new scale.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>scale</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The new scale.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#rescale">Grape2D.Camera#rescale</a>
+    </li></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        cameras/Camera.js, line 129
     </li></ul></dd>
     
     
@@ -1471,7 +1138,7 @@
         
             
 <dt>
-    <h4 class="name" id="setPosition"><span class="type-signature"></span>setPosition<span class="signature">(position)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setLookAt"><span class="type-signature"></span>setLookAt<span class="signature">(position)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1479,7 +1146,7 @@
     
     
     <div class="description">
-        Set the position of the shape.
+        Sets the center position to where the camera is looking at.
     </div>
     
 
@@ -1529,7 +1196,7 @@
             
             
             
-            <td class="description last">The new position of the shape.</td>
+            <td class="description last">The new look at.</td>
         </tr>
 	
 	
@@ -1548,7 +1215,7 @@
     
     <dt class="inherited-from">Inherited From:</dt>
     <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Shape.html#setPosition">Grape2D.Shape#setPosition</a>
+        <a href="Grape2D.Camera.html#setLookAt">Grape2D.Camera#setLookAt</a>
     </li></dd>
     
     
@@ -1565,7 +1232,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/Shape.js, line 40
+        cameras/Camera.js, line 140
     </li></ul></dd>
     
     
@@ -1593,7 +1260,7 @@
         
             
 <dt>
-    <h4 class="name" id="setWidth"><span class="type-signature"></span>setWidth<span class="signature">(width)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="viewportToWcs"><span class="type-signature"></span>viewportToWcs<span class="signature">(renderer, vector)</span><span class="type-signature"> &rarr; {<a href="Grape2D.Vector.html">Grape2D.Vector</a>}</span></h4>
     
     
 </dt>
@@ -1601,7 +1268,8 @@
     
     
     <div class="description">
-        Sets the width of the AABB.
+        Applies the transformation, on a vector in the Viewport Coordinate
+System (VCS), to get a vector in the World Coordinate System (WSC).
     </div>
     
 
@@ -1635,13 +1303,13 @@
 	
         <tr>
             
-                <td class="name"><code>width</code></td>
+                <td class="name"><code>renderer</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="Grape2D.html#Renderer">Grape2D.Renderer</a></span>
 
 
             
@@ -1651,12 +1319,134 @@
             
             
             
-            <td class="description last">The width of the AABB.</td>
+            <td class="description last">The viewport.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>vector</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Vector in the VCS.</td>
         </tr>
 	
 	
 	</tbody>
 </table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#viewportToWcs">Grape2D.Camera#viewportToWcs</a>
+    </li></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        cameras/Camera.js, line 113
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    A vector in the WCS
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="wcsToViewport"><span class="type-signature"></span>wcsToViewport<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Floors the components of the result of the
+  Grape2D.Camera.wcsToViewport to avoid anti-aliasing by
+  the renderer. However this method is more specific for the
+  <a href="Grape2D.CanvasRenderer.html">Grape2D.CanvasRenderer</a>.
+    </div>
+    
+
+    
+    
+    
+    
     
     
     
@@ -1682,7 +1472,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        objects/AABB.js, line 89
+        cameras/AliasingCamera.js, line 24
     </li></ul></dd>
     
     
@@ -1729,7 +1519,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Jul 19 2013 18:25:03 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Jul 19 2013 18:25:04 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

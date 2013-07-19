@@ -49,9 +49,9 @@
     
     
     <div class="description">
-        This is a specialization from <a href="Grape2D.Renderer.html">Grape2D.Renderer</a>.
-This renders objects to a canvas object, with a 2D context. This method is not
-hardware accelerated by default, however is the most stable and cross-browser.
+        This renders objects to a canvas object, with a 2D context. This
+  method is not hardware accelerated by default, however is the
+  most stable and cross-browser.
     </div>
     
 
@@ -113,7 +113,100 @@ hardware accelerated by default, however is the most stable and cross-browser.
             
             
             
-            <td class="description last">[description]</td>
+            <td class="description last">Options to setup the renderer.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Width of the renderer.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Height of the renderer.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
         </tr>
 	
 	
@@ -144,7 +237,7 @@ hardware accelerated by default, however is the most stable and cross-browser.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/CanvasRenderer.js, line 15
+        renderers/CanvasRenderer.js, line 13
     </li></ul></dd>
     
     
@@ -172,12 +265,6 @@ hardware accelerated by default, however is the most stable and cross-browser.
     
     </div>
     
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="Grape2D.Renderer.html">Grape2D.Renderer</a></li>
-        </ul>
     
     
     
@@ -194,7 +281,7 @@ hardware accelerated by default, however is the most stable and cross-browser.
         <dl>
             
 <dt>
-    <h4 class="name" id="canvas"><span class="type-signature"></span>canvas<span class="type-signature"> :<a href="Grape2D.Canvas.html">Grape2D.Canvas</a>|CanvasRenderingContext2D</span></h4>
+    <h4 class="name" id="canvas"><span class="type-signature">&lt;private> </span>canvas<span class="type-signature"> :<a href="Grape2D.Canvas.html">Grape2D.Canvas</a></span></h4>
     
     
 </dt>
@@ -211,9 +298,6 @@ hardware accelerated by default, however is the most stable and cross-browser.
             <li>
                 
 <span class="param-type"><a href="Grape2D.Canvas.html">Grape2D.Canvas</a></span>
-|
-
-<span class="param-type">CanvasRenderingContext2D</span>
 
 
             </li>
@@ -243,430 +327,7 @@ hardware accelerated by default, however is the most stable and cross-browser.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/CanvasRenderer.js, line 23
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="clearColor"><span class="type-signature">&lt;private> </span>clearColor<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        The color to use, when clearing the canvas.
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#clearColor">Grape2D.Renderer#clearColor</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 60
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="halfHeight"><span class="type-signature">&lt;private> </span>halfHeight<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        The half height of the renderer.
-This is a cached value.
-The half width is supposed to be an int
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#halfHeight">Grape2D.Renderer#halfHeight</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 52
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="halfWidth"><span class="type-signature">&lt;private> </span>halfWidth<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        The half width of the renderer. This is a cached value. The
-half width is supposed to be an int
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#halfWidth">Grape2D.Renderer#halfWidth</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 34
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="height"><span class="type-signature">&lt;private> </span>height<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        The height of the renderer.
-This is a cached value.
-The height is supposed to be an int
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#height">Grape2D.Renderer#height</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 43
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="opacity"><span class="type-signature">&lt;private> </span>opacity<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Sets the opacity of the objects to render.
-Values are between 0 and 255. Being 0 totally opaque (concrete
-renderer may choose not to render the object),
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#opacity">Grape2D.Renderer#opacity</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 70
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="width"><span class="type-signature">&lt;private> </span>width<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        The width of the renderer.
-This is a cached value.
-The width is supposed to be an int
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#width">Grape2D.Renderer#width</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 26
+        renderers/CanvasRenderer.js, line 20
     </li></ul></dd>
     
     
@@ -690,7 +351,137 @@ The width is supposed to be an int
         <dl>
             
 <dt>
-    <h4 class="name" id="getClearColor"><span class="type-signature"></span>getClearColor<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    <h4 class="name" id="appendToDOMElement"><span class="type-signature"></span>appendToDOMElement<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        renderers/CanvasRenderer.js, line 167
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="end"><span class="type-signature"></span>end<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        renderers/CanvasRenderer.js, line 163
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getContext"><span class="type-signature"></span>getContext<span class="signature">()</span><span class="type-signature"> &rarr; {CanvasRenderingContext2D}</span></h4>
     
     
 </dt>
@@ -698,7 +489,7 @@ The width is supposed to be an int
     
     
     <div class="description">
-        Gets the clear color.
+        Gets the 2D context of teh canvas element.
     </div>
     
 
@@ -717,11 +508,6 @@ The width is supposed to be an int
     
 
     
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#getClearColor">Grape2D.Renderer#getClearColor</a>
-    </li></dd>
-    
     
     
     
@@ -736,7 +522,7 @@ The width is supposed to be an int
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 138
+        renderers/CanvasRenderer.js, line 182
     </li></ul></dd>
     
     
@@ -761,7 +547,7 @@ The width is supposed to be an int
     
             
 <div class="param-desc">
-    the clear color
+    Canvas 2D context.
 </div>
 
 
@@ -772,7 +558,7 @@ The width is supposed to be an int
 	</dt>
 	<dd>
 		
-<span class="param-type">number</span>
+<span class="param-type">CanvasRenderingContext2D</span>
 
 
 	</dd>
@@ -786,628 +572,7 @@ The width is supposed to be an int
         
             
 <dt>
-    <h4 class="name" id="getHalfHeight"><span class="type-signature"></span>getHalfHeight<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the half height of the renderer
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#getHalfHeight">Grape2D.Renderer#getHalfHeight</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 120
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    the half width
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getHalfWidth"><span class="type-signature"></span>getHalfWidth<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the half width of the renderer.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#getHalfWidth">Grape2D.Renderer#getHalfWidth</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 94
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    the half width
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getHeight"><span class="type-signature"></span>getHeight<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the renderer height
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#getHeight">Grape2D.Renderer#getHeight</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 112
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    the height
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getOpacity"><span class="type-signature"></span>getOpacity<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the alpha component that is being added to the objects rendered.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#getOpacity">Grape2D.Renderer#getOpacity</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 155
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    A number between 0 and 255.
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getWidth"><span class="type-signature"></span>getWidth<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the renderer width.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#getWidth">Grape2D.Renderer#getWidth</a>
-    </li></dd>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 86
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    the width
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="renderAABB"><span class="type-signature"></span>renderAABB<span class="signature">(aabb, camera)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Renders an AABB's wireframe.
-This highly unoptimazed.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>aabb</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Grape2D.AABB.html">Grape2D.AABB</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">AABB shape.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>camera</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Grape2D.Camera.html">Grape2D.Camera</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">A camera.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/CanvasRenderer.js, line 59
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="renderCircle"><span class="type-signature"></span>renderCircle<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getDOMElement"><span class="type-signature"></span>getDOMElement<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1444,7 +609,7 @@ This highly unoptimazed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/CanvasRenderer.js, line 94
+        renderers/CanvasRenderer.js, line 173
     </li></ul></dd>
     
     
@@ -1472,7 +637,137 @@ This highly unoptimazed.
         
             
 <dt>
-    <h4 class="name" id="renderImage"><span class="type-signature"></span>renderImage<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getHalfHeight"><span class="type-signature"></span>getHalfHeight<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        renderers/CanvasRenderer.js, line 53
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getHalfWidth"><span class="type-signature"></span>getHalfWidth<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        renderers/CanvasRenderer.js, line 35
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getHeight"><span class="type-signature"></span>getHeight<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1537,6 +832,266 @@ This highly unoptimazed.
         
             
 <dt>
+    <h4 class="name" id="getWidth"><span class="type-signature"></span>getWidth<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        renderers/CanvasRenderer.js, line 29
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renderAABB"><span class="type-signature"></span>renderAABB<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        renderers/CanvasRenderer.js, line 84
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renderCircle"><span class="type-signature"></span>renderCircle<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        renderers/CanvasRenderer.js, line 118
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renderImage"><span class="type-signature"></span>renderImage<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        renderers/CanvasRenderer.js, line 78
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="renderObject2D"><span class="type-signature"></span>renderObject2D<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
@@ -1574,7 +1129,7 @@ This highly unoptimazed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/CanvasRenderer.js, line 41
+        renderers/CanvasRenderer.js, line 72
     </li></ul></dd>
     
     
@@ -1639,7 +1194,72 @@ This highly unoptimazed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/CanvasRenderer.js, line 106
+        renderers/CanvasRenderer.js, line 129
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renderText"><span class="type-signature"></span>renderText<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        renderers/CanvasRenderer.js, line 151
     </li></ul></dd>
     
     
@@ -1704,7 +1324,7 @@ This highly unoptimazed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/CanvasRenderer.js, line 34
+        renderers/CanvasRenderer.js, line 65
     </li></ul></dd>
     
     
@@ -1732,70 +1352,18 @@ This highly unoptimazed.
         
             
 <dt>
-    <h4 class="name" id="setClearColor"><span class="type-signature"></span>setClearColor<span class="signature">(color)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setFillColor"><span class="type-signature"></span>setFillColor<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
-    <div class="description">
-        Sets the color to clear the scene.
-    </div>
-    
 
     
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>color</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">The color.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -1806,11 +1374,6 @@ This highly unoptimazed.
     
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#setClearColor">Grape2D.Renderer#setClearColor</a>
-    </li></dd>
     
     
     
@@ -1826,7 +1389,7 @@ This highly unoptimazed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 146
+        renderers/CanvasRenderer.js, line 194
     </li></ul></dd>
     
     
@@ -1854,70 +1417,18 @@ This highly unoptimazed.
         
             
 <dt>
-    <h4 class="name" id="setHeight"><span class="type-signature"></span>setHeight<span class="signature">(height)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setHeight"><span class="type-signature"></span>setHeight<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
-    <div class="description">
-        Sets the height of the renderer and computes the half height.
-    </div>
-    
 
     
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>height</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">the new height</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -1928,11 +1439,6 @@ This highly unoptimazed.
     
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#setHeight">Grape2D.Renderer#setHeight</a>
-    </li></dd>
     
     
     
@@ -1948,7 +1454,7 @@ This highly unoptimazed.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 128
+        renderers/CanvasRenderer.js, line 59
     </li></ul></dd>
     
     
@@ -1976,71 +1482,18 @@ This highly unoptimazed.
         
             
 <dt>
-    <h4 class="name" id="setOpacity"><span class="type-signature"></span>setOpacity<span class="signature">(opacity)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setStrokeColor"><span class="type-signature"></span>setStrokeColor<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
-    <div class="description">
-        Sets the opacity (alpha component) of the object that are gonna be
-rendered.
-    </div>
-    
 
     
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>opacity</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">A number between 0 (transparent) and 255 (opaque).</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -2051,11 +1504,6 @@ rendered.
     
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#setOpacity">Grape2D.Renderer#setOpacity</a>
-    </li></dd>
     
     
     
@@ -2071,7 +1519,7 @@ rendered.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 164
+        renderers/CanvasRenderer.js, line 188
     </li></ul></dd>
     
     
@@ -2099,70 +1547,18 @@ rendered.
         
             
 <dt>
-    <h4 class="name" id="setWidth"><span class="type-signature"></span>setWidth<span class="signature">(width)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setWidth"><span class="type-signature"></span>setWidth<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
-    <div class="description">
-        Sets the width of the renderer and computes the half width.
-    </div>
-    
 
     
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>width</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">the width</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -2173,11 +1569,6 @@ rendered.
     
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Renderer.html#setWidth">Grape2D.Renderer#setWidth</a>
-    </li></dd>
     
     
     
@@ -2193,7 +1584,72 @@ rendered.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 102
+        renderers/CanvasRenderer.js, line 41
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="start"><span class="type-signature"></span>start<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        renderers/CanvasRenderer.js, line 157
     </li></ul></dd>
     
     
@@ -2234,13 +1690,13 @@ rendered.
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{number}</li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Jul 12 2013 19:31:13 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Jul 19 2013 18:25:04 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>
