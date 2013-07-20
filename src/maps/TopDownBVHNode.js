@@ -86,6 +86,15 @@ Grape2D.TopDownBVHNode.prototype = {
 			var r = Grape2D.BVHStrategySingleton.getStrategy().solve(objects),
 				factory = Grape2D.BVFactorySingleton.getFactory();
 
+			if (r.endState) {
+				//nop it's a leaf after all.
+				this.leaf = true;
+				for (var i = 0; i < objects.length; i++) {
+					this.objects.push(objects[i]);
+				}
+				return;
+			}
+
 			this.bv = factory.merge(objects[0].getBoundingBox(), objects[1].getBoundingBox());
 			for (var i = 2; i < objects.length; i++) {
 				this.bv = factory.merge(this.bv, objects[i].getBoundingBox());

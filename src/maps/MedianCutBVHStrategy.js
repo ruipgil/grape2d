@@ -18,7 +18,8 @@ Grape2D.MedianCutBVHStrategy.prototype = Object.create(Grape2D.BVHStrategy.proto
  *   axis
  * <li> Objects at the left of the axis will be places at the left side,
  *   the others at the right side.
- * <ol>
+ * <li> If the bounding box has width and height of 0 then a flag is set
+ *   to indicate that the objects should stay at the same leaf.
  * Heuristic described by Gino van den Bergen (gino@dtecta.com), from his GDC
  *   conference titled "Physics for Game Programmers: Spatial Data Structures".
  * @override
@@ -26,7 +27,8 @@ Grape2D.MedianCutBVHStrategy.prototype = Object.create(Grape2D.BVHStrategy.proto
 Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 	var result = {
 		left: [],
-		right: []
+		right: [],
+		endState: false
 	};
 
 	var minX = +Infinity,
@@ -51,6 +53,11 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 		if (maxY < temp.getY()) {
 			maxY = temp.getY();
 		}
+	}
+
+	if ((maxX - minX) === 0 && (maxY - minY) === 0) {
+		result.endState = true;
+		return result;
 	}
 
 	if ((minX + maxX) >= (minY + maxY)) {

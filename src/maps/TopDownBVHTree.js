@@ -82,7 +82,7 @@ Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
  * @constant {!number}
  * @public
  */
-Grape2D.TopDownBVHTree.MAX_DEPTH = 50;
+Grape2D.TopDownBVHTree.MAX_DEPTH = 5;
 /**
  * Minimum of objects per leaf.
  * @constant {!number}
