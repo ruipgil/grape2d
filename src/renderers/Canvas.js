@@ -70,7 +70,7 @@ Grape2D.Canvas.prototype = {
 	 * @return {!number} Canvas height.
 	 */
 	getHeight: function() {
-		return this.height;
+		return this.canvas.height;
 	},
 	/**
 	 * Gets canvas half height.
