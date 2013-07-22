@@ -1,2 +1,0 @@
-python build.py --include common
-java -jar compiler/compiler.jar --compilation_level=SIMPLE_OPTIMIZATIONS --warning_level=VERBOSE --language_in=ECMASCRIPT5_STRICT --js ../build/Grape2D.js --js_output_file ../build/Grape2D.min.js
