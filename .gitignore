@@ -15,5 +15,5 @@ utils/node_modules
 build/*.report.txt
 build/*.map
 build/*
-docs/*
-docs/api/*.html
+docs/
+docs/api/
