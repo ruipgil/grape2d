@@ -11,7 +11,8 @@
 var Grape2D = {
 	vernum: /*@#version.num*/ 0 /*@#version#*/ ,
 	version: /*@#version.string*/ '' /*@#version#*/
-};/**
+};
+/**
  * Credits for the requestAnimationFrame and cancelAnimationFrame
  *   {@link https://gist.github.com/paulirish/1579671}
  *   {@link http://paulirish.com/2011/requestanimationframe-for-smart-animating/}
@@ -43,7 +44,8 @@ var Grape2D = {
 		window.cancelAnimationFrame = function(id) {
 			clearTimeout(id);
 		};
-}());/**
+}());
+/**
  * Browser independent utils
  *
  * @namespace
@@ -65,7 +67,8 @@ Grape2D.utils = {
 			height: document.height || document.documentElement.clientHeight
 		};
 	}
-};/**
+};
+/**
  * Clock is used to keep count of the time elapse between
  *   game frames.
  *
@@ -117,7 +120,8 @@ Grape2D.utils.Clock.prototype = {
 		this.frameCount = 0;
 		this.end = time;
 	}
-};/**
+};
+/**
  * Math describes the namespace that holds math functions and
  *   constants. Optimizations or browser specific functions for math
  *   sshould be implemented in this namespace.
@@ -308,7 +312,8 @@ Grape2D.Math = {
 	sq: function(n) {
 		return n * n;
 	}
-};/**
+};
+/**
  * Describes a math vector in the cartesian space (2D).
  *   This is also very useful and may be used to represent
  *   points.
@@ -629,7 +634,8 @@ Grape2D.Vector.createFromPoints = function(a, b) {
  */
 Grape2D.Vector.createFromAngle = function(angle, magnitude) {
 	return new Grape2D.Vector(magnitude * Grape2D.Math.cos(angle), magnitude * Grape2D.Math.sin(angle));
-};/**
+};
+/**
  * Matrix defines a 3x3 matrix indicated to deal with 2D operations.
  *   If it's instantiated with no arguments then, it becomes the
  *   identity matrix.
@@ -845,9 +851,11 @@ Grape2D.Matrix.prototype = {
 			this.v[6] + " " + this.v[7] + " " + this.v[8];
 	}
 
-};/**
+};
+/**
  * Renderers are used to render graphics to the screen.
  *
+ * @class
  * @interface
  */
 Grape2D.Renderer = function() {};
@@ -1002,14 +1010,15 @@ Grape2D.Renderer.prototype = {
 	 * @public
 	 */
 	setFillColor: function(color) {}
-};/**
+};
+/**
  * This is a simple abstraction of the canvas object,
  *   may be used to do some optimizations.
  *
  * @constructor
  */
 Grape2D.Canvas = function(options) {
-	if (!options) options = {};
+	options = options || {};
 	/**
 	 * Canvas DOM element.
 	 *
@@ -1039,7 +1048,7 @@ Grape2D.Canvas = function(options) {
 	 * @type {!CanvasRenderingContext2D}
 	 * @private
 	 */
-	this.context = this.canvas.getContext("2D");
+	this.context = this.canvas.getContext("2d");
 };
 
 Grape2D.Canvas.prototype = {
@@ -1074,7 +1083,7 @@ Grape2D.Canvas.prototype = {
 	 * @return {!number} Canvas height.
 	 */
 	getHeight: function() {
-		return this.height;
+		return this.canvas.height;
 	},
 	/**
 	 * Gets canvas half height.
@@ -1714,9 +1723,10 @@ Grape2D.Canvas.prototype = {
 	 * Clears the canvas.
 	 */
 	clear: function() {
-		this.context.clearRect(0, 0, this.width, this.height);
+		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	}
-};/**
+};
+/**
  * This renders objects to a canvas object, with a 2D context. This
  *   method is not hardware accelerated by default, however is the
  *   most stable and cross-browser.
@@ -1911,7 +1921,8 @@ Grape2D.CanvasRenderer.prototype.setStrokeColor = function(color) {
  */
 Grape2D.CanvasRenderer.prototype.setFillColor = function(color) {
 	this.canvas.setFillStyle(color);
-};/**
+};
+/**
  * Only renders the wireframe of (the bounding box of)
  *   {@link Grape2D.Object2D}, using another {@link Grape2D.Renderer}, 
  *   such as {@link Grape2D.CanvasRenderer}. This class is a bridge,
@@ -2051,7 +2062,666 @@ Grape2D.WireframeRenderer.prototype.setStrokeColor = function(color) {
  */
 Grape2D.WireframeRenderer.prototype.setFillColor = function(color) {
 	this.renderer.setFillColor(color);
-};/**
+};
+/**
+ * Object2D represents an object of the scene.
+ *   An Object2D is a simple scene object which the main
+ *   purpose is to render a texture at a position. More
+ *   complex behaviors should be implemented by others
+ *   objects that inherit from Object2D.
+ *
+ * @param {!Grape2D.Vector=} options.position The position of the shape
+ * @param {!boolean=} options.visible True to render the object, false
+ *		otherwise.
+ * @param {!Grape2D.Texture} options.texture The texture of the object.
+ * @param {!Grape2D.Vector=} options.textureOffset The offset position
+ *		of the texture relative to the objects position.
+ * @param {!Grape2D.Shape} options.boundingBox The primary use of the
+ *		bounding box is to select the items to display in the renderer,
+ *		other behaviors such as collision detection can be done with
+ *		this property, in some simple cases.
+ * @param {!Grape2D.Vector=} options.boundingBoxOffset The offset
+ *		position of the bounding box relative to the objects position.
+ * @param {!boolean=} options.castShadow Used by the IlluminatedRenderer
+ *		to render this object shadow.
+ * @param {!boolean=} options.receiveLight Used by the IlluminatedRenderer
+ *		to render the objects texture with a light overlay, if set to true.
+ *
+ * @constructor
+ */
+Grape2D.Object2D = function (options) {
+
+	/**
+	 * Object's position.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.position = options.position || new Grape2D.Vector();
+
+	/**
+	 * Visible property.
+	 *
+	 * @type {!boolean}
+	 * @private
+	 */
+	this.visible = options.visible || true;
+
+	/**
+	 * The texture of the object.
+	 *
+	 * @type {!Grape2D.Texture}
+	 * @private
+	 */
+	this.texture = options.texture;
+	/**
+	 * The offset of the texture.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.textureOffset = options.textureOffset || new Grape2D.Vector();
+	/**
+	 * The position of the texture. It is computed from the object's position and the texture offset.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.texturePosition = new Grape2D.Vector();
+	//computes the texture position.
+	this.computeTexturePosition();
+	/**
+	 * Object's bounding box.
+	 *
+	 * @type {!Grape2D.Shape}
+	 * @private
+	 */
+	this.boundingBox = options.boundingBox;
+	/**
+	 * Bounding box offset.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.boundingBoxOffset = options.boundingBoxOffset || new Grape2D.Vector();
+
+	this.computeBoundingBoxPosition();
+
+	/**
+	 * Object cast shadow.
+	 *
+	 * @type {!boolean}
+	 * @private
+	 */
+	this.castShadow = options.castShadow || false;
+	/**
+	 * Object can receive light.
+	 *
+	 * @type {!boolean}
+	 * @private
+	 */
+	this.receiveLight = options.receiveLight || false;
+
+};
+
+Grape2D.Object2D.prototype = {
+	constructor: Grape2D.Object2D,
+	/**
+	 * Checks if the object should be rendered.
+	 *
+	 * @return {!boolean} True if it can be rendered.
+	 * @public
+	 */
+	isVisible: function () {
+		return this.visible;
+	},
+	/**
+	 * Sets if an object should be rendered.
+	 *
+	 * @param  {!boolean} visible True, so that it renders, false
+	 *   otherwise.
+	 * @public
+	 */
+	setVisible: function (visible) {
+		this.visible = visible;
+		return;
+	},
+	/**
+	 * Gets the texture of the object.
+	 *
+	 * @return {!Grape2D.Texture} The texture of the object.
+	 * @public
+	 */
+	getTexture: function () {
+		return this.texture;
+	},
+	/**
+	 * Sets the texture of the object.
+	 *
+	 * @param  {!Grape2D.Texture} texture The texture.
+	 * @public
+	 */
+	setTexture: function (texture) {
+		this.texture = texture;
+		return;
+	},
+	/**
+	 * Gets the bounding box of the object.
+	 *
+	 * @return {!Grape2D.Shape} The shape of the object.
+	 * @public
+	 */
+	getBoundingBox: function () {
+		return this.boundingBox;
+	},
+	/**
+	 * Sets the bounding box of the object.
+	 * Also, the position of the new bounding box, will be transformed
+	 *   in the default offset of the bounding box.
+	 *
+	 * @param  {!Grape2D.Shape} boundingBox The bounding box.
+	 * @public
+	 */
+	setBoundingBox: function (boundingBox) {
+		this.boundingBox = boundingBox;
+		this.computeBoundingBoxPosition();
+		return;
+	},
+	/**
+	 * Checks if the object can cast shadows.
+	 *
+	 * @return {!boolean} True if it cast shadows, false otherwise.
+	 * @public
+	 */
+	canCastShadow: function () {
+		return this.castShadow;
+	},
+	/**
+	 * Sets if an object can cast shadows.
+	 *
+	 * @param  {!boolean} castShadow True to cast shadows, false
+	 *   otherwise.
+	 * @public
+	 */
+	setCastShadow: function (castShadow) {
+		this.castShadow = castShadow;
+		return;
+	},
+	/**
+	 * Checks if an object can receive light.
+	 *
+	 * @return {!boolean} True if it receives light.
+	 * @public
+	 */
+	canReceiveLight: function () {
+		return this.receiveLight;
+	},
+	/**
+	 * Sets if the object can receive light.
+	 *
+	 * @param  {!boolean} receiveLight True if it receives light.
+	 * @public
+	 */
+	setReceiveLight: function (receiveLight) {
+		this.receiveLight = receiveLight;
+		return;
+	},
+	/**
+	 * Gets the object position. Be careful, because it returns the
+	 *   vector used by the object, and not a copy. Use it wisely.
+	 *
+	 * @return {!Grape2D.Vector} The position of the object.
+	 * @public
+	 */
+	getPosition: function () {
+		return this.position;
+	},
+	/**
+	 * Sets the object position.
+	 *
+	 * @param  {!Grape2D.Vector} position The position of the object.
+	 * @public
+	 */
+	setPosition: function (position) {
+		this.position.set(position);
+		this.computeBoundingBoxPosition();
+		this.computeTexturePosition();
+	},
+	/**
+	 * Sets the texture offset.
+	 *
+	 * @param  {!Grape2D.Vector} offset The offset of the texture, from
+	 *   the object's position.
+	 * @public
+	 */
+	setTextureOffset: function (offset) {
+		this.textureOffset.set(offset);
+		this.computeTexturePosition();
+	},
+	/**
+	 * Gets the texture offset
+	 *
+	 * @return {!Grape2D.Vector} The texture offset.
+	 * @public
+	 */
+	getTextureOffset: function () {
+		return this.textureOffset;
+	},
+	/**
+	 * Sets the bounding box offset.
+	 *
+	 * @param  {!Grape2D.Vector} offset The offset of the bounding
+	 *   box, from the object's position.
+	 * @public
+	 */
+	setBoundingBoxOffset: function (offset) {
+		this.boundingBoxOffset.set(offset);
+		this.computeBoundingBoxPosition();
+	},
+	/**
+	 * Gets the bounding box offset
+	 *
+	 * @return {!Grape2D.Vector} The bounding box offset.
+	 * @public
+	 */
+	getBoundingBoxOffset: function () {
+		return this.boundingBoxOffset;
+	},
+	/**
+	 * Computes the bounding box position, from the object's position
+	 *   and bounding box offset.
+	 * @protected
+	 */
+	computeBoundingBoxPosition: function () {
+		this.boundingBox.setPosition(this.position);
+		this.boundingBox.getPosition().add(this.boundingBoxOffset);
+	},
+	/**
+	 * Gets the bounding box position.
+	 *
+	 * @return {!Grape2D.Vector} The center position of the bounding box.
+	 * @public
+	 */
+	getBoundingBoxPosition: function () {
+		return this.boundingBox.getPosition();
+	},
+	/**
+	 * Computes the texture position of the object, from the object's
+	 *   position and texture offset.
+	 * @protected
+	 */
+	computeTexturePosition: function () {
+		this.texturePosition.set(this.position).add(this.textureOffset);
+	},
+	/**
+	 * Gets the texture position.
+	 *
+	 * @return {!Grape2D.Vector} The position of the texture
+	 * @public
+	 */
+	getTexturePosition: function () {
+		return this.texturePosition;
+	},
+	/**
+	 * Renders the object to a renderer.
+	 *
+	 * @param  {!Grape2D.Renderer} renderer The place to render the
+	 *   object.
+	 * @param  {!Grape2D.Camera} camera The camera, that will
+	 *   transform the positions.
+	 * @public
+	 */
+	render: function (renderer, camera) {
+		renderer.renderObject2D(this, camera);
+	},
+	/**
+	 * Updates the object. This method should be refined in further
+	 *   subclasses if needed be.
+	 *
+	 * @param  {!number} dt Time interval.
+	 * @param  {!Grape2D.Scene} scene Scene where this object is.
+	 * @public
+	 */
+	update: function (dt, scene) {}
+};
+/**
+ * Shape is an abstract class that describes "physical", objects.
+ *   The main objective of a Shape is to serve as a bounding box. It
+ *   should play the main role when selecting the objects to render,
+ *   when it comes to collision detection and/or to detect user
+ *   interaction with an object.
+ *
+ * @param {!Grape2D.Vector=} options.position The position of the shape.
+ *
+ * @constructor
+ */
+Grape2D.Shape = function(options) {
+	options = options || {};
+	/**
+	 * Shape's position.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @protected
+	 */
+	this.position = options.position || new Grape2D.Vector();
+};
+
+Grape2D.Shape.prototype = {
+	constructor: Grape2D.Shape,
+	/**
+	 * Gets the position of the object.
+	 *
+	 * @return {!Grape2D.Vector} The center position of the shape.
+	 * @public
+	 */
+	getPosition: function() {
+		return this.position;
+	},
+	/**
+	 * Set the position of the shape.
+	 *
+	 * @param  {!Grape2D.Vector} position The new position of the shape.
+	 * @public
+	 */
+	setPosition: function(position) {
+		this.position.set(position);
+	},
+	/**
+	 * Renders the wireframe of the shape.
+	 *
+	 * @param  {!Grape2D.Vector} renderer The renderer to render the
+	 *   shape's wireframe.
+	 * @param  {!Grape2D.Camera} camera The camera to transform the
+	 *   positions.
+	 * @public
+	 */
+	render: function(renderer, camera) {},
+	/**
+	 * Creates a bounding volume, based in this one and in a
+	 *   {@link Grape2D.BVFactory}.
+	 *
+	 * @param  {!Grape2D.BVFactory} bvfactory The bounding volume
+	 *   factory.
+	 * @return {!Grape2D.Shape} The shape created by the
+	 *   {@link Grape2D.BVFactory}.
+	 * @public
+	 */
+	createBV: function(bvfactory) {},
+	/**
+	 * Gets teh static type of the shape. This method must be overriden,
+	 *   for specific shapes.
+	 *
+	 * @return {!string} The type of the shape.
+	 * @public
+	 */
+	getStaticType: function() {}
+};
+/**
+ * AABB (standing for Axis Align Bounding Box), represents
+ *   rectangular shapes.
+ *
+ * @param {!Object} options Setup options. See {@link Grape2D.Shape}
+ * @param {?Grape2D.Vector} options.position - The position of the
+ *   polygon.
+ * @param {!number} options.width Width of the AABB.
+ * @param {!number} options.height Height of the AABB.
+ * 
+ * @extends Grape2D.Shape
+ * @constructor
+ */
+Grape2D.AABB = function(options){
+	Grape2D.Shape.call(this, options);
+	/**
+	 * Shape's width.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.width = options.width;
+	/**
+	 * Shape's half width.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.hwidth = this.width/2;
+	/**
+	 * Shapes's height.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.height = options.height;
+	/**
+	 * Shapes's half height.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.hheight = this.height/2;
+};
+
+Grape2D.AABB.prototype = Object.create(Grape2D.Shape.prototype);
+/**
+ * Gets the width of the AABB.
+ *
+ * @return {!number} The width of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.getWidth = function(){
+	return this.width;
+};
+/**
+ * Gets the height of the AABB.
+ *
+ * @return {!number} The height of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.getHeight = function(){
+	return this.height;
+};
+/**
+ * Gets the half width (width/2) of the AABB.
+ *
+ * @return {!number} Half width of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.getHalfWidth = function(){
+	return this.hwidth;
+};
+/**
+ * Gets the half height (height/2) of the AABB.
+ *
+ * @return {!number} Half height of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.getHalfHeight = function(){
+	return this.hheight;
+};
+/**
+ * Sets the width of the AABB.
+ *
+ * @param  {!number} width The width of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.setWidth = function(width){
+	this.width = width;
+	this.hwidth = this.width/2;
+};
+/**
+ * Sets the height of the AABB.
+ *
+ * @param  {!number} height The height of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.setHeight = function(height){
+	this.height = height;
+	this.hheight = this.height;
+};
+/**
+ * @override
+ */
+Grape2D.AABB.prototype.render = function(renderer, camera){
+	renderer.renderAABB(this, camera);
+};
+/**
+ * @override
+ */
+Grape2D.AABB.prototype.createBV = function(bvfactory){
+	return bvfactory.createFromAABB(this);
+};
+/**
+ * @override
+ */
+Grape2D.AABB.prototype.getStaticType = function(){
+	return Grape2D.AABB.TYPE;
+};
+/**
+ * Type of the shape.
+ *
+ * @type {!string}
+ * @static
+ * @private
+ */
+Grape2D.AABB.TYPE = "AABB";
+/**
+ * Circle describes a circle shape. A circle is defined by
+ *   it's radius.
+ *
+ * @param {!Object} options Setup options. See {@link Grape2D.Shape}
+ * @param {?Grape2D.Vector} options.position The position of the
+ *   polygon
+ * @param {!number} options.radius Radius of the circle.
+ * @extends Grape2D.Shape
+ * @constructor
+ */
+Grape2D.Circle = function(options){
+	Grape2D.Shape.call(this, options);
+	/**
+	 * Circle's radius.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.radius = options.radius;
+};
+
+Grape2D.Circle.prototype = Object.create(Grape2D.Shape.prototype);
+
+/**
+ * Gets the radius of the circle.
+ *
+ * @return {!number} The radius of the circle.
+ * @public
+ */
+Grape2D.Circle.prototype.getRadius = function(){
+	return this.radius;
+};
+/**
+ * Sets the radius of the circle.
+ *
+ * @param  {!number} radius - The new radius of the circle
+ * @public
+ */
+Grape2D.Circle.prototype.setRadius = function(radius){
+	this.radius = radius;
+};
+/**
+ * @override
+ */
+Grape2D.Circle.prototype.render = function(renderer, camera){
+	renderer.renderCircle(this, camera);
+};
+/**
+ * @override
+ */
+Grape2D.Circle.prototype.createBV = function(bvfactory){
+	return bvfactory.createFromCircle(this);
+};
+/**
+ * @override
+ */
+Grape2D.Circle.prototype.getStaticType = function(){
+	return Grape2D.Circle.TYPE;
+};
+/**
+ * Type of the shape.
+ *
+ * @type {!string}
+ * @static
+ * @private
+ */
+Grape2D.Circle.TYPE = "Circle";
+/**
+ * Polygon describes a polygon shape. A list of vertexes should
+ *   should be provided or set afterwards.
+ *
+ * @param {!Grape2D.Vector=} options.position The position of the polygon
+ * @param {!Array.<!Grape2D.Vector>} options.vertexList A list with the
+ *   vertexes of the polygon.
+ *
+ * @extends Grape2D.Shape
+ * @constructor
+ */
+Grape2D.Polygon = function(options){
+	Grape2D.Shape.call(this, options);
+	/**
+	 * Polygon's vertexes.
+	 *
+	 * @type {!Array.<!Grape2D.Vector>}
+	 * @private
+	 */
+	this.vertexList = options.vertexList;
+};
+
+Grape2D.Polygon.prototype = Object.create(Grape2D.Shape.prototype);
+
+/**
+ * Gets the list of vertexes.
+ *
+ * @return {!Array.<!Grape2D.Vector>} The array with the vertexes.
+ * @public
+ */
+Grape2D.Polygon.prototype.getVertexList = function(){
+	return this.vertexList;
+};
+/**
+ * Sets a list of vertexes.
+ *
+ * @param  {!Array.<!Grape2D.Vector>} vertexList A list with the new
+ *   vertexes.
+ * @public
+ */
+Grape2D.Polygon.prototype.setVertexList = function(vertexList){
+	this.vertexList = vertexList;
+};
+/**
+ * @override
+ */
+Grape2D.Polygon.prototype.render = function(renderer, camera){
+	renderer.renderPolygon(this, camera);
+};
+/**
+ * @override
+ */
+Grape2D.Polygon.prototype.createBV = function(bvfactory){
+	return bvfactory.createFromPolygon(this);
+};
+/**
+ * @override
+ */
+Grape2D.Polygon.prototype.getStaticType = function(){
+	return Grape2D.Polygon.TYPE;
+};
+/**
+ * Type of the shape.
+ *
+ * @type {!string}
+ * @static
+ * @private
+ */
+Grape2D.Polygon.TYPE = "Polygon";
+/**
  * Managers inputs, giving an easy to use interface.
  *   An input manager can only be listening to a single renderer
  *   at once.
@@ -2408,7 +3078,8 @@ Grape2D.InputManager.globalRegistry = {
 	keyDown: {},
 	keyUp: {},
 	keyPress: {}
-};/**
+};
+/**
  * Costum event.
  *
  * @param  {!Event} ev The DOM event.
@@ -2443,7 +3114,8 @@ Grape2D.InputManagerEvent.prototype = {
 	getRaw: function() {
 		return this.raw;
 	}
-};/**
+};
+/**
  * Camera is used to select the objects to display in a scene.
  *   A camera doesn't rotate or scale objects in the x and y axis,
  *   only the coordinates are changed to the transformation defined.
@@ -2621,7 +3293,8 @@ Grape2D.Camera.prototype = {
 			height: h
 		});
 	}
-};/**
+};
+/**
  * An aliasing camera avoid drawing objects in "half-points",
  *   for example an object to be drawn in the viewport at
  *   x=0.5 this camera will draw the object at floor(x).
@@ -2646,11 +3319,13 @@ Grape2D.AliasingCamera.prototype = Object.create(Grape2D.Camera.prototype);
  */
 Grape2D.AliasingCamera.prototype.wcsToViewport = function(renderer, vector){
 	return Grape2D.Camera.prototype.wcsToViewport.call(this, renderer, vector).use(Grape2D.Math.floor);
-};/**
+};
+/**
  * Map describes the structure that holds the objects of a scene.
  *   It's an interface, so all implementation details should be
  *   described in higher level classes.
  *
+ * @class
  * @interface
  */
 Grape2D.Map = function(){};
@@ -2700,18 +3375,25 @@ Grape2D.Map.prototype = {
 	 * @param  {!Grape2D.Scene} scene - The scene, that the map represents.
 	 * @public
 	 */
-	update: function(dt, scene){}
-};/**
+	update: function(dt, scene){},
+	/**
+	 * Reconstructs the internal representatio of the map, if needed be.
+	 *
+	 * @public
+	 */
+	rebuild: function(){}
+};
+/**
  * @classdesc SimpleMap, represents a proof of concept. This is a simple map,
  *            that just implements a simple array to store objects.
  *
  * @implements {Grape2D.Map}
  * @constructor
  */
-Grape2D.SimpleMap = function () {
+Grape2D.SimpleMap = function() {
 	/**
 	 * Objects of the map.
-	 * 
+	 *
 	 * @type {!Array.<Grape2D.Object2D>}
 	 * @private
 	 */
@@ -2723,46 +3405,51 @@ Grape2D.SimpleMap.prototype = Object.create(Grape2D.Map);
 /**
  * @override
  */
-Grape2D.SimpleMap.prototype.add = function (object) {
+Grape2D.SimpleMap.prototype.add = function(object) {
 	this.objs.push(object);
 };
 /**
  * @override
  */
-Grape2D.SimpleMap.prototype.remove = function (object) {
+Grape2D.SimpleMap.prototype.remove = function(object) {
 	this.objs.splice(this.objs.indexOf(object), 1);
 };
 /**
  * @override
  */
-Grape2D.SimpleMap.prototype.query = function (region) {
+Grape2D.SimpleMap.prototype.query = function(region) {
 	return this.objs;
 };
 /**
  * Not implemented.
  * @override
  */
-Grape2D.SimpleMap.prototype.queryPoint = function (vector) {
+Grape2D.SimpleMap.prototype.queryPoint = function(vector) {
 	return this.objs;
 };
 /**
- * Not implemented.
  * @override
  */
-Grape2D.SimpleMap.prototype.clear = function () {
+Grape2D.SimpleMap.prototype.clear = function() {
 	this.objs = [];
 };
 /**
  * @override
  */
-Grape2D.SimpleMap.prototype.update = function (dt, scene) {
+Grape2D.SimpleMap.prototype.update = function(dt, scene) {
 	for (var i = 0; i < this.objs.length; i++) {
 		this.objs[i].update(dt, scene);
 	}
-};/**
+};
+/**
+ * @override
+ */
+Grape2D.SimpleMap.prototype.rebuild = function() {};
+/**
  * Collides objects, and returns just if they're colliding, returning
  *   only a bollean giving no other information about the collision.
  *
+ * @class
  * @interface
  */
 Grape2D.CollisionChecker = function() {};
@@ -2878,7 +3565,8 @@ Grape2D.CollisionChecker.prototype = {
 	 */
 	polygonVsPoint: function(polygon, point) {}
 
-};/**
+};
+/**
  * This implements generic methods of the collision controlle. Since
  *   from algorithm to algorithm only a few methods may be different.
  *   So only methods envolving polygons should be refined.
@@ -2993,7 +3681,8 @@ Grape2D.GenericCollisionChecker.prototype.polygonVsPoint = function(polygon, poi
 		}
 	}
 	return true;
-};/**
+};
+/**
  * Concrete collision checker, that implements the SAT algorithm.
  *
  *
@@ -3123,7 +3812,8 @@ Grape2D.SATCollisionChecker.prototype.computeIntervals = function(vertexList, ax
  * @private
  * @static
  */
-Grape2D.SATCollisionChecker.aabbAxis = [new Grape2D.Vector(1, 0), new Grape2D.Vector(0, 1)];/**
+Grape2D.SATCollisionChecker.aabbAxis = [new Grape2D.Vector(1, 0), new Grape2D.Vector(0, 1)];
+/**
  * Dispatch the collisions, providing a simple interface.
  *
  * @class
@@ -3327,7 +4017,8 @@ Grape2D.CollisionDispatcher.dcache = {
 		"Polygon": Grape2D.CollisionDispatcher.polygonVsPolygon,
 		"Point": Grape2D.CollisionDispatcher.polygonVsPoint
 	}
-}/**
+};
+/**
  * Singleton to store the in-use collision checker strategy.
  *
  * @class
@@ -3375,16 +4066,19 @@ Grape2D.CollisionCheckerSingleton = {
 	collide: function(a, b){
 		return Grape2D.CollisionDispatcher.dispatch(Grape2D.CollisionCheckerSingleton.instance, a, b);
 	}
-};/**
+};
+/**
  * A bounding volume hierarchy (BVH) organizes a bounding volumes according
  *   to an hierarchy.
  *   
  * @extends {Grape2D.Map}
+ * @class
  * @interface
  */
 Grape2D.BVHTree = function(){};
 
-Grape2D.BVHTree.prototype = Object.create(Grape2D.Map.prototype);/**
+Grape2D.BVHTree.prototype = Object.create(Grape2D.Map.prototype);
+/**
  * With the top down approach the area of the bounding volume will reduce
  *   at every level.
  *
@@ -3416,7 +4110,7 @@ Grape2D.TopDownBVHTree.prototype = Object.create(Grape2D.BVHTree.prototype);
 /**
  * (Re)Builds the tree, based on the objects present on the stack.
  * 
- * @public
+ * @override
  */
 Grape2D.TopDownBVHTree.prototype.rebuild = function(){
 	this.rootNode = new Grape2D.TopDownBVHNode(null, this.objs);
@@ -3468,13 +4162,14 @@ Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
  * @constant {!number}
  * @public
  */
-Grape2D.TopDownBVHTree.MAX_DEPTH = 50;
+Grape2D.TopDownBVHTree.MAX_DEPTH = 5;
 /**
  * Minimum of objects per leaf.
  * @constant {!number}
  * @public
  */
-Grape2D.TopDownBVHTree.DEFAULT_PER_LEAF = 2;/**
+Grape2D.TopDownBVHTree.DEFAULT_PER_LEAF = 2;
+/**
  * Node of a top down BVH.
  *
  * @param  {?Grape2D.TopDownBVHNode} parent Parent node, or null, it it's
@@ -3550,11 +4245,11 @@ Grape2D.TopDownBVHNode.prototype = {
 	 * @public
 	 */
 	compute: function(objects) {
-
+		var i;
 		if (objects.length <= Grape2D.TopDownBVHTree.DEFAULT_PER_LEAF || this.depth >= Grape2D.TopDownBVHTree.MAX_DEPTH) {
 			//this instance will be a leaf
 			this.leaf = true;
-			for (var i = 0; i < objects.length; i++) {
+			for (i = 0; i < objects.length; i++) {
 				this.objects.push(objects[i]);
 			}
 		} else {
@@ -3562,8 +4257,17 @@ Grape2D.TopDownBVHNode.prototype = {
 			var r = Grape2D.BVHStrategySingleton.getStrategy().solve(objects),
 				factory = Grape2D.BVFactorySingleton.getFactory();
 
+			if (r.endState) {
+				//nop it's a leaf after all.
+				this.leaf = true;
+				for (i = 0; i < objects.length; i++) {
+					this.objects.push(objects[i]);
+				}
+				return;
+			}
+
 			this.bv = factory.merge(objects[0].getBoundingBox(), objects[1].getBoundingBox());
-			for (var i = 2; i < objects.length; i++) {
+			for (i = 2; i < objects.length; i++) {
 				this.bv = factory.merge(this.bv, objects[i].getBoundingBox());
 			}
 
@@ -3670,10 +4374,12 @@ Grape2D.TopDownBVHNode.prototype = {
 	getDepth: function() {
 		return this.depth;
 	}
-};/**
+};
+/**
  * A BVH Strategy is used to sort and divide objects according to a 
  *   set of rules.
  *
+ * @class
  * @interface
  */
 Grape2D.BVHStrategy = function(){};
@@ -3690,7 +4396,8 @@ Grape2D.BVHStrategy.prototype = {
 	 * @public
 	 */
 	solve: function(objects){}
-};/**
+};
+/**
  * The median cut algorithm splits the set in two equal parts, along the
  *   selected axis. It creates a more balanced tree. However unbalanced
  *   trees perform better.
@@ -3710,7 +4417,8 @@ Grape2D.MedianCutBVHStrategy.prototype = Object.create(Grape2D.BVHStrategy.proto
  *   axis
  * <li> Objects at the left of the axis will be places at the left side,
  *   the others at the right side.
- * <ol>
+ * <li> If the bounding box has width and height of 0 then a flag is set
+ *   to indicate that the objects should stay at the same leaf.
  * Heuristic described by Gino van den Bergen (gino@dtecta.com), from his GDC
  *   conference titled "Physics for Game Programmers: Spatial Data Structures".
  * @override
@@ -3718,7 +4426,8 @@ Grape2D.MedianCutBVHStrategy.prototype = Object.create(Grape2D.BVHStrategy.proto
 Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 	var result = {
 		left: [],
-		right: []
+		right: [],
+		endState: false
 	};
 
 	var minX = +Infinity,
@@ -3745,6 +4454,11 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 		}
 	}
 
+	if ((maxX - minX) === 0 && (maxY - minY) === 0) {
+		result.endState = true;
+		return result;
+	}
+
 	if ((minX + maxX) >= (minY + maxY)) {
 		axis = (maxX + minX) / 2;
 
@@ -3769,7 +4483,8 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 		}
 	}
 	return result;
-};/**
+};
+/**
  * A singleton for BVH strategies.
  *
  * @class
@@ -3803,9 +4518,11 @@ Grape2D.BVHStrategySingleton = {
 	getStrategy: function(){
 		return Grape2D.BVHStrategySingleton.strategy;
 	}
-};/**
+};
+/**
  * Creates bounding volumes based in an input object.
- * 
+ *
+ * @class
  * @interface
  */
 Grape2D.BVFactory = function() {};
@@ -3857,7 +4574,8 @@ Grape2D.BVFactory.prototype = {
 	 * @public
 	 */
 	getPlaceHolder: function(){}
-};/**
+};
+/**
  * Creates bounding volumes based in an input object.
  *
  * @implements {Grape2D.BVFactory}
@@ -3993,7 +4711,8 @@ Grape2D.AabbBVFactory.prototype.getPlaceHolder = function() {
 Grape2D.AabbBVFactory.PLACE_HOLDER = new Grape2D.AABB({
 	width: 0,
 	height: 0
-});/**
+});
+/**
  * Holds the current bounding volume factory {@link Grape2D.BVFactory}
  *
  * @class
@@ -4050,9 +4769,11 @@ Grape2D.BVFactorySingleton = {
 	getPlaceHolder: function(){
 		return Grape2D.BVFactorySingleton.bvfactory.getPlaceHolder();
 	}
-};/**
+};
+/**
  * Describes a texture.
  *
+ * @class
  * @interface
  */
 Grape2D.ITexture = function() {};
@@ -4110,7 +4831,8 @@ Grape2D.ITexture.prototype = {
 	 * @public
 	 */
 	render: function(renderer, position) {}
-};/**
+};
+/**
  * Texture represents an "image", ready to be rendered to
  *   a renderer, with high efficiency. The efficiency comes
  *   from the fact that a cached image can be renderer faster.
@@ -4263,7 +4985,8 @@ Grape2D.Texture.createFromImage = function(src, callback) {
 	image.src = src;
 
 	return that;
-};/**
+};
+/**
  * A void texture doesn't render any image, nor have any property.
  *
  * @implements {Grape2D.ITexture}
@@ -4313,664 +5036,13 @@ Grape2D.VoidTexture.prototype.setHeight = function(height){
  */
 Grape2D.VoidTexture.prototype.render = function(){
 	return;
-};/**
- * Object2D represents an object of the scene.
- *   An Object2D is a simple scene object which the main
- *   purpose is to render a texture at a position. More
- *   complex behaviors should be implemented by others
- *   objects that inherit from Object2D.
- *
- * @param {!Grape2D.Vector=} options.position The position of the shape
- * @param {!boolean=} options.visible True to render the object, false
- *		otherwise.
- * @param {!Grape2D.Texture} options.texture The texture of the object.
- * @param {!Grape2D.Vector=} options.textureOffset The offset position
- *		of the texture relative to the objects position.
- * @param {!Grape2D.Shape} options.boundingBox The primary use of the
- *		bounding box is to select the items to display in the renderer,
- *		other behaviors such as collision detection can be done with
- *		this property, in some simple cases.
- * @param {!Grape2D.Vector=} options.boundingBoxOffset The offset
- *		position of the bounding box relative to the objects position.
- * @param {!boolean=} options.castShadow Used by the IlluminatedRenderer
- *		to render this object shadow.
- * @param {!boolean=} options.receiveLight Used by the IlluminatedRenderer
- *		to render the objects texture with a light overlay, if set to true.
- *
- * @constructor
- */
-Grape2D.Object2D = function (options) {
-
-	/**
-	 * Object's position.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
-	 */
-	this.position = options.position || new Grape2D.Vector();
-
-	/**
-	 * Visible property.
-	 *
-	 * @type {!boolean}
-	 * @private
-	 */
-	this.visible = options.visible || true;
-
-	/**
-	 * The texture of the object.
-	 *
-	 * @type {!Grape2D.Texture}
-	 * @private
-	 */
-	this.texture = options.texture;
-	/**
-	 * The offset of the texture.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
-	 */
-	this.textureOffset = options.textureOffset || new Grape2D.Vector();
-	/**
-	 * The position of the texture. It is computed from the object's position and the texture offset.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
-	 */
-	this.texturePosition = new Grape2D.Vector();
-	//computes the texture position.
-	this.computeTexturePosition();
-	/**
-	 * Object's bounding box.
-	 *
-	 * @type {!Grape2D.Shape}
-	 * @private
-	 */
-	this.boundingBox = options.boundingBox;
-	/**
-	 * Bounding box offset.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
-	 */
-	this.boundingBoxOffset = options.boundingBoxOffset || new Grape2D.Vector();
-
-	this.computeBoundingBoxPosition();
-
-	/**
-	 * Object cast shadow.
-	 *
-	 * @type {!boolean}
-	 * @private
-	 */
-	this.castShadow = options.castShadow || false;
-	/**
-	 * Object can receive light.
-	 *
-	 * @type {!boolean}
-	 * @private
-	 */
-	this.receiveLight = options.receiveLight || false;
-
-};
-
-Grape2D.Object2D.prototype = {
-	constructor: Grape2D.Object2D,
-	/**
-	 * Checks if the object should be rendered.
-	 *
-	 * @return {!boolean} True if it can be rendered.
-	 * @public
-	 */
-	isVisible: function () {
-		return this.visible;
-	},
-	/**
-	 * Sets if an object should be rendered.
-	 *
-	 * @param  {!boolean} visible True, so that it renders, false
-	 *   otherwise.
-	 * @public
-	 */
-	setVisible: function (visible) {
-		this.visible = visible;
-		return;
-	},
-	/**
-	 * Gets the texture of the object.
-	 *
-	 * @return {!Grape2D.Texture} The texture of the object.
-	 * @public
-	 */
-	getTexture: function () {
-		return this.texture;
-	},
-	/**
-	 * Sets the texture of the object.
-	 *
-	 * @param  {!Grape2D.Texture} texture The texture.
-	 * @public
-	 */
-	setTexture: function (texture) {
-		this.texture = texture;
-		return;
-	},
-	/**
-	 * Gets the bounding box of the object.
-	 *
-	 * @return {!Grape2D.Shape} The shape of the object.
-	 * @public
-	 */
-	getBoundingBox: function () {
-		return this.boundingBox;
-	},
-	/**
-	 * Sets the bounding box of the object.
-	 * Also, the position of the new bounding box, will be transformed
-	 *   in the default offset of the bounding box.
-	 *
-	 * @param  {!Grape2D.Shape} boundingBox The bounding box.
-	 * @public
-	 */
-	setBoundingBox: function (boundingBox) {
-		this.boundingBox = boundingBox;
-		this.computeBoundingBoxPosition();
-		return;
-	},
-	/**
-	 * Checks if the object can cast shadows.
-	 *
-	 * @return {!boolean} True if it cast shadows, false otherwise.
-	 * @public
-	 */
-	canCastShadow: function () {
-		return this.castShadow;
-	},
-	/**
-	 * Sets if an object can cast shadows.
-	 *
-	 * @param  {!boolean} castShadow True to cast shadows, false
-	 *   otherwise.
-	 * @public
-	 */
-	setCastShadow: function (castShadow) {
-		this.castShadow = castShadow;
-		return;
-	},
-	/**
-	 * Checks if an object can receive light.
-	 *
-	 * @return {!boolean} True if it receives light.
-	 * @public
-	 */
-	canReceiveLight: function () {
-		return this.receiveLight;
-	},
-	/**
-	 * Sets if the object can receive light.
-	 *
-	 * @param  {!boolean} receiveLight True if it receives light.
-	 * @public
-	 */
-	setReceiveLight: function (receiveLight) {
-		this.receiveLight = receiveLight;
-		return;
-	},
-	/**
-	 * Gets the object position. Be careful, because it returns the
-	 *   vector used by the object, and not a copy. Use it wisely.
-	 *
-	 * @return {!Grape2D.Vector} The position of the object.
-	 * @public
-	 */
-	getPosition: function () {
-		return this.position;
-	},
-	/**
-	 * Sets the object position.
-	 *
-	 * @param  {!Grape2D.Vector} position The position of the object.
-	 * @public
-	 */
-	setPosition: function (position) {
-		this.position.set(position);
-		this.computeBoundingBoxPosition();
-		this.computeTexturePosition();
-	},
-	/**
-	 * Sets the texture offset.
-	 *
-	 * @param  {!Grape2D.Vector} offset The offset of the texture, from
-	 *   the object's position.
-	 * @public
-	 */
-	setTextureOffset: function (offset) {
-		this.textureOffset.set(offset);
-		this.computeTexturePosition();
-	},
-	/**
-	 * Gets the texture offset
-	 *
-	 * @return {!Grape2D.Vector} The texture offset.
-	 * @public
-	 */
-	getTextureOffset: function () {
-		return this.textureOffset;
-	},
-	/**
-	 * Sets the bounding box offset.
-	 *
-	 * @param  {!Grape2D.Vector} offset The offset of the bounding
-	 *   box, from the object's position.
-	 * @public
-	 */
-	setBoundingBoxOffset: function (offset) {
-		this.boundingBoxOffset.set(offset);
-		this.computeBoundingBoxPosition();
-	},
-	/**
-	 * Gets the bounding box offset
-	 *
-	 * @return {!Grape2D.Vector} The bounding box offset.
-	 * @public
-	 */
-	getBoundingBoxOffset: function () {
-		return this.boundingBoxOffset;
-	},
-	/**
-	 * Computes the bounding box position, from the object's position
-	 *   and bounding box offset.
-	 * @protected
-	 */
-	computeBoundingBoxPosition: function () {
-		this.boundingBox.setPosition(this.position);
-		this.boundingBox.getPosition().add(this.boundingBoxOffset);
-	},
-	/**
-	 * Gets the bounding box position.
-	 *
-	 * @return {!Grape2D.Vector} The center position of the bounding box.
-	 * @public
-	 */
-	getBoundingBoxPosition: function () {
-		return this.boundingBox.getPosition();
-	},
-	/**
-	 * Computes the texture position of the object, from the object's
-	 *   position and texture offset.
-	 * @protected
-	 */
-	computeTexturePosition: function () {
-		this.texturePosition.set(this.position).add(this.textureOffset);
-	},
-	/**
-	 * Gets the texture position.
-	 *
-	 * @return {!Grape2D.Vector} The position of the texture
-	 * @public
-	 */
-	getTexturePosition: function () {
-		return this.texturePosition;
-	},
-	/**
-	 * Renders the object to a renderer.
-	 *
-	 * @param  {!Grape2D.Renderer} renderer The place to render the
-	 *   object.
-	 * @param  {!Grape2D.Camera} camera The camera, that will
-	 *   transform the positions.
-	 * @public
-	 */
-	render: function (renderer, camera) {
-		renderer.renderObject2D(this, camera);
-	},
-	/**
-	 * Updates the object. This method should be refined in further
-	 *   subclasses if needed be.
-	 *
-	 * @param  {!number} dt Time interval.
-	 * @param  {!Grape2D.Scene} scene Scene where this object is.
-	 * @public
-	 */
-	update: function (dt, scene) {}
-};/**
- * Shape is an abstract class that describes "physical", objects.
- *   The main objective of a Shape is to serve as a bounding box. It
- *   should play the main role when selecting the objects to render,
- *   when it comes to collision detection and/or to detect user
- *   interaction with an object.
- *
- * @param {!Grape2D.Vector=} options.position The position of the shape.
- *
- * @constructor
- */
-Grape2D.Shape = function(options) {
-	options = options || {};
-	/**
-	 * Shape's position.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @protected
-	 */
-	this.position = options.position || new Grape2D.Vector();
-};
-
-Grape2D.Shape.prototype = {
-	constructor: Grape2D.Shape,
-	/**
-	 * Gets the position of the object.
-	 *
-	 * @return {!Grape2D.Vector} The center position of the shape.
-	 * @public
-	 */
-	getPosition: function() {
-		return this.position;
-	},
-	/**
-	 * Set the position of the shape.
-	 *
-	 * @param  {!Grape2D.Vector} position The new position of the shape.
-	 * @public
-	 */
-	setPosition: function(position) {
-		this.position.set(position);
-	},
-	/**
-	 * Renders the wireframe of the shape.
-	 *
-	 * @param  {!Grape2D.Vector} renderer The renderer to render the
-	 *   shape's wireframe.
-	 * @param  {!Grape2D.Camera} camera The camera to transform the
-	 *   positions.
-	 * @public
-	 */
-	render: function(renderer, camera) {},
-	/**
-	 * Creates a bounding volume, based in this one and in a
-	 *   {@link Grape2D.BVFactory}.
-	 *
-	 * @param  {!Grape2D.BVFactory} bvfactory The bounding volume
-	 *   factory.
-	 * @return {!Grape2D.Shape} The shape created by the
-	 *   {@link Grape2D.BVFactory}.
-	 * @public
-	 */
-	createBV: function(bvfactory) {},
-	/**
-	 * Gets teh static type of the shape. This method must be overriden,
-	 *   for specific shapes.
-	 *
-	 * @return {!string} The type of the shape.
-	 * @public
-	 */
-	getStaticType: function() {}
-};/**
- * AABB (standing for Axis Align Bounding Box), represents
- *   rectangular shapes.
- *
- * @param {!Object} options Setup options. See {@link Grape2D.Shape}
- * @param {?Grape2D.Vector} options.position - The position of the
- *   polygon.
- * @param {!number} options.width Width of the AABB.
- * @param {!number} options.height Height of the AABB.
- * 
- * @extends Grape2D.Shape
- * @constructor
- */
-Grape2D.AABB = function(options){
-	Grape2D.Shape.call(this, options);
-	/**
-	 * Shape's width.
-	 *
-	 * @type {!number}
-	 * @private
-	 */
-	this.width = options.width;
-	/**
-	 * Shape's half width.
-	 *
-	 * @type {!number}
-	 * @private
-	 */
-	this.hwidth = this.width/2;
-	/**
-	 * Shapes's height.
-	 *
-	 * @type {!number}
-	 * @private
-	 */
-	this.height = options.height;
-	/**
-	 * Shapes's half height.
-	 *
-	 * @type {!number}
-	 * @private
-	 */
-	this.hheight = this.height/2;
-};
-
-Grape2D.AABB.prototype = Object.create(Grape2D.Shape.prototype);
-/**
- * Gets the width of the AABB.
- *
- * @return {!number} The width of the AABB.
- * @public
- */
-Grape2D.AABB.prototype.getWidth = function(){
-	return this.width;
 };
 /**
- * Gets the height of the AABB.
- *
- * @return {!number} The height of the AABB.
- * @public
- */
-Grape2D.AABB.prototype.getHeight = function(){
-	return this.height;
-};
-/**
- * Gets the half width (width/2) of the AABB.
- *
- * @return {!number} Half width of the AABB.
- * @public
- */
-Grape2D.AABB.prototype.getHalfWidth = function(){
-	return this.hwidth;
-};
-/**
- * Gets the half height (height/2) of the AABB.
- *
- * @return {!number} Half height of the AABB.
- * @public
- */
-Grape2D.AABB.prototype.getHalfHeight = function(){
-	return this.hheight;
-};
-/**
- * Sets the width of the AABB.
- *
- * @param  {!number} width The width of the AABB.
- * @public
- */
-Grape2D.AABB.prototype.setWidth = function(width){
-	this.width = width;
-	this.hwidth = this.width/2;
-};
-/**
- * Sets the height of the AABB.
- *
- * @param  {!number} height The height of the AABB.
- * @public
- */
-Grape2D.AABB.prototype.setHeight = function(height){
-	this.height = height;
-	this.hheight = this.height;
-};
-/**
- * @override
- */
-Grape2D.AABB.prototype.render = function(renderer, camera){
-	renderer.renderAABB(this, camera);
-};
-/**
- * @override
- */
-Grape2D.AABB.prototype.createBV = function(bvfactory){
-	return bvfactory.createFromAABB(this);
-};
-/**
- * @override
- */
-Grape2D.AABB.prototype.getStaticType = function(){
-	return Grape2D.AABB.TYPE;
-};
-/**
- * Type of the shape.
- *
- * @type {!string}
- * @static
- * @private
- */
-Grape2D.AABB.TYPE = "AABB";/**
- * Circle describes a circle shape. A circle is defined by
- *   it's radius.
- *
- * @param {!Object} options Setup options. See {@link Grape2D.Shape}
- * @param {?Grape2D.Vector} options.position The position of the
- *   polygon
- * @param {!number} options.radius Radius of the circle.
- * @extends Grape2D.Shape
- * @constructor
- */
-Grape2D.Circle = function(options){
-	Grape2D.Shape.call(this, options);
-	/**
-	 * Circle's radius.
-	 *
-	 * @type {!number}
-	 * @private
-	 */
-	this.radius = options.radius;
-};
-
-Grape2D.Circle.prototype = Object.create(Grape2D.Shape.prototype);
-
-/**
- * Gets the radius of the circle.
- *
- * @return {!number} The radius of the circle.
- * @public
- */
-Grape2D.Circle.prototype.getRadius = function(){
-	return this.radius;
-};
-/**
- * Sets the radius of the circle.
- *
- * @param  {!number} radius - The new radius of the circle
- * @public
- */
-Grape2D.Circle.prototype.setRadius = function(radius){
-	this.radius = radius;
-};
-/**
- * @override
- */
-Grape2D.Circle.prototype.render = function(renderer, camera){
-	renderer.renderCircle(this, camera);
-};
-/**
- * @override
- */
-Grape2D.Circle.prototype.createBV = function(bvfactory){
-	return bvfactory.createFromCircle(this);
-};
-/**
- * @override
- */
-Grape2D.Circle.prototype.getStaticType = function(){
-	return Grape2D.Circle.TYPE;
-};
-/**
- * Type of the shape.
- *
- * @type {!string}
- * @static
- * @private
- */
-Grape2D.Circle.TYPE = "Circle";/**
- * Polygon describes a polygon shape. A list of vertexes should
- *   should be provided or set afterwards.
- *
- * @param {!Grape2D.Vector=} options.position The position of the polygon
- * @param {!Array.<!Grape2D.Vector>} options.vertexList A list with the
- *   vertexes of the polygon.
- *
- * @extends Grape2D.Shape
- * @constructor
- */
-Grape2D.Polygon = function(options){
-	Grape2D.Shape.call(this, options);
-	/**
-	 * Polygon's vertexes.
-	 *
-	 * @type {!Array.<!Grape2D.Vector>}
-	 * @private
-	 */
-	this.vertexList = options.vertexList;
-};
-
-Grape2D.Polygon.prototype = Object.create(Grape2D.Shape.prototype);
-
-/**
- * Gets the list of vertexes.
- *
- * @return {!Array.<!Grape2D.Vector>} The array with the vertexes.
- * @public
- */
-Grape2D.Polygon.prototype.getVertexList = function(){
-	return this.vertexList;
-};
-/**
- * Sets a list of vertexes.
- *
- * @param  {!Array.<!Grape2D.Vector>} vertexList A list with the new
- *   vertexes.
- * @public
- */
-Grape2D.Polygon.prototype.setVertexList = function(vertexList){
-	this.vertexList = vertexList;
-};
-/**
- * @override
- */
-Grape2D.Polygon.prototype.render = function(renderer, camera){
-	renderer.renderPolygon(this, camera);
-};
-/**
- * @override
- */
-Grape2D.Polygon.prototype.createBV = function(bvfactory){
-	return bvfactory.createFromPolygon(this);
-};
-/**
- * @override
- */
-Grape2D.Polygon.prototype.getStaticType = function(){
-	return Grape2D.Polygon.TYPE;
-};
-/**
- * Type of the shape.
- *
- * @type {!string}
- * @static
- * @private
- */
-Grape2D.Polygon.TYPE = "Polygon";/**
  * A scene controls, at a high level, the running of the game.
  *   Being responsible for the updating and rendering.
  *   This is the component object of what is a composite pattern.
- * 
+ *
+ * @class
  * @interface
  */
 Grape2D.Scene = function () {};
@@ -4993,7 +5065,8 @@ Grape2D.Scene.prototype = {
 	 * @public
 	 */
 	render: function (renderer, camera) {}
-};/**
+};
+/**
  * SceneGroup allow to group scenes together.
  *   This is the composite object of the composite pattern.
  *
@@ -5044,7 +5117,8 @@ Grape2D.SceneGroup.prototype.addChild = function (child) {
  */
 Grape2D.SceneGroup.prototype.removeChild = function (child) {
 	this.childs.splice(this.childs.indexOf(child), 1);
-};/**
+};
+/**
  * SceneLayer allow to render objects and update them, the objects are
  *   store using a {@link Grape2D.Map}.
  *   This is the leaf object of the composite pattern.
@@ -5089,9 +5163,11 @@ Grape2D.SceneLayer.prototype.render = function(renderer, camera) {
  */
 Grape2D.SceneLayer.prototype.getMap = function() {
 	return this.map;
-};/**
+};
+/**
  * Interface that defines high level methods for a game.
  *
+ * @class
  * @interface
  */
 Grape2D.Game = function() {};
@@ -5137,7 +5213,8 @@ Grape2D.Game.prototype = {
 	 * @public
 	 */
 	animate: function() {}
-};/**
+};
+/**
  * Describes a simple game "scene", with the basics.
  *
  * @param  {!Grape2D.Renderer} renderer The renderer of the scene.
@@ -5248,10 +5325,12 @@ Grape2D.SimpleGame.prototype.update = function(dt) {
  * @override
  */
 Grape2D.SimpleGame.prototype.animate = function() {
-	var that = this;
+	var that = this,
+		dt = this.clock.update();
 	requestAnimationFrame(function() {
 		that.animate();
 	});
-	this.update(this.clock.update());
+	this.update(dt);
 	this.render();
+	this.renderer.renderText("FPS: "+this.clock.fps, new Grape2D.Vector(10,10));
 };
