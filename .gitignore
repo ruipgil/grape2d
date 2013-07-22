@@ -11,3 +11,6 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 *.ignore
+./utils/node_modules
+./build/*.report.txt
+./build/*.map
