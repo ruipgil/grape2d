@@ -35,7 +35,6 @@ BoxSample.prototype.update = function(dt, scene) {
  */
 BoxSample.CONST = 0.002;
 
-
 var aabb1 = new Grape2D.AABB({
 		width: 50,
 		height: 50
@@ -61,6 +60,7 @@ var AABBMerging = function(renderer, scene, camera) {
 	Grape2D.SimpleGame.call(this, renderer, scene, camera);
 };
 AABBMerging.prototype = Object.create(Grape2D.SimpleGame.prototype);
+var map;
 /**
  * @override
  */
@@ -68,7 +68,7 @@ AABBMerging.prototype.setup = function() {
 	obj1 = new BoxSample({
 		texture: voidTexture,
 		boundingBox: aabb1,
-		boundingBoxOffset: new Grape2D.Vector(0,0),
+		boundingBoxOffset: new Grape2D.Vector(0, 0),
 		center: new Grape2D.Vector(0, 0),
 		color: 'rgba(0,0,255,1)'
 	});
@@ -76,7 +76,7 @@ AABBMerging.prototype.setup = function() {
 	obj2 = new BoxSample({
 		texture: voidTexture,
 		boundingBox: aabb2,
-		boundingBoxOffset: new Grape2D.Vector(0,0),
+		boundingBoxOffset: new Grape2D.Vector(0, 0),
 		center: new Grape2D.Vector(0, 0),
 		extension: 20,
 		color: 'rgba(255,0,0,1)'
@@ -92,11 +92,13 @@ AABBMerging.prototype.setup = function() {
 		color: 'rgba(0,255,0,1)'
 	});
 
-	var map = this.getScene().getMap();
+	map = this.getScene().getMap();
 	map.add(obj1);
 	map.add(obj2);
 	map.add(obj3);
 	map.rebuild();
+
+	//console.log(debugTDBVHTree(map));
 
 	evtMang = new Grape2D.InputManager(this.getRenderer());
 	evtMang.addMouseDown(function(ev) {
@@ -107,7 +109,7 @@ AABBMerging.prototype.setup = function() {
  * @override
  */
 AABBMerging.prototype.update = function(dt) {
-	this.scene.update(dt);
+	Grape2D.SimpleGame.prototype.update.call(this, dt);
 	var aabbtemp = Grape2D.BVFactorySingleton.getFactory().merge(aabb1, aabb2);
 	obj3.setPosition(aabbtemp.getPosition());
 	obj3.setBoundingBox(aabbtemp);
