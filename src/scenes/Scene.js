@@ -2,7 +2,8 @@
  * A scene controls, at a high level, the running of the game.
  *   Being responsible for the updating and rendering.
  *   This is the component object of what is a composite pattern.
- * 
+ *
+ * @class
  * @interface
  */
 Grape2D.Scene = function () {};

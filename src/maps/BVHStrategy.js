@@ -2,6 +2,7 @@
  * A BVH Strategy is used to sort and divide objects according to a 
  *   set of rules.
  *
+ * @class
  * @interface
  */
 Grape2D.BVHStrategy = function(){};

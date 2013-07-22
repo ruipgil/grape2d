@@ -1,6 +1,7 @@
 /**
  * Describes a texture.
  *
+ * @class
  * @interface
  */
 Grape2D.ITexture = function() {};

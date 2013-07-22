@@ -1,6 +1,7 @@
 /**
  * Interface that defines high level methods for a game.
  *
+ * @class
  * @interface
  */
 Grape2D.Game = function() {};

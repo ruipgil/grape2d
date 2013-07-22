@@ -3,6 +3,7 @@
  *   It's an interface, so all implementation details should be
  *   described in higher level classes.
  *
+ * @class
  * @interface
  */
 Grape2D.Map = function(){};

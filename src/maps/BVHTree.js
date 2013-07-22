@@ -3,6 +3,7 @@
  *   to an hierarchy.
  *   
  * @extends {Grape2D.Map}
+ * @class
  * @interface
  */
 Grape2D.BVHTree = function(){};

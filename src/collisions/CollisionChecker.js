@@ -2,6 +2,7 @@
  * Collides objects, and returns just if they're colliding, returning
  *   only a bollean giving no other information about the collision.
  *
+ * @class
  * @interface
  */
 Grape2D.CollisionChecker = function() {};

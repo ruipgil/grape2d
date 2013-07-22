@@ -1,6 +1,7 @@
 /**
  * Renderers are used to render graphics to the screen.
  *
+ * @class
  * @interface
  */
 Grape2D.Renderer = function() {};

@@ -1,6 +1,7 @@
 /**
  * Creates bounding volumes based in an input object.
- * 
+ *
+ * @class
  * @interface
  */
 Grape2D.BVFactory = function() {};
