@@ -202,4 +202,4 @@ Grape2D.CollisionDispatcher.dcache = {
 		"Polygon": Grape2D.CollisionDispatcher.polygonVsPolygon,
 		"Point": Grape2D.CollisionDispatcher.polygonVsPoint
 	}
-}
+};

@@ -74,11 +74,11 @@ Grape2D.TopDownBVHNode.prototype = {
 	 * @public
 	 */
 	compute: function(objects) {
-
+		var i;
 		if (objects.length <= Grape2D.TopDownBVHTree.DEFAULT_PER_LEAF || this.depth >= Grape2D.TopDownBVHTree.MAX_DEPTH) {
 			//this instance will be a leaf
 			this.leaf = true;
-			for (var i = 0; i < objects.length; i++) {
+			for (i = 0; i < objects.length; i++) {
 				this.objects.push(objects[i]);
 			}
 		} else {
@@ -89,14 +89,14 @@ Grape2D.TopDownBVHNode.prototype = {
 			if (r.endState) {
 				//nop it's a leaf after all.
 				this.leaf = true;
-				for (var i = 0; i < objects.length; i++) {
+				for (i = 0; i < objects.length; i++) {
 					this.objects.push(objects[i]);
 				}
 				return;
 			}
 
 			this.bv = factory.merge(objects[0].getBoundingBox(), objects[1].getBoundingBox());
-			for (var i = 2; i < objects.length; i++) {
+			for (i = 2; i < objects.length; i++) {
 				this.bv = factory.merge(this.bv, objects[i].getBoundingBox());
 			}
 

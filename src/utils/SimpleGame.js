@@ -109,10 +109,12 @@ Grape2D.SimpleGame.prototype.update = function(dt) {
  * @override
  */
 Grape2D.SimpleGame.prototype.animate = function() {
-	var that = this;
+	var that = this,
+		dt = this.clock.update();
 	requestAnimationFrame(function() {
 		that.animate();
 	});
-	this.update(this.clock.update());
+	this.update(dt);
 	this.render();
+	this.renderer.renderText("FPS: "+this.clock.fps, new Grape2D.Vector(10,10));
 };

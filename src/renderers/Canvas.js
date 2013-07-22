@@ -5,7 +5,7 @@
  * @constructor
  */
 Grape2D.Canvas = function(options) {
-	if (!options) options = {};
+	options = options || {};
 	/**
 	 * Canvas DOM element.
 	 *
