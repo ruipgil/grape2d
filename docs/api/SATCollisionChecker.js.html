@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: collisions/SATCollisionChecker.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: collisions/SATCollisionChecker.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/**
+ * Concrete collision checker, that implements the SAT algorithm.
+ *
+ *
+ * @extends {Grape2D.GenericCollisionChecker}
+ * @constructor
+ */
+Grape2D.SATCollisionChecker = function() {};
+
+Grape2D.SATCollisionChecker.prototype = Object.create(Grape2D.GenericCollisionChecker.prototype);
+
+/**
+ * @override
+ */
+Grape2D.SATCollisionChecker.prototype.aabbVsPolygon = function(aabb, polygon) {
+	return false;
+};
+/**
+ * @override
+ */
+Grape2D.SATCollisionChecker.prototype.polygonVsPolygon = function(polygon1, polygon2) {
+	var axis = this.selectAxis(this.computeAxis(polygon1.getVertexList()), this.computeAxis(polygon2.getVertexList())),
+		p1Intv = this.computeIntervals(polygon1.getVertexList(), axis),
+		p2Intv = this.computeIntervals(polygon2.getVertexList(), axis),
+		overlap;
+
+	for (var i = 0; i &lt; axis.length; i++) {
+		overlap = Grape2D.Math.overlaps(p1Intv, p2Intv);
+		if (overlap &lt; 0) {
+			return false;
+		}
+	}
+	return true;
+};
+/**
+ * Computes the axis of a polygon.
+ *
+ * @param  {!Grape2D.Polygon} polygon Polygon to compute the axis.
+ * @return {!Array.&lt;!Grape2D.Vector>} Array of vectors with the direction of
+ *   the axis, perpendicular to the side, and normalized.
+ * @public
+ */
+Grape2D.SATCollisionChecker.prototype.computeAxis = function(polygon) {
+	var res = [],
+		list = polygon.getVertexList(),
+		n, i;
+	for (i = 0; i &lt; list.length; i++) {
+		n = (i + 1) % list.length;
+		res.push(Grape2D.Vector.createFromPoints(list[i], list[n]).normalize().rightNormal());
+	}
+	return res;
+};
+/**
+ * Select the unique axis in a list.
+ *
+ * @param  {!Array.&lt;!Grape2D.Vector>} listA A list of axis.
+ * @param  {!Array.&lt;!Grape2D.Vector>} listB A list of axis.
+ * @return {!Array.&lt;!Grape2D.Vector>} All different axis that are in both
+ *   params.
+ * @public
+ */
+Grape2D.SATCollisionChecker.prototype.selectAxis = function(listA, listB) {
+	var res = [],
+		e;
+	for (var i = 0; i &lt; listA.length; i++) {
+		res.push(listA);
+	}
+
+	for (i = 0, e = true; i &lt; res.length; i++, e = true) {
+		for (var j = 0; j &lt; listB.length; j++) {
+			if (res[i].isParallelTo(listB[j])) {
+				e = false;
+			}
+		}
+		if (e) {
+			res.push(listB[i]);
+		}
+	}
+
+	return res;
+};
+/**
+ * Compute the interval that a set of vertexes represent, in an axis.
+ *
+ * @param  {!Array.&lt;!Grape2D.Vector>} vertexList List of vertexes.
+ * @param  {!Array.&lt;!Grape2D.Vector>} axis Axis to receive the
+ *   projection of the vertexes.
+ * @return {!Object} An object with the properties &lt;code>min&lt;/code> and
+ *   &lt;code>max&lt;/code>
+ * @public
+ */
+Grape2D.SATCollisionChecker.prototype.computeIntervals = function(vertexList, axis) {
+	var intrvByAxis = [],
+		min = Infinity,
+		max = -Infinity,
+		aa, ab;
+
+	for (var i = 0; i &lt; axis.length; i++) {
+		min = Infinity;
+		max = -Infinity;
+		for (var j = 0; j &lt; vertexList.length; j++) {
+			aa = vertexList[j].dot(axis[i]);
+			ab = vertexList[(j + 1) % vertexList.length].dot(axis[i]);
+			if (aa > max) {
+				max = aa;
+			}
+			if (aa &lt; min) {
+				min = aa;
+			}
+			if (ab > max) {
+				max = ab;
+			}
+			if (ab &lt; min) {
+				min = aa;
+			}
+		}
+		intrvByAxis.push({
+			min: min,
+			max: max
+		});
+	}
+	return intrvByAxis;
+};
+/**
+ * Cache of the predefined set of AABB axis.
+ *
+ * @type {!Array.&lt;Grape2D.Vector>}
+ * @private
+ * @static
+ */
+Grape2D.SATCollisionChecker.aabbAxis = [new Grape2D.Vector(1, 0), new Grape2D.Vector(0, 1)];</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Mon Jul 22 2013 19:17:18 GMT+0100 (BST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

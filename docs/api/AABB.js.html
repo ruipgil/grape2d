@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: objects/AABB.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: objects/AABB.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/**
+ * AABB (standing for Axis Align Bounding Box), represents
+ *   rectangular shapes.
+ *
+ * @param {!Object} options Setup options. See {@link Grape2D.Shape}
+ * @param {?Grape2D.Vector} options.position - The position of the
+ *   polygon.
+ * @param {!number} options.width Width of the AABB.
+ * @param {!number} options.height Height of the AABB.
+ * 
+ * @extends Grape2D.Shape
+ * @constructor
+ */
+Grape2D.AABB = function(options){
+	Grape2D.Shape.call(this, options);
+	/**
+	 * Shape's width.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.width = options.width;
+	/**
+	 * Shape's half width.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.hwidth = this.width/2;
+	/**
+	 * Shapes's height.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.height = options.height;
+	/**
+	 * Shapes's half height.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.hheight = this.height/2;
+};
+
+Grape2D.AABB.prototype = Object.create(Grape2D.Shape.prototype);
+/**
+ * Gets the width of the AABB.
+ *
+ * @return {!number} The width of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.getWidth = function(){
+	return this.width;
+};
+/**
+ * Gets the height of the AABB.
+ *
+ * @return {!number} The height of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.getHeight = function(){
+	return this.height;
+};
+/**
+ * Gets the half width (width/2) of the AABB.
+ *
+ * @return {!number} Half width of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.getHalfWidth = function(){
+	return this.hwidth;
+};
+/**
+ * Gets the half height (height/2) of the AABB.
+ *
+ * @return {!number} Half height of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.getHalfHeight = function(){
+	return this.hheight;
+};
+/**
+ * Sets the width of the AABB.
+ *
+ * @param  {!number} width The width of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.setWidth = function(width){
+	this.width = width;
+	this.hwidth = this.width/2;
+};
+/**
+ * Sets the height of the AABB.
+ *
+ * @param  {!number} height The height of the AABB.
+ * @public
+ */
+Grape2D.AABB.prototype.setHeight = function(height){
+	this.height = height;
+	this.hheight = this.height;
+};
+/**
+ * @override
+ */
+Grape2D.AABB.prototype.render = function(renderer, camera){
+	renderer.renderAABB(this, camera);
+};
+/**
+ * @override
+ */
+Grape2D.AABB.prototype.createBV = function(bvfactory){
+	return bvfactory.createFromAABB(this);
+};
+/**
+ * @override
+ */
+Grape2D.AABB.prototype.getStaticType = function(){
+	return Grape2D.AABB.TYPE;
+};
+/**
+ * Type of the shape.
+ *
+ * @type {!string}
+ * @static
+ * @private
+ */
+Grape2D.AABB.TYPE = "AABB";</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Mon Jul 22 2013 19:17:18 GMT+0100 (BST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

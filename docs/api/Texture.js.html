@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: textures/Texture.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: textures/Texture.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/**
+ * Texture represents an "image", ready to be rendered to
+ *   a renderer, with high efficiency. The efficiency comes
+ *   from the fact that a cached image can be renderer faster.
+ *
+ * @param {!Object=} options Object with the options to instantiate a texture.
+ * @param {!Image=} options.image Loads a DOM image object to the buffer.
+ *		This is the first choice, when providing other options.
+ * @param {!Grape2D.Texture=} options.useTexture With this method the
+ *		same buffer is shared by the texture provided.
+ *
+ * @implements {Grape2D.ITexture}
+ * @constructor
+ */
+Grape2D.Texture = function(options) {
+	options = options || {};
+	/**
+	 * The width of the texture.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.width = 2;
+	/**
+	 * The half width.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.hwidth = 1;
+	/**
+	 * The height.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.height = 2;
+	/**
+	 * The half width.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.hheight = 1;
+
+	/**
+	 * The canvas buffer. It is always a 2D renderer.
+	 *
+	 * @type {!Grape2D.CanvasRenderer}
+	 * @private
+	 */
+	this.buffer = new Grape2D.CanvasRenderer();
+	if (options.image) {
+		this.bufferImage(options.image);
+	} else if (options.useTexure) {
+		this.buffer = options.useTexure;
+	}
+
+};
+
+Grape2D.Texture.prototype = Object.create(Grape2D.ITexture);
+/**
+ * @override
+ */
+Grape2D.Texture.prototype.getWidth = function() {
+	return this.width;
+};
+/**
+ * @override
+ */
+Grape2D.Texture.prototype.getHeight = function() {
+	return this.height;
+};
+/**
+ * @override
+ */
+Grape2D.Texture.prototype.setWidth = function(width) {
+	this.width = width;
+	this.hwidth = this.width / 2;
+};
+/**
+ * @override
+ */
+Grape2D.Texture.prototype.setHeight = function(height) {
+	this.height = height;
+	this.hheight = this.height / 2;
+};
+/**
+ * @override
+ */
+Grape2D.Texture.prototype.getHalfWidth = function() {
+	return this.hwidth;
+};
+/**
+ * @override
+ */
+Grape2D.Texture.prototype.getHalfHeight = function() {
+	return this.hheight;
+};
+/**
+ * Gets the buffer of the texture.
+ *
+ * @return {?} The buffer.
+ * @public
+ */
+Grape2D.Texture.prototype.getBuffer = function() {
+	return this.buffer.canvas.canvas;
+};
+/**
+ * Changes the internal buffer and load an image, with it's
+ *   current dimensions. The dimensions.
+ *
+ * @param  {!Image} image The DOM image object with the image.
+ *		The image must be loaded. Unexpected results if not.
+ * @protected
+ */
+Grape2D.Texture.prototype.bufferImage = function(image) {
+	this.setWidth(image.width);
+	this.setHeight(image.height);
+
+	this.buffer = new Grape2D.CanvasRenderer();
+	this.buffer.renderImage(image, 0, 0, this.width, this.height, 0, 0, this.width, this.height);
+};
+/**
+ * @override
+ */
+Grape2D.Texture.prototype.render = function(renderer, position){
+	renderer.renderTexture(this, position);
+};
+/**
+ * Creates a Texture and loads an image asynchronously.
+ *
+ * @param  {!string} src - The complete path to the image.
+ * @param  {!Function} callback - A function to be called after the
+ *		onload event of the image.
+ * @return {!Grape2D.Texture} The texture object, initialy it has
+ *		an empty buffer, the buffer will have the image only after
+ *		the image has done loaded.
+ * @static
+ */
+Grape2D.Texture.createFromImage = function(src, callback) {
+	var image = new Image(),
+		that = new Grape2D.Texture();
+
+	image.onload = function(evt) {
+		that.bufferImage(this);
+		if (callback) {
+			callback(that, this, evt);
+		}
+	};
+	image.src = src;
+
+	return that;
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Mon Jul 22 2013 19:17:18 GMT+0100 (BST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Renderer"><span class="type-signature">&lt;virtual> </span>new Renderer<span class="signature">(<span class="optional">options</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Renderer"><span class="type-signature"></span>new Renderer<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -50,6 +50,93 @@
     
     <div class="description">
         Renderers are used to render graphics to the screen.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line7">line 7</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="appendToDOMElement"><span class="type-signature"></span>appendToDOMElement<span class="signature">(elm)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Appends the renderer to a DOM element.
     </div>
     
 
@@ -71,8 +158,6 @@
 		<th>Type</th>
 		
 		
-		<th>Argument</th>
-		
 		
 		
 		
@@ -85,33 +170,23 @@
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>elm</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">Element</span>
 
 
             
             </td>
             
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
             
             
             
-            
-            <td class="description last">[description]</td>
+            <td class="description last">The element to append to.</td>
         </tr>
 	
 	
@@ -142,7 +217,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 14
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line137">line 137</a>
     </li></ul></dd>
     
     
@@ -167,425 +242,10 @@
     
 </dd>
 
-    
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
-<dt>
-    <h4 class="name" id="clearColor"><span class="type-signature">&lt;private> </span>clearColor<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        The color to use, when clearing the canvas.
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 60
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
         
             
 <dt>
-    <h4 class="name" id="halfHeight"><span class="type-signature">&lt;private> </span>halfHeight<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        The half height of the renderer.
-This is a cached value.
-The half width is supposed to be an int
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 52
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="halfWidth"><span class="type-signature">&lt;private> </span>halfWidth<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        The half width of the renderer. This is a cached value. The
-half width is supposed to be an int
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 34
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="height"><span class="type-signature">&lt;private> </span>height<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        The height of the renderer.
-This is a cached value.
-The height is supposed to be an int
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 43
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="opacity"><span class="type-signature">&lt;private> </span>opacity<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Sets the opacity of the objects to render.
-Values are between 0 and 255. Being 0 totally opaque (concrete
-renderer may choose not to render the object),
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 70
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="width"><span class="type-signature">&lt;private> </span>width<span class="type-signature"> :number</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        The width of the renderer.
-This is a cached value.
-The width is supposed to be an int
-    </div>
-    
-    
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">number</span>
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 26
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
-<dt>
-    <h4 class="name" id="end"><span class="type-signature">&lt;virtual> </span>end<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="end"><span class="type-signature"></span>end<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -593,7 +253,8 @@ The width is supposed to be an int
     
     
     <div class="description">
-        Commits everything to render.
+        Commits everything to render. This method should be called once,
+  at the end of the rendering cycle.
     </div>
     
 
@@ -626,7 +287,7 @@ The width is supposed to be an int
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 196
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line130">line 130</a>
     </li></ul></dd>
     
     
@@ -654,7 +315,7 @@ The width is supposed to be an int
         
             
 <dt>
-    <h4 class="name" id="getClearColor"><span class="type-signature"></span>getClearColor<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    <h4 class="name" id="getDOMElement"><span class="type-signature"></span>getDOMElement<span class="signature">()</span><span class="type-signature"> &rarr; {Element}</span></h4>
     
     
 </dt>
@@ -662,7 +323,7 @@ The width is supposed to be an int
     
     
     <div class="description">
-        Gets the clear color.
+        Gets the renderer DOM element.
     </div>
     
 
@@ -695,7 +356,7 @@ The width is supposed to be an int
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 138
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line144">line 144</a>
     </li></ul></dd>
     
     
@@ -720,7 +381,7 @@ The width is supposed to be an int
     
             
 <div class="param-desc">
-    the clear color
+    Element
 </div>
 
 
@@ -731,7 +392,7 @@ The width is supposed to be an int
 	</dt>
 	<dd>
 		
-<span class="param-type">number</span>
+<span class="param-type">Element</span>
 
 
 	</dd>
@@ -786,7 +447,7 @@ The width is supposed to be an int
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 120
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line45">line 45</a>
     </li></ul></dd>
     
     
@@ -877,7 +538,7 @@ The width is supposed to be an int
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 94
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line24">line 24</a>
     </li></ul></dd>
     
     
@@ -968,7 +629,7 @@ The width is supposed to be an int
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 112
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line38">line 38</a>
     </li></ul></dd>
     
     
@@ -994,97 +655,6 @@ The width is supposed to be an int
             
 <div class="param-desc">
     the height
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">number</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getOpacity"><span class="type-signature"></span>getOpacity<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the alpha component that is being added to the objects rendered.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 155
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    A number between 0 and 255.
 </div>
 
 
@@ -1150,7 +720,7 @@ The width is supposed to be an int
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 86
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line17">line 17</a>
     </li></ul></dd>
     
     
@@ -1200,7 +770,7 @@ The width is supposed to be an int
         
             
 <dt>
-    <h4 class="name" id="renderTexture"><span class="type-signature">&lt;virtual> </span>renderTexture<span class="signature">(texture, position)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="renderAABB"><span class="type-signature"></span>renderAABB<span class="signature">(aabb, camera)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1208,7 +778,1011 @@ The width is supposed to be an int
     
     
     <div class="description">
-        Renders a texture.
+        Renders the wireframe of an AABB.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>aabb</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.AABB.html">Grape2D.AABB</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The AABB to render.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>camera</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Camera.html">Grape2D.Camera</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The camera to transfrom the
+  coordinates.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line92">line 92</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renderCircle"><span class="type-signature"></span>renderCircle<span class="signature">(circle, camera)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Renders the wireframe of a circle.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>circle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Circle.html">Grape2D.Circle</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Circle to render.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>camera</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Camera.html">Grape2D.Camera</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The camera to transfrom the
+  coordinates.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line101">line 101</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renderImage"><span class="type-signature"></span>renderImage<span class="signature">(image, sx, sy, sw, sh, dx, dy, dw, dh)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Renders an image to the screen
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>image</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Image</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">DOM image.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>sx</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Start x coordinate of the image to render.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>sy</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Start y coordinate of the image to render.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>sw</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Width of the image to render.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>sh</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Height of the image to render.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>dx</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Start x coordinate in the renderer, for the image.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>dy</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Start y coordinate in the renderer, for the image.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>dw</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Width of the image in the renderer.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>dh</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Height of the image in the renderer.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line83">line 83</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renderObject2D"><span class="type-signature"></span>renderObject2D<span class="signature">(obj, camera)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Renders an object to the renderer.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Object2D.html">Grape2D.Object2D</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Object to render.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>camera</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Camera.html">Grape2D.Camera</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Camera to transform the coordinates.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line68">line 68</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renderPolygon"><span class="type-signature"></span>renderPolygon<span class="signature">(polygon, camera)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Renders the wireframe of a polygon.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>polygon</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Polygon.html">Grape2D.Polygon</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Polygon to render.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>camera</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Camera.html">Grape2D.Camera</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The camera to transfrom the
+  coordinates.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line110">line 110</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renderText"><span class="type-signature"></span>renderText<span class="signature">(text, position)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Renders text to the renderer.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Text to render.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>position</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Top left corner of the text.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line118">line 118</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renderTexture"><span class="type-signature"></span>renderTexture<span class="signature">(texture, position)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Renders a texture to a position on the renderer.
     </div>
     
 
@@ -1248,7 +1822,7 @@ The width is supposed to be an int
             <td class="type">
             
                 
-<span class="param-type"><a href="Grape2D.Texture.html">Grape2D.Texture</a></span>
+<span class="param-type"><a href="Grape2D.ITexture.html">Grape2D.ITexture</a></span>
 
 
             
@@ -1258,7 +1832,7 @@ The width is supposed to be an int
             
             
             
-            <td class="description last">the texture to render</td>
+            <td class="description last">The texture to render</td>
         </tr>
 	
 	
@@ -1281,7 +1855,7 @@ The width is supposed to be an int
             
             
             
-            <td class="description last">the position to render</td>
+            <td class="description last">The position to render</td>
         </tr>
 	
 	
@@ -1312,7 +1886,7 @@ The width is supposed to be an int
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 179
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line60">line 60</a>
     </li></ul></dd>
     
     
@@ -1340,7 +1914,7 @@ The width is supposed to be an int
         
             
 <dt>
-    <h4 class="name" id="setClearColor"><span class="type-signature"></span>setClearColor<span class="signature">(color)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setFillColor"><span class="type-signature"></span>setFillColor<span class="signature">(color)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1348,7 +1922,7 @@ The width is supposed to be an int
     
     
     <div class="description">
-        Sets the color to clear the scene.
+        Sets a new fill color.
     </div>
     
 
@@ -1388,7 +1962,7 @@ The width is supposed to be an int
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
@@ -1398,7 +1972,7 @@ The width is supposed to be an int
             
             
             
-            <td class="description last">The color.</td>
+            <td class="description last">New color to use when filling.</td>
         </tr>
 	
 	
@@ -1429,7 +2003,7 @@ The width is supposed to be an int
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 146
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line158">line 158</a>
     </li></ul></dd>
     
     
@@ -1546,7 +2120,7 @@ The width is supposed to be an int
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 128
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line52">line 52</a>
     </li></ul></dd>
     
     
@@ -1574,7 +2148,7 @@ The width is supposed to be an int
         
             
 <dt>
-    <h4 class="name" id="setOpacity"><span class="type-signature"></span>setOpacity<span class="signature">(opacity)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setStrokeColor"><span class="type-signature"></span>setStrokeColor<span class="signature">(color)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1582,8 +2156,7 @@ The width is supposed to be an int
     
     
     <div class="description">
-        Sets the opacity (alpha component) of the object that are gonna be
-rendered.
+        Sets a new stroke color.
     </div>
     
 
@@ -1617,13 +2190,13 @@ rendered.
 	
         <tr>
             
-                <td class="name"><code>opacity</code></td>
+                <td class="name"><code>color</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">string</span>
 
 
             
@@ -1633,7 +2206,7 @@ rendered.
             
             
             
-            <td class="description last">A number between 0 (transparent) and 255 (opaque).</td>
+            <td class="description last">New color to use when stroking.</td>
         </tr>
 	
 	
@@ -1664,7 +2237,7 @@ rendered.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 164
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line151">line 151</a>
     </li></ul></dd>
     
     
@@ -1781,7 +2354,7 @@ rendered.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 102
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line31">line 31</a>
     </li></ul></dd>
     
     
@@ -1809,7 +2382,7 @@ rendered.
         
             
 <dt>
-    <h4 class="name" id="start"><span class="type-signature">&lt;virtual> </span>start<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="start"><span class="type-signature"></span>start<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1817,7 +2390,8 @@ rendered.
     
     
     <div class="description">
-        Prepares a render cycle.
+        Prepares a render cycle. This method should be called once, at
+  the begining of the rendering cycle.
     </div>
     
 
@@ -1850,7 +2424,7 @@ rendered.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        renderers/Renderer.js, line 191
+        <a href="Renderer.js.html">renderers/Renderer.js</a>, <a href="Renderer.js.html#line124">line 124</a>
     </li></ul></dd>
     
     
@@ -1891,13 +2465,13 @@ rendered.
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{number}</li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Fri Jul 12 2013 19:31:14 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Mon Jul 22 2013 19:17:22 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

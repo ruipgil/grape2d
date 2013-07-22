@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: inputs/InputManager.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: inputs/InputManager.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/**
+ * Managers inputs, giving an easy to use interface.
+ *   An input manager can only be listening to a single renderer
+ *   at once.
+ *
+ * @param  {!Grape2D.Renderer} renderer Renderer to listen.
+ * @constructor
+ */
+Grape2D.InputManager = function(renderer) {
+	/**
+	 * Mouse up callback stack.
+	 *
+	 * @type {!Array.&lt;Function>}
+	 * @private
+	 */
+	this.mouseUp = [];
+	/**
+	 * Mouse down callback stack.
+	 *
+	 * @type {!Array.&lt;Function>}
+	 * @private
+	 */
+	this.mouseDown = [];
+	/**
+	 * Mouse move callback stack.
+	 *
+	 * @type {!Array.&lt;Function>}
+	 * @private
+	 */
+	this.mouseMove = [];
+	/**
+	 * Mouse over callback stack.
+	 *
+	 * @type {!Array.&lt;Function>}
+	 * @private
+	 */
+	this.mouseOver = [];
+	/**
+	 * Mouse out callback stack.
+	 *
+	 * @type {!Array.&lt;Function>}
+	 * @private
+	 */
+	this.mouseOut = [];
+	/**
+	 * Mouse wheel callback stack.
+	 *
+	 * @type {!Array.&lt;Function>}
+	 * @private
+	 */
+	this.mouseWheel = [];
+	/**
+	 * Resize callback stack.
+	 *
+	 * @type {!Array.&lt;Function>}
+	 * @private
+	 */
+	this.resize = [];
+	/**
+	 * Renderer
+	 *
+	 * @type {!Grape2D.Renderer}
+	 * @private
+	 */
+	this.rendererBinding = renderer;
+	//binds this input manager to the renderer.
+	this.bindToRenderer(renderer);
+};
+
+Grape2D.InputManager.prototype = {
+	constructor: Grape2D.InputManager,
+	/**
+	 * Binds the renderer to this input manager. Sets up helper functions
+	 *   and callbacks.
+	 *
+	 * @param  {!Grape2D.Renderer} renderer The renderer to listen.
+	 * @public
+	 */
+	bindToRenderer: function(renderer) {
+		//if there is a rendererBinding then remove events
+		this.rendererBinding = renderer;
+		/**
+		 * DOM Element
+		 *
+		 * @type {!Element}
+		 */
+		var dom = this.rendererBinding.getDOMElement();
+
+		dom.addEventListener('mouseup', Grape2D.InputManager.bindFn(this.rendererBinding, this.mouseUp), false);
+		dom.addEventListener('mousedown', Grape2D.InputManager.bindFn(this.rendererBinding, this.mouseDown), false);
+		dom.addEventListener('mousemove', Grape2D.InputManager.bindFn(this.rendererBinding, this.mouseMove), false);
+		dom.addEventListener('mouseover', Grape2D.InputManager.bindFn(this.rendererBinding, this.mouseOver), false);
+		dom.addEventListener('mouseout', Grape2D.InputManager.bindFn(this.rendererBinding, this.mouseOut), false);
+		dom.addEventListener('mousewheel', Grape2D.InputManager.bindFn(this.rendererBinding, this.mouseWheel), false);
+		dom.addEventListener('resize', Grape2D.InputManager.bindFn(this.rendererBinding, this.resize), false);
+
+		//add fns for click and drag
+
+		//register them globally
+		//Grape2D.InputManager.registerGlobal('keydown', Grape2D.InputManager.clickBind(this));
+		/*dom.addEventListener('keydown', Grape2D.InputManager.clickBind(this));
+		dom.addEventListener('keyup', Grape2D.InputManager.clickBind(this));
+		dom.addEventListener('keypress', Grape2D.InputManager.clickBind(this));*/
+	},
+	/**
+	 * Gets the mouse up callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.&lt;Function>} Callback stack.
+	 * @public
+	 */
+	getMouseUpBindStack: function() {
+		return this.mouseUp;
+	},
+	/**
+	 * Adds a callback to the mouse up event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
+	addMouseUp: function(callback) {
+		this.mouseUp.push(callback);
+	},
+	/**
+	 * Removes a callback from the mouse up callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
+	removeMouseUp: function(callback) {
+		var indx = this.mouseUp.indexOf(callback);
+		if (indx >= 1) {
+			this.mouseUp.splice(this.mouseUp.indexOf(callback), 1);
+		}
+	},
+	/**
+	 * Gets the mouse down callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.&lt;Function>} Callback stack.
+	 * @public
+	 */
+	getMouseDownBindStack: function() {
+		return this.mouseDown;
+	},
+	/**
+	 * Adds a callback to the mouse down event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
+	addMouseDown: function(callback) {
+		this.mouseDown.push(callback);
+	},
+	/**
+	 * Removes a callback from the mouse down callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
+	removeMouseDown: function(callback) {
+		var indx = this.mouseDown.indexOf(callback);
+		if (indx >= 1) {
+			this.mouseDown.splice(this.mouseDown.indexOf(callback), 1);
+		}
+	},
+	/**
+	 * Gets the mouse move callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.&lt;Function>} Callback stack.
+	 * @public
+	 */
+	getMouseMoveBindStack: function() {
+		return this.mouseMove;
+	},
+	/**
+	 * Adds a callback to the mouse move event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
+	addMouseMove: function(callback) {
+		this.mouseMove.push(callback);
+	},
+	/**
+	 * Removes a callback from the mouse move callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
+	removeMouseMove: function(callback) {
+		var indx = this.mouseMove.indexOf(callback);
+		if (indx >= 1) {
+			this.mouseMove.splice(this.mouseMove.indexOf(callback), 1);
+		}
+	},
+	/**
+	 * Gets the mouse over callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.&lt;Function>} Callback stack.
+	 * @public
+	 */
+	getMouseOverBindStack: function() {
+		return this.mouseOver;
+	},
+	/**
+	 * Adds a callback to the mouse over event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
+	addMouseOver: function(callback) {
+		this.mouseOver.push(callback);
+	},
+	/**
+	 * Removes a callback from the mouse over callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
+	removeMouseOver: function(callback) {
+		var indx = this.mouseOver.indexOf(callback);
+		if (indx >= 1) {
+			this.mouseOver.splice(this.mouseOver.indexOf(callback), 1);
+		}
+	},
+	/**
+	 * Gets the mouse out callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.&lt;Function>} Callback stack.
+	 * @public
+	 */
+	getMouseOutBindStack: function() {
+		return this.mouseOut;
+	},
+	/**
+	 * Adds a callback to the mouse out event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
+	addMouseOut: function(callback) {
+		this.mouseOut.push(callback);
+	},
+	/**
+	 * Removes a callback from the mouse out callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
+	removeMouseOut: function(callback) {
+		var indx = this.mouseOut.indexOf(callback);
+		if (indx >= 1) {
+			this.mouseOut.splice(this.mouseOut.indexOf(callback), 1);
+		}
+	},
+	/**
+	 * Gets the mouse wheel callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.&lt;Function>} Callback stack.
+	 * @public
+	 */
+	getMouseWheelBindStack: function() {
+		return this.mouseWheel;
+	},
+	/**
+	 * Adds a callback to the mouse wheel event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
+	addMouseWheel: function(callback) {
+		this.mouseWheel.push(callback);
+	},
+	/**
+	 * Removes a callback from the mouse wheel callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
+	removeMouseWheel: function(callback) {
+		var indx = this.mouseWheel.indexOf(callback);
+		if (indx >= 1) {
+			this.mouseWheel.splice(this.mouseWheel.indexOf(callback), 1);
+		}
+	},
+	/**
+	 * Gets the resize callback stack, that is binded to
+	 *   the renderer.
+	 *
+	 * @return {!Array.&lt;Function>} Callback stack.
+	 * @public
+	 */
+	getResizeBindStack: function() {
+		return this.resize;
+	},
+	/**
+	 * Adds a callback to the resize event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
+	addResize: function(callback) {
+		this.resize.push(callback);
+	},
+	/**
+	 * Removes a callback from the resize callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
+	removeResize: function(callback) {
+		var indx = this.resize.indexOf(callback);
+		if (indx >= 1) {
+			this.resize.splice(this.resize.indexOf(callback), 1);
+		}
+	}
+
+};
+/**
+ * This function creates a callback function to be
+ *   called when an event occurs.
+ *
+ * @param  {!Grape2D.Renderer} binding Renderer where the input
+ *   manager is bound.
+ * @param  {!Array.&lt;Function>} stck List of references to an input
+ *   manager callback stack.
+ * @return {!Function} Callback to an event.
+ * @protected
+ * @static
+ */
+Grape2D.InputManager.bindFn = function(binding, stck) {
+	var fn = function(ev) {
+		var i = 0,
+			evnt = new Grape2D.InputManagerEvent(binding, ev);
+		for (; i &lt; stck.length; i++) {
+			stck[i](evnt);
+		}
+	};
+
+	return fn;
+};
+/**
+ * Registry of non-spcific events.
+ *
+ * @type {!Object}
+ * @private
+ * @static
+ */
+Grape2D.InputManager.globalRegistry = {
+	keyDown: {},
+	keyUp: {},
+	keyPress: {}
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Mon Jul 22 2013 19:17:18 GMT+0100 (BST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
