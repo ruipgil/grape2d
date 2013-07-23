@@ -74,25 +74,25 @@ window.onload = function(){
 #### Building Grape2D ####
 
 Grape2D is easy to build and only requires some pre-requirements:
-<ul>
-<li>````nodejs```` + ````npm````
-<li>closure compiler, with the environment variable ````CLOSURE_PATH```` pointing to the installation folder, not to the bin folder. See [grunt-closure-compiler page](https://github.com/gmarty/grunt-closure-compiler) for more details.
-<li>run ````installDev.bat````, it downloads the required dependencies for grunt.
-</ul>
+
+* ```` nodejs ```` + ```` npm ````
+* closure compiler, with the environment variable ````CLOSURE_PATH```` pointing to the installation folder, not to the bin folder. See [grunt-closure-compiler page](https://github.com/gmarty/grunt-closure-compiler) for more details.
+* run ````installDev.bat````, it downloads the required dependencies for grunt.
+
 With that, in the utils folder, run:
-```` grunt ```` to build it
-```` grunt doc ```` to build just the API documentation
-```` grunt test ```` to run QUnit tests
-```` grunt all ```` to build it, build the API documentation and run the tests.
+
+* ```` grunt ```` to build it,
+* ```` grunt doc ```` to build just the API documentation,
+* ```` grunt test ```` to run QUnit tests,
+* ```` grunt all ```` to build it, build the API documentation and run the tests.
 
 #### Contributing to Grape2D ####
 
-<ol>
-<li>Have a GitHub account
-<li>Fork the repository
-<li>Check the [code style guideline]
-<li>Make changes to your clone of the repository
-<li>Submit a pull request
+1. Have a GitHub account
+2. Fork the repository
+3. Check the [code style guideline]
+4. Make changes to your clone of the repository
+5. Submit a pull request
 
 #### Licence ####
 
