@@ -144,7 +144,9 @@
             
             
             <td class="description last">A list with the
-  vertexes of the polygon.</td>
+  vertexes of the polygon. They're position should be relative to the
+  position. This means that a vertex at (0,0) is at the same position
+  that <code>polygon.getPosition()</code>.</td>
         </tr>
 	
 	
@@ -175,7 +177,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line12">line 12</a>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line14">line 14</a>
     </li></ul></dd>
     
     
@@ -271,7 +273,71 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line69">line 69</a>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line108">line 108</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="computedVertexList"><span class="type-signature">&lt;private> </span>computedVertexList<span class="type-signature"> :!Array.&lt;!<a href="Grape2D.Vector.html">Grape2D.Vector</a>></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Polygon's vertexes. Relative to the world.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">!Array.&lt;!<a href="Grape2D.Vector.html">Grape2D.Vector</a>></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line29">line 29</a>
     </li></ul></dd>
     
     
@@ -404,7 +470,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line20">line 20</a>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line22">line 22</a>
     </li></ul></dd>
     
     
@@ -426,6 +492,76 @@
         <h3 class="subsection-title">Methods</h3>
         
         <dl>
+            
+<dt>
+    <h4 class="name" id="computeVertexList"><span class="type-signature">&lt;protected> </span>computeVertexList<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Computes the original vertex coordinates, to be relative to the
+  world position.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
             
 <dt>
     <h4 class="name" id="createBV"><span class="type-signature"></span>createBV<span class="signature">()</span><span class="type-signature"></span></h4>
@@ -465,7 +601,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line53">line 53</a>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line73">line 73</a>
     </li></ul></dd>
     
     
@@ -486,6 +622,97 @@
     
     
     
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getComputedVertexList"><span class="type-signature"></span>getComputedVertexList<span class="signature">()</span><span class="type-signature"> &rarr; {!Array.&lt;!<a href="Grape2D.Vector.html">Grape2D.Vector</a>>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the vertex list relative to the world.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Array with the vertexes.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Array.&lt;!<a href="Grape2D.Vector.html">Grape2D.Vector</a>></span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -626,7 +853,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line59">line 59</a>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line79">line 79</a>
     </li></ul></dd>
     
     
@@ -695,7 +922,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line31">line 31</a>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line41">line 41</a>
     </li></ul></dd>
     
     
@@ -782,7 +1009,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line47">line 47</a>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line67">line 67</a>
     </li></ul></dd>
     
     
@@ -810,70 +1037,18 @@
         
             
 <dt>
-    <h4 class="name" id="setPosition"><span class="type-signature"></span>setPosition<span class="signature">(position)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setPosition"><span class="type-signature"></span>setPosition<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
     
-    <div class="description">
-        Set the position of the shape.
-    </div>
-    
 
     
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>position</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">The new position of the shape.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -884,11 +1059,6 @@
     
     
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Grape2D.Shape.html#setPosition">Grape2D.Shape#setPosition</a>
-    </li></dd>
     
     
     
@@ -904,7 +1074,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Shape.js.html">objects/Shape.js</a>, <a href="Shape.js.html#line40">line 40</a>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line97">line 97</a>
     </li></ul></dd>
     
     
@@ -1022,7 +1192,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line41">line 41</a>
+        <a href="Polygon.js.html">objects/Polygon.js</a>, <a href="Polygon.js.html#line51">line 51</a>
     </li></ul></dd>
     
     
@@ -1069,7 +1239,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Mon Jul 22 2013 19:45:06 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Jul 23 2013 16:52:26 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>
