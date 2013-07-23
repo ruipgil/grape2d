@@ -541,7 +541,7 @@ Grape2D.Vector.prototype = {
 	 * @public
 	 */
 	isParallelTo: function(vector) {
-		return Grape2D.Math.abs(vector.x) == Grape2D.Math.abs(this.x) && Grape2D.Math.abs(vector.y) == Grape2D.Math.abs(this.x);
+		return Grape2D.Math.abs(vector.x) == Grape2D.Math.abs(this.x) && Grape2D.Math.abs(vector.y) == Grape2D.Math.abs(this.y);
 	},
 	/**
 	 * Calculates the distance between this and another vector
@@ -2658,7 +2658,9 @@ Grape2D.Circle.TYPE = "Circle";
  *
  * @param {!Grape2D.Vector=} options.position The position of the polygon
  * @param {!Array.<!Grape2D.Vector>} options.vertexList A list with the
- *   vertexes of the polygon.
+ *   vertexes of the polygon. They're position should be relative to the
+ *   position. This means that a vertex at (0,0) is at the same position
+ *   that <code>polygon.getPosition()</code>.
  *
  * @extends Grape2D.Shape
  * @constructor
@@ -2672,6 +2674,14 @@ Grape2D.Polygon = function(options){
 	 * @private
 	 */
 	this.vertexList = options.vertexList;
+	/**
+	 * Polygon's vertexes. Relative to the world.
+	 *
+	 * @type {!Array.<!Grape2D.Vector>}
+	 * @private
+	 */
+	this.computedVertexList = [];
+	this.computeVertexList();
 };
 
 Grape2D.Polygon.prototype = Object.create(Grape2D.Shape.prototype);
@@ -2694,6 +2704,16 @@ Grape2D.Polygon.prototype.getVertexList = function(){
  */
 Grape2D.Polygon.prototype.setVertexList = function(vertexList){
 	this.vertexList = vertexList;
+	this.computeVertexList();
+};
+/**
+ * Gets the vertex list relative to the world.
+ *
+ * @return {!Array.<!Grape2D.Vector>} Array with the vertexes.
+ * @public
+ */
+Grape2D.Polygon.prototype.getComputedVertexList = function(){
+	return this.computedVertexList;
 };
 /**
  * @override
@@ -2712,6 +2732,25 @@ Grape2D.Polygon.prototype.createBV = function(bvfactory){
  */
 Grape2D.Polygon.prototype.getStaticType = function(){
 	return Grape2D.Polygon.TYPE;
+};
+/**
+ * Computes the original vertex coordinates, to be relative to the
+ *   world position.
+ * 
+ * @protected
+ */
+Grape2D.Polygon.prototype.computeVertexList = function(){
+	this.computedVertexList = [];
+	for(var i=0; i<this.vertexList.length; i++){
+		this.computedVertexList.push(this.getPosition().clone().add(this.vertexList[i]));
+	}
+};
+/**
+ * @override
+ */
+Grape2D.Polygon.prototype.setPosition = function(vector){
+	Grape2D.Shape.prototype.setPosition.call(this, vector);
+	this.computeVertexList();
 };
 /**
  * Type of the shape.
@@ -3603,8 +3642,8 @@ Grape2D.GenericCollisionChecker.prototype.circleVsAabb = function(circle, aabb) 
  */
 Grape2D.GenericCollisionChecker.prototype.aabbVsCircle = function(aabb, circle) {
 	var xC = Grape2D.Math.clamp(circle.getPosition().getX(), aabb.getPosition().getX() - aabb.getHalfWidth(), aabb.getPosition().getX() + aabb.getHalfWidth()),
-		yC = Grape2D.Math.clamp(circle.getPosition().getY(), aabb.getPosition().getY() - aabb.getHalfWidth(), aabb.getPosition().getY() + aabb.getHalfWidth());
-	return Grape2D.Math.sq(circle.getPosition().getX() - xC) + Grape2D.Math.sq(circle.getPosition().getY() - yC) >= Grape2D.Math.sq(circle.getRadius());
+		yC = Grape2D.Math.clamp(circle.getPosition().getY(), aabb.getPosition().getY() - aabb.getHalfHeight(), aabb.getPosition().getY() + aabb.getHalfHeight());
+	return Grape2D.Math.sq(circle.getPosition().getX() - xC) + Grape2D.Math.sq(circle.getPosition().getY() - yC) <= Grape2D.Math.sq(circle.getRadius());
 };
 /**
  * @override
@@ -3643,15 +3682,15 @@ Grape2D.GenericCollisionChecker.prototype.aabbVsPolygon = function(aabb, polygon
  * @override
  */
 Grape2D.GenericCollisionChecker.prototype.circleVsPolygon = function(circle, polygon) {
-	var list = polygon.getVertexList(),
+	var list = polygon.getComputedVertexList(),
 		cPos = circle.getPosition(),
 		r = Grape2D.Math.sq(circle.getRadius());
 	for (var i = 0; i < list.length; i++) {
-		if (list[i].sqDistanceTo(cPos) <= r) {
-			return false;
+		if (list[i].sqDistanceTo(cPos) >= r) {
+			return true;
 		}
 	}
-	return true;
+	return false;
 };
 /**
  * Must be refined.
@@ -3697,19 +3736,29 @@ Grape2D.SATCollisionChecker.prototype = Object.create(Grape2D.GenericCollisionCh
  * @override
  */
 Grape2D.SATCollisionChecker.prototype.aabbVsPolygon = function(aabb, polygon) {
-	return false;
+	var aabbPoly = new Grape2D.Polygon({
+		vertexList: [
+			new Grape2D.Vector(aabb.getPosition().getX() - aabb.getHalfWidth(), aabb.getPosition().getY() + aabb.getHalfHeight()),
+			new Grape2D.Vector(aabb.getPosition().getX() + aabb.getHalfWidth(), aabb.getPosition().getY() + aabb.getHalfHeight()),
+			new Grape2D.Vector(aabb.getPosition().getX() + aabb.getHalfWidth(), aabb.getPosition().getY() - aabb.getHalfHeight()),
+			new Grape2D.Vector(aabb.getPosition().getX() - aabb.getHalfWidth(), aabb.getPosition().getY() - aabb.getHalfHeight())
+		]
+	});
+	return this.polygonVsPolygon(aabbPoly, polygon);
 };
 /**
  * @override
  */
 Grape2D.SATCollisionChecker.prototype.polygonVsPolygon = function(polygon1, polygon2) {
-	var axis = this.selectAxis(this.computeAxis(polygon1.getVertexList()), this.computeAxis(polygon2.getVertexList())),
-		p1Intv = this.computeIntervals(polygon1.getVertexList(), axis),
-		p2Intv = this.computeIntervals(polygon2.getVertexList(), axis),
+	var ca1 = this.computeAxis(polygon1),
+		ca2 = this.computeAxis(polygon2);
+	var axis = this.selectAxis(ca1, ca2);
+	var p1Intv = this.computeIntervals(polygon1.getComputedVertexList(), axis),
+		p2Intv = this.computeIntervals(polygon2.getComputedVertexList(), axis),
 		overlap;
 
 	for (var i = 0; i < axis.length; i++) {
-		overlap = Grape2D.Math.overlaps(p1Intv, p2Intv);
+		overlap = Grape2D.Math.overlaps(p1Intv[i], p2Intv[i]);
 		if (overlap < 0) {
 			return false;
 		}
@@ -3726,7 +3775,7 @@ Grape2D.SATCollisionChecker.prototype.polygonVsPolygon = function(polygon1, poly
  */
 Grape2D.SATCollisionChecker.prototype.computeAxis = function(polygon) {
 	var res = [],
-		list = polygon.getVertexList(),
+		list = polygon.getComputedVertexList(),
 		n, i;
 	for (i = 0; i < list.length; i++) {
 		n = (i + 1) % list.length;
@@ -3747,13 +3796,14 @@ Grape2D.SATCollisionChecker.prototype.selectAxis = function(listA, listB) {
 	var res = [],
 		e;
 	for (var i = 0; i < listA.length; i++) {
-		res.push(listA);
+		res.push(listA[i]);
 	}
 
-	for (i = 0, e = true; i < res.length; i++, e = true) {
-		for (var j = 0; j < listB.length; j++) {
-			if (res[i].isParallelTo(listB[j])) {
+	for (i = 0, e = true; i < listB.length; i++, e = true) {
+		for (var j = 0; j < listA.length; j++) {
+			if (res[j].isParallelTo(listB[i])) {
 				e = false;
+				break;
 			}
 		}
 		if (e) {
