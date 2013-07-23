@@ -5,11 +5,11 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('../package.json'),
-		/*qunit: {
+		qunit: {
 			target: {
-				src: 
+				src: ['../tests/qunit/**.html']
 			}
-		},*/
+		},
 		'closure-compiler': {
 			frontend: {
 				js: sourceFiles,
@@ -47,10 +47,11 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-closure-compiler');
-	//grunt.loadNpmTasks('grunt-contrib-qunit');
+	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-jsdoc');
 
 	grunt.registerTask('default', ['concat', 'closure-compiler']);
 	grunt.registerTask('doc', ['jsdoc']);
-	grunt.registerTask('all', ['concat', 'closure-compiler', 'jsdoc']);
+	grunt.registerTask('test', ['qunit']);
+	grunt.registerTask('all', ['concat', 'closure-compiler', 'jsdoc', 'qunit']);
 };
