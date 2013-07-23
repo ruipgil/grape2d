@@ -13,19 +13,29 @@ Grape2D.SATCollisionChecker.prototype = Object.create(Grape2D.GenericCollisionCh
  * @override
  */
 Grape2D.SATCollisionChecker.prototype.aabbVsPolygon = function(aabb, polygon) {
-	return false;
+	var aabbPoly = new Grape2D.Polygon({
+		vertexList: [
+			new Grape2D.Vector(aabb.getPosition().getX() - aabb.getHalfWidth(), aabb.getPosition().getY() + aabb.getHalfHeight()),
+			new Grape2D.Vector(aabb.getPosition().getX() + aabb.getHalfWidth(), aabb.getPosition().getY() + aabb.getHalfHeight()),
+			new Grape2D.Vector(aabb.getPosition().getX() + aabb.getHalfWidth(), aabb.getPosition().getY() - aabb.getHalfHeight()),
+			new Grape2D.Vector(aabb.getPosition().getX() - aabb.getHalfWidth(), aabb.getPosition().getY() - aabb.getHalfHeight())
+		]
+	});
+	return this.polygonVsPolygon(aabbPoly, polygon);
 };
 /**
  * @override
  */
 Grape2D.SATCollisionChecker.prototype.polygonVsPolygon = function(polygon1, polygon2) {
-	var axis = this.selectAxis(this.computeAxis(polygon1.getVertexList()), this.computeAxis(polygon2.getVertexList())),
-		p1Intv = this.computeIntervals(polygon1.getVertexList(), axis),
-		p2Intv = this.computeIntervals(polygon2.getVertexList(), axis),
+	var ca1 = this.computeAxis(polygon1),
+		ca2 = this.computeAxis(polygon2);
+	var axis = this.selectAxis(ca1, ca2);
+	var p1Intv = this.computeIntervals(polygon1.getComputedVertexList(), axis),
+		p2Intv = this.computeIntervals(polygon2.getComputedVertexList(), axis),
 		overlap;
 
 	for (var i = 0; i < axis.length; i++) {
-		overlap = Grape2D.Math.overlaps(p1Intv, p2Intv);
+		overlap = Grape2D.Math.overlaps(p1Intv[i], p2Intv[i]);
 		if (overlap < 0) {
 			return false;
 		}
@@ -42,7 +52,7 @@ Grape2D.SATCollisionChecker.prototype.polygonVsPolygon = function(polygon1, poly
  */
 Grape2D.SATCollisionChecker.prototype.computeAxis = function(polygon) {
 	var res = [],
-		list = polygon.getVertexList(),
+		list = polygon.getComputedVertexList(),
 		n, i;
 	for (i = 0; i < list.length; i++) {
 		n = (i + 1) % list.length;
@@ -63,13 +73,14 @@ Grape2D.SATCollisionChecker.prototype.selectAxis = function(listA, listB) {
 	var res = [],
 		e;
 	for (var i = 0; i < listA.length; i++) {
-		res.push(listA);
+		res.push(listA[i]);
 	}
 
-	for (i = 0, e = true; i < res.length; i++, e = true) {
-		for (var j = 0; j < listB.length; j++) {
-			if (res[i].isParallelTo(listB[j])) {
+	for (i = 0, e = true; i < listB.length; i++, e = true) {
+		for (var j = 0; j < listA.length; j++) {
+			if (res[j].isParallelTo(listB[i])) {
 				e = false;
+				break;
 			}
 		}
 		if (e) {

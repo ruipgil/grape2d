@@ -35,8 +35,8 @@ Grape2D.GenericCollisionChecker.prototype.circleVsAabb = function(circle, aabb) 
  */
 Grape2D.GenericCollisionChecker.prototype.aabbVsCircle = function(aabb, circle) {
 	var xC = Grape2D.Math.clamp(circle.getPosition().getX(), aabb.getPosition().getX() - aabb.getHalfWidth(), aabb.getPosition().getX() + aabb.getHalfWidth()),
-		yC = Grape2D.Math.clamp(circle.getPosition().getY(), aabb.getPosition().getY() - aabb.getHalfWidth(), aabb.getPosition().getY() + aabb.getHalfWidth());
-	return Grape2D.Math.sq(circle.getPosition().getX() - xC) + Grape2D.Math.sq(circle.getPosition().getY() - yC) >= Grape2D.Math.sq(circle.getRadius());
+		yC = Grape2D.Math.clamp(circle.getPosition().getY(), aabb.getPosition().getY() - aabb.getHalfHeight(), aabb.getPosition().getY() + aabb.getHalfHeight());
+	return Grape2D.Math.sq(circle.getPosition().getX() - xC) + Grape2D.Math.sq(circle.getPosition().getY() - yC) <= Grape2D.Math.sq(circle.getRadius());
 };
 /**
  * @override
@@ -75,15 +75,15 @@ Grape2D.GenericCollisionChecker.prototype.aabbVsPolygon = function(aabb, polygon
  * @override
  */
 Grape2D.GenericCollisionChecker.prototype.circleVsPolygon = function(circle, polygon) {
-	var list = polygon.getVertexList(),
+	var list = polygon.getComputedVertexList(),
 		cPos = circle.getPosition(),
 		r = Grape2D.Math.sq(circle.getRadius());
 	for (var i = 0; i < list.length; i++) {
-		if (list[i].sqDistanceTo(cPos) <= r) {
-			return false;
+		if (list[i].sqDistanceTo(cPos) >= r) {
+			return true;
 		}
 	}
-	return true;
+	return false;
 };
 /**
  * Must be refined.

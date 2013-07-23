@@ -226,7 +226,7 @@ Grape2D.Vector.prototype = {
 	 * @public
 	 */
 	isParallelTo: function(vector) {
-		return Grape2D.Math.abs(vector.x) == Grape2D.Math.abs(this.x) && Grape2D.Math.abs(vector.y) == Grape2D.Math.abs(this.x);
+		return Grape2D.Math.abs(vector.x) == Grape2D.Math.abs(this.x) && Grape2D.Math.abs(vector.y) == Grape2D.Math.abs(this.y);
 	},
 	/**
 	 * Calculates the distance between this and another vector
