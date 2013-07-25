@@ -82,36 +82,6 @@ Grape2D.CanvasRenderer.prototype.renderImage = function(image, sx, sy, sw, sh, d
  * @override
  */
 Grape2D.CanvasRenderer.prototype.renderAABB = function(aabb, camera) {
-	/*var startPosition = aabb.getPosition().clone(),
-		topLeft = startPosition.clone(),
-		topRight = startPosition.clone(),
-		bottomRight = startPosition.clone(),
-		bottomLeft = startPosition;
-
-	topLeft.x -= aabb.getHalfWidth();
-	topLeft.y -= aabb.getHalfHeight();
-	topLeft = camera.wcsToViewport(this, topLeft);
-
-	topRight.x += aabb.getHalfWidth();
-	topRight.y -= aabb.getHalfHeight();
-	topRight = camera.wcsToViewport(this, topRight);
-
-	bottomLeft.x -= aabb.getHalfWidth();
-	bottomLeft.y += aabb.getHalfHeight();
-	bottomLeft = camera.wcsToViewport(this, bottomLeft);
-
-	bottomRight.x += aabb.getHalfWidth();
-	bottomRight.y += aabb.getHalfHeight();
-	bottomRight = camera.wcsToViewport(this, bottomRight);
-
-	this.canvas.beginPath();
-	this.canvas.moveTo(topLeft.x, topLeft.y);
-	this.canvas.lineTo(topRight.x, topRight.y);
-	this.canvas.lineTo(bottomRight.x, bottomRight.y);
-	this.canvas.lineTo(bottomLeft.x, bottomLeft.y);
-	this.canvas.lineTo(topLeft.x, topLeft.y);
-	this.canvas.stroke();*/
-
 	var center = aabb.getPosition(),
 		topLeftA = new Grape2D.Vector(
 			center.x-aabb.getHalfWidth(),

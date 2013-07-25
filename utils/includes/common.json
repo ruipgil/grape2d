@@ -19,6 +19,11 @@
 	"../src/objects/AABB.js",
 	"../src/objects/Circle.js",
 	"../src/objects/Polygon.js",
+	"../src/objects/Particle.js",
+
+	"../src/particleSystem/ParticleSystem.js",
+	"../src/particleSystem/Emitter.js",
+	"../src/particleSystem/Field.js",
 
 	"../src/inputs/InputManager.js",
 	"../src/inputs/InputManagerEvent.js",
