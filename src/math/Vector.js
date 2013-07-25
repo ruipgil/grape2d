@@ -293,6 +293,17 @@ Grape2D.Vector.prototype = {
 		this.x = fn(this.x);
 		this.y = fn(this.y);
 		return this;
+	},
+	/**
+	 * Resets the vector coordinates to 0.
+	 *
+	 * @return {!Grape2D.Vector} This vector.
+	 * @public
+	 */
+	reset: function(){
+		this.x = 0;
+		this.y = 0;
+		return this;
 	}
 };
 
