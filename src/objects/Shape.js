@@ -43,7 +43,7 @@ Grape2D.Shape.prototype = {
 	/**
 	 * Renders the wireframe of the shape.
 	 *
-	 * @param  {!Grape2D.Vector} renderer The renderer to render the
+	 * @param  {!Grape2D.Renderer} renderer The renderer to render the
 	 *   shape's wireframe.
 	 * @param  {!Grape2D.Camera} camera The camera to transform the
 	 *   positions.
