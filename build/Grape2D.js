@@ -1,16 +1,12 @@
 /**
- * @author rui_web@hotmail.com
- */
-
-/**
  * This is the main namespace.
+ * 
  * @namespace
- * @type {Object}
  * @public
  */
 var Grape2D = {
-	vernum: /*@#version.num*/ 0 /*@#version#*/ ,
-	version: /*@#version.string*/ '' /*@#version#*/
+	vernum: 0 ,
+	version: '1.0.0-alpha'
 };
 /**
  * Credits for the requestAnimationFrame and cancelAnimationFrame
@@ -268,6 +264,8 @@ Grape2D.Math = {
 	tan: Math.tan,
 	/** @see Math.sqrt */
 	sqrt: Math.sqrt,
+	/** @see Math.pow */
+	pow: Math.pow,
 
 	/**
 	 * Clamps a number.
@@ -608,6 +606,17 @@ Grape2D.Vector.prototype = {
 		this.x = fn(this.x);
 		this.y = fn(this.y);
 		return this;
+	},
+	/**
+	 * Resets the vector coordinates to 0.
+	 *
+	 * @return {!Grape2D.Vector} This vector.
+	 * @public
+	 */
+	reset: function(){
+		this.x = 0;
+		this.y = 0;
+		return this;
 	}
 };
 
@@ -657,7 +666,7 @@ Grape2D.Matrix = function(aa, ab, ac, ba, bb, bc, ca, cb, cc) {
 	 * Matrix elements.
 	 *
 	 * @type {!Array.<number>}
-	 * @private
+	 * @public
 	 */
 	this.v = [];
 	if (aa !== undefined) {
@@ -757,8 +766,8 @@ Grape2D.Matrix.prototype = {
 	 */
 	multiplyByVector: function(v) {
 		return new Grape2D.Vector(
-			this.v[0] * v.x + this.v[1] * v.y + this.v[2],
-			this.v[3] * v.x + this.v[4] * v.y + this.v[5]
+			this.v[0] * v.getX() + this.v[1] * v.getY() + this.v[2],
+			this.v[3] * v.getX() + this.v[4] * v.getY() + this.v[5]
 		);
 	},
 	/**
@@ -1009,7 +1018,8 @@ Grape2D.Renderer.prototype = {
 	 * @param  {!string} color New color to use when filling.
 	 * @public
 	 */
-	setFillColor: function(color) {}
+	setFillColor: function(color) {},
+	renderParticle: function(particle, camera) {}
 };
 /**
  * This is a simple abstraction of the canvas object,
@@ -1810,35 +1820,13 @@ Grape2D.CanvasRenderer.prototype.renderImage = function(image, sx, sy, sw, sh, d
  * @override
  */
 Grape2D.CanvasRenderer.prototype.renderAABB = function(aabb, camera) {
-	var startPosition = aabb.getPosition().clone(),
-		topLeft = startPosition.clone(),
-		topRight = startPosition.clone(),
-		bottomRight = startPosition.clone(),
-		bottomLeft = startPosition;
-
-	topLeft.x -= aabb.getHalfWidth();
-	topLeft.y -= aabb.getHalfHeight();
-	topLeft = camera.wcsToViewport(this, topLeft);
-
-	topRight.x += aabb.getHalfWidth();
-	topRight.y -= aabb.getHalfHeight();
-	topRight = camera.wcsToViewport(this, topRight);
-
-	bottomLeft.x -= aabb.getHalfWidth();
-	bottomLeft.y += aabb.getHalfHeight();
-	bottomLeft = camera.wcsToViewport(this, bottomLeft);
-
-	bottomRight.x += aabb.getHalfWidth();
-	bottomRight.y += aabb.getHalfHeight();
-	bottomRight = camera.wcsToViewport(this, bottomRight);
-
-	this.canvas.beginPath();
-	this.canvas.moveTo(topLeft.x, topLeft.y);
-	this.canvas.lineTo(topRight.x, topRight.y);
-	this.canvas.lineTo(bottomRight.x, bottomRight.y);
-	this.canvas.lineTo(bottomLeft.x, bottomLeft.y);
-	this.canvas.lineTo(topLeft.x, topLeft.y);
-	this.canvas.stroke();
+	var center = aabb.getPosition(),
+		topLeftA = new Grape2D.Vector(
+			center.x-aabb.getHalfWidth(),
+			center.y-aabb.getHalfHeight()
+		),
+		topLeft = camera.wcsToViewport(this, topLeftA);
+	this.canvas.strokeRect(topLeft.x, topLeft.y, aabb.getWidth()/camera.getScale().x, aabb.getHeight()/camera.getScale().y);
 };
 /**
  * @override
@@ -1921,6 +1909,13 @@ Grape2D.CanvasRenderer.prototype.setStrokeColor = function(color) {
  */
 Grape2D.CanvasRenderer.prototype.setFillColor = function(color) {
 	this.canvas.setFillStyle(color);
+};
+Grape2D.CanvasRenderer.prototype.renderParticle = function(particle, camera) {
+	var center = camera.wcsToViewport(this, particle.getPosition());
+
+	this.canvas.beginPath();
+	this.canvas.arc(center.x, center.y, 1, 0, Grape2D.Math.PIx2, false);
+	this.canvas.fill();
 };
 /**
  * Only renders the wireframe of (the bounding box of)
@@ -2063,6 +2058,9 @@ Grape2D.WireframeRenderer.prototype.setStrokeColor = function(color) {
 Grape2D.WireframeRenderer.prototype.setFillColor = function(color) {
 	this.renderer.setFillColor(color);
 };
+Grape2D.WireframeRenderer.prototype.renderParticle = function(particle, camera) {
+	this.renderer.renderParticle(particle, camera);
+};
 /**
  * Object2D represents an object of the scene.
  *   An Object2D is a simple scene object which the main
@@ -2079,7 +2077,8 @@ Grape2D.WireframeRenderer.prototype.setFillColor = function(color) {
  * @param {!Grape2D.Shape} options.boundingBox The primary use of the
  *		bounding box is to select the items to display in the renderer,
  *		other behaviors such as collision detection can be done with
- *		this property, in some simple cases.
+ *		this property, in some simple cases. So the bounding box should
+ *		bounded tightly to what's supposed to be seen.
  * @param {!Grape2D.Vector=} options.boundingBoxOffset The offset
  *		position of the bounding box relative to the objects position.
  * @param {!boolean=} options.castShadow Used by the IlluminatedRenderer
@@ -2403,7 +2402,7 @@ Grape2D.Shape = function(options) {
 	 * @type {!Grape2D.Vector}
 	 * @protected
 	 */
-	this.position = options.position || new Grape2D.Vector();
+	this.position = /*options.position || */new Grape2D.Vector().set(options.position || new Grape2D.Vector());
 };
 
 Grape2D.Shape.prototype = {
@@ -2429,7 +2428,7 @@ Grape2D.Shape.prototype = {
 	/**
 	 * Renders the wireframe of the shape.
 	 *
-	 * @param  {!Grape2D.Vector} renderer The renderer to render the
+	 * @param  {!Grape2D.Renderer} renderer The renderer to render the
 	 *   shape's wireframe.
 	 * @param  {!Grape2D.Camera} camera The camera to transform the
 	 *   positions.
@@ -2556,7 +2555,7 @@ Grape2D.AABB.prototype.setWidth = function(width){
  */
 Grape2D.AABB.prototype.setHeight = function(height){
 	this.height = height;
-	this.hheight = this.height;
+	this.hheight = this.height/2;
 };
 /**
  * @override
@@ -2760,6 +2759,798 @@ Grape2D.Polygon.prototype.setPosition = function(vector){
  * @private
  */
 Grape2D.Polygon.TYPE = "Polygon";
+/**
+ * Particle.
+ *
+ * @param  {!Object=} options Setup options. See {@link Grape2D.Shape}
+ * @param  {!Grape2D.Vector=} options.velocity Particle's velocity.
+ * @param  {!Grape2D.Vector=} options.acceleration Particle's acceleration.
+ * @param  {!number} options.lifeTime Particle's remaining time, in
+ *   milliseconds.
+ *
+ * @extends {Grape2D.Shape}
+ * @constructor
+ */
+Grape2D.Particle = function(options) {
+	Grape2D.Shape.call(this, options);
+	/**
+	 * Velocity of the particle.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.velocity = options.velocity || new Grape2D.Vector();
+	/**
+	 * Acceleration of the particle.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.acceleration = options.acceleration || new Grape2D.Vector();
+	/**
+	 * Remaining life time of the particle in milliseconds.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.lifeTime = options.lifeTime || 250;
+	//console.log(this.lifeTime);
+};
+
+Grape2D.Particle.prototype = Object.create(Grape2D.Shape.prototype);
+/**
+ * Gets the particle velocity.
+ *
+ * @return {!Grape2D.Vector} Particle velocity.
+ * @public
+ */
+Grape2D.Particle.prototype.getVelocity = function() {
+	return this.velocity;
+};
+/**
+ * Sets the particle velocity.
+ *
+ * @param  {!Grape2D.Vector} velocity Velocity of the particle.
+ * @public
+ */
+Grape2D.Particle.prototype.setVelocity = function(velocity) {
+	this.velocity.set(velocity);
+};
+/**
+ * Gets the particle acceleration.
+ *
+ * @return {!Grape2D.Vector} Particle acceleration.
+ * @public
+ */
+Grape2D.Particle.prototype.getAcceleration = function() {
+	return this.velocity;
+};
+/**
+ * Sets the particle acceleration.
+ *
+ * @param  {!Grape2D.Vector} acceleration Acceleration of the particle.
+ * @public
+ */
+Grape2D.Particle.prototype.setAcceleration = function(acceleration) {
+	this.acceleration.set(acceleration);
+};
+/**
+ * Gets the particle remaining life time.
+ *
+ * @return {!number} Particle life time.
+ * @public
+ */
+Grape2D.Particle.prototype.getLifeTime = function() {
+	return this.lifeTime;
+};
+/**
+ * Sets the particle remaining life time.
+ *
+ * @param  {!number} lifeTime Remaining life time of the particle.
+ * @public
+ */
+Grape2D.Particle.prototype.setLifeTime = function(lifeTime) {
+	this.lifeTime = lifeTime;
+};
+/**
+ * @override
+ */
+Grape2D.Particle.prototype.render = function(renderer, camera) {
+	renderer.renderParticle(this, camera);
+};
+/**
+ * Checks if the particle is in the alive state.
+ *
+ * @return {!boolean} True if it's alive.
+ * @public
+ */
+Grape2D.Particle.prototype.isAlive = function() {
+	return this.lifeTime > 0;
+};
+/**
+ * Checks if the particle is in the dead state.
+ *
+ * @return {!boolean} True if it's dead.
+ * @public
+ */
+Grape2D.Particle.prototype.isDead = function() {
+	return this.lifeTime <= 0;
+};
+/**
+ * Revives the particle according to a set of properties.
+ *
+ * @param  {!Grape2D.Vector} position Position of the particle.
+ * @param  {!Grape2D.Vector} velocity Velocity of the particle.
+ * @param  {!number} lifeTime Remaining life time of the particle.
+ * @public
+ */
+Grape2D.Particle.prototype.revive = function(position, velocity, lifeTime) {
+	this.position.set(position);
+	this.velocity.set(velocity);
+	this.lifeTime = lifeTime;
+	this.acceleration.reset();
+};
+/**
+ * Submits the particle to the force of fields.
+ *
+ * @param  {!Array.<!Grape2D.Field>} fields Fields to submit.
+ * @public
+ */
+Grape2D.Particle.prototype.submitToFields = function(fields) {
+	var accel = new Grape2D.Vector();
+	for (var i = 0; i < fields.length; i++) {
+		accel.add(fields[i].computeAcceleration(this.position));
+	}
+	this.acceleration.set(accel);
+};
+/**
+ * Updates the particle.
+ *
+ * @param  {!number} dt Time elapsed since the last update.
+ * @param  {!Grape2D.Scene} scene Scene where the particle is.
+ * @public
+ */
+Grape2D.Particle.prototype.update = function(dt, scene) {
+	//simple euler integration.
+	this.velocity.setX(this.velocity.getX() + this.acceleration.getX() * dt);
+	this.velocity.setY(this.velocity.getY() + this.acceleration.getY() * dt);
+	this.position.setX(this.position.getX() + this.velocity.getX() * dt);
+	this.position.setY(this.position.getY() + this.velocity.getY() * dt);
+	this.lifeTime -= dt;
+};
+/**
+ * Particle system.
+ *
+ * @extends {Grape2D.Object2D}
+ * @constructor
+ */
+Grape2D.ParticleSystem = function(){
+	Grape2D.Object2D.call(this, {
+		texture: new Grape2D.VoidTexture(),
+		boundingBox: new Grape2D.AABB({
+			width: 0,
+			height: 0
+		})
+	});
+	/**
+	 * Emitters of particles of the system.
+	 *
+	 * @type {!Array.<!Grape2D.Emitter>}
+	 * @private
+	 */
+	this.emitters = [];
+	/**
+	 * Fields that interact with the particles of the system.
+	 *
+	 * @type {!Array.<!Grape2D.Field>}
+	 * @private
+	 */
+	this.fields = [];
+	/**
+	 * Value of the minimum x coordinate of the particles of the system.
+	 *   Used for a faster creation of the bounding box of the system.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.minx = +Infinity;
+	/**
+	 * Value of the minimum y coordinate of the particles of the system.
+	 *   Used for a faster creation of the bounding box of the system.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.miny = +Infinity;
+	/**
+	 * Value of the maximum x coordinate of the particles of the system.
+	 *   Used for a faster creation of the bounding box of the system.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.maxx = -Infinity;
+	/**
+	 * Value of the maximum y coordinate of the particles of the system.
+	 *   Used for a faster creation of the bounding box of the system.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.maxy = -Infinity;
+};
+
+Grape2D.ParticleSystem.prototype = Object.create(Grape2D.Object2D.prototype);
+/**
+ * Adds an emitter to the system.
+ *
+ * @param  {!Grape2D.Emitter} emitter Emitter to add.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.addEmitter = function(emitter){
+	emitter.setParticleSystem(this);
+	this.emitters.push(emitter);
+};
+/**
+ * Removes an emitter from the system.
+ *
+ * @param  {!Grape2D.Emitter} emitter An emitter that is in the system.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.removeEmitter = function(emitter){
+	this.emitters.splice(this.emitters.indexOf(emitter), 1);
+};
+/**
+ * Gets the emitter list.
+ *
+ * @return {!Array.<!Grape2D.Emitter>} Emitters of the system.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.getEmitters = function(){
+	return this.emitters;
+};
+/**
+ * Adds a field to the system.
+ *
+ * @param  {!Grape2D.Field} field Field to add.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.addField = function(field){
+	this.fields.push(field);
+};
+/**
+ * Removes a field from the system.
+ *
+ * @param  {!Grape2D.Field} field A field that is in the system.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.removeField = function(field){
+	this.fields.splice(this.fields.indexOf(field), 1);
+};
+/**
+ * Gets the fields list.
+ *
+ * @return {!Array.<!Grape2D.Field>} Fields of the system.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.getFields = function(){
+	return this.fields;
+};
+/**
+ * @override
+ */
+Grape2D.ParticleSystem.prototype.update = function(dt, scene){
+	this.minx = +Infinity;
+	this.miny = +Infinity;
+	this.maxx = -Infinity;
+	this.maxy = -Infinity;
+	for(var i=0; i<this.emitters.length;i++){
+		this.emitters[i].update(dt, scene);
+	}
+	var w = this.maxx-this.minx,
+		h = this.maxy-this.miny,
+		center = new Grape2D.Vector(this.minx+w/2, this.miny+h/2),
+		bbox = this.getBoundingBox();
+	bbox.setWidth(w);
+	bbox.setHeight(h);
+	bbox.setPosition(center);
+};
+/**
+ * Submits a particle to the system. This method is used mainly
+ *   to keep an updated bounding box.
+ *
+ * @param  {!Grape2D.Particle} particle Particle inside the system.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.submitParticle = function(particle){
+	var x = particle.getPosition().getX(),
+		y = particle.getPosition().getY();
+	if(this.minx>x){
+		this.minx = x;
+	}
+	if(this.miny>y){
+		this.miny = y;
+	}
+	if(this.maxx<x){
+		this.maxx = x;
+	}
+	if(this.maxy<y){
+		this.maxy = y;
+	}
+};
+/**
+ * @override
+ */
+Grape2D.ParticleSystem.prototype.getPosition = function(){
+	return this.getBoundingBox().getPosition();
+};
+/**
+ * @override
+ */
+Grape2D.ParticleSystem.prototype.render = function(renderer, camera){
+	for(var i=0; i<this.emitters.length;i++){
+		this.emitters[i].render(renderer, camera);
+	}
+	this.getBoundingBox().render(renderer, camera);
+};
+
+/**
+ * Emits particles to the particle system.
+ *
+ * @param  {!Object} options Setup properties.
+ * @param  {!Grape2D.Vector} options.position Position of the emitter,
+ *   and initial position of the particles.
+ * @param  {!Grape2D.Vector} options.velocity Initial velocity of the
+ *   particles.The length of the vector indicated its speed. The angle
+ *   indicates the angle.
+ * @param  {!number=} options.speedVariation Variation of the length of
+ *   the velocity vector. So that particles created have a speed
+ *   between <code>velocity.length-speedVariation</code> and
+ *   <code>velocity.length+speedVariation</code>.
+ * @param  {!number=} options.spread Spread of particles relative to the
+ * velocity angle. It should be in radius.
+ * @param  {!number} options.particleLife Life of a particle in milliseconds.
+ * @param  {!number=} options.particleLifeVariation Life variation of
+ *   particles created, relative to the life property.
+ * @param  {!number=} options.maxParticles Maximum number of particles
+ *   that this emitter can have, dead or alive. Because the particles
+ *   are instantiated at construction time.
+ * @param  {!number=} options.rate Rate of particles emitted, per second.
+ *
+ * @constructor
+ */
+Grape2D.Emitter = function(options) {
+	/**
+	 * Position of the emitter and initial position of newly created or
+	 *   revived particles.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.position = options.position;
+	/**
+	 * Initial velocity of the particles.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.velocity = options.velocity;
+	/**
+	 * Cached value, of the velocity angle.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.vAngle = this.velocity.getAngle();
+	/**
+	 * Cached value, of the magnitude of the velocity.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.vMagnitude = this.velocity.getMagnitude();
+	/**
+	 * Speed variation of created or revived particles.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.speedVariation = options.speedVariation || 0;
+	/**
+	 * Spread of the particles, in relation to the velocity vector.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.spread = options.spread || 0;
+	/**
+	 * Life of particles.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.particleLife = options.particleLife || 200;
+	/**
+	 * Life variation of particles.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.particleLifeVariation = options.particleLifeVariation || 0;
+	/**
+	 * Emitter maximum particles.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.maxParticles = options.maxParticles;
+	/**
+	 * Rate of particles to emit per second.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.rate = options.rate || 60;
+	/**
+	 * Rate of particles to emit per millisecond.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.mrate = this.rate / 1000;
+	/**
+	 * Particles of the emitter.
+	 *
+	 * @type {!Array.<!Grape2D.Particle>}
+	 * @private
+	 */
+	this.particles = [];
+	this.createParticles();
+	/**
+	 * Particle system associated with this emitter.
+	 *
+	 * @type {Grape2D.ParticleSystem}
+	 * @private
+	 */
+	this.particleSystem = null;
+	/**
+	 * Number of particle rendered after each render cycle.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.renderedParticles = 0;
+};
+
+Grape2D.Emitter.prototype = {
+	constructor: Grape2D.Emitter,
+	/**
+	 * Gets the position of the emitter.
+	 *
+	 * @return {!Grape2D.Vector} Position of the emitter.
+	 * @public
+	 */
+	getPosition: function() {
+		return this.position;
+	},
+	/**
+	 * Sets the position of the emitter.
+	 *
+	 * @param  {!Grape2D.Vector} position Position of the emitter.
+	 * @public
+	 */
+	setPosition: function(position) {
+		this.position.set(position);
+	},
+	/**
+	 * Gets the velocity of the emitter.
+	 *
+	 * @return {!Grape2D.Vector} Velocity of the emitter.
+	 * @public
+	 */
+	getVelocity: function() {
+		return this.velocity;
+	},
+	/**
+	 * Sets the velocity of the emitter.
+	 *
+	 * @param  {!Grape2D.Vector} velocity Velocity of the emitter.
+	 * @public
+	 */
+	setVelocity: function(velocity) {
+		this.velocity.set(velocity);
+	},
+	/**
+	 * Gets the speed variation of the created particles.
+	 *
+	 * @return {!number} Speed variation.
+	 * @public
+	 */
+	getSpeedVariation: function() {
+		return this.speedVariation;
+	},
+	/**
+	 * Sets the speed variation of the created particles.
+	 *
+	 * @param  {!number} speedVariation Speed variation.
+	 * @public
+	 */
+	setSpeedVariation: function(speedVariation) {
+		this.speedVariation = speedVariation;
+	},
+	/**
+	 * Gets the spread of the created particles, relative to the
+	 *   velocity vector angle.
+	 *
+	 * @return {!number} Spread of the created particles.
+	 * @public
+	 */
+	getSpread: function() {
+		return this.spread;
+	},
+	/**
+	 * Sets the spread of the created particles, relative to the
+	 *   velocity vector angle.
+	 *
+	 * @param  {!number} spread Spread of the created particles.
+	 * @public
+	 */
+	setSpread: function(spread) {
+		this.spread = spread;
+	},
+	/**
+	 * Gets the particle life of the created particles.
+	 *
+	 * @return {!number} Particle life.
+	 * @public
+	 */
+	getParticleLife: function() {
+		return this.particleLife;
+	},
+	/**
+	 * Sets the particle life of the created particles.
+	 *
+	 * @param  {!number} particleLife Particle life.
+	 * @public
+	 */
+	setParticleLife: function(particleLife) {
+		this.particleLife = particleLife;
+	},
+	/**
+	 * Gets the particle life variation of the created particles,
+	 *   relative to the particle life.
+	 *
+	 * @return {!number} Particle life variation.
+	 * @public
+	 */
+	getParticleLifeVariation: function() {
+		return this.particleLifeVariation;
+	},
+	/**
+	 * Sets the particle life variation of the created particles,
+	 *   relative to the particle life.
+	 *
+	 * @param  {!number} particleLifeVariation Particle life variation.
+	 * @public
+	 */
+	setParticleLifeVariation: function(particleLifeVariation) {
+		this.particleLifeVariation = particleLifeVariation;
+	},
+	/**
+	 * Gets the rate that the emitter emits particles.
+	 *
+	 * @return {!number} Emission rate.
+	 * @public
+	 */
+	getRate: function() {
+		return this.rate;
+	},
+	/**
+	 * Sets the rate that the emitter emits particles.
+	 *
+	 * @param  {!number} rate Emission rate.
+	 * @public
+	 */
+	setRate: function(rate) {
+		this.rate = rate;
+	},
+	/**
+	 * Gets the particles associated with this emitter, they can be
+	 *   either dead or alive.
+	 *
+	 * @return {!Array.<!Grape2D.Particle>} Particles.
+	 * @public
+	 */
+	getParticles: function() {
+		return this.particles;
+	},
+	/**
+	 * Gets the particle system associated with this emitter.
+	 *
+	 * @return {?Grape2D.ParticleSystem} Particle system.
+	 * @public
+	 */
+	getParticleSystem: function() {
+		return this.particleSystem;
+	},
+	/**
+	 * Sets the particle system associated with this emitter.
+	 *
+	 * @param  {!Grape2D.ParticleSystem} ps Particle system.
+	 * @public
+	 */
+	setParticleSystem: function(ps) {
+		this.particleSystem = ps;
+	},
+	/**
+	 * Gets the number of particles rendered in the last call to the
+	 *   {@link Grape2D.Emitter.render} method.
+	 *
+	 * @return {!number} Number of particles rendered.
+	 */
+	getRenderedParticles: function(){
+		return this.renderedParticles;
+	},
+	/**
+	 * Create particles. Up to the maximum number of particles of the
+	 *   emitter.
+	 *
+	 * @protected
+	 */
+	createParticles: function() {
+		for (var i = 0; i < this.maxParticles; i++) {
+			this.particles.push(new Grape2D.Particle({
+				position: this.position.clone(),
+				velocity: Grape2D.Vector.createFromAngle(
+					this.vAngle + Grape2D.Math.randFloat(-this.spread, this.spread),
+					this.vMagnitude + Grape2D.Math.randFloat(-this.speedVariation, this.speedVariation)),
+				lifeTime: -1
+			}));
+		}
+	},
+	/**
+	 * Revives a particle according to the emitter properties.
+	 *
+	 * @param  {!Grape2D.Particle} particle Particle to revive.
+	 * @protected
+	 */
+	reviveParticle: function(particle) {
+		particle.revive(
+			this.position,
+			Grape2D.Vector.createFromAngle(this.vAngle + Grape2D.Math.randFloat(-this.spread, this.spread), this.vMagnitude + Grape2D.Math.randFloat(-this.speedVariation, this.speedVariation)),
+			this.particleLife + Grape2D.Math.randInt(-this.particleLifeVariation, this.particleLifeVariation));
+
+	},
+	/**
+	 * Updates an emitter. If there are particles dead, it revives them
+	 *   according to the rate specified.
+	 *   The emitter should have a particle system associated, if this
+	 *   method is to be called, it could be done through <code>
+	 *   emitter.setParticleSystem(particleSystem);</code>
+	 *
+	 * @param  {!number} dt Time elapsed since the last update.
+	 * @param  {!Grape2D.Scene} scene Scene of the emitter.
+	 * @public
+	 */
+	update: function(dt, scene) {
+		var dead = [],
+			rate = Grape2D.Math.floor(this.mrate * dt),
+			fields = this.particleSystem.getFields(),
+			particle;
+		for (var i = 0; i < this.particles.length; i++) {
+			particle = this.particles[i];
+			if (particle.isDead()) {
+				if (rate>=0) {
+					this.reviveParticle(particle);
+					rate--;
+					this.particleSystem.submitParticle(particle);
+				}
+			} else {
+				particle.submitToFields(fields);
+				particle.update(dt, scene);
+				this.particleSystem.submitParticle(particle);
+			}
+		}
+	},
+	/**
+	 * Renders the particles into a renderer.
+	 *
+	 * @param  {!Grape2D.Renderer} renderer Renderer.
+	 * @param  {!Grape2D.Camera} camera Camera.
+	 * @public
+	 */
+	render: function(renderer, camera) {
+		this.renderedParticles = 0;
+		for (var i = 0; i < this.particles.length; i++) {
+			if (this.particles[i].isAlive()) {
+				this.particles[i].render(renderer, camera);
+				this.renderedParticles++;
+			}
+		}
+	}
+};
+/**
+ * A field exerts forces onto a particle. It can attract or
+ *   pull away particles, according to it's mass.
+ *
+ * @param  {!Object} options Setup options.
+ * @param  {!number} options.mass Mass of the field.
+ * @param  {!Grape2D.Vector} options.position Position of the field.
+ *
+ * @constructor
+ */
+Grape2D.Field = function(options) {
+	/**
+	 * Mass of the field.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.mass = options.mass;
+	/**
+	 * Position of the field.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.position = options.position;
+};
+
+Grape2D.Field.prototype = {
+	constructor: Grape2D.Field,
+	/**
+	 * Gets the mass of the field.
+	 *
+	 * @return {!number} Mass of the field.
+	 * @public
+	 */
+	getMass: function() {
+		return this.mass;
+	},
+	/**
+	 * Sets the mass of the field.
+	 *
+	 * @param  {!number} mass Mass of the field.
+	 * @public
+	 */
+	setMass: function(mass) {
+		this.mass = mass;
+	},
+	/**
+	 * Gets the position of the field.
+	 *
+	 * @return {!Grape2D.Vector} Position of the field.
+	 * @public
+	 */
+	getPosition: function() {
+		return this.position;
+	},
+	/**
+	 * Sets the position of the field.
+	 *
+	 * @param  {!Grape2D.Vector} position Position of the field.
+	 * @public
+	 */
+	setPosition: function(position) {
+		this.position.set(position);
+	},
+	/**
+	 * Computes the acceleration that this field makes in
+	 *   a point.
+	 *
+	 * @param  {!Grape2D.Vector} position Position to calculate
+	 *   the force.
+	 * @return {!Grape2D.Vector} Acceleration at a point.
+	 * @private
+	 */
+	computeAcceleration: function(position) {
+		var v = this.position.clone().sub(position),
+			force = this.mass / Grape2D.Math.pow(
+				Grape2D.Math.sq(v.getX()) + Grape2D.Math.sq(v.getY()) + this.mass,
+				1.5);
+		return v.multiplyByScalar(force);
+	}
+};
 /**
  * Managers inputs, giving an easy to use interface.
  *   An input manager can only be listening to a single renderer
@@ -3229,13 +4020,13 @@ Grape2D.Camera.prototype = {
 		this.cM = this.transformation.clone();
 		//This operations should work fine, and it avoids a multiplication
 		//between the _cM matrix and a vector when converting coordinates
-		this.cM.v[0] *= this.scale.x * this.rscale.x;
-		this.cM.v[1] *= this.scale.x * this.rscale.x;
-		this.cM.v[2] *= this.scale.x * this.rscale.x;
+		this.cM.v[0] *= this.scale.getX() * this.rscale.getX();
+		this.cM.v[1] *= this.scale.getX() * this.rscale.getX();
+		this.cM.v[2] *= this.scale.getX() * this.rscale.getX();
 
-		this.cM.v[3] *= this.scale.y * this.rscale.y;
-		this.cM.v[4] *= this.scale.y * this.rscale.y;
-		this.cM.v[5] *= this.scale.y * this.rscale.y;
+		this.cM.v[3] *= this.scale.getY() * this.rscale.getY();
+		this.cM.v[4] *= this.scale.getY() * this.rscale.getY();
+		this.cM.v[5] *= this.scale.getY() * this.rscale.getY();
 
 		this.icM = this.cM.clone().invert();
 	},
@@ -3252,8 +4043,8 @@ Grape2D.Camera.prototype = {
 	wcsToViewport: function(renderer, vector) {
 		var v = this.cM.multiplyByVector(vector.clone().sub(this.lookAt));
 
-		v.x += renderer.getHalfWidth();
-		v.y += renderer.getHalfHeight();
+		v.setX(v.getX()+renderer.getHalfWidth());
+		v.setY(v.getY()+renderer.getHalfHeight());
 
 		return v;
 	},
@@ -3269,8 +4060,8 @@ Grape2D.Camera.prototype = {
 	viewportToWcs: function(renderer, vector) {
 		var v = vector.clone();
 
-		v.x -= renderer.getHalfWidth();
-		v.y -= renderer.getHalfWidth();
+		v.setX(v.getX()-renderer.getHalfWidth());
+		v.setY(v.getY()-renderer.getHalfHeight());
 
 		v = this.icM.multiplyByVector(v).sub(this.lookAt);
 
@@ -3283,8 +4074,8 @@ Grape2D.Camera.prototype = {
 	 * @public
 	 */
 	rescale: function(scale) {
-		this.rscale.x = scale.x / this.scale.x;
-		this.rscale.y = scale.y / this.scale.y;
+		this.rscale.setX( scale.getX() / this.scale.getX() );
+		this.rscale.setY( scale.getY() / this.scale.getY() );
 		this.computeMatrix();
 	},
 	/**
@@ -3323,8 +4114,8 @@ Grape2D.Camera.prototype = {
 	 */
 	computeShape: function(renderer) {
 		var pos = new Grape2D.Vector().set(this.lookAt),
-			w = renderer.getWidth() / this.scale.x,
-			h = renderer.getHeight() / this.scale.y;
+			w = renderer.getWidth() / this.scale.getX(),
+			h = renderer.getHeight() / this.scale.getY();
 
 		return new Grape2D.AABB({
 			position: pos,
