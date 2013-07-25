@@ -155,5 +155,6 @@ Grape2D.Renderer.prototype = {
 	 * @param  {!string} color New color to use when filling.
 	 * @public
 	 */
-	setFillColor: function(color) {}
+	setFillColor: function(color) {},
+	renderParticle: function(particle, camera) {}
 };

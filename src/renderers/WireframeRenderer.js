@@ -139,3 +139,6 @@ Grape2D.WireframeRenderer.prototype.setStrokeColor = function(color) {
 Grape2D.WireframeRenderer.prototype.setFillColor = function(color) {
 	this.renderer.setFillColor(color);
 };
+Grape2D.WireframeRenderer.prototype.renderParticle = function(particle, camera) {
+	this.renderer.renderParticle(particle, camera);
+};
