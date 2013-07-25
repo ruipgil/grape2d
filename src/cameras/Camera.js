@@ -73,13 +73,13 @@ Grape2D.Camera.prototype = {
 		this.cM = this.transformation.clone();
 		//This operations should work fine, and it avoids a multiplication
 		//between the _cM matrix and a vector when converting coordinates
-		this.cM.v[0] *= this.scale.x * this.rscale.x;
-		this.cM.v[1] *= this.scale.x * this.rscale.x;
-		this.cM.v[2] *= this.scale.x * this.rscale.x;
+		this.cM.v[0] *= this.scale.getX() * this.rscale.getX();
+		this.cM.v[1] *= this.scale.getX() * this.rscale.getX();
+		this.cM.v[2] *= this.scale.getX() * this.rscale.getX();
 
-		this.cM.v[3] *= this.scale.y * this.rscale.y;
-		this.cM.v[4] *= this.scale.y * this.rscale.y;
-		this.cM.v[5] *= this.scale.y * this.rscale.y;
+		this.cM.v[3] *= this.scale.getY() * this.rscale.getY();
+		this.cM.v[4] *= this.scale.getY() * this.rscale.getY();
+		this.cM.v[5] *= this.scale.getY() * this.rscale.getY();
 
 		this.icM = this.cM.clone().invert();
 	},
@@ -96,8 +96,8 @@ Grape2D.Camera.prototype = {
 	wcsToViewport: function(renderer, vector) {
 		var v = this.cM.multiplyByVector(vector.clone().sub(this.lookAt));
 
-		v.x += renderer.getHalfWidth();
-		v.y += renderer.getHalfHeight();
+		v.setX(v.getX()+renderer.getHalfWidth());
+		v.setY(v.getY()+renderer.getHalfHeight());
 
 		return v;
 	},
@@ -113,8 +113,8 @@ Grape2D.Camera.prototype = {
 	viewportToWcs: function(renderer, vector) {
 		var v = vector.clone();
 
-		v.x -= renderer.getHalfWidth();
-		v.y -= renderer.getHalfWidth();
+		v.setX(v.getX()-renderer.getHalfWidth());
+		v.setY(v.getY()-renderer.getHalfHeight());
 
 		v = this.icM.multiplyByVector(v).sub(this.lookAt);
 
@@ -127,8 +127,8 @@ Grape2D.Camera.prototype = {
 	 * @public
 	 */
 	rescale: function(scale) {
-		this.rscale.x = scale.x / this.scale.x;
-		this.rscale.y = scale.y / this.scale.y;
+		this.rscale.setX( scale.getX() / this.scale.getX() );
+		this.rscale.setY( scale.getY() / this.scale.getY() );
 		this.computeMatrix();
 	},
 	/**
@@ -167,8 +167,8 @@ Grape2D.Camera.prototype = {
 	 */
 	computeShape: function(renderer) {
 		var pos = new Grape2D.Vector().set(this.lookAt),
-			w = renderer.getWidth() / this.scale.x,
-			h = renderer.getHeight() / this.scale.y;
+			w = renderer.getWidth() / this.scale.getX(),
+			h = renderer.getHeight() / this.scale.getY();
 
 		return new Grape2D.AABB({
 			position: pos,
