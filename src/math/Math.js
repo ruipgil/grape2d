@@ -145,6 +145,8 @@ Grape2D.Math = {
 	tan: Math.tan,
 	/** @see Math.sqrt */
 	sqrt: Math.sqrt,
+	/** @see Math.pow */
+	pow: Math.pow,
 
 	/**
 	 * Clamps a number.

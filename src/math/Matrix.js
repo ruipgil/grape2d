@@ -20,7 +20,7 @@ Grape2D.Matrix = function(aa, ab, ac, ba, bb, bc, ca, cb, cc) {
 	 * Matrix elements.
 	 *
 	 * @type {!Array.<number>}
-	 * @private
+	 * @public
 	 */
 	this.v = [];
 	if (aa !== undefined) {
@@ -120,8 +120,8 @@ Grape2D.Matrix.prototype = {
 	 */
 	multiplyByVector: function(v) {
 		return new Grape2D.Vector(
-			this.v[0] * v.x + this.v[1] * v.y + this.v[2],
-			this.v[3] * v.x + this.v[4] * v.y + this.v[5]
+			this.v[0] * v.getX() + this.v[1] * v.getY() + this.v[2],
+			this.v[3] * v.getX() + this.v[4] * v.getY() + this.v[5]
 		);
 	},
 	/**
