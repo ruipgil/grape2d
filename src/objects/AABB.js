@@ -98,7 +98,7 @@ Grape2D.AABB.prototype.setWidth = function(width){
  */
 Grape2D.AABB.prototype.setHeight = function(height){
 	this.height = height;
-	this.hheight = this.height;
+	this.hheight = this.height/2;
 };
 /**
  * @override
