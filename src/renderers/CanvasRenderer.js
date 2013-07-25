@@ -82,7 +82,7 @@ Grape2D.CanvasRenderer.prototype.renderImage = function(image, sx, sy, sw, sh, d
  * @override
  */
 Grape2D.CanvasRenderer.prototype.renderAABB = function(aabb, camera) {
-	var startPosition = aabb.getPosition().clone(),
+	/*var startPosition = aabb.getPosition().clone(),
 		topLeft = startPosition.clone(),
 		topRight = startPosition.clone(),
 		bottomRight = startPosition.clone(),
@@ -110,7 +110,15 @@ Grape2D.CanvasRenderer.prototype.renderAABB = function(aabb, camera) {
 	this.canvas.lineTo(bottomRight.x, bottomRight.y);
 	this.canvas.lineTo(bottomLeft.x, bottomLeft.y);
 	this.canvas.lineTo(topLeft.x, topLeft.y);
-	this.canvas.stroke();
+	this.canvas.stroke();*/
+
+	var center = aabb.getPosition(),
+		topLeftA = new Grape2D.Vector(
+			center.x-aabb.getHalfWidth(),
+			center.y-aabb.getHalfHeight()
+		),
+		topLeft = camera.wcsToViewport(this, topLeftA);
+	this.canvas.strokeRect(topLeft.x, topLeft.y, aabb.getWidth()/camera.getScale().x, aabb.getHeight()/camera.getScale().y);
 };
 /**
  * @override
@@ -193,4 +201,11 @@ Grape2D.CanvasRenderer.prototype.setStrokeColor = function(color) {
  */
 Grape2D.CanvasRenderer.prototype.setFillColor = function(color) {
 	this.canvas.setFillStyle(color);
+};
+Grape2D.CanvasRenderer.prototype.renderParticle = function(particle, camera) {
+	var center = camera.wcsToViewport(this, particle.getPosition());
+
+	this.canvas.beginPath();
+	this.canvas.arc(center.x, center.y, 1, 0, Grape2D.Math.PIx2, false);
+	this.canvas.fill();
 };
