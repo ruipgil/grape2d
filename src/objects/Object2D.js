@@ -14,7 +14,8 @@
  * @param {!Grape2D.Shape} options.boundingBox The primary use of the
  *		bounding box is to select the items to display in the renderer,
  *		other behaviors such as collision detection can be done with
- *		this property, in some simple cases.
+ *		this property, in some simple cases. So the bounding box should
+ *		bounded tightly to what's supposed to be seen.
  * @param {!Grape2D.Vector=} options.boundingBoxOffset The offset
  *		position of the bounding box relative to the objects position.
  * @param {!boolean=} options.castShadow Used by the IlluminatedRenderer
