@@ -46,6 +46,17 @@ Grape2D.CollisionChecker.prototype = {
 	 */
 	aabbVsPoint: function(aabb, point) {},
 	/**
+	 * Checks if a ray intersects an AABB.
+	 *
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @param  {!Grape2D.Vector} start Start position of the ray.
+	 * @param  {!Grape2D.Vector} end End position of the ray.
+	 * @param  {!Grape2D.Vector} direction Direction of the ray.
+	 * @return {!boolean} True if the ray intersects the polygon.
+	 * @public
+	 */
+	aabbVsRay: function(aabb, start, end, direction){},
+	/**
 	 * Collides a Circle against an AABB.
 	 *
 	 * @param  {!Grape2D.Circle} circle A circle.
@@ -82,6 +93,17 @@ Grape2D.CollisionChecker.prototype = {
 	 */
 	circleVsPoint: function(circle, point) {},
 	/**
+	 * Checks if a ray intersects a circle.
+	 *
+	 * @param  {!Grape2D.Circle} circle A polygon.
+	 * @param  {!Grape2D.Vector} start Start position of the ray.
+	 * @param  {!Grape2D.Vector} end End position of the ray.
+	 * @param  {!Grape2D.Vector} direction Direction of the ray.
+	 * @return {!boolean} True if the ray intersects the polygon.
+	 * @public
+	 */
+	circleVsRay: function(circle, start, end, direction){},
+	/**
 	 * Collides a Polygon against an AABB.
 	 *
 	 * @param  {!Grape2D.Polygon} polygon A polygon.
@@ -116,6 +138,16 @@ Grape2D.CollisionChecker.prototype = {
 	 * @return {!boolean} True if the point is inside the polygon.
 	 * @public
 	 */
-	polygonVsPoint: function(polygon, point) {}
-
+	polygonVsPoint: function(polygon, point) {},
+	/**
+	 * Checks if a ray intersects a polygon.
+	 *
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @param  {!Grape2D.Vector} start Start position of the ray.
+	 * @param  {!Grape2D.Vector} end End position of the ray.
+	 * @param  {!Grape2D.Vector} direction Direction of the ray.
+	 * @return {!boolean} True if the ray intersects the polygon.
+	 * @public
+	 */
+	polygonVsRay: function(polygon, start, end, direction){}
 };

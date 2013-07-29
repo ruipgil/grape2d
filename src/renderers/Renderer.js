@@ -156,5 +156,13 @@ Grape2D.Renderer.prototype = {
 	 * @public
 	 */
 	setFillColor: function(color) {},
+	/**
+	 * Renders a particle to the renderer.
+	 *
+	 * @param  {!Grape2D.Particle} particle Particle to render.
+	 * @param  {!Grape2D.Camera} camera Camera to transform the
+	 *   coordinates.
+	 * @public
+	 */
 	renderParticle: function(particle, camera) {}
 };
