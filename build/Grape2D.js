@@ -1023,6 +1023,14 @@ Grape2D.Renderer.prototype = {
 	 * @public
 	 */
 	setFillColor: function(color) {},
+	/**
+	 * Renders a particle to the renderer.
+	 *
+	 * @param  {!Grape2D.Particle} particle Particle to render.
+	 * @param  {!Grape2D.Camera} camera Camera to transform the
+	 *   coordinates.
+	 * @public
+	 */
 	renderParticle: function(particle, camera) {}
 };
 /**
@@ -1824,23 +1832,15 @@ Grape2D.CanvasRenderer.prototype.renderImage = function(image, sx, sy, sw, sh, d
  * @override
  */
 Grape2D.CanvasRenderer.prototype.renderAABB = function(aabb, camera) {
-	var center = aabb.getPosition(),
-		topLeftA = new Grape2D.Vector(
-			center.x-aabb.getHalfWidth(),
-			center.y-aabb.getHalfHeight()
-		),
-		topLeft = camera.wcsToViewport(this, topLeftA);
-	this.canvas.strokeRect(topLeft.x, topLeft.y, aabb.getWidth()*camera.getScale().x, aabb.getHeight()*camera.getScale().y);
+	var topLeft = camera.wcsToViewport(this, aabb.getMin());
+	this.canvas.strokeRect(topLeft.x, topLeft.y, aabb.getWidth() * camera.getScale().x, aabb.getHeight() * camera.getScale().y);
 };
 /**
  * @override
  */
 Grape2D.CanvasRenderer.prototype.renderCircle = function(circle, camera) {
 	var center = camera.wcsToViewport(this, circle.getPosition());
-
-	this.canvas.beginPath();
 	this.canvas.arc(center.x, center.y, circle.getRadius(), 0, Grape2D.Math.PIx2, false);
-
 	this.canvas.stroke();
 };
 /**
@@ -1853,7 +1853,7 @@ Grape2D.CanvasRenderer.prototype.renderPolygon = function(polygon, camera) {
 		list = polygon.getVertexList();
 
 	first = camera.wcsToViewport(this, first.add(list[0]));
-	this.canvas.beginPath();
+
 	this.canvas.moveTo(first.getX(), first.getY());
 	for (var i = 1; i < list.length; i++) {
 		temp = center.clone();
@@ -1914,6 +1914,9 @@ Grape2D.CanvasRenderer.prototype.setStrokeColor = function(color) {
 Grape2D.CanvasRenderer.prototype.setFillColor = function(color) {
 	this.canvas.setFillStyle(color);
 };
+/**
+ * @override
+ */
 Grape2D.CanvasRenderer.prototype.renderParticle = function(particle, camera) {
 	var center = camera.wcsToViewport(this, particle.getPosition());
 
@@ -2515,7 +2518,6 @@ Grape2D.AABB.prototype.getMaxY = function() {
  * Gets the width of the AABB.
  *
  * @return {!number} The width of the AABB.
- * @deprecated
  * @public
  */
 Grape2D.AABB.prototype.getWidth = function() {
@@ -2525,7 +2527,6 @@ Grape2D.AABB.prototype.getWidth = function() {
  * Gets the height of the AABB.
  *
  * @return {!number} The height of the AABB.
- * @deprecated
  * @public
  */
 Grape2D.AABB.prototype.getHeight = function() {
@@ -2535,7 +2536,6 @@ Grape2D.AABB.prototype.getHeight = function() {
  * Gets the half width (width/2) of the AABB.
  *
  * @return {!number} Half width of the AABB.
- * @deprecated
  * @public
  */
 Grape2D.AABB.prototype.getHalfWidth = function() {
@@ -2545,7 +2545,6 @@ Grape2D.AABB.prototype.getHalfWidth = function() {
  * Gets the half height (height/2) of the AABB.
  *
  * @return {!number} Half height of the AABB.
- * @deprecated
  * @public
  */
 Grape2D.AABB.prototype.getHalfHeight = function() {
@@ -5417,12 +5416,31 @@ Grape2D.SATCollisionChecker.prototype.aabbVsRay = function(aabb, start, end, dir
 	}
 
 };
+/**
+ * A cached list of vertexes. This avoids the creation of a list
+ *   and four {@link Grape2D.Vector}. This is shared with all
+ *   instances of collision checker, parallel usage can produce
+ *   unexpected results.
+ *
+ * @type {!Array.<!Grape2D.Vector>}
+ * @private
+ * @static
+ */
 Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST = [
 	new Grape2D.Vector(),
 	new Grape2D.Vector(),
 	new Grape2D.Vector(),
 	new Grape2D.Vector()
 ];
+/**
+ * Returns a vertex list, with length four, with vertexes of
+ *   an AABB.
+ *
+ * @param  {!Grape2D.AABB} aabb An AABB.
+ * @return {!Array.<!Grape2D.Vector>} Vertex list of an AABB.
+ *   The result is {@link Grape2D.SATCollisionChecker#SHARED_AABB_TO_VERTEX_LIST}
+ * @private
+ */
 Grape2D.SATCollisionChecker.aabbToVertexList = function(aabb) {
 	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[0].setX(aabb.getMinX());
 	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[0].setY(aabb.getMinY());
@@ -6323,42 +6341,6 @@ Grape2D.AabbBVFactory.prototype.createSceneBV = function(renderer, camera) {
  * @return {!Grape2D.AABB} An AABB that bounds the other two.
  */
 Grape2D.AabbBVFactory.prototype.merge = function(aabb1, aabb2) {
-	/*var dx = aabb2.getPosition().getX() - aabb1.getPosition().getX(),
-		dy = aabb2.getPosition().getY() - aabb1.getPosition().getY(),
-		w, h, temp,
-		position = new Grape2D.Vector();
-
-	if ((Grape2D.Math.abs(dx) + aabb2.getHalfWidth()) <= aabb1.getHalfWidth()) {
-		w = aabb1.getWidth();
-		position.setX(aabb1.getPosition().getX());
-	} else {
-		w = Grape2D.Math.abs(dx) + aabb2.getHalfWidth() + aabb1.getHalfWidth();
-		if (aabb1.getPosition().getX() >= aabb2.getPosition().getX()) {
-			temp = aabb1.getPosition().getX() + aabb1.getHalfWidth() - (w / 2);
-		} else {
-			temp = aabb1.getPosition().getX() - aabb1.getHalfWidth() + (w / 2);
-		}
-		position.setX(temp);
-	}
-
-	if ((Grape2D.Math.abs(dy) + aabb2.getHalfHeight()) <= aabb1.getHalfHeight()) {
-		h = aabb1.getHeight();
-		position.setY(aabb1.getPosition().getY());
-	} else {
-		h = Grape2D.Math.abs(dy) + aabb2.getHalfHeight() + aabb1.getHalfHeight();
-		if (aabb1.getPosition().getY() >= aabb2.getPosition().getY()) {
-			temp = aabb1.getPosition().getY() + aabb1.getHalfHeight() - (h / 2);
-		} else {
-			temp = aabb1.getPosition().getY() - aabb1.getHalfHeight() + (h / 2);
-		}
-		position.setY(temp);
-	}
-
-	return new Grape2D.AABB({
-		width: w,
-		height: h,
-		position: position
-	});*/
 	var minx = Grape2D.Math.min(aabb1.getMinX(), aabb2.getMinX()),
 		maxx = Grape2D.Math.max(aabb1.getMaxX(), aabb2.getMaxX()),
 		miny = Grape2D.Math.min(aabb1.getMinY(), aabb2.getMinY()),
