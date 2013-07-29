@@ -147,6 +147,10 @@ Grape2D.Math = {
 	sqrt: Math.sqrt,
 	/** @see Math.pow */
 	pow: Math.pow,
+	/** @see Math.min */
+	min: Math.min,
+	/** @see Math.max */
+	max: Math.max,
 
 	/**
 	 * Clamps a number.
