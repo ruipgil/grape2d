@@ -14,15 +14,34 @@ Grape2D.GenericCollisionChecker.prototype = Object.create(Grape2D.CollisionCheck
  * @override
  */
 Grape2D.GenericCollisionChecker.prototype.aabbVsAabb = function(aabb1, aabb2) {
-	return Grape2D.Math.abs(aabb2.getPosition().getX() - aabb1.getPosition().getX()) <= (aabb1.getHalfWidth() + aabb2.getHalfWidth()) &&
-		Grape2D.Math.abs(aabb2.getPosition().getY() - aabb1.getPosition().getY()) <= (aabb1.getHalfHeight() + aabb2.getHalfHeight());
+	return Grape2D.Math.overlaps({
+		min: aabb1.getMinX(),
+		max: aabb1.getMaxX()
+	}, {
+		min: aabb2.getMinX(),
+		max: aabb2.getMaxX()
+	}) >= 0 && Grape2D.Math.overlaps({
+		min: aabb1.getMinY(),
+		max: aabb1.getMaxY()
+	}, {
+		min: aabb2.getMinY(),
+		max: aabb2.getMaxY()
+	}) >= 0;
 };
 
 /**
  * @override
  */
 Grape2D.GenericCollisionChecker.prototype.aabbVsPoint = function(aabb, point) {
-	return Grape2D.Math.abs(aabb.getPosition().getX() - point.getX()) <= aabb.getHalfWidth() && Grape2D.Math.abs(aabb.getPosition().getY() - point.getY()) <= aabb.getHalfHeight();
+	return aabb.getMinX() <= point.getX() && aabb.getMaxX() >= point.getX() && aabb.getMinY() <= point.getY() && aabb.getMaxY() >= point.getY();
+};
+/**
+ * @override
+ */
+Grape2D.GenericCollisionChecker.prototype.aabbVsCircle = function(aabb, circle) {
+	var xC = Grape2D.Math.clamp(circle.getPosition().getX(), aabb.getMinX(), aabb.getMaxX()),
+		yC = Grape2D.Math.clamp(circle.getPosition().getY(), aabb.getMinY(), aabb.getMaxY());
+	return Grape2D.Math.sq(circle.getPosition().getX() - xC) + Grape2D.Math.sq(circle.getPosition().getY() - yC) <= Grape2D.Math.sq(circle.getRadius());
 };
 /**
  * @override
@@ -31,12 +50,25 @@ Grape2D.GenericCollisionChecker.prototype.circleVsAabb = function(circle, aabb) 
 	return this.aabbVsCircle(aabb, circle);
 };
 /**
+ * Must be refined.
  * @override
  */
-Grape2D.GenericCollisionChecker.prototype.aabbVsCircle = function(aabb, circle) {
-	var xC = Grape2D.Math.clamp(circle.getPosition().getX(), aabb.getPosition().getX() - aabb.getHalfWidth(), aabb.getPosition().getX() + aabb.getHalfWidth()),
-		yC = Grape2D.Math.clamp(circle.getPosition().getY(), aabb.getPosition().getY() - aabb.getHalfHeight(), aabb.getPosition().getY() + aabb.getHalfHeight());
-	return Grape2D.Math.sq(circle.getPosition().getX() - xC) + Grape2D.Math.sq(circle.getPosition().getY() - yC) <= Grape2D.Math.sq(circle.getRadius());
+Grape2D.GenericCollisionChecker.prototype.aabbVsRay = function(aabb, start, end, direction) {
+	return false;
+};
+/**
+ * Must be refined.
+ * @override
+ */
+Grape2D.GenericCollisionChecker.prototype.circleVsRay = function(circle, start, end, direction) {
+	return false;
+};
+/**
+ * Must be refined.
+ * @override
+ */
+Grape2D.GenericCollisionChecker.prototype.polygonVsRay = function(polygon, start, end, direction) {
+	return false;
 };
 /**
  * @override

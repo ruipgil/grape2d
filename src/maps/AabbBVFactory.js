@@ -80,42 +80,15 @@ Grape2D.AabbBVFactory.prototype.createSceneBV = function(renderer, camera) {
  * @return {!Grape2D.AABB} An AABB that bounds the other two.
  */
 Grape2D.AabbBVFactory.prototype.merge = function(aabb1, aabb2) {
-	//bdebugger;
-	var dx = aabb2.getPosition().getX() - aabb1.getPosition().getX(),
-		dy = aabb2.getPosition().getY() - aabb1.getPosition().getY(),
-		w, h, temp,
-		position = new Grape2D.Vector();
-
-	if ((Grape2D.Math.abs(dx) + aabb2.getHalfWidth()) <= aabb1.getHalfWidth()) {
-		w = aabb1.getWidth();
-		position.setX(aabb1.getPosition().getX());
-	} else {
-		w = Grape2D.Math.abs(dx) + aabb2.getHalfWidth() + aabb1.getHalfWidth();
-		if (aabb1.getPosition().getX() >= aabb2.getPosition().getX()) {
-			temp = aabb1.getPosition().getX() + aabb1.getHalfWidth() - (w / 2);
-		} else {
-			temp = aabb1.getPosition().getX() - aabb1.getHalfWidth() + (w / 2);
-		}
-		position.setX(temp);
-	}
-
-	if ((Grape2D.Math.abs(dy) + aabb2.getHalfHeight()) <= aabb1.getHalfHeight()) {
-		h = aabb1.getHeight();
-		position.setY(aabb1.getPosition().getY());
-	} else {
-		h = Grape2D.Math.abs(dy) + aabb2.getHalfHeight() + aabb1.getHalfHeight();
-		if (aabb1.getPosition().getY() >= aabb2.getPosition().getY()) {
-			temp = aabb1.getPosition().getY() + aabb1.getHalfHeight() - (h / 2);
-		} else {
-			temp = aabb1.getPosition().getY() - aabb1.getHalfHeight() + (h / 2);
-		}
-		position.setY(temp);
-	}
-
+	var minx = Grape2D.Math.min(aabb1.getMinX(), aabb2.getMinX()),
+		maxx = Grape2D.Math.max(aabb1.getMaxX(), aabb2.getMaxX()),
+		miny = Grape2D.Math.min(aabb1.getMinY(), aabb2.getMinY()),
+		maxy = Grape2D.Math.max(aabb1.getMaxY(), aabb2.getMaxY());
 	return new Grape2D.AABB({
-		width: w,
-		height: h,
-		position: position
+		minX: minx,
+		minY: miny,
+		maxX: maxx,
+		maxY: maxy
 	});
 };
 /**

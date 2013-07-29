@@ -13,15 +13,10 @@ Grape2D.SATCollisionChecker.prototype = Object.create(Grape2D.GenericCollisionCh
  * @override
  */
 Grape2D.SATCollisionChecker.prototype.aabbVsPolygon = function(aabb, polygon) {
-	var aabbPoly = new Grape2D.Polygon({
-		vertexList: [
-			new Grape2D.Vector(aabb.getPosition().getX() - aabb.getHalfWidth(), aabb.getPosition().getY() + aabb.getHalfHeight()),
-			new Grape2D.Vector(aabb.getPosition().getX() + aabb.getHalfWidth(), aabb.getPosition().getY() + aabb.getHalfHeight()),
-			new Grape2D.Vector(aabb.getPosition().getX() + aabb.getHalfWidth(), aabb.getPosition().getY() - aabb.getHalfHeight()),
-			new Grape2D.Vector(aabb.getPosition().getX() - aabb.getHalfWidth(), aabb.getPosition().getY() - aabb.getHalfHeight())
-		]
+	var aabbPolygon = new Grape2D.Polygon({
+		vertexList: Grape2D.SATCollisionChecker.aabbToVertexList(aabb)
 	});
-	return this.polygonVsPolygon(aabbPoly, polygon);
+	return this.polygonVsPolygon(aabbPolygon, polygon);
 };
 /**
  * @override
@@ -131,6 +126,115 @@ Grape2D.SATCollisionChecker.prototype.computeIntervals = function(vertexList, ax
 		});
 	}
 	return intrvByAxis;
+};
+/**
+ * @override
+ */
+Grape2D.SATCollisionChecker.prototype.aabbVsRay = function(aabb, start, end, direction) {
+	var rayAxis = direction.rightNormal(),
+		interval = {
+			min: +Infinity,
+			max: -Infinity
+		}, temp, list = Grape2D.SATCollisionChecker.aabbToVertexList(aabb);
+	for (var i = 0; i < list.length; i++) {
+		temp = list[i].dot(rayAxis);
+		if (temp > interval.max) {
+			interval.max = temp;
+		} else if (temp < interval.min) {
+			interval.min = temp;
+		}
+	}
+	if (interval.min <= temp && temp <= interval.max) {
+		return Grape2D.Math.overlaps({
+			min: start.getX(),
+			max: end.getX()
+		}, {
+			min: aabb.getMinX(),
+			max: aabb.getMaxX()
+		}) >= 0 && Grape2D.Math.overlaps({
+			min: start.getY(),
+			max: end.getY()
+		}, {
+			min: aabb.getMinY(),
+			max: aabb.getMaxY()
+		}) >= 0;
+	} else {
+		return false;
+	}
+
+};
+/**
+ * A cached list of vertexes. This avoids the creation of a list
+ *   and four {@link Grape2D.Vector}. This is shared with all
+ *   instances of collision checker, parallel usage can produce
+ *   unexpected results.
+ *
+ * @type {!Array.<!Grape2D.Vector>}
+ * @private
+ * @static
+ */
+Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST = [
+	new Grape2D.Vector(),
+	new Grape2D.Vector(),
+	new Grape2D.Vector(),
+	new Grape2D.Vector()
+];
+/**
+ * Returns a vertex list, with length four, with vertexes of
+ *   an AABB.
+ *
+ * @param  {!Grape2D.AABB} aabb An AABB.
+ * @return {!Array.<!Grape2D.Vector>} Vertex list of an AABB.
+ *   The result is {@link Grape2D.SATCollisionChecker#SHARED_AABB_TO_VERTEX_LIST}
+ * @private
+ */
+Grape2D.SATCollisionChecker.aabbToVertexList = function(aabb) {
+	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[0].setX(aabb.getMinX());
+	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[0].setY(aabb.getMinY());
+	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[1].setX(aabb.getMinX());
+	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[1].setY(aabb.getMaxY());
+	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[2].setX(aabb.getMaxX());
+	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[2].setY(aabb.getMinY());
+	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[3].setX(aabb.getMaxX());
+	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[3].setY(aabb.getMaxY());
+	return Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST;
+}
+/**
+ * @override
+ */
+Grape2D.SATCollisionChecker.prototype.circleVsRay = function(circle, start, end, direction) {
+	var rayAxis = direction.rightNormal(),
+		temp, rayTemp, pos = circle.getPosition(),
+		r = circle.getRadius();
+	temp = pos.dot(rayAxis);
+	rayTemp = start.dot(rayAxis);
+	if ((temp - r) <= rayTemp && rayTemp <= (temp + r)) {
+		var intrv = {
+			min: pos.getX() - r,
+			max: pos.getX() + r
+		};
+		return Grape2D.Math.overlaps({
+			min: start.getX(),
+			max: end.getX()
+		}, {
+			min: pos.getX() - r,
+			max: pos.getX() + r
+		}) >= 0 && Grape2D.Math.overlaps({
+			min: start.getY(),
+			max: end.getY()
+		}, {
+			min: pos.getY() - r,
+			max: pos.getY() + r
+		}) >= 0;
+	} else {
+		return false;
+	}
+};
+/**
+ * @override
+ */
+Grape2D.SATCollisionChecker.prototype.polygonVsRay = function(circle, start, end, direction) {
+	return false;
 };
 /**
  * Cache of the predefined set of AABB axis.
