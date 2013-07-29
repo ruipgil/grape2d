@@ -27,6 +27,8 @@
 
 	"../src/inputs/InputManager.js",
 	"../src/inputs/InputManagerEvent.js",
+	"../src/inputs/InputManagerMouseEvent.js",
+	"../src/inputs/InputManagerDragEvent.js",
 
 	"../src/cameras/Camera.js",
 	"../src/cameras/AliasingCamera.js",
