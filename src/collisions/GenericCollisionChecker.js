@@ -126,7 +126,7 @@ Grape2D.GenericCollisionChecker.prototype.polygonVsPolygon = function(polygon1, 
 };
 /**
  * Algorithm based upon Walfram's Demonstration project.
- * <link>http://demonstrations.wolfram.com/AnEfficientTestForAPointToBeInAConvexPolygon/</link>
+ * {@link http://demonstrations.wolfram.com/AnEfficientTestForAPointToBeInAConvexPolygon/}
  * @override
  */
 Grape2D.GenericCollisionChecker.prototype.polygonVsPoint = function(polygon, point) {

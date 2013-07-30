@@ -144,6 +144,7 @@ Grape2D.SATCollisionChecker.prototype.aabbVsRay = function(aabb, start, end, dir
 			interval.min = temp;
 		}
 	}
+	temp = start.dot(rayAxis);
 	if (interval.min <= temp && temp <= interval.max) {
 		return Grape2D.Math.overlaps({
 			min: start.getX(),
@@ -161,7 +162,6 @@ Grape2D.SATCollisionChecker.prototype.aabbVsRay = function(aabb, start, end, dir
 	} else {
 		return false;
 	}
-
 };
 /**
  * A cached list of vertexes. This avoids the creation of a list
@@ -203,38 +203,56 @@ Grape2D.SATCollisionChecker.aabbToVertexList = function(aabb) {
  * @override
  */
 Grape2D.SATCollisionChecker.prototype.circleVsRay = function(circle, start, end, direction) {
-	var rayAxis = direction.rightNormal(),
-		temp, rayTemp, pos = circle.getPosition(),
-		r = circle.getRadius();
-	temp = pos.dot(rayAxis);
-	rayTemp = start.dot(rayAxis);
-	if ((temp - r) <= rayTemp && rayTemp <= (temp + r)) {
-		var intrv = {
-			min: pos.getX() - r,
-			max: pos.getX() + r
-		};
-		return Grape2D.Math.overlaps({
-			min: start.getX(),
-			max: end.getX()
-		}, {
-			min: pos.getX() - r,
-			max: pos.getX() + r
-		}) >= 0 && Grape2D.Math.overlaps({
-			min: start.getY(),
-			max: end.getY()
-		}, {
-			min: pos.getY() - r,
-			max: pos.getY() + r
-		}) >= 0;
+	var temp, pos = circle.getPosition(),
+		r = circle.getRadius(),
+		ivr = {
+			min: 0,
+			max: 0
+		}, iv;
+	temp = pos.dot(direction);
+	iv = {
+		min: temp - r,
+		max: temp + r
+	};
+	temp = start.dot(direction);
+	if (start.getX() < end.getX()) {
+		ivr.min = start.dot(direction);
+		ivr.max = end.dot(direction);
 	} else {
-		return false;
+		ivr.min = start.dot(direction);
+		ivr.max = end.dot(direction);
 	}
+
+	return Grape2D.Math.overlaps(ivr, iv) >= 0;
 };
 /**
  * @override
  */
-Grape2D.SATCollisionChecker.prototype.polygonVsRay = function(circle, start, end, direction) {
-	return false;
+Grape2D.SATCollisionChecker.prototype.polygonVsRay = function(polygon, start, end, direction) {
+	var rayAxis = direction.rightNormal(),
+		polist = polygon.getComputedVertexList(),
+		itv = {
+			min: 0,
+			max: 0
+		}, pItv, temp, ia, ib;
+
+	pItv = this.computeIntervals(polist, [rayAxis])[0];
+	temp = start.dot(rayAxis);
+	if (pItv.min <= temp && temp <= pItv.max) {
+		pItv = this.computeIntervals(polist, [direction])[0];
+		ia = start.dot(direction);
+		ib = end.dot(direction);
+		if (ia > ib) {
+			itv.max = ia;
+			itv.min = ib;
+		} else {
+			itv.max = ib;
+			itv.min = ia;
+		}
+		return Grape2D.Math.overlaps(pItv, itv) >= 0;
+	} else {
+		return false;
+	}
 };
 /**
  * Cache of the predefined set of AABB axis.
