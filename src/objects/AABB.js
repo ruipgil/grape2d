@@ -13,7 +13,21 @@
  */
 Grape2D.AABB = function(options) {
 	Grape2D.Shape.call(this, options);
+	/**
+	 * Minimum coordinates of the AABB. This is the same as the top
+	 *   left corner.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
 	this.min = new Grape2D.Vector();
+	/**
+	 * Maximum coordinates of the AABB. This is the same as the bottom
+	 *   right corner.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
 	this.max = new Grape2D.Vector();
 	if (options.width && options.height) {
 		this.setWidth(options.width);
@@ -32,21 +46,57 @@ Grape2D.AABB = function(options) {
 };
 
 Grape2D.AABB.prototype = Object.create(Grape2D.Shape.prototype);
+/**
+ * Gets the top left corner coordinates of the AABB.
+ *
+ * @return {!Grape2D.Vector} Top left corner.
+ * @public
+ */
 Grape2D.AABB.prototype.getMin = function() {
 	return this.min;
 };
+/**
+ * Gets the minimum x coordinate of the AABB.
+ *
+ * @return {!Grape2D.Vector} Minimum x coordinate.
+ * @public
+ */
 Grape2D.AABB.prototype.getMinX = function() {
 	return this.min.getX();
 };
+/**
+ * Gets the minimum y coordinate of the AABB.
+ *
+ * @return {!Grape2D.Vector} Minimum y coordinate.
+ * @public
+ */
 Grape2D.AABB.prototype.getMinY = function() {
 	return this.min.getY();
 };
+/**
+ * Gets the bottom right corner coordinates of the AABB.
+ *
+ * @return {!Grape2D.Vector} Bottom right corner.
+ * @public
+ */
 Grape2D.AABB.prototype.getMax = function() {
 	return this.max;
 };
+/**
+ * Gets the maximum x coordinate of the AABB.
+ *
+ * @return {!Grape2D.Vector} Maximum x coordinate.
+ * @public
+ */
 Grape2D.AABB.prototype.getMaxX = function() {
 	return this.max.getX();
 };
+/**
+ * Gets the maximum y coordinate of the AABB.
+ *
+ * @return {!Grape2D.Vector} Maximum y coordinate.
+ * @public
+ */
 Grape2D.AABB.prototype.getMaxY = function() {
 	return this.max.getY();
 };
@@ -125,6 +175,15 @@ Grape2D.AABB.prototype.createBV = function(bvfactory) {
  */
 Grape2D.AABB.prototype.getStaticType = function() {
 	return Grape2D.AABB.TYPE;
+};
+/**
+ * @override
+ */
+Grape2D.AABB.prototype.setPosition = function(position) {
+	var diff = position.clone().sub(this.getPosition());
+	this.min.add(diff);
+	this.max.add(diff);
+	Grape2D.Shape.prototype.setPosition.call(this, position);
 };
 /**
  * Type of the shape.
