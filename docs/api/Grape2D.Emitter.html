@@ -1,0 +1,3723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: Emitter</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Class: Emitter</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+        <span class="ancestors"><a href="Grape2D.html">Grape2D</a>.</span>
+    
+    Emitter
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <h4 class="name" id="Emitter"><span class="type-signature"></span>new Emitter<span class="signature">(options)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Emits particles to the particle system.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Setup properties.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>position</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Position of the emitter,
+  and initial position of the particles.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>velocity</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Initial velocity of the
+  particles.The length of the vector indicated its speed. The angle
+  indicates the angle.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>speedVariation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Variation of the length of
+  the velocity vector. So that particles created have a speed
+  between <code>velocity.length-speedVariation</code> and
+  <code>velocity.length+speedVariation</code>.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>spread</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Spread of particles relative to the
+velocity angle. It should be in radius.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>particleLife</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Life of a particle in milliseconds.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>particleLifeVariation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Life variation of
+  particles created, relative to the life property.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>maxParticles</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Maximum number of particles
+  that this emitter can have, dead or alive. Because the particles
+  are instantiated at construction time.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>rate</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Rate of particles emitted, per second.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="maxParticles"><span class="type-signature">&lt;private> </span>maxParticles<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Emitter maximum particles.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line90">line 90</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="mrate"><span class="type-signature">&lt;private> </span>mrate<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Rate of particles to emit per millisecond.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line104">line 104</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="particleLife"><span class="type-signature">&lt;private> </span>particleLife<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Life of particles.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line76">line 76</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="particleLifeVariation"><span class="type-signature">&lt;private> </span>particleLifeVariation<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Life variation of particles.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line83">line 83</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="particles"><span class="type-signature">&lt;private> </span>particles<span class="type-signature"> :!Array.&lt;!<a href="Grape2D.Particle.html">Grape2D.Particle</a>></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Particles of the emitter.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">!Array.&lt;!<a href="Grape2D.Particle.html">Grape2D.Particle</a>></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line111">line 111</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="particleSystem"><span class="type-signature">&lt;private> </span>particleSystem<span class="type-signature"> :<a href="Grape2D.ParticleSystem.html">Grape2D.ParticleSystem</a></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Particle system associated with this emitter.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="Grape2D.ParticleSystem.html">Grape2D.ParticleSystem</a></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line119">line 119</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="position"><span class="type-signature">&lt;private> </span>position<span class="type-signature"> :<a href="Grape2D.Vector.html">Grape2D.Vector</a></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Position of the emitter and initial position of newly created or
+  revived particles.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="rate"><span class="type-signature">&lt;private> </span>rate<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Rate of particles to emit per second.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line97">line 97</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="renderedParticles"><span class="type-signature">&lt;private> </span>renderedParticles<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Number of particle rendered after each render cycle.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line126">line 126</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="speedVariation"><span class="type-signature">&lt;private> </span>speedVariation<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Speed variation of created or revived particles.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line62">line 62</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="spread"><span class="type-signature">&lt;private> </span>spread<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Spread of the particles, in relation to the velocity vector.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line69">line 69</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="vAngle"><span class="type-signature">&lt;private> </span>vAngle<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Cached value, of the velocity angle.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="velocity"><span class="type-signature">&lt;private> </span>velocity<span class="type-signature"> :<a href="Grape2D.Vector.html">Grape2D.Vector</a></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Initial velocity of the particles.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line41">line 41</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="vMagnitude"><span class="type-signature">&lt;private> </span>vMagnitude<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Cached value, of the magnitude of the velocity.
+    </div>
+    
+    
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line55">line 55</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="createParticles"><span class="type-signature">&lt;protected> </span>createParticles<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Create particles. Up to the maximum number of particles of the
+  emitter.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line304">line 304</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getParticleLife"><span class="type-signature"></span>getParticleLife<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the particle life of the created particles.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line211">line 211</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Particle life.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getParticleLifeVariation"><span class="type-signature"></span>getParticleLifeVariation<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the particle life variation of the created particles,
+  relative to the particle life.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line230">line 230</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Particle life variation.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getParticles"><span class="type-signature"></span>getParticles<span class="signature">()</span><span class="type-signature"> &rarr; {!Array.&lt;!<a href="Grape2D.Particle.html">Grape2D.Particle</a>>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the particles associated with this emitter, they can be
+  either dead or alive.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line268">line 268</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Particles.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Array.&lt;!<a href="Grape2D.Particle.html">Grape2D.Particle</a>></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getParticleSystem"><span class="type-signature"></span>getParticleSystem<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Grape2D.ParticleSystem.html">Grape2D.ParticleSystem</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the particle system associated with this emitter.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line277">line 277</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Particle system.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="Grape2D.ParticleSystem.html">Grape2D.ParticleSystem</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getPosition"><span class="type-signature"></span>getPosition<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Grape2D.Vector.html">Grape2D.Vector</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the position of the emitter.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line137">line 137</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Position of the emitter.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getRate"><span class="type-signature"></span>getRate<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the rate that the emitter emits particles.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line249">line 249</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Emission rate.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getRenderedParticles"><span class="type-signature"></span>getRenderedParticles<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the number of particles rendered in the last call to the
+  Grape2D.Emitter.render method.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line295">line 295</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Number of particles rendered.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getSpeedVariation"><span class="type-signature"></span>getSpeedVariation<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the speed variation of the created particles.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line173">line 173</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Speed variation.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getSpread"><span class="type-signature"></span>getSpread<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the spread of the created particles, relative to the
+  velocity vector angle.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line192">line 192</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Spread of the created particles.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getVelocity"><span class="type-signature"></span>getVelocity<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Grape2D.Vector.html">Grape2D.Vector</a>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets the velocity of the emitter.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line155">line 155</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Velocity of the emitter.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">(renderer, camera)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Renders the particles into a renderer.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>renderer</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Renderer.html">Grape2D.Renderer</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Renderer.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>camera</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Camera.html">Grape2D.Camera</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Camera.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line366">line 366</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="reviveParticle"><span class="type-signature">&lt;protected> </span>reviveParticle<span class="signature">(particle)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Revives a particle according to the emitter properties.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>particle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Particle.html">Grape2D.Particle</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Particle to revive.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line321">line 321</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setParticleLife"><span class="type-signature"></span>setParticleLife<span class="signature">(particleLife)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets the particle life of the created particles.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>particleLife</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Particle life.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line220">line 220</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setParticleLifeVariation"><span class="type-signature"></span>setParticleLifeVariation<span class="signature">(particleLifeVariation)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets the particle life variation of the created particles,
+  relative to the particle life.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>particleLifeVariation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Particle life variation.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line240">line 240</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setParticleSystem"><span class="type-signature"></span>setParticleSystem<span class="signature">(ps)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets the particle system associated with this emitter.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>ps</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.ParticleSystem.html">Grape2D.ParticleSystem</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Particle system.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line286">line 286</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setPosition"><span class="type-signature"></span>setPosition<span class="signature">(position)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets the position of the emitter.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>position</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Position of the emitter.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line146">line 146</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setRate"><span class="type-signature"></span>setRate<span class="signature">(rate)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets the rate that the emitter emits particles.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>rate</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Emission rate.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line258">line 258</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setSpeedVariation"><span class="type-signature"></span>setSpeedVariation<span class="signature">(speedVariation)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets the speed variation of the created particles.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>speedVariation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Speed variation.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line182">line 182</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setSpread"><span class="type-signature"></span>setSpread<span class="signature">(spread)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets the spread of the created particles, relative to the
+  velocity vector angle.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>spread</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Spread of the created particles.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line202">line 202</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setVelocity"><span class="type-signature"></span>setVelocity<span class="signature">(velocity)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets the velocity of the emitter.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>velocity</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Velocity of the emitter.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line164">line 164</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(dt, scene)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Updates an emitter. If there are particles dead, it revives them
+  according to the rate specified.
+  The emitter should have a particle system associated, if this
+  method is to be called, it could be done through <code>
+  emitter.setParticleSystem(particleSystem);</code>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>dt</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Time elapsed since the last update.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>scene</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Scene.html">Grape2D.Scene</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Scene of the emitter.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Emitter.js.html">particleSystem/Emitter.js</a>, <a href="Emitter.js.html#line339">line 339</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Emitter.html">Emitter</a></li><li><a href="Grape2D.Field.html">Field</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerDragEvent.html">InputManagerDragEvent</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.InputManagerMouseEvent.html">InputManagerMouseEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Particle.html">Particle</a></li><li><a href="Grape2D.ParticleSystem.html">ParticleSystem</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Jul 30 2013 21:22:52 GMT+0100 (BST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

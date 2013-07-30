@@ -5,6 +5,5 @@
  * @public
  */
 var Grape2D = {
-	vernum: 0 ,
-	version: '1.0.0-alpha'
+	version: '1.1.3-alpha'
 };

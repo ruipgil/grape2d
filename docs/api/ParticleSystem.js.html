@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: particleSystem/ParticleSystem.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: particleSystem/ParticleSystem.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/**
+ * Particle system.
+ *
+ * @extends {Grape2D.Object2D}
+ * @constructor
+ */
+Grape2D.ParticleSystem = function(){
+	Grape2D.Object2D.call(this, {
+		texture: new Grape2D.VoidTexture(),
+		boundingBox: new Grape2D.AABB({
+			width: 0,
+			height: 0
+		})
+	});
+	/**
+	 * Emitters of particles of the system.
+	 *
+	 * @type {!Array.&lt;!Grape2D.Emitter>}
+	 * @private
+	 */
+	this.emitters = [];
+	/**
+	 * Fields that interact with the particles of the system.
+	 *
+	 * @type {!Array.&lt;!Grape2D.Field>}
+	 * @private
+	 */
+	this.fields = [];
+	/**
+	 * Value of the minimum x coordinate of the particles of the system.
+	 *   Used for a faster creation of the bounding box of the system.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.minx = +Infinity;
+	/**
+	 * Value of the minimum y coordinate of the particles of the system.
+	 *   Used for a faster creation of the bounding box of the system.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.miny = +Infinity;
+	/**
+	 * Value of the maximum x coordinate of the particles of the system.
+	 *   Used for a faster creation of the bounding box of the system.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.maxx = -Infinity;
+	/**
+	 * Value of the maximum y coordinate of the particles of the system.
+	 *   Used for a faster creation of the bounding box of the system.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.maxy = -Infinity;
+};
+
+Grape2D.ParticleSystem.prototype = Object.create(Grape2D.Object2D.prototype);
+/**
+ * Adds an emitter to the system.
+ *
+ * @param  {!Grape2D.Emitter} emitter Emitter to add.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.addEmitter = function(emitter){
+	emitter.setParticleSystem(this);
+	this.emitters.push(emitter);
+};
+/**
+ * Removes an emitter from the system.
+ *
+ * @param  {!Grape2D.Emitter} emitter An emitter that is in the system.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.removeEmitter = function(emitter){
+	this.emitters.splice(this.emitters.indexOf(emitter), 1);
+};
+/**
+ * Gets the emitter list.
+ *
+ * @return {!Array.&lt;!Grape2D.Emitter>} Emitters of the system.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.getEmitters = function(){
+	return this.emitters;
+};
+/**
+ * Adds a field to the system.
+ *
+ * @param  {!Grape2D.Field} field Field to add.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.addField = function(field){
+	this.fields.push(field);
+};
+/**
+ * Removes a field from the system.
+ *
+ * @param  {!Grape2D.Field} field A field that is in the system.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.removeField = function(field){
+	this.fields.splice(this.fields.indexOf(field), 1);
+};
+/**
+ * Gets the fields list.
+ *
+ * @return {!Array.&lt;!Grape2D.Field>} Fields of the system.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.getFields = function(){
+	return this.fields;
+};
+/**
+ * @override
+ */
+Grape2D.ParticleSystem.prototype.update = function(dt, scene){
+	this.minx = +Infinity;
+	this.miny = +Infinity;
+	this.maxx = -Infinity;
+	this.maxy = -Infinity;
+	for(var i=0; i&lt;this.emitters.length;i++){
+		this.emitters[i].update(dt, scene);
+	}
+	var w = this.maxx-this.minx,
+		h = this.maxy-this.miny,
+		center = new Grape2D.Vector(this.minx+w/2, this.miny+h/2),
+		bbox = this.getBoundingBox();
+	bbox.setWidth(w);
+	bbox.setHeight(h);
+	bbox.setPosition(center);
+};
+/**
+ * Submits a particle to the system. This method is used mainly
+ *   to keep an updated bounding box.
+ *
+ * @param  {!Grape2D.Particle} particle Particle inside the system.
+ * @public
+ */
+Grape2D.ParticleSystem.prototype.submitParticle = function(particle){
+	var x = particle.getPosition().getX(),
+		y = particle.getPosition().getY();
+	if(this.minx>x){
+		this.minx = x;
+	}
+	if(this.miny>y){
+		this.miny = y;
+	}
+	if(this.maxx&lt;x){
+		this.maxx = x;
+	}
+	if(this.maxy&lt;y){
+		this.maxy = y;
+	}
+};
+/**
+ * @override
+ */
+Grape2D.ParticleSystem.prototype.getPosition = function(){
+	return this.getBoundingBox().getPosition();
+};
+/**
+ * @override
+ */
+Grape2D.ParticleSystem.prototype.render = function(renderer, camera){
+	for(var i=0; i&lt;this.emitters.length;i++){
+		this.emitters[i].render(renderer, camera);
+	}
+	this.getBoundingBox().render(renderer, camera);
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Emitter.html">Emitter</a></li><li><a href="Grape2D.Field.html">Field</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerDragEvent.html">InputManagerDragEvent</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.InputManagerMouseEvent.html">InputManagerMouseEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Particle.html">Particle</a></li><li><a href="Grape2D.ParticleSystem.html">ParticleSystem</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Jul 30 2013 21:22:49 GMT+0100 (BST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

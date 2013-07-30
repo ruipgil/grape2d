@@ -34,51 +34,107 @@
  *   polygon.
  * @param {!number} options.width Width of the AABB.
  * @param {!number} options.height Height of the AABB.
- * 
+ *
  * @extends Grape2D.Shape
  * @constructor
  */
-Grape2D.AABB = function(options){
+Grape2D.AABB = function(options) {
 	Grape2D.Shape.call(this, options);
 	/**
-	 * Shape's width.
+	 * Minimum coordinates of the AABB. This is the same as the top
+	 *   left corner.
 	 *
-	 * @type {!number}
+	 * @type {!Grape2D.Vector}
 	 * @private
 	 */
-	this.width = options.width;
+	this.min = new Grape2D.Vector();
 	/**
-	 * Shape's half width.
+	 * Maximum coordinates of the AABB. This is the same as the bottom
+	 *   right corner.
 	 *
-	 * @type {!number}
+	 * @type {!Grape2D.Vector}
 	 * @private
 	 */
-	this.hwidth = this.width/2;
-	/**
-	 * Shapes's height.
-	 *
-	 * @type {!number}
-	 * @private
-	 */
-	this.height = options.height;
-	/**
-	 * Shapes's half height.
-	 *
-	 * @type {!number}
-	 * @private
-	 */
-	this.hheight = this.height/2;
+	this.max = new Grape2D.Vector();
+	if (options.width && options.height) {
+		this.setWidth(options.width);
+		this.setHeight(options.height);
+	} else {
+		var pos = this.getPosition();
+
+		this.min.setX(options.minX);
+		this.min.setY(options.minY);
+		this.max.setX(options.maxX);
+		this.max.setY(options.maxY);
+
+		pos.setX(options.minX + (this.max.getX() - this.min.getX()) / 2);
+		pos.setY(options.minY + (this.max.getY() - this.min.getY()) / 2);
+	}
 };
 
 Grape2D.AABB.prototype = Object.create(Grape2D.Shape.prototype);
+/**
+ * Gets the top left corner coordinates of the AABB.
+ *
+ * @return {!Grape2D.Vector} Top left corner.
+ * @public
+ */
+Grape2D.AABB.prototype.getMin = function() {
+	return this.min;
+};
+/**
+ * Gets the minimum x coordinate of the AABB.
+ *
+ * @return {!Grape2D.Vector} Minimum x coordinate.
+ * @public
+ */
+Grape2D.AABB.prototype.getMinX = function() {
+	return this.min.getX();
+};
+/**
+ * Gets the minimum y coordinate of the AABB.
+ *
+ * @return {!Grape2D.Vector} Minimum y coordinate.
+ * @public
+ */
+Grape2D.AABB.prototype.getMinY = function() {
+	return this.min.getY();
+};
+/**
+ * Gets the bottom right corner coordinates of the AABB.
+ *
+ * @return {!Grape2D.Vector} Bottom right corner.
+ * @public
+ */
+Grape2D.AABB.prototype.getMax = function() {
+	return this.max;
+};
+/**
+ * Gets the maximum x coordinate of the AABB.
+ *
+ * @return {!Grape2D.Vector} Maximum x coordinate.
+ * @public
+ */
+Grape2D.AABB.prototype.getMaxX = function() {
+	return this.max.getX();
+};
+/**
+ * Gets the maximum y coordinate of the AABB.
+ *
+ * @return {!Grape2D.Vector} Maximum y coordinate.
+ * @public
+ */
+Grape2D.AABB.prototype.getMaxY = function() {
+	return this.max.getY();
+};
 /**
  * Gets the width of the AABB.
  *
  * @return {!number} The width of the AABB.
  * @public
  */
-Grape2D.AABB.prototype.getWidth = function(){
-	return this.width;
+Grape2D.AABB.prototype.getWidth = function() {
+	return Grape2D.Math.abs(this.max.getX() - this.min.getX());
 };
 /**
  * Gets the height of the AABB.
@@ -86,8 +142,8 @@ Grape2D.AABB.prototype.getWidth = function(){
  * @return {!number} The height of the AABB.
  * @public
  */
-Grape2D.AABB.prototype.getHeight = function(){
-	return this.height;
+Grape2D.AABB.prototype.getHeight = function() {
+	return Grape2D.Math.abs(this.max.getY() - this.min.getY());
 };
 /**
  * Gets the half width (width/2) of the AABB.
@@ -95,8 +151,8 @@ Grape2D.AABB.prototype.getHeight = function(){
  * @return {!number} Half width of the AABB.
  * @public
  */
-Grape2D.AABB.prototype.getHalfWidth = function(){
-	return this.hwidth;
+Grape2D.AABB.prototype.getHalfWidth = function() {
+	return this.getWidth() / 2;
 };
 /**
  * Gets the half height (height/2) of the AABB.
@@ -104,8 +160,8 @@ Grape2D.AABB.prototype.getHalfWidth = function(){
  * @return {!number} Half height of the AABB.
  * @public
  */
-Grape2D.AABB.prototype.getHalfHeight = function(){
-	return this.hheight;
+Grape2D.AABB.prototype.getHalfHeight = function() {
+	return this.getHeight() / 2;
 };
 /**
  * Sets the width of the AABB.
@@ -113,9 +169,10 @@ Grape2D.AABB.prototype.getHalfHeight = function(){
  * @param  {!number} width The width of the AABB.
  * @public
  */
-Grape2D.AABB.prototype.setWidth = function(width){
-	this.width = width;
-	this.hwidth = this.width/2;
+Grape2D.AABB.prototype.setWidth = function(width) {
+	var hw = width / 2;
+	this.min.setX(this.getPosition().getX() - hw);
+	this.max.setX(this.getPosition().getX() + hw);
 };
 /**
  * Sets the height of the AABB.
@@ -123,27 +180,37 @@ Grape2D.AABB.prototype.setWidth = function(width){
  * @param  {!number} height The height of the AABB.
  * @public
  */
-Grape2D.AABB.prototype.setHeight = function(height){
-	this.height = height;
-	this.hheight = this.height;
+Grape2D.AABB.prototype.setHeight = function(height) {
+	var hh = height / 2;
+	this.min.setY(this.getPosition().getY() - hh);
+	this.max.setY(this.getPosition().getY() + hh);
 };
 /**
  * @override
  */
-Grape2D.AABB.prototype.render = function(renderer, camera){
+Grape2D.AABB.prototype.render = function(renderer, camera) {
 	renderer.renderAABB(this, camera);
 };
 /**
  * @override
  */
-Grape2D.AABB.prototype.createBV = function(bvfactory){
+Grape2D.AABB.prototype.createBV = function(bvfactory) {
 	return bvfactory.createFromAABB(this);
 };
 /**
  * @override
  */
-Grape2D.AABB.prototype.getStaticType = function(){
+Grape2D.AABB.prototype.getStaticType = function() {
 	return Grape2D.AABB.TYPE;
+};
+/**
+ * @override
+ */
+Grape2D.AABB.prototype.setPosition = function(position) {
+	var diff = position.clone().sub(this.getPosition());
+	this.min.add(diff);
+	this.max.add(diff);
+	Grape2D.Shape.prototype.setPosition.call(this, position);
 };
 /**
  * Type of the shape.
@@ -162,13 +229,13 @@ Grape2D.AABB.TYPE = "AABB";</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Emitter.html">Emitter</a></li><li><a href="Grape2D.Field.html">Field</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerDragEvent.html">InputManagerDragEvent</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.InputManagerMouseEvent.html">InputManagerMouseEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Particle.html">Particle</a></li><li><a href="Grape2D.ParticleSystem.html">ParticleSystem</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Jul 23 2013 16:52:23 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Jul 30 2013 21:22:49 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

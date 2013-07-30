@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: inputs/InputManagerMouseEvent.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: inputs/InputManagerMouseEvent.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/**
+ * Mouse event.
+ *
+ * @param  {!Event} rawEvent Raw DOM event.
+ * @extends {Grape2D.InputManagerEvent}
+ * @constructor
+ */
+Grape2D.InputManagerMouseEvent = function(rawEvent){
+	Grape2D.InputManagerEvent.call(this, rawEvent);
+	var bb = rawEvent.target.getBoundingClientRect();
+	/**
+	 * Place where the drag event happened. It should be a DOM element
+	 *   associated with a {Grape2D.Renderer}.
+	 *
+	 * @type {EventTarget}
+	 * @private
+	 */
+	this.target = rawEvent.target;
+	/**
+	 * Position relative to the renderer, where the event was triggered.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.position = new Grape2D.Vector(rawEvent.clientX-bb.left, rawEvent.clientY-bb.top);
+	/**
+	 * Button that was pressed to trigger the event.
+	 * &lt;ol>
+	 * &lt;li>Left button.
+	 * &lt;li>Mouse wheel.
+	 * &lt;li>Right button.
+	 * &lt;/ol
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.button = rawEvent.button;
+	/**
+	 * Mouse wheel value. This value is only used when the &lt;code>
+	 *   rawEvent.type == "mousewheel"&lt;/code>. If the value is
+	 *   positive the wheel was moved upwards, if it's negative
+	 *   the wheel was moved downwards.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.wheelDelta = 0;
+	if(rawEvent.type == "mousewheel"){
+		this.wheelDelta = rawEvent.wheelDelta;
+	}
+};
+Grape2D.InputManagerMouseEvent.prototype = Object.create(Grape2D.InputManagerEvent.prototype);
+/**
+ * Gets the element where the event happened.
+ *
+ * @return {EventTarget} Element.
+ * @public
+ */
+Grape2D.InputManagerMouseEvent.prototype.getTarget = function(){
+	return this.target;
+};
+/**
+ * Gets the position where the event was triggered.
+ *
+ * @return {!Grape2D.Vector} Position.
+ * @public
+ */
+Grape2D.InputManagerMouseEvent.prototype.getPosition = function(){
+	return this.position;
+};
+/**
+ * Gets the wheel data.
+ *
+ * @return {!number} Wheel data.
+ * @public
+ */
+Grape2D.InputManagerMouseEvent.prototype.getWheelDelta = function(){
+	return this.wheelDelta;
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Emitter.html">Emitter</a></li><li><a href="Grape2D.Field.html">Field</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerDragEvent.html">InputManagerDragEvent</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.InputManagerMouseEvent.html">InputManagerMouseEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Particle.html">Particle</a></li><li><a href="Grape2D.ParticleSystem.html">ParticleSystem</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Jul 30 2013 21:22:49 GMT+0100 (BST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
