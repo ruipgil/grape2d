@@ -101,7 +101,11 @@ Grape2D.Math = {
 	 * @static
 	 */
 	round: function(n) {
-		return~~ (n + 0.5);
+		if (n >= 0) {
+			return~~ (n + 0.5);
+		} else {
+			return~~ (n - 0.5);
+		}
 	},
 	/**
 	 * Get a random float
