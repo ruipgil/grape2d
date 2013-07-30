@@ -10,27 +10,13 @@ function createSimpleMouseEvent(type, screenX, screenY, clientX, clientY, button
 	return createMouseEvent(type, true, true, window, 0, screenX, screenY, clientX, clientY, false, false, false, false, button, null);
 }
 
-function createKeyboardEvent(type, bubbles, cancelable, viewArg, ctrlKeyArg, altKeyArg, shiftKeyArg, metaKeyArg, keyCodeArg, charCodeArg) {
-	var evt = document.createEvent("KeyboardEvent");
-	if (evt.initKeyEvent) {
-		evt.initKeyEvent(type, bubbles, cancelable, viewArg, ctrlKeyArg, altKeyArg, shiftKeyArg, metaKeyArg, keyCodeArg, charCodeArg);
-	} else if (evt.initKeyboardEvent) {
-		evt.initKeyboardEvent(type, true, true, window, false, false, false, false, 99, 0);
-		Object.defineProperty(evt, 'keyCode', {
-			get: function() {
-				return keyCodeArg;
-			}
-		});
-	}
+// This method to create a keyboard event is not recommended. However is the most
+// stable across platforms.
+function createKeyboardEvent(type, bubbles, cancelable, keyCodeArg) {
+	var evt = document.createEvent("Event");
+	evt.initEvent(type, bubbles, cancelable);
+	evt.keyCode = keyCodeArg;
 	return evt;
-}
-
-function createSimpleKeyboardEvent(type, ctrlKey, altKey, shiftKey, metaKey, keyCode) {
-	return createKeyboardEvent(type, true, true, window, ctrlKey, altKey, shiftKey, metaKey, keyCode, keyCode);
-}
-
-function createSSKeyboardEvent(type, keyCode) {
-	return createKeyboardEvent(type, true, true, window, false, false, false, false, keyCode, keyCode);
 }
 
 var renderer = new Grape2D.CanvasRenderer({
@@ -146,7 +132,7 @@ asyncTest("Drag", 5, function() {
 });
 
 asyncTest("Key down", 4, function() {
-	var kc = Grape2D.InputManager.KEY['A'],
+	var kc = Grape2D.InputManager.KEY.A,
 		callback = function(ev) {
 			ok(true, "Event triggered.");
 			equal("keydown", ev.type, "Correct type.");
@@ -156,7 +142,7 @@ asyncTest("Key down", 4, function() {
 			start();
 		};
 	im.addKeyDown(kc, callback);
-	window.dispatchEvent(createSSKeyboardEvent("keydown", kc));
+	window.dispatchEvent(createKeyboardEvent("keydown", false, false, kc));
 });
 
 asyncTest("Key up", 4, function() {
@@ -170,7 +156,7 @@ asyncTest("Key up", 4, function() {
 			start();
 		};
 	im.addKeyUp(kc, callback);
-	window.dispatchEvent(createSSKeyboardEvent("keyup", kc));
+	window.dispatchEvent(createKeyboardEvent("keyup", false, false, kc));
 });
 
 asyncTest("Key press", 4, function() {
@@ -184,5 +170,5 @@ asyncTest("Key press", 4, function() {
 			start();
 		};
 	im.addKeyPress(kc, callback);
-	window.dispatchEvent(createSSKeyboardEvent("keypress", kc));
+	window.dispatchEvent(createKeyboardEvent("keypress", false, false, kc));
 });

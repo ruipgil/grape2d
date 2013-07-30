@@ -1,7 +1,4 @@
-/* global Grape2D */
-/* global module */
-/* global ok */
-/* global test */
+/* global Grape2D, module, ok, test */
 module("SAT Collision checking");
 var satInstance = new Grape2D.SATCollisionChecker();
 test("AABB vs AABB colliding", function(){
@@ -16,6 +13,7 @@ test("AABB vs AABB colliding", function(){
 		});
 	ok(satInstance.aabbVsAabb(aabb1, aabb2), "They're colliding.");
 });
+
 test("AABB vs AABB non colliding", function(){
 	var aabb1 = new Grape2D.AABB({
 			width:4,
@@ -28,6 +26,7 @@ test("AABB vs AABB non colliding", function(){
 		});
 	ok(!satInstance.aabbVsAabb(aabb1, aabb2), "They're not colliding.");
 });
+
 test("AABB vs Circle colliding", function(){
 	var aabb = new Grape2D.AABB({
 			width:4,
@@ -39,6 +38,7 @@ test("AABB vs Circle colliding", function(){
 		});
 	ok(satInstance.aabbVsCircle(aabb, circle), "They're colliding.");
 });
+
 test("AABB vs Circle non colliding", function(){
 	var aabb = new Grape2D.AABB({
 			width:4,
@@ -50,6 +50,7 @@ test("AABB vs Circle non colliding", function(){
 		});
 	ok(satInstance.aabbVsCircle(aabb, circle), "They're colliding.");
 });
+
 test("AABB vs Polygon colliding", function(){
 	var aabb = new Grape2D.AABB({
 			width:4,
@@ -68,6 +69,7 @@ test("AABB vs Polygon colliding", function(){
 		});
 	ok(satInstance.aabbVsPolygon(aabb, polygon), "They're colliding.");
 });
+
 test("AABB vs Polygon non colliding", function(){
 	var aabb = new Grape2D.AABB({
 			width:4,
@@ -87,6 +89,28 @@ test("AABB vs Polygon non colliding", function(){
 	ok(!satInstance.aabbVsPolygon(aabb, polygon), "They're not colliding.");
 });
 
+test("AABB vs Ray colliding", function(){
+	var aabb = new Grape2D.AABB({
+			width:4,
+			height:2
+		}),
+		start = new Grape2D.Vector(-1.5, -2),
+		end = new Grape2D.Vector(3,-0.5),
+		direction = end.clone().sub(start).normalize();
+	ok(satInstance.aabbVsRay(aabb, start, end, direction), "They're colliding.");
+});
+
+test("AABB vs Ray non colliding", function(){
+	var aabb = new Grape2D.AABB({
+			width:4,
+			height:2
+		}),
+		start = new Grape2D.Vector(-1.5, -2),
+		end = new Grape2D.Vector(2.5,-1),
+		direction = end.clone().sub(start).normalize();
+	ok(!satInstance.aabbVsRay(aabb, start, end, direction), "They're not colliding.");
+});
+
 test("Circle vs AABB colliding", function(){
 	var aabb = new Grape2D.AABB({
 			width:4,
@@ -98,6 +122,7 @@ test("Circle vs AABB colliding", function(){
 		});
 	ok(satInstance.circleVsAabb(circle, aabb), "They're colliding.");
 });
+
 test("Circle vs AABB non colliding", function(){
 	var aabb = new Grape2D.AABB({
 			width:4,
@@ -109,6 +134,7 @@ test("Circle vs AABB non colliding", function(){
 		});
 	ok(!satInstance.circleVsAabb(circle, aabb), "They're not colliding.");
 });
+
 test("Circle vs Circle colliding", function(){
 	var circle1 = new Grape2D.Circle({
 			radius: 5,
@@ -120,6 +146,7 @@ test("Circle vs Circle colliding", function(){
 		});
 	ok(satInstance.circleVsCircle(circle1, circle2), "They're colliding.");
 });
+
 test("Circle vs Circle non colliding", function(){
 	var circle1 = new Grape2D.Circle({
 			radius: 5,
@@ -131,6 +158,7 @@ test("Circle vs Circle non colliding", function(){
 		});
 	ok(!satInstance.circleVsCircle(circle1, circle2), "They're not colliding.");
 });
+
 test("Circle vs Polygon colliding", function(){
 	var circle = new Grape2D.Circle({
 			radius: 1.5,
@@ -149,6 +177,7 @@ test("Circle vs Polygon colliding", function(){
 		});
 	ok(satInstance.circleVsPolygon(circle, polygon), "They're colliding.");
 });
+
 test("Circle vs Polygon non colliding", function(){
 	var circle = new Grape2D.Circle({
 			radius: 1.5,
@@ -166,6 +195,26 @@ test("Circle vs Polygon non colliding", function(){
 			position: new Grape2D.Vector()
 		});
 	ok(!satInstance.circleVsPolygon(circle, polygon), "They're not colliding.");
+});
+
+test("Circle vs Ray colliding", function(){
+	var circle = new Grape2D.Circle({
+			radius: 1
+		}),
+		start = new Grape2D.Vector(1.5, 0),
+		end = new Grape2D.Vector(0.6,0),
+		direction = end.clone().sub(start).normalize();
+	ok(satInstance.circleVsRay(circle, start, end, direction), "They're colliding.");
+});
+
+test("Circle vs Ray non colliding", function(){
+	var circle = new Grape2D.Circle({
+			radius: 1
+		}),
+		start = new Grape2D.Vector(2, 2),
+		end = new Grape2D.Vector(1,1),
+		direction = end.clone().sub(start).normalize();
+	ok(!satInstance.circleVsRay(circle, start, end, direction), "They're not colliding.");
 });
 
 test("Polygon vs AABB colliding", function(){
@@ -289,4 +338,38 @@ test("Polygon vs Polygon non colliding", function(){
 			position: new Grape2D.Vector(-0.5,-0.5)
 		});
 	ok(!satInstance.polygonVsPolygon(polygon1, polygon2), "They're not colliding.");
+});
+
+test("Polygon vs Ray colliding", function(){
+	var polygon = new Grape2D.Polygon({
+			vertexList: [
+				new Grape2D.Vector(-1, -2),
+				new Grape2D.Vector(1, -2),
+				new Grape2D.Vector(2, 0),
+				new Grape2D.Vector(1, 2),
+				new Grape2D.Vector(-1, 2),
+				new Grape2D.Vector(-2, 0)
+			]
+		}),
+		start = new Grape2D.Vector(3, 4),
+		end = new Grape2D.Vector(0,1),
+		direction = end.clone().sub(start).normalize();
+	ok(satInstance.polygonVsRay(polygon, start, end, direction), "They're colliding.");
+});
+
+test("Polygon vs Ray non colliding", function(){
+	var polygon = new Grape2D.Polygon({
+			vertexList: [
+				new Grape2D.Vector(-1, -2),
+				new Grape2D.Vector(1, -2),
+				new Grape2D.Vector(2, 0),
+				new Grape2D.Vector(1, 2),
+				new Grape2D.Vector(-1, 2),
+				new Grape2D.Vector(-2, 0)
+			]
+		}),
+		start = new Grape2D.Vector(0, -4),
+		end = new Grape2D.Vector(0,-2.5),
+		direction = end.clone().sub(start).normalize();
+	ok(!satInstance.polygonVsRay(polygon, start, end, direction), "They're not colliding.");
 });
