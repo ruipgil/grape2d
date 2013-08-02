@@ -236,7 +236,7 @@ Grape2D.Vector.prototype = {
 	 * @public
 	 */
 	distanceTo: function(vector) {
-		return Grape2D.Math.sqrt(vector.x * this.x + vector.y * this.y);
+		return Grape2D.Math.sqrt(Grape2D.Math.sq(vector.x-this.x) + Grape2D.Math.sq(vector.y-this.y));
 	},
 	/**
 	 * Calculates the squared distace between this and another vector.
