@@ -20,6 +20,7 @@
 	"../src/objects/Circle.js",
 	"../src/objects/Polygon.js",
 	"../src/objects/Particle.js",
+	"../src/objects/Ray.js",
 
 	"../src/particleSystem/ParticleSystem.js",
 	"../src/particleSystem/Emitter.js",
@@ -29,9 +30,11 @@
 	"../src/inputs/InputManagerEvent.js",
 	"../src/inputs/InputManagerMouseEvent.js",
 	"../src/inputs/InputManagerDragEvent.js",
+	"../src/inputs/WASDController.js",
 
 	"../src/cameras/Camera.js",
 	"../src/cameras/AliasingCamera.js",
+	"../src/cameras/FollowingCamera.js",
 
 	"../src/maps/Map.js",
 	"../src/maps/SimpleMap.js",
