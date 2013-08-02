@@ -94,7 +94,7 @@ Grape2D.Camera.prototype = {
 	 * @public
 	 */
 	wcsToViewport: function(renderer, vector) {
-		var v = this.cM.multiplyByVector(vector.clone().sub(this.lookAt));
+		var v = this.cM.multiplyByVector(vector.clone().sub(this.getLookAt()));
 
 		v.setX(v.getX()+renderer.getHalfWidth());
 		v.setY(v.getY()+renderer.getHalfHeight());
@@ -116,7 +116,7 @@ Grape2D.Camera.prototype = {
 		v.setX(v.getX()-renderer.getHalfWidth());
 		v.setY(v.getY()-renderer.getHalfHeight());
 
-		v = this.icM.multiplyByVector(v).sub(this.lookAt);
+		v = this.icM.multiplyByVector(v).sub(this.getLookAt());
 
 		return v;
 	},
