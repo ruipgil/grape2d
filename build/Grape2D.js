@@ -58,8 +58,8 @@ Grape2D.utils = {
 	 */
 	getDocumentSize: function() {
 		return {
-			width: document.width || document.documentElement.clientWidth,
-			height: document.height || document.documentElement.clientHeight
+			width: window.innerWidth,
+			height: window.innerHeight
 		};
 	}
 };
@@ -93,7 +93,7 @@ Grape2D.utils.Clock.prototype = {
 			t = now - this.lastFrame;
 
 		this.frameCount++;
-		this.timeEl++;
+		this.timeEl+=t;
 
 		if (this.timeEl >= 1000) {
 			this.reset(now);
@@ -556,7 +556,7 @@ Grape2D.Vector.prototype = {
 	 * @public
 	 */
 	distanceTo: function(vector) {
-		return Grape2D.Math.sqrt(vector.x * this.x + vector.y * this.y);
+		return Grape2D.Math.sqrt(Grape2D.Math.sq(vector.x-this.x) + Grape2D.Math.sq(vector.y-this.y));
 	},
 	/**
 	 * Calculates the squared distace between this and another vector.
@@ -1034,7 +1034,17 @@ Grape2D.Renderer.prototype = {
 	 *   coordinates.
 	 * @public
 	 */
-	renderParticle: function(particle, camera) {}
+	renderParticle: function(particle, camera) {},
+	/**
+	 * Renders a line segment to the renderer.
+	 *
+	 * @param  {!Grape2D.Vector} start Start position of the line.
+	 * @param  {!Grape2D.Vector} end End position of the line.
+	 * @param  {!Grape2D.Camera} camera Camera to transform the
+	 *   coordinates.
+	 * @public
+	 */
+	renderLineSegment: function(start, end, camera) {}
 };
 /**
  * This is a simple abstraction of the canvas object,
@@ -1843,7 +1853,8 @@ Grape2D.CanvasRenderer.prototype.renderAABB = function(aabb, camera) {
  */
 Grape2D.CanvasRenderer.prototype.renderCircle = function(circle, camera) {
 	var center = camera.wcsToViewport(this, circle.getPosition());
-	this.canvas.arc(center.x, center.y, circle.getRadius(), 0, Grape2D.Math.PIx2, false);
+	this.canvas.beginPath();
+	this.canvas.arc(center.x, center.y, circle.getRadius() * camera.getScale().x, 0, Grape2D.Math.PIx2, false);
 	this.canvas.stroke();
 };
 /**
@@ -1856,6 +1867,8 @@ Grape2D.CanvasRenderer.prototype.renderPolygon = function(polygon, camera) {
 		list = polygon.getVertexList();
 
 	first = camera.wcsToViewport(this, first.add(list[0]));
+
+	this.canvas.beginPath();
 
 	this.canvas.moveTo(first.getX(), first.getY());
 	for (var i = 1; i < list.length; i++) {
@@ -1872,7 +1885,7 @@ Grape2D.CanvasRenderer.prototype.renderPolygon = function(polygon, camera) {
  * @override
  */
 Grape2D.CanvasRenderer.prototype.renderText = function(text, position) {
-	this.canvas.strokeText(text, position.getX(), position.getY());
+	this.canvas.fillText(text, position.getX(), position.getY());
 };
 /**
  * @override
@@ -1922,10 +1935,20 @@ Grape2D.CanvasRenderer.prototype.setFillColor = function(color) {
  */
 Grape2D.CanvasRenderer.prototype.renderParticle = function(particle, camera) {
 	var center = camera.wcsToViewport(this, particle.getPosition());
-
 	this.canvas.beginPath();
 	this.canvas.arc(center.x, center.y, 1, 0, Grape2D.Math.PIx2, false);
 	this.canvas.fill();
+};
+/**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.renderLineSegment = function(start, end, camera) {
+	var s = camera.wcsToViewport(this, start),
+		e = camera.wcsToViewport(this, end);
+	this.canvas.beginPath();
+	this.canvas.moveTo(s.getX(), s.getY());
+	this.canvas.lineTo(e.getX(), e.getY());
+	this.canvas.stroke();
 };
 /**
  * Only renders the wireframe of (the bounding box of)
@@ -1995,11 +2018,8 @@ Grape2D.WireframeRenderer.prototype.renderTexture = function (texture, position)
  * @override
  */
 Grape2D.WireframeRenderer.prototype.renderObject2D = function (obj, camera) {
-	//debugger;
 	var objCenter = camera.wcsToViewport(this, obj.getPosition());
-
 	this.renderer.canvas.fillRect(objCenter.x, objCenter.y, 2, 2);
-
 	obj.getBoundingBox().render(this, camera);
 };
 /**
@@ -2068,8 +2088,17 @@ Grape2D.WireframeRenderer.prototype.setStrokeColor = function(color) {
 Grape2D.WireframeRenderer.prototype.setFillColor = function(color) {
 	this.renderer.setFillColor(color);
 };
+/**
+ * @override
+ */
 Grape2D.WireframeRenderer.prototype.renderParticle = function(particle, camera) {
 	this.renderer.renderParticle(particle, camera);
+};
+/**
+ * @override
+ */
+Grape2D.WireframeRenderer.prototype.renderLineSegment = function(start, end, camera) {
+	this.renderer.renderLineSegment(start, end, camera);
 };
 /**
  * Object2D represents an object of the scene.
@@ -2525,7 +2554,7 @@ Grape2D.AABB.prototype.getMin = function() {
 /**
  * Gets the minimum x coordinate of the AABB.
  *
- * @return {!Grape2D.Vector} Minimum x coordinate.
+ * @return {!number} Minimum x coordinate.
  * @public
  */
 Grape2D.AABB.prototype.getMinX = function() {
@@ -2534,7 +2563,7 @@ Grape2D.AABB.prototype.getMinX = function() {
 /**
  * Gets the minimum y coordinate of the AABB.
  *
- * @return {!Grape2D.Vector} Minimum y coordinate.
+ * @return {!number} Minimum y coordinate.
  * @public
  */
 Grape2D.AABB.prototype.getMinY = function() {
@@ -2552,7 +2581,7 @@ Grape2D.AABB.prototype.getMax = function() {
 /**
  * Gets the maximum x coordinate of the AABB.
  *
- * @return {!Grape2D.Vector} Maximum x coordinate.
+ * @return {!number} Maximum x coordinate.
  * @public
  */
 Grape2D.AABB.prototype.getMaxX = function() {
@@ -2561,7 +2590,7 @@ Grape2D.AABB.prototype.getMaxX = function() {
 /**
  * Gets the maximum y coordinate of the AABB.
  *
- * @return {!Grape2D.Vector} Maximum y coordinate.
+ * @return {!number} Maximum y coordinate.
  * @public
  */
 Grape2D.AABB.prototype.getMaxY = function() {
@@ -2995,6 +3024,80 @@ Grape2D.Particle.prototype.update = function(dt, scene) {
 	this.position.setY(this.position.getY() + this.velocity.getY() * dt);
 	this.lifeTime -= dt;
 };
+/**
+ * Ray.
+ *
+ * @param  {!Grape2D.Vector} start Start of the ray.
+ * @param  {!Grape2D.Vector} direction Direction of the ray.
+ * @param  {!number} length Direction of the ray.
+ * @constructor
+ */
+Grape2D.Ray = function(start, direction, length){
+	this.start = start;
+	this.direction = direction;
+	this.length = length;
+	this.end = direction.clone().multiplyByScalar(length).add(start);
+};
+
+Grape2D.Ray.prototype = {
+	constructor: Grape2D.Ray,
+	/**
+	 * Gets the start position of the ray.
+	 *
+	 * @return {!Grape2D.Vector} Start of the ray.
+	 * @public
+	 */
+	getStart: function(){
+		return this.start;
+	},
+	/**
+	 * Gets the direction of the ray.
+	 *
+	 * @return {!Grape2D.Vector} Direction of the ray.
+	 * @public
+	 */
+	getDirection: function(){
+		return this.direction;
+	},
+	/**
+	 * Gets the length of the ray.
+	 *
+	 * @return {!number} Length of the ray.
+	 * @public
+	 */
+	getLength: function(){
+		return this.length;
+	},
+	/**
+	 * Gets the end position of the ray. This is computed,
+	 *   resulting from from the scalar multiplication
+	 *   of the direction by the length, added by the start
+	 *   position.
+	 *
+	 * @return {!Grape2D.Vector} End of the ray.
+	 * @public
+	 */
+	getEnd: function(){
+		return this.end;
+	},
+	/**
+	 * Gets the static type
+	 *
+	 * @return {!string} Type.
+	 * @public
+	 */
+	getStaticType: function(){
+		return Grape2D.Ray.STATIC_TYPE;
+	}
+};
+/**
+ * Type.
+ *
+ * @constant {!string}
+ * @static
+ * @private
+ */
+Grape2D.Ray.STATIC_TYPE = "Ray";
 /**
  * Particle system.
  *
@@ -4683,6 +4786,195 @@ Grape2D.InputManagerDragEvent.prototype.getDelta = function(){
 	return this.delta;
 };
 /**
+ * An WASD controller is a top-level way to control input.
+ *   This allows for a easier way to capture W, A, S, D keys.
+ *   This is mostly used to control movement, so with that
+ *   in mind, the keys pairs W and S can't have the same state
+ *   at the same time, the same goes for the pair A and D.
+ *   However it possible to have W with the same state as either
+ *   A or D, but not both. Again, the same goes for S.
+ *   If a key it's press, lets say W, and it's opposite is also
+ *   pressed, in this case S, the controller keeps the state that
+ *   indicated that W is pressed. But when the key W is lifted
+ *   up (key up event), the controller ways for the next event,
+ *   and S is not automatically press (for the controller).
+ *
+ * @param  {!Grape2D.Renderer} renderer Renderer to bind the events.
+ * @constructor
+ */
+Grape2D.WASDController = function(renderer) {
+	/**
+	 * 'W' key is locked/pressed.
+	 *
+	 * @type {!boolean}
+	 * @private
+	 */
+	this.wLock = false;
+	/**
+	 * 'A' key is locked/pressed.
+	 *
+	 * @type {!boolean}
+	 * @private
+	 */
+	this.aLock = false;
+	/**
+	 * 'S' key is locked/pressed.
+	 *
+	 * @type {!boolean}
+	 * @private
+	 */
+	this.sLock = false;
+	/**
+	 * 'D' key is locked/pressed.
+	 *
+	 * @type {!boolean}
+	 * @private
+	 */
+	this.dLock = false;
+	/**
+	 * Input manager.
+	 *
+	 * @type {!Grape2D.InputManager}
+	 * @private
+	 */
+	this.im = new Grape2D.InputManager(renderer);
+	var that = this;
+	// W key handlers
+	this.im.addKeyDown(Grape2D.InputManager.KEY.W, function() {
+		if (!that.sLock) {
+			that.wLock = true;
+		}
+	});
+	this.im.addKeyUp(Grape2D.InputManager.KEY.W, function() {
+		that.wLock = false;
+	});
+	// S key handlers
+	this.im.addKeyDown(Grape2D.InputManager.KEY.S, function() {
+		if (!that.wLock) {
+			that.sLock = true;
+		}
+	});
+	this.im.addKeyUp(Grape2D.InputManager.KEY.S, function() {
+		that.sLock = false;
+	});
+	// A key handlers
+	this.im.addKeyDown(Grape2D.InputManager.KEY.A, function() {
+		if (!that.dLock) {
+			that.aLock = true;
+		}
+	});
+	this.im.addKeyUp(Grape2D.InputManager.KEY.A, function() {
+		that.aLock = false;
+	});
+	// D key handlers
+	this.im.addKeyDown(Grape2D.InputManager.KEY.D, function() {
+		if (!that.aLock) {
+			that.dLock = true;
+		}
+	});
+	this.im.addKeyUp(Grape2D.InputManager.KEY.D, function() {
+		that.dLock = false;
+	});
+};
+
+Grape2D.WASDController.prototype = {
+	constructor: Grape2D.WASDController,
+	/**
+	 * Action for the 'W' key.
+	 *
+	 * @public
+	 */
+	w: function() {},
+	/**
+	 * Checks if the key 'W' is pressed.
+	 *
+	 * @return {!boolean} True if it's pressed.
+	 * @public
+	 */
+	isW: function() {
+		return this.wLock;
+	},
+	/**
+	 * Action for the 'A' key.
+	 *
+	 * @public
+	 */
+	a: function() {},
+	/**
+	 * Checks if the key 'A' is pressed.
+	 *
+	 * @return {!boolean} True if it's pressed.
+	 * @public
+	 */
+	isA: function() {
+		return this.aLock;
+	},
+	/**
+	 * Action for the 'S' key.
+	 *
+	 * @public
+	 */
+	s: function() {},
+	/**
+	 * Checks if the key 'S' is pressed.
+	 *
+	 * @return {!boolean} True if it's pressed.
+	 * @public
+	 */
+	isS: function() {
+		return this.sLock;
+	},
+	/**
+	 * Action for the 'D' key.
+	 *
+	 * @public
+	 */
+	d: function() {},
+	/**
+	 * Checks if the key 'D' is pressed.
+	 *
+	 * @return {!boolean} True if it's pressed.
+	 * @public
+	 */
+	isD: function() {
+		return this.dLock;
+	},
+	/**
+	 * Setup function to execute before each dispatch
+	 *   function.
+	 *
+	 * @public
+	 */
+	setup: function() {},
+	/**
+	 * Tear down function to execute after each dispatch
+	 *   function.
+	 *
+	 * @public
+	 */
+	tearDown: function() {},
+	/**
+	 * It executes the functions for the keys pressed.
+	 *
+	 * @public
+	 */
+	dispatch: function() {
+		this.setup();
+		if (this.wLock) {
+			this.w();
+		} else if (this.sLock) {
+			this.s();
+		}
+
+		if (this.aLock) {
+			this.a();
+		} else if (this.dLock) {
+			this.d();
+		}
+		this.tearDown();
+	}
+}
+/**
  * Camera is used to select the objects to display in a scene.
  *   A camera doesn't rotate or scale objects in the x and y axis,
  *   only the coordinates are changed to the transformation defined.
@@ -4778,7 +5070,7 @@ Grape2D.Camera.prototype = {
 	 * @public
 	 */
 	wcsToViewport: function(renderer, vector) {
-		var v = this.cM.multiplyByVector(vector.clone().sub(this.lookAt));
+		var v = this.cM.multiplyByVector(vector.clone().sub(this.getLookAt()));
 
 		v.setX(v.getX()+renderer.getHalfWidth());
 		v.setY(v.getY()+renderer.getHalfHeight());
@@ -4800,7 +5092,7 @@ Grape2D.Camera.prototype = {
 		v.setX(v.getX()-renderer.getHalfWidth());
 		v.setY(v.getY()-renderer.getHalfHeight());
 
-		v = this.icM.multiplyByVector(v).sub(this.lookAt);
+		v = this.icM.multiplyByVector(v).sub(this.getLookAt());
 
 		return v;
 	},
@@ -4888,6 +5180,44 @@ Grape2D.AliasingCamera.prototype.wcsToViewport = function(renderer, vector){
 	return Grape2D.Camera.prototype.wcsToViewport.call(this, renderer, vector).use(Grape2D.Math.floor);
 };
 /**
+ * Camera that follows an {@link Grape2D.Object2D}, this means that the camera is always looking at the object (the lookAt property is the same as the object)
+ *
+ * @param  {!Object} options Setup options. See {@link Grape2D.Camera}
+ * @param  {!Grape2D.Object2D} options.objectToFollow Object to be followed by the camera.
+ * @extends {Grape2D.Camera}
+ * @constructor
+ */
+Grape2D.FollowingCamera = function(options){
+	Grape2D.Camera.call(this, options);
+	this.objectToFollow = options.objectToFollow;
+};
+Grape2D.FollowingCamera.prototype = Object.create(Grape2D.Camera.prototype);
+/**
+ * @override
+ */
+Grape2D.FollowingCamera.prototype.getLookAt = function(){
+	return this.objectToFollow.getPosition();
+};
+/**
+ * Gets the object to follow.
+ *
+ * @return {!Grape2D.Object2D} Object that is following.
+ * @public
+ */
+Grape2D.FollowingCamera.prototype.getObjectToFollow = function(){
+	return this.objectToFollow;
+};
+/**
+ * Sets the object to follow.
+ *
+ * @param  {!Grape2D.Object2D} fo Object to follow.
+ * @public
+ */
+Grape2D.FollowingCamera.prototype.setObjectToFollow = function(fo){
+	this.objectToFollow = fo;
+};
+
+/**
  * Map describes the structure that holds the objects of a scene.
  *   It's an interface, so all implementation details should be
  *   described in higher level classes.
@@ -4929,6 +5259,16 @@ Grape2D.Map.prototype = {
 	 * @public
 	 */
 	queryPoint: function(vector){},
+	/**
+	 * Queries a ray against the map.
+	 *
+	 * @param  {!Grape2D.Vector} start Ray start position
+	 * @param  {!Grape2D.Vector} direction Direction of the ray
+	 * @param  {!number} length Maximum length of the ray.
+	 * @return {?Grape2D.Object2D} Object that first encounters the ray.
+	 * @public
+	 */
+	queryRay: function(start, direction, length){},
 	/**
 	 * Clears the map.
 	 *
@@ -4993,6 +5333,13 @@ Grape2D.SimpleMap.prototype.query = function(region) {
  */
 Grape2D.SimpleMap.prototype.queryPoint = function(vector) {
 	return this.objs;
+};
+/**
+ * Not implemented.
+ * @override
+ */
+Grape2D.SimpleMap.prototype.queryRay = function(start, direction, length) {
+	return null;
 };
 /**
  * @override
@@ -5063,13 +5410,11 @@ Grape2D.CollisionChecker.prototype = {
 	 * Checks if a ray intersects an AABB.
 	 *
 	 * @param  {!Grape2D.AABB} aabb An AABB.
-	 * @param  {!Grape2D.Vector} start Start position of the ray.
-	 * @param  {!Grape2D.Vector} end End position of the ray.
-	 * @param  {!Grape2D.Vector} direction Direction of the ray.
+	 * @param  {!Grape2D.Ray} ray A ray.
 	 * @return {!boolean} True if the ray intersects the polygon.
 	 * @public
 	 */
-	aabbVsRay: function(aabb, start, end, direction){},
+	aabbVsRay: function(aabb, ray){},
 	/**
 	 * Collides a Circle against an AABB.
 	 *
@@ -5110,13 +5455,11 @@ Grape2D.CollisionChecker.prototype = {
 	 * Checks if a ray intersects a circle.
 	 *
 	 * @param  {!Grape2D.Circle} circle A polygon.
-	 * @param  {!Grape2D.Vector} start Start position of the ray.
-	 * @param  {!Grape2D.Vector} end End position of the ray.
-	 * @param  {!Grape2D.Vector} direction Direction of the ray.
+	 * @param  {!Grape2D.Ray} ray A ray.
 	 * @return {!boolean} True if the ray intersects the polygon.
 	 * @public
 	 */
-	circleVsRay: function(circle, start, end, direction){},
+	circleVsRay: function(circle, ray){},
 	/**
 	 * Collides a Polygon against an AABB.
 	 *
@@ -5157,13 +5500,11 @@ Grape2D.CollisionChecker.prototype = {
 	 * Checks if a ray intersects a polygon.
 	 *
 	 * @param  {!Grape2D.Polygon} polygon A polygon.
-	 * @param  {!Grape2D.Vector} start Start position of the ray.
-	 * @param  {!Grape2D.Vector} end End position of the ray.
-	 * @param  {!Grape2D.Vector} direction Direction of the ray.
+	 * @param  {!Grape2D.Ray} ray A ray.
 	 * @return {!boolean} True if the ray intersects the polygon.
 	 * @public
 	 */
-	polygonVsRay: function(polygon, start, end, direction){}
+	polygonVsRay: function(polygon, ray){}
 };
 /**
  * This implements generic methods of the collision controlle. Since
@@ -5220,21 +5561,21 @@ Grape2D.GenericCollisionChecker.prototype.circleVsAabb = function(circle, aabb) 
  * Must be refined.
  * @override
  */
-Grape2D.GenericCollisionChecker.prototype.aabbVsRay = function(aabb, start, end, direction) {
+Grape2D.GenericCollisionChecker.prototype.aabbVsRay = function(aabb, ray) {
 	return false;
 };
 /**
  * Must be refined.
  * @override
  */
-Grape2D.GenericCollisionChecker.prototype.circleVsRay = function(circle, start, end, direction) {
+Grape2D.GenericCollisionChecker.prototype.circleVsRay = function(circle, ray) {
 	return false;
 };
 /**
  * Must be refined.
  * @override
  */
-Grape2D.GenericCollisionChecker.prototype.polygonVsRay = function(polygon, start, end, direction) {
+Grape2D.GenericCollisionChecker.prototype.polygonVsRay = function(polygon, ray) {
 	return false;
 };
 /**
@@ -5445,8 +5786,8 @@ Grape2D.SATCollisionChecker.prototype.computeIntervals = function(vertexList, ax
 /**
  * @override
  */
-Grape2D.SATCollisionChecker.prototype.aabbVsRay = function(aabb, start, end, direction) {
-	var rayAxis = direction.rightNormal(),
+Grape2D.SATCollisionChecker.prototype.aabbVsRay = function(aabb, ray) {
+	var rayAxis = ray.getDirection().rightNormal(),
 		interval = {
 			min: +Infinity,
 			max: -Infinity
@@ -5455,22 +5796,45 @@ Grape2D.SATCollisionChecker.prototype.aabbVsRay = function(aabb, start, end, dir
 		temp = list[i].dot(rayAxis);
 		if (temp > interval.max) {
 			interval.max = temp;
-		} else if (temp < interval.min) {
+		}
+		if (temp < interval.min) {
 			interval.min = temp;
 		}
 	}
-	temp = start.dot(rayAxis);
+	temp = ray.getStart().dot(rayAxis);
 	if (interval.min <= temp && temp <= interval.max) {
-		return Grape2D.Math.overlaps({
-			min: start.getX(),
-			max: end.getX()
-		}, {
+		//debugger;
+		var ix = ray.getStart().getX(),
+			ax = ray.getEnd().getX(),
+			iy = ray.getStart().getY(),
+			ay = ray.getEnd().getY(),
+			x, y;
+		if (ix > ax) {
+			x = {
+				min: ax,
+				max: ix
+			};
+		} else {
+			x = {
+				min: ix,
+				max: ax
+			};
+		}
+		if (iy > ay) {
+			y = {
+				min: ay,
+				max: iy
+			};
+		} else {
+			y = {
+				min: iy,
+				max: ay
+			};
+		}
+		return Grape2D.Math.overlaps(x, {
 			min: aabb.getMinX(),
 			max: aabb.getMaxX()
-		}) >= 0 && Grape2D.Math.overlaps({
-			min: start.getY(),
-			max: end.getY()
-		}, {
+		}) >= 0 && Grape2D.Math.overlaps(y, {
 			min: aabb.getMinY(),
 			max: aabb.getMaxY()
 		}) >= 0;
@@ -5517,34 +5881,26 @@ Grape2D.SATCollisionChecker.aabbToVertexList = function(aabb) {
 /**
  * @override
  */
-Grape2D.SATCollisionChecker.prototype.circleVsRay = function(circle, start, end, direction) {
-	var temp, pos = circle.getPosition(),
-		r = circle.getRadius(),
-		ivr = {
-			min: 0,
-			max: 0
-		}, iv;
-	temp = pos.dot(direction);
-	iv = {
-		min: temp - r,
-		max: temp + r
-	};
-	temp = start.dot(direction);
-	if (start.getX() < end.getX()) {
-		ivr.min = start.dot(direction);
-		ivr.max = end.dot(direction);
+Grape2D.SATCollisionChecker.prototype.circleVsRay = function(circle, ray) {
+	var ptv = circle.getPosition().clone().sub(ray.getStart()),
+		projv = ptv.dot(ray.getDirection());
+	if (projv < 0) {
+		closest = ray.getStart().clone();
+	} else if (projv >= ray.getLength()) {
+		closest = ray.getEnd().clone();
 	} else {
-		ivr.min = start.dot(direction);
-		ivr.max = end.dot(direction);
+		var proj = ray.getDirection().clone().multiplyByScalar(projv),
+			closest = proj.add(ray.getStart());
 	}
-
-	return Grape2D.Math.overlaps(ivr, iv) >= 0;
+	closest.negate().add(circle.getPosition());
+	return closest.lengthSquared() <= Grape2D.Math.sq(circle.getRadius());
 };
 /**
  * @override
  */
-Grape2D.SATCollisionChecker.prototype.polygonVsRay = function(polygon, start, end, direction) {
-	var rayAxis = direction.rightNormal(),
+Grape2D.SATCollisionChecker.prototype.polygonVsRay = function(polygon, ray) {
+	var direction = ray.getDirection(),
+		rayAxis = direction.rightNormal(),
 		polist = polygon.getComputedVertexList(),
 		itv = {
 			min: 0,
@@ -5552,11 +5908,11 @@ Grape2D.SATCollisionChecker.prototype.polygonVsRay = function(polygon, start, en
 		}, pItv, temp, ia, ib;
 
 	pItv = this.computeIntervals(polist, [rayAxis])[0];
-	temp = start.dot(rayAxis);
+	temp = ray.getStart().dot(rayAxis);
 	if (pItv.min <= temp && temp <= pItv.max) {
 		pItv = this.computeIntervals(polist, [direction])[0];
-		ia = start.dot(direction);
-		ib = end.dot(direction);
+		ia = ray.getStart().dot(direction);
+		ib = ray.getEnd().dot(direction);
 		if (ia > ib) {
 			itv.max = ia;
 			itv.min = ib;
@@ -5636,6 +5992,19 @@ Grape2D.CollisionDispatcher = {
 		return cchecker.aabbVsPoint(aabb, point);
 	},
 	/**
+	 * Checks if a ray intersects an AABB.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @param  {!Grape2D.Ray} ray A ray.
+	 * @return {!boolean} True if intersects.
+	 * @static
+	 * @private
+	 */
+	aabbVsRay: function(cchecker, aabb, ray) {
+		return cchecker.aabbVsRay(aabb, ray);
+	},
+	/**
 	 * Collides a Circle against an AABB.
 	 *
 	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
@@ -5686,6 +6055,19 @@ Grape2D.CollisionDispatcher = {
 	 */
 	circleVsPoint: function(cchecker, circle, point) {
 		return cchecker.circleVsPoint(circle, point);
+	},
+	/**
+	 * Checks if a ray intersects a circle.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @param  {!Grape2D.Ray} ray A ray.
+	 * @return {!boolean} True if intersects.
+	 * @static
+	 * @private
+	 */
+	circleVsRay: function(cchecker, circle, ray) {
+		return cchecker.circleVsRay(circle, ray);
 	},
 	/**
 	 * Collides a polygon against an AABB.
@@ -5740,6 +6122,19 @@ Grape2D.CollisionDispatcher = {
 		return cchecker.polygonVsPoint(polygon, point);
 	},
 	/**
+	 * Checks if a ray intersects a polygon.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @param  {!Grape2D.Ray} ray A ray.
+	 * @return {!boolean} True if intersects.
+	 * @static
+	 * @private
+	 */
+	polygonVsRay: function(cchecker, polygon, ray) {
+		return cchecker.polygonVsRay(polygon, ray);
+	},
+	/**
 	 * Object used to dispatch the collision.
 	 *
 	 * @type {!Object}
@@ -5751,8 +6146,8 @@ Grape2D.CollisionDispatcher = {
 	 * Dispatches a collision between two primitives.
 	 *
 	 * @param  {!Grape2D.CollisionChecker} cchecker A collision checker.
-	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} a Shape to test.
-	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} b Shape to collide with the first
+	 * @param  {!(Grape2D.Shape|Grape2D.Vector|Grape2D.Ray)} a Shape to test.
+	 * @param  {!(Grape2D.Shape|Grape2D.Vector|Grape2D.Ray)} b Shape to collide with the first
 	 *   one, or a point to check it it's inside.
 	 * @return {!boolean} Result of the collision.
 	 * @public
@@ -5767,19 +6162,22 @@ Grape2D.CollisionDispatcher.dcache = {
 		"AABB": Grape2D.CollisionDispatcher.aabbVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.aabbVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.aabbVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.aabbVsPoint
+		"Point": Grape2D.CollisionDispatcher.aabbVsPoint,
+		"Ray": Grape2D.CollisionDispatcher.aabbVsRay
 	},
 	"Circle": {
 		"AABB": Grape2D.CollisionDispatcher.circleVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.circleVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.circleVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.circleVsPoint
+		"Point": Grape2D.CollisionDispatcher.circleVsPoint,
+		"Ray": Grape2D.CollisionDispatcher.circleVsRay
 	},
 	"Polygon": {
 		"AABB": Grape2D.CollisionDispatcher.polygonVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.polygonVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.polygonVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.polygonVsPoint
+		"Point": Grape2D.CollisionDispatcher.polygonVsPoint,
+		"Ray": Grape2D.CollisionDispatcher.polygonVsRay
 	}
 };
 /**
@@ -5908,6 +6306,12 @@ Grape2D.TopDownBVHTree.prototype.queryPoint = function(vector) {
 /**
  * @override
  */
+Grape2D.TopDownBVHTree.prototype.queryRay = function(ray) {
+	return this.rootNode.queryRay(ray);
+};
+/**
+ * @override
+ */
 Grape2D.TopDownBVHTree.prototype.clear = function(){
 	this.objs = [];
 	this.rootNode = null;
@@ -5919,6 +6323,15 @@ Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
 	for(var i=0; i<this.objs.length; i++){
 		this.objs[i].update(dt, scene);
 	}
+};
+/**
+ * Gets the root node of the tree
+ *
+ * @return  {?Grape2D.TopDownBVHNode} Root node of the tree.
+ * @public
+ */
+Grape2D.TopDownBVHTree.prototype.getRootNode = function(){
+	return this.rootNode;
 };
 /**
  * Maximum depth of the tree.
@@ -6130,6 +6543,29 @@ Grape2D.TopDownBVHNode.prototype = {
 		}
 		return res;
 	},
+	queryRay: function(ray) {
+		var i;
+		if (this.leaf) {
+			for (i = 0; i < this.objects.length; i++) {
+				if (Grape2D.CollisionCheckerSingleton.collide(this.objects[i].getBoundingBox(), ray)) {
+					return this.objects[i];
+				}
+			}
+		} else {
+			if (Grape2D.CollisionCheckerSingleton.collide(this.bv, ray)) {
+				var res = this.left.queryRay(ray);
+				if (res) {
+					return res;
+				}
+
+				res = this.right.queryRay(ray);
+				if (res) {
+					return res;
+				}
+			}
+		}
+		return null;
+	},
 	/**
 	 * Gets the depth of the node, in the context of the tree.
 	 *
@@ -6223,8 +6659,8 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 		return result;
 	}
 
-	if ((minX + maxX) >= (minY + maxY)) {
-		axis = (maxX + minX) / 2;
+	if ((Grape2D.Math.abs(maxX) - Grape2D.Math.abs(minX)) >= (Grape2D.Math.abs(maxY) - Grape2D.Math.abs(minY))) {
+		axis = minX + Grape2D.Math.abs((maxX - minX) / 2);
 
 		for (i = 0; i < objects.length; i++) {
 			temp = objects[i].getBoundingBoxPosition();
@@ -6235,7 +6671,7 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 			}
 		}
 	} else {
-		axis = (maxY + minY) / 2;
+		axis = minY + Grape2D.Math.abs((maxY - minY) / 2);
 
 		for (i = 0; i < objects.length; i++) {
 			temp = objects[i].getBoundingBoxPosition();
@@ -6421,10 +6857,12 @@ Grape2D.AabbBVFactory.prototype.createSceneBV = function(renderer, camera) {
  * @return {!Grape2D.AABB} An AABB that bounds the other two.
  */
 Grape2D.AabbBVFactory.prototype.merge = function(aabb1, aabb2) {
-	var minx = Grape2D.Math.min(aabb1.getMinX(), aabb2.getMinX()),
-		maxx = Grape2D.Math.max(aabb1.getMaxX(), aabb2.getMaxX()),
-		miny = Grape2D.Math.min(aabb1.getMinY(), aabb2.getMinY()),
-		maxy = Grape2D.Math.max(aabb1.getMaxY(), aabb2.getMaxY());
+	var ab1 = aabb1.createBV(this),
+		ab2 = aabb2.createBV(this);
+	var minx = Grape2D.Math.min(ab1.getMinX(), ab2.getMinX()),
+		maxx = Grape2D.Math.max(ab1.getMaxX(), ab2.getMaxX()),
+		miny = Grape2D.Math.min(ab1.getMinY(), ab2.getMinY()),
+		maxy = Grape2D.Math.max(ab1.getMaxY(), ab2.getMaxY());
 	return new Grape2D.AABB({
 		minX: minx,
 		minY: miny,
@@ -6990,6 +7428,13 @@ Grape2D.SimpleGame = function(renderer, scene, camera) {
 	 * @private
 	 */
 	this.scene = scene;
+	/**
+	 * Request animation frame ID.
+	 *
+	 * @type {number}
+	 * @private
+	 */
+	this.raf = -1;
 };
 
 Grape2D.SimpleGame.prototype = Object.create(Grape2D.Game.prototype);
@@ -7044,7 +7489,7 @@ Grape2D.SimpleGame.prototype.start = function() {
  * @suppress {undefinedVars}
  */
 Grape2D.SimpleGame.prototype.stop = function() {
-	cancelAnimationFrame();
+	cancelAnimationFrame(this.raf);
 };
 /**
  * @override
@@ -7064,7 +7509,7 @@ Grape2D.SimpleGame.prototype.update = function(dt) {
 Grape2D.SimpleGame.prototype.animate = function() {
 	var that = this,
 		dt = this.clock.update();
-	requestAnimationFrame(function() {
+	this.raf = requestAnimationFrame(function() {
 		that.animate();
 	});
 	this.update(dt);
