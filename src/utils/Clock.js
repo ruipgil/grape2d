@@ -28,7 +28,7 @@ Grape2D.utils.Clock.prototype = {
 			t = now - this.lastFrame;
 
 		this.frameCount++;
-		this.timeEl++;
+		this.timeEl+=t;
 
 		if (this.timeEl >= 1000) {
 			this.reset(now);
