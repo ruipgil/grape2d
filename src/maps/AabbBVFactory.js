@@ -80,10 +80,12 @@ Grape2D.AabbBVFactory.prototype.createSceneBV = function(renderer, camera) {
  * @return {!Grape2D.AABB} An AABB that bounds the other two.
  */
 Grape2D.AabbBVFactory.prototype.merge = function(aabb1, aabb2) {
-	var minx = Grape2D.Math.min(aabb1.getMinX(), aabb2.getMinX()),
-		maxx = Grape2D.Math.max(aabb1.getMaxX(), aabb2.getMaxX()),
-		miny = Grape2D.Math.min(aabb1.getMinY(), aabb2.getMinY()),
-		maxy = Grape2D.Math.max(aabb1.getMaxY(), aabb2.getMaxY());
+	var ab1 = aabb1.createBV(this),
+		ab2 = aabb2.createBV(this);
+	var minx = Grape2D.Math.min(ab1.getMinX(), ab2.getMinX()),
+		maxx = Grape2D.Math.max(ab1.getMaxX(), ab2.getMaxX()),
+		miny = Grape2D.Math.min(ab1.getMinY(), ab2.getMinY()),
+		maxy = Grape2D.Math.max(ab1.getMaxY(), ab2.getMaxY());
 	return new Grape2D.AABB({
 		minX: minx,
 		minY: miny,
