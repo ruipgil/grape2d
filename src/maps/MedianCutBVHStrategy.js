@@ -60,8 +60,8 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 		return result;
 	}
 
-	if ((minX + maxX) >= (minY + maxY)) {
-		axis = (maxX + minX) / 2;
+	if ((Grape2D.Math.abs(maxX) - Grape2D.Math.abs(minX)) >= (Grape2D.Math.abs(maxY) - Grape2D.Math.abs(minY))) {
+		axis = minX + Grape2D.Math.abs((maxX - minX) / 2);
 
 		for (i = 0; i < objects.length; i++) {
 			temp = objects[i].getBoundingBoxPosition();
@@ -72,7 +72,7 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 			}
 		}
 	} else {
-		axis = (maxY + minY) / 2;
+		axis = minY + Grape2D.Math.abs((maxY - minY) / 2);
 
 		for (i = 0; i < objects.length; i++) {
 			temp = objects[i].getBoundingBoxPosition();
