@@ -16,8 +16,8 @@ Grape2D.utils = {
 	 */
 	getDocumentSize: function() {
 		return {
-			width: document.width || document.documentElement.clientWidth,
-			height: document.height || document.documentElement.clientHeight
+			width: window.innerWidth,
+			height: window.innerHeight
 		};
 	}
 };
