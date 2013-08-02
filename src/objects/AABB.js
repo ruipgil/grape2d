@@ -58,7 +58,7 @@ Grape2D.AABB.prototype.getMin = function() {
 /**
  * Gets the minimum x coordinate of the AABB.
  *
- * @return {!Grape2D.Vector} Minimum x coordinate.
+ * @return {!number} Minimum x coordinate.
  * @public
  */
 Grape2D.AABB.prototype.getMinX = function() {
@@ -67,7 +67,7 @@ Grape2D.AABB.prototype.getMinX = function() {
 /**
  * Gets the minimum y coordinate of the AABB.
  *
- * @return {!Grape2D.Vector} Minimum y coordinate.
+ * @return {!number} Minimum y coordinate.
  * @public
  */
 Grape2D.AABB.prototype.getMinY = function() {
@@ -85,7 +85,7 @@ Grape2D.AABB.prototype.getMax = function() {
 /**
  * Gets the maximum x coordinate of the AABB.
  *
- * @return {!Grape2D.Vector} Maximum x coordinate.
+ * @return {!number} Maximum x coordinate.
  * @public
  */
 Grape2D.AABB.prototype.getMaxX = function() {
@@ -94,7 +94,7 @@ Grape2D.AABB.prototype.getMaxX = function() {
 /**
  * Gets the maximum y coordinate of the AABB.
  *
- * @return {!Grape2D.Vector} Maximum y coordinate.
+ * @return {!number} Maximum y coordinate.
  * @public
  */
 Grape2D.AABB.prototype.getMaxY = function() {
