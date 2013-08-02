@@ -57,6 +57,19 @@ Grape2D.CollisionDispatcher = {
 		return cchecker.aabbVsPoint(aabb, point);
 	},
 	/**
+	 * Checks if a ray intersects an AABB.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @param  {!Grape2D.Ray} ray A ray.
+	 * @return {!boolean} True if intersects.
+	 * @static
+	 * @private
+	 */
+	aabbVsRay: function(cchecker, aabb, ray) {
+		return cchecker.aabbVsRay(aabb, ray);
+	},
+	/**
 	 * Collides a Circle against an AABB.
 	 *
 	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
@@ -107,6 +120,19 @@ Grape2D.CollisionDispatcher = {
 	 */
 	circleVsPoint: function(cchecker, circle, point) {
 		return cchecker.circleVsPoint(circle, point);
+	},
+	/**
+	 * Checks if a ray intersects a circle.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @param  {!Grape2D.Ray} ray A ray.
+	 * @return {!boolean} True if intersects.
+	 * @static
+	 * @private
+	 */
+	circleVsRay: function(cchecker, circle, ray) {
+		return cchecker.circleVsRay(circle, ray);
 	},
 	/**
 	 * Collides a polygon against an AABB.
@@ -161,6 +187,19 @@ Grape2D.CollisionDispatcher = {
 		return cchecker.polygonVsPoint(polygon, point);
 	},
 	/**
+	 * Checks if a ray intersects a polygon.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @param  {!Grape2D.Ray} ray A ray.
+	 * @return {!boolean} True if intersects.
+	 * @static
+	 * @private
+	 */
+	polygonVsRay: function(cchecker, polygon, ray) {
+		return cchecker.polygonVsRay(polygon, ray);
+	},
+	/**
 	 * Object used to dispatch the collision.
 	 *
 	 * @type {!Object}
@@ -172,8 +211,8 @@ Grape2D.CollisionDispatcher = {
 	 * Dispatches a collision between two primitives.
 	 *
 	 * @param  {!Grape2D.CollisionChecker} cchecker A collision checker.
-	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} a Shape to test.
-	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} b Shape to collide with the first
+	 * @param  {!(Grape2D.Shape|Grape2D.Vector|Grape2D.Ray)} a Shape to test.
+	 * @param  {!(Grape2D.Shape|Grape2D.Vector|Grape2D.Ray)} b Shape to collide with the first
 	 *   one, or a point to check it it's inside.
 	 * @return {!boolean} Result of the collision.
 	 * @public
@@ -188,18 +227,21 @@ Grape2D.CollisionDispatcher.dcache = {
 		"AABB": Grape2D.CollisionDispatcher.aabbVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.aabbVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.aabbVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.aabbVsPoint
+		"Point": Grape2D.CollisionDispatcher.aabbVsPoint,
+		"Ray": Grape2D.CollisionDispatcher.aabbVsRay
 	},
 	"Circle": {
 		"AABB": Grape2D.CollisionDispatcher.circleVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.circleVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.circleVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.circleVsPoint
+		"Point": Grape2D.CollisionDispatcher.circleVsPoint,
+		"Ray": Grape2D.CollisionDispatcher.circleVsRay
 	},
 	"Polygon": {
 		"AABB": Grape2D.CollisionDispatcher.polygonVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.polygonVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.polygonVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.polygonVsPoint
+		"Point": Grape2D.CollisionDispatcher.polygonVsPoint,
+		"Ray": Grape2D.CollisionDispatcher.polygonVsRay
 	}
 };

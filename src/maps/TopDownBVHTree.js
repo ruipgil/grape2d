@@ -64,6 +64,12 @@ Grape2D.TopDownBVHTree.prototype.queryPoint = function(vector) {
 /**
  * @override
  */
+Grape2D.TopDownBVHTree.prototype.queryRay = function(ray) {
+	return this.rootNode.queryRay(ray);
+};
+/**
+ * @override
+ */
 Grape2D.TopDownBVHTree.prototype.clear = function(){
 	this.objs = [];
 	this.rootNode = null;
@@ -75,6 +81,15 @@ Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
 	for(var i=0; i<this.objs.length; i++){
 		this.objs[i].update(dt, scene);
 	}
+};
+/**
+ * Gets the root node of the tree
+ *
+ * @return  {?Grape2D.TopDownBVHNode} Root node of the tree.
+ * @public
+ */
+Grape2D.TopDownBVHTree.prototype.getRootNode = function(){
+	return this.rootNode;
 };
 /**
  * Maximum depth of the tree.

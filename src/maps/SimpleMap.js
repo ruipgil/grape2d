@@ -43,6 +43,13 @@ Grape2D.SimpleMap.prototype.queryPoint = function(vector) {
 	return this.objs;
 };
 /**
+ * Not implemented.
+ * @override
+ */
+Grape2D.SimpleMap.prototype.queryRay = function(start, direction, length) {
+	return null;
+};
+/**
  * @override
  */
 Grape2D.SimpleMap.prototype.clear = function() {

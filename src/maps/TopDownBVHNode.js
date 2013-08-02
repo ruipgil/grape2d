@@ -195,6 +195,29 @@ Grape2D.TopDownBVHNode.prototype = {
 		}
 		return res;
 	},
+	queryRay: function(ray) {
+		var i;
+		if (this.leaf) {
+			for (i = 0; i < this.objects.length; i++) {
+				if (Grape2D.CollisionCheckerSingleton.collide(this.objects[i].getBoundingBox(), ray)) {
+					return this.objects[i];
+				}
+			}
+		} else {
+			if (Grape2D.CollisionCheckerSingleton.collide(this.bv, ray)) {
+				var res = this.left.queryRay(ray);
+				if (res) {
+					return res;
+				}
+
+				res = this.right.queryRay(ray);
+				if (res) {
+					return res;
+				}
+			}
+		}
+		return null;
+	},
 	/**
 	 * Gets the depth of the node, in the context of the tree.
 	 *

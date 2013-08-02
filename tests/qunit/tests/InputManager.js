@@ -115,7 +115,6 @@ asyncTest("Drag", 5, function() {
 	var point = new Grape2D.Vector(200, 300),
 		n = 0;
 	var callback = function(ev) {
-		console.log(ev, n);
 		ok(true, "Event triggered.");
 		ok(ev.getStart().equals(new Grape2D.Vector(200, 300)), "Correct start point.");
 		ok(ev.getEnd().equals(new Grape2D.Vector(205, 300)), "Correct end point");

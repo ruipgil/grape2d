@@ -41,6 +41,16 @@ Grape2D.Map.prototype = {
 	 */
 	queryPoint: function(vector){},
 	/**
+	 * Queries a ray against the map.
+	 *
+	 * @param  {!Grape2D.Vector} start Ray start position
+	 * @param  {!Grape2D.Vector} direction Direction of the ray
+	 * @param  {!number} length Maximum length of the ray.
+	 * @return {?Grape2D.Object2D} Object that first encounters the ray.
+	 * @public
+	 */
+	queryRay: function(start, direction, length){},
+	/**
 	 * Clears the map.
 	 *
 	 * @public

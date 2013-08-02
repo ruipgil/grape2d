@@ -96,8 +96,12 @@ test("AABB vs Ray colliding", function(){
 		}),
 		start = new Grape2D.Vector(-1.5, -2),
 		end = new Grape2D.Vector(3,-0.5),
-		direction = end.clone().sub(start).normalize();
-	ok(satInstance.aabbVsRay(aabb, start, end, direction), "They're colliding.");
+		direction = end.clone().sub(start).normalize(),
+		ray = new Grape2D.Ray(start, direction, start.distanceTo(end));
+	ok(ray.getStart().equals(start), "Start is the same.");
+	ok(ray.getEnd().equals(end), "End is the same.");
+	ok(ray.getDirection().equals(direction), "Dir is the same.");
+	ok(satInstance.aabbVsRay(aabb, ray), "They're colliding.");
 });
 
 test("AABB vs Ray non colliding", function(){
@@ -107,8 +111,9 @@ test("AABB vs Ray non colliding", function(){
 		}),
 		start = new Grape2D.Vector(-1.5, -2),
 		end = new Grape2D.Vector(2.5,-1),
-		direction = end.clone().sub(start).normalize();
-	ok(!satInstance.aabbVsRay(aabb, start, end, direction), "They're not colliding.");
+		direction = end.clone().sub(start).normalize(),
+		ray = new Grape2D.Ray(start, direction, start.distanceTo(end));
+	ok(!satInstance.aabbVsRay(aabb, ray), "They're not colliding.");
 });
 
 test("Circle vs AABB colliding", function(){
@@ -203,8 +208,9 @@ test("Circle vs Ray colliding", function(){
 		}),
 		start = new Grape2D.Vector(1.5, 0),
 		end = new Grape2D.Vector(0.6,0),
-		direction = end.clone().sub(start).normalize();
-	ok(satInstance.circleVsRay(circle, start, end, direction), "They're colliding.");
+		direction = end.clone().sub(start).normalize(),
+		ray = new Grape2D.Ray(start, direction, start.distanceTo(end));
+	ok(satInstance.circleVsRay(circle, ray), "They're colliding.");
 });
 
 test("Circle vs Ray non colliding", function(){
@@ -213,8 +219,9 @@ test("Circle vs Ray non colliding", function(){
 		}),
 		start = new Grape2D.Vector(2, 2),
 		end = new Grape2D.Vector(1,1),
-		direction = end.clone().sub(start).normalize();
-	ok(!satInstance.circleVsRay(circle, start, end, direction), "They're not colliding.");
+		direction = end.clone().sub(start).normalize(),
+		ray = new Grape2D.Ray(start, direction, start.distanceTo(end));;
+	ok(!satInstance.circleVsRay(circle, ray), "They're not colliding.");
 });
 
 test("Polygon vs AABB colliding", function(){
@@ -353,8 +360,9 @@ test("Polygon vs Ray colliding", function(){
 		}),
 		start = new Grape2D.Vector(3, 4),
 		end = new Grape2D.Vector(0,1),
-		direction = end.clone().sub(start).normalize();
-	ok(satInstance.polygonVsRay(polygon, start, end, direction), "They're colliding.");
+		direction = end.clone().sub(start).normalize(),
+		ray = new Grape2D.Ray(start, direction, start.distanceTo(end));
+	ok(satInstance.polygonVsRay(polygon, ray), "They're colliding.");
 });
 
 test("Polygon vs Ray non colliding", function(){
@@ -370,6 +378,7 @@ test("Polygon vs Ray non colliding", function(){
 		}),
 		start = new Grape2D.Vector(0, -4),
 		end = new Grape2D.Vector(0,-2.5),
-		direction = end.clone().sub(start).normalize();
-	ok(!satInstance.polygonVsRay(polygon, start, end, direction), "They're not colliding.");
+		direction = end.clone().sub(start).normalize(),
+		ray = new Grape2D.Ray(start, direction, start.distanceTo(end));
+	ok(!satInstance.polygonVsRay(polygon, ray), "They're not colliding.");
 });

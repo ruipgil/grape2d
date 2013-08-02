@@ -53,21 +53,21 @@ Grape2D.GenericCollisionChecker.prototype.circleVsAabb = function(circle, aabb) 
  * Must be refined.
  * @override
  */
-Grape2D.GenericCollisionChecker.prototype.aabbVsRay = function(aabb, start, end, direction) {
+Grape2D.GenericCollisionChecker.prototype.aabbVsRay = function(aabb, ray) {
 	return false;
 };
 /**
  * Must be refined.
  * @override
  */
-Grape2D.GenericCollisionChecker.prototype.circleVsRay = function(circle, start, end, direction) {
+Grape2D.GenericCollisionChecker.prototype.circleVsRay = function(circle, ray) {
 	return false;
 };
 /**
  * Must be refined.
  * @override
  */
-Grape2D.GenericCollisionChecker.prototype.polygonVsRay = function(polygon, start, end, direction) {
+Grape2D.GenericCollisionChecker.prototype.polygonVsRay = function(polygon, ray) {
 	return false;
 };
 /**

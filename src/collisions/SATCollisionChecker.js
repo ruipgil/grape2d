@@ -130,8 +130,8 @@ Grape2D.SATCollisionChecker.prototype.computeIntervals = function(vertexList, ax
 /**
  * @override
  */
-Grape2D.SATCollisionChecker.prototype.aabbVsRay = function(aabb, start, end, direction) {
-	var rayAxis = direction.rightNormal(),
+Grape2D.SATCollisionChecker.prototype.aabbVsRay = function(aabb, ray) {
+	var rayAxis = ray.getDirection().rightNormal(),
 		interval = {
 			min: +Infinity,
 			max: -Infinity
@@ -140,22 +140,45 @@ Grape2D.SATCollisionChecker.prototype.aabbVsRay = function(aabb, start, end, dir
 		temp = list[i].dot(rayAxis);
 		if (temp > interval.max) {
 			interval.max = temp;
-		} else if (temp < interval.min) {
+		}
+		if (temp < interval.min) {
 			interval.min = temp;
 		}
 	}
-	temp = start.dot(rayAxis);
+	temp = ray.getStart().dot(rayAxis);
 	if (interval.min <= temp && temp <= interval.max) {
-		return Grape2D.Math.overlaps({
-			min: start.getX(),
-			max: end.getX()
-		}, {
+		//debugger;
+		var ix = ray.getStart().getX(),
+			ax = ray.getEnd().getX(),
+			iy = ray.getStart().getY(),
+			ay = ray.getEnd().getY(),
+			x, y;
+		if (ix > ax) {
+			x = {
+				min: ax,
+				max: ix
+			};
+		} else {
+			x = {
+				min: ix,
+				max: ax
+			};
+		}
+		if (iy > ay) {
+			y = {
+				min: ay,
+				max: iy
+			};
+		} else {
+			y = {
+				min: iy,
+				max: ay
+			};
+		}
+		return Grape2D.Math.overlaps(x, {
 			min: aabb.getMinX(),
 			max: aabb.getMaxX()
-		}) >= 0 && Grape2D.Math.overlaps({
-			min: start.getY(),
-			max: end.getY()
-		}, {
+		}) >= 0 && Grape2D.Math.overlaps(y, {
 			min: aabb.getMinY(),
 			max: aabb.getMaxY()
 		}) >= 0;
@@ -202,34 +225,26 @@ Grape2D.SATCollisionChecker.aabbToVertexList = function(aabb) {
 /**
  * @override
  */
-Grape2D.SATCollisionChecker.prototype.circleVsRay = function(circle, start, end, direction) {
-	var temp, pos = circle.getPosition(),
-		r = circle.getRadius(),
-		ivr = {
-			min: 0,
-			max: 0
-		}, iv;
-	temp = pos.dot(direction);
-	iv = {
-		min: temp - r,
-		max: temp + r
-	};
-	temp = start.dot(direction);
-	if (start.getX() < end.getX()) {
-		ivr.min = start.dot(direction);
-		ivr.max = end.dot(direction);
+Grape2D.SATCollisionChecker.prototype.circleVsRay = function(circle, ray) {
+	var ptv = circle.getPosition().clone().sub(ray.getStart()),
+		projv = ptv.dot(ray.getDirection());
+	if (projv < 0) {
+		closest = ray.getStart().clone();
+	} else if (projv >= ray.getLength()) {
+		closest = ray.getEnd().clone();
 	} else {
-		ivr.min = start.dot(direction);
-		ivr.max = end.dot(direction);
+		var proj = ray.getDirection().clone().multiplyByScalar(projv),
+			closest = proj.add(ray.getStart());
 	}
-
-	return Grape2D.Math.overlaps(ivr, iv) >= 0;
+	closest.negate().add(circle.getPosition());
+	return closest.lengthSquared() <= Grape2D.Math.sq(circle.getRadius());
 };
 /**
  * @override
  */
-Grape2D.SATCollisionChecker.prototype.polygonVsRay = function(polygon, start, end, direction) {
-	var rayAxis = direction.rightNormal(),
+Grape2D.SATCollisionChecker.prototype.polygonVsRay = function(polygon, ray) {
+	var direction = ray.getDirection(),
+		rayAxis = direction.rightNormal(),
 		polist = polygon.getComputedVertexList(),
 		itv = {
 			min: 0,
@@ -237,11 +252,11 @@ Grape2D.SATCollisionChecker.prototype.polygonVsRay = function(polygon, start, en
 		}, pItv, temp, ia, ib;
 
 	pItv = this.computeIntervals(polist, [rayAxis])[0];
-	temp = start.dot(rayAxis);
+	temp = ray.getStart().dot(rayAxis);
 	if (pItv.min <= temp && temp <= pItv.max) {
 		pItv = this.computeIntervals(polist, [direction])[0];
-		ia = start.dot(direction);
-		ib = end.dot(direction);
+		ia = ray.getStart().dot(direction);
+		ib = ray.getEnd().dot(direction);
 		if (ia > ib) {
 			itv.max = ia;
 			itv.min = ib;
