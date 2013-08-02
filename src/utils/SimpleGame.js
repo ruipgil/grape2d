@@ -37,6 +37,13 @@ Grape2D.SimpleGame = function(renderer, scene, camera) {
 	 * @private
 	 */
 	this.scene = scene;
+	/**
+	 * Request animation frame ID.
+	 *
+	 * @type {number}
+	 * @private
+	 */
+	this.raf = -1;
 };
 
 Grape2D.SimpleGame.prototype = Object.create(Grape2D.Game.prototype);
@@ -91,7 +98,7 @@ Grape2D.SimpleGame.prototype.start = function() {
  * @suppress {undefinedVars}
  */
 Grape2D.SimpleGame.prototype.stop = function() {
-	cancelAnimationFrame();
+	cancelAnimationFrame(this.raf);
 };
 /**
  * @override
@@ -111,7 +118,7 @@ Grape2D.SimpleGame.prototype.update = function(dt) {
 Grape2D.SimpleGame.prototype.animate = function() {
 	var that = this,
 		dt = this.clock.update();
-	requestAnimationFrame(function() {
+	this.raf = requestAnimationFrame(function() {
 		that.animate();
 	});
 	this.update(dt);
