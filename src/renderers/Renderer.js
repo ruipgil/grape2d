@@ -164,5 +164,15 @@ Grape2D.Renderer.prototype = {
 	 *   coordinates.
 	 * @public
 	 */
-	renderParticle: function(particle, camera) {}
+	renderParticle: function(particle, camera) {},
+	/**
+	 * Renders a line segment to the renderer.
+	 *
+	 * @param  {!Grape2D.Vector} start Start position of the line.
+	 * @param  {!Grape2D.Vector} end End position of the line.
+	 * @param  {!Grape2D.Camera} camera Camera to transform the
+	 *   coordinates.
+	 * @public
+	 */
+	renderLineSegment: function(start, end, camera) {}
 };
