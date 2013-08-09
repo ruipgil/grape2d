@@ -66,8 +66,7 @@ Grape2D.WireframeRenderer.prototype.renderTexture = function (texture, position)
  * @override
  */
 Grape2D.WireframeRenderer.prototype.renderObject2D = function (obj, camera) {
-	var objCenter = camera.wcsToViewport(this, obj.getPosition());
-	this.renderer.canvas.fillRect(objCenter.x, objCenter.y, 2, 2);
+	this.renderPoint(obj.getPosition(), camera);
 	obj.getBoundingBox().render(this, camera);
 };
 /**
@@ -147,4 +146,10 @@ Grape2D.WireframeRenderer.prototype.renderParticle = function(particle, camera) 
  */
 Grape2D.WireframeRenderer.prototype.renderLineSegment = function(start, end, camera) {
 	this.renderer.renderLineSegment(start, end, camera);
+};
+/**
+ * @override
+ */
+Grape2D.WireframeRenderer.prototype.renderPoint = function(point, camera) {
+	this.renderer.renderPoint(point, camera);
 };

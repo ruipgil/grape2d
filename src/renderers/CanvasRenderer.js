@@ -187,3 +187,12 @@ Grape2D.CanvasRenderer.prototype.renderLineSegment = function(start, end, camera
 	this.canvas.lineTo(e.getX(), e.getY());
 	this.canvas.stroke();
 };
+/**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.renderPoint = function(point, camera) {
+	var center = camera.wcsToViewport(this, point);
+	this.canvas.beginPath();
+	this.canvas.arc(center.x, center.y, 2, 0, Grape2D.Math.PIx2, false);
+	this.canvas.fill();
+}
