@@ -1,6 +1,6 @@
 /**
- * @classdesc SimpleMap, represents a proof of concept. This is a simple map,
- *            that just implements a simple array to store objects.
+ * SimpleMap, represents a proof of concept. This is a simple map,
+ *   that just implements a simple array to store objects.
  *
  * @implements {Grape2D.Map}
  * @constructor
