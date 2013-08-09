@@ -1,5 +1,5 @@
 /**
- * Costum event.
+ * Custom event.
  *
  * @param  {!Event} ev The DOM event.
  * @constructor
