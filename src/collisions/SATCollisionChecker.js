@@ -22,10 +22,8 @@ Grape2D.SATCollisionChecker.prototype.aabbVsPolygon = function(aabb, polygon) {
  * @override
  */
 Grape2D.SATCollisionChecker.prototype.polygonVsPolygon = function(polygon1, polygon2) {
-	var ca1 = this.computeAxis(polygon1),
-		ca2 = this.computeAxis(polygon2);
-	var axis = this.selectAxis(ca1, ca2);
-	var p1Intv = this.computeIntervals(polygon1.getComputedVertexList(), axis),
+	var axis = this.selectAxis(this.computeAxis(polygon1), this.computeAxis(polygon2)),
+		p1Intv = this.computeIntervals(polygon1.getComputedVertexList(), axis),
 		p2Intv = this.computeIntervals(polygon2.getComputedVertexList(), axis),
 		overlap;
 
@@ -221,20 +219,20 @@ Grape2D.SATCollisionChecker.aabbToVertexList = function(aabb) {
 	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[3].setX(aabb.getMaxX());
 	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[3].setY(aabb.getMaxY());
 	return Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST;
-}
+};
 /**
  * @override
  */
 Grape2D.SATCollisionChecker.prototype.circleVsRay = function(circle, ray) {
 	var ptv = circle.getPosition().clone().sub(ray.getStart()),
-		projv = ptv.dot(ray.getDirection());
+		projv = ptv.dot(ray.getDirection()),
+		closest;
 	if (projv < 0) {
 		closest = ray.getStart().clone();
 	} else if (projv >= ray.getLength()) {
 		closest = ray.getEnd().clone();
 	} else {
-		var proj = ray.getDirection().clone().multiplyByScalar(projv),
-			closest = proj.add(ray.getStart());
+		closest = ray.getDirection().clone().multiplyByScalar(projv).add(ray.getStart());
 	}
 	closest.negate().add(circle.getPosition());
 	return closest.lengthSquared() <= Grape2D.Math.sq(circle.getRadius());
@@ -269,11 +267,3 @@ Grape2D.SATCollisionChecker.prototype.polygonVsRay = function(polygon, ray) {
 		return false;
 	}
 };
-/**
- * Cache of the predefined set of AABB axis.
- *
- * @type {!Array.<Grape2D.Vector>}
- * @private
- * @static
- */
-Grape2D.SATCollisionChecker.aabbAxis = [new Grape2D.Vector(1, 0), new Grape2D.Vector(0, 1)];

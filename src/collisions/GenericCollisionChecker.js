@@ -1,5 +1,6 @@
+/* global Grape2D */
 /**
- * This implements generic methods of the collision controlle. Since
+ * This implements generic methods of the collision checker. Since
  *   from algorithm to algorithm only a few methods may be different.
  *   So only methods envolving polygons should be refined.
  *
@@ -7,9 +8,7 @@
  * @constructor
  */
 Grape2D.GenericCollisionChecker = function() {};
-
 Grape2D.GenericCollisionChecker.prototype = Object.create(Grape2D.CollisionChecker);
-
 /**
  * @override
  */
@@ -28,13 +27,6 @@ Grape2D.GenericCollisionChecker.prototype.aabbVsAabb = function(aabb1, aabb2) {
 		max: aabb2.getMaxY()
 	}) >= 0;
 };
-
-/**
- * @override
- */
-Grape2D.GenericCollisionChecker.prototype.aabbVsPoint = function(aabb, point) {
-	return aabb.getMinX() <= point.getX() && aabb.getMaxX() >= point.getX() && aabb.getMinY() <= point.getY() && aabb.getMaxY() >= point.getY();
-};
 /**
  * @override
  */
@@ -46,8 +38,8 @@ Grape2D.GenericCollisionChecker.prototype.aabbVsCircle = function(aabb, circle) 
 /**
  * @override
  */
-Grape2D.GenericCollisionChecker.prototype.circleVsAabb = function(circle, aabb) {
-	return this.aabbVsCircle(aabb, circle);
+Grape2D.GenericCollisionChecker.prototype.aabbVsPoint = function(aabb, point) {
+	return aabb.getMinX() <= point.getX() && aabb.getMaxX() >= point.getX() && aabb.getMinY() <= point.getY() && aabb.getMaxY() >= point.getY();
 };
 /**
  * Must be refined.
@@ -57,18 +49,10 @@ Grape2D.GenericCollisionChecker.prototype.aabbVsRay = function(aabb, ray) {
 	return false;
 };
 /**
- * Must be refined.
  * @override
  */
-Grape2D.GenericCollisionChecker.prototype.circleVsRay = function(circle, ray) {
-	return false;
-};
-/**
- * Must be refined.
- * @override
- */
-Grape2D.GenericCollisionChecker.prototype.polygonVsRay = function(polygon, ray) {
-	return false;
+Grape2D.GenericCollisionChecker.prototype.circleVsAabb = function(circle, aabb) {
+	return this.aabbVsCircle(aabb, circle);
 };
 /**
  * @override
@@ -81,6 +65,13 @@ Grape2D.GenericCollisionChecker.prototype.circleVsCircle = function(circle1, cir
  */
 Grape2D.GenericCollisionChecker.prototype.circleVsPoint = function(circle, point) {
 	return Grape2D.Math.sqrt(Grape2D.Math.sq(circle.getPosition().getX() - point.getX()) + Grape2D.Math.sq(circle.getPosition().getY() - point.getY())) <= circle.getRadius();
+};
+/**
+ * Must be refined.
+ * @override
+ */
+Grape2D.GenericCollisionChecker.prototype.circleVsRay = function(circle, ray) {
+	return false;
 };
 /**
  * @override
@@ -145,4 +136,11 @@ Grape2D.GenericCollisionChecker.prototype.polygonVsPoint = function(polygon, poi
 		}
 	}
 	return true;
+};
+/**
+ * Must be refined.
+ * @override
+ */
+Grape2D.GenericCollisionChecker.prototype.polygonVsRay = function(polygon, ray) {
+	return false;
 };
