@@ -249,6 +249,36 @@ Grape2D.Vector.prototype = {
 		return vector.x * this.x + vector.y * this.y;
 	},
 	/**
+	 * Positive distance between the x coordinates this vector an
+	 *   another one.
+	 *
+	 * @param  {!Grape2D.Vector} vector A vector.
+	 * @return {!number} Positive distance of the x coordinate.
+	 * @public
+	 */
+	xDistanceTo: function(vector){
+		if(this.x>vector.x){
+			return Grape2D.Math.abs(this.x-vector.x);
+		}else{
+			return Grape2D.Math.abs(vector.x-this.x);
+		}
+	},
+	/**
+	 * Positive distance between the y coordinates this vector an
+	 *   another one.
+	 *
+	 * @param  {!Grape2D.Vector} vector A vector.
+	 * @return {!number} Positive distance of the y coordinate.
+	 * @public
+	 */
+	yDistanceTo: function(vector){
+		if(this.y>vector.y){
+			return Grape2D.Math.abs(this.y-vector.y);
+		}else{
+			return Grape2D.Math.abs(vector.y-this.y);
+		}
+	},
+	/**
 	 * Checks if the components of one vector are equal to the
 	 *   components to another one.
 	 *
@@ -304,6 +334,15 @@ Grape2D.Vector.prototype = {
 		this.x = 0;
 		this.y = 0;
 		return this;
+	},
+	/**
+	 * Gets the type of the object. This is used by the collision
+	 *   dispatcher.
+	 *
+	 * @return {!string} Type.
+	 */
+	getStaticType: function(){
+		return Grape2D.Vector.STATIC_TYPE;
 	}
 };
 
@@ -331,3 +370,11 @@ Grape2D.Vector.createFromPoints = function(a, b) {
 Grape2D.Vector.createFromAngle = function(angle, magnitude) {
 	return new Grape2D.Vector(magnitude * Grape2D.Math.cos(angle), magnitude * Grape2D.Math.sin(angle));
 };
+/**
+ * Type as a string.
+ *
+ * @type {!string}
+ * @static
+ * @private
+ */
+Grape2D.Vector.STATIC_TYPE = "Vector";
