@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Texture</title>
+    <title>JSDoc: Class: WASDController</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: Texture</h1>
+    <h1 class="page-title">Class: WASDController</h1>
     
     
 
@@ -29,7 +29,7 @@
     <h2>
         <span class="ancestors"><a href="Grape2D.html">Grape2D</a>.</span>
     
-    Texture
+    WASDController
     </h2>
     
 </header>  
@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Texture"><span class="type-signature"></span>new Texture<span class="signature">(<span class="optional">options</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="WASDController"><span class="type-signature"></span>new WASDController<span class="signature">(renderer)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -49,9 +49,18 @@
     
     
     <div class="description">
-        Texture represents an "image", ready to be rendered to
-  a renderer, with high efficiency. The efficiency comes
-  from the fact that a cached image can be renderer faster.
+        An WASD controller is a top-level way to control input.
+  This allows for a easier way to capture W, A, S, D keys.
+  This is mostly used to control movement, so with that
+  in mind, the keys pairs W and S can't have the same state
+  at the same time, the same goes for the pair A and D.
+  However it possible to have W with the same state as either
+  A or D, but not both. Again, the same goes for S.
+  If a key it's press, lets say W, and it's opposite is also
+  pressed, in this case S, the controller keeps the state that
+  indicated that W is pressed. But when the key W is lifted
+  up (key up event), the controller ways for the next event,
+  and S is not automatically press (for the controller).
     </div>
     
 
@@ -73,62 +82,6 @@
 		<th>Type</th>
 		
 		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">Object with the options to instantiate a texture.
-                <h6>Properties</h6>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
 		
 		
 		
@@ -141,74 +94,23 @@
 	
         <tr>
             
-                <td class="name"><code>image</code></td>
+                <td class="name"><code>renderer</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Image</span>
+<span class="param-type"><a href="Grape2D.Renderer.html">Grape2D.Renderer</a></span>
 
 
             
             </td>
             
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
             
             
             
-            
-            <td class="description last">Loads a DOM image object to the buffer.
-		This is the first choice, when providing other options.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>useTexture</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Grape2D.Texture.html">Grape2D.Texture</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">With this method the
-		same buffer is shared by the texture provided.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
+            <td class="description last">Renderer to bind the events.</td>
         </tr>
 	
 	
@@ -239,7 +141,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line15">line 15</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line18">line 18</a>
     </li></ul></dd>
     
     
@@ -283,14 +185,14 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="buffer"><span class="type-signature">&lt;private> </span>buffer<span class="type-signature"> :<a href="Grape2D.CanvasRenderer.html">Grape2D.CanvasRenderer</a></span></h4>
+    <h4 class="name" id="aLock"><span class="type-signature">&lt;private> </span>aLock<span class="type-signature"> :boolean</span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        The canvas buffer. It is always a 2D renderer.
+        'A' key is locked/pressed.
     </div>
     
     
@@ -299,7 +201,7 @@
         <ul>
             <li>
                 
-<span class="param-type"><a href="Grape2D.CanvasRenderer.html">Grape2D.CanvasRenderer</a></span>
+<span class="param-type">boolean</span>
 
 
             </li>
@@ -329,7 +231,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line52">line 52</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line32">line 32</a>
     </li></ul></dd>
     
     
@@ -347,14 +249,14 @@
         
             
 <dt>
-    <h4 class="name" id="height"><span class="type-signature">&lt;private> </span>height<span class="type-signature"> :number</span></h4>
+    <h4 class="name" id="dLock"><span class="type-signature">&lt;private> </span>dLock<span class="type-signature"> :boolean</span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        The height.
+        'D' key is locked/pressed.
     </div>
     
     
@@ -363,7 +265,7 @@
         <ul>
             <li>
                 
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
             </li>
@@ -393,7 +295,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line37">line 37</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line46">line 46</a>
     </li></ul></dd>
     
     
@@ -411,14 +313,14 @@
         
             
 <dt>
-    <h4 class="name" id="hheight"><span class="type-signature">&lt;private> </span>hheight<span class="type-signature"> :number</span></h4>
+    <h4 class="name" id="im"><span class="type-signature">&lt;private> </span>im<span class="type-signature"> :<a href="Grape2D.InputManager.html">Grape2D.InputManager</a></span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        The half width.
+        Input manager.
     </div>
     
     
@@ -427,7 +329,7 @@
         <ul>
             <li>
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="Grape2D.InputManager.html">Grape2D.InputManager</a></span>
 
 
             </li>
@@ -457,7 +359,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line44">line 44</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line53">line 53</a>
     </li></ul></dd>
     
     
@@ -475,14 +377,14 @@
         
             
 <dt>
-    <h4 class="name" id="hwidth"><span class="type-signature">&lt;private> </span>hwidth<span class="type-signature"> :number</span></h4>
+    <h4 class="name" id="sLock"><span class="type-signature">&lt;private> </span>sLock<span class="type-signature"> :boolean</span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        The half width.
+        'S' key is locked/pressed.
     </div>
     
     
@@ -491,7 +393,7 @@
         <ul>
             <li>
                 
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
             </li>
@@ -521,7 +423,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line30">line 30</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line39">line 39</a>
     </li></ul></dd>
     
     
@@ -539,14 +441,14 @@
         
             
 <dt>
-    <h4 class="name" id="width"><span class="type-signature">&lt;private> </span>width<span class="type-signature"> :number</span></h4>
+    <h4 class="name" id="wLock"><span class="type-signature">&lt;private> </span>wLock<span class="type-signature"> :boolean</span></h4>
     
     
 </dt>
 <dd>
     
     <div class="description">
-        The width of the texture.
+        'W' key is locked/pressed.
     </div>
     
     
@@ -555,7 +457,7 @@
         <ul>
             <li>
                 
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
             </li>
@@ -585,7 +487,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line23">line 23</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line25">line 25</a>
     </li></ul></dd>
     
     
@@ -609,7 +511,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="createFromImage"><span class="type-signature">&lt;static> </span>createFromImage<span class="signature">(src, callback)</span><span class="type-signature"> &rarr; {<a href="Grape2D.Texture.html">Grape2D.Texture</a>}</span></h4>
+    <h4 class="name" id="a"><span class="type-signature"></span>a<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -617,7 +519,7 @@
     
     
     <div class="description">
-        Creates a Texture and loads an image asynchronously.
+        Action for the 'A' key.
     </div>
     
 
@@ -625,78 +527,6 @@
     
     
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>src</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">The complete path to the image.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Function</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">A function to be called after the
-		onload event of the image.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -722,7 +552,214 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line141">line 141</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line115">line 115</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="d"><span class="type-signature"></span>d<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Action for the 'D' key.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line145">line 145</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="dispatch"><span class="type-signature"></span>dispatch<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        It executes the functions for the keys pressed.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line174">line 174</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="isA"><span class="type-signature"></span>isA<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Checks if the key 'A' is pressed.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line122">line 122</a>
     </li></ul></dd>
     
     
@@ -747,9 +784,7 @@
     
             
 <div class="param-desc">
-    The texture object, initialy it has
-		an empty buffer, the buffer will have the image only after
-		the image has done loaded.
+    True if it's pressed.
 </div>
 
 
@@ -760,7 +795,7 @@
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="Grape2D.Texture.html">Grape2D.Texture</a></span>
+<span class="param-type">boolean</span>
 
 
 	</dd>
@@ -774,7 +809,7 @@
         
             
 <dt>
-    <h4 class="name" id="bufferImage"><span class="type-signature">&lt;protected> </span>bufferImage<span class="signature">(image)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="isD"><span class="type-signature"></span>isD<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
     
 </dt>
@@ -782,126 +817,7 @@
     
     
     <div class="description">
-        Changes the internal buffer and load an image, with it's
-  current dimensions. The dimensions.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>image</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Image</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">The DOM image object with the image.
-		The image must be loaded. Unexpected results if not.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line117">line 117</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getBuffer"><span class="type-signature"></span>getBuffer<span class="signature">()</span><span class="type-signature"> &rarr; {?}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the buffer of the texture.
+        Checks if the key 'D' is pressed.
     </div>
     
 
@@ -934,7 +850,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line106">line 106</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line152">line 152</a>
     </li></ul></dd>
     
     
@@ -959,7 +875,7 @@
     
             
 <div class="param-desc">
-    The buffer.
+    True if it's pressed.
 </div>
 
 
@@ -970,7 +886,7 @@
 	</dt>
 	<dd>
 		
-<span class="param-type">?</span>
+<span class="param-type">boolean</span>
 
 
 	</dd>
@@ -984,12 +900,16 @@
         
             
 <dt>
-    <h4 class="name" id="getHalfHeight"><span class="type-signature"></span>getHalfHeight<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="isS"><span class="type-signature"></span>isS<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
     
 </dt>
 <dd>
     
+    
+    <div class="description">
+        Checks if the key 'S' is pressed.
+    </div>
     
 
     
@@ -1021,7 +941,189 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line97">line 97</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line137">line 137</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    True if it's pressed.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="isW"><span class="type-signature"></span>isW<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Checks if the key 'W' is pressed.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line107">line 107</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    True if it's pressed.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="s"><span class="type-signature"></span>s<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Action for the 'S' key.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line130">line 130</a>
     </li></ul></dd>
     
     
@@ -1049,12 +1151,17 @@
         
             
 <dt>
-    <h4 class="name" id="getHalfWidth"><span class="type-signature"></span>getHalfWidth<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="setup"><span class="type-signature"></span>setup<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
+    
+    <div class="description">
+        Setup function to execute before each dispatch
+  function.
+    </div>
     
 
     
@@ -1086,7 +1193,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line91">line 91</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line161">line 161</a>
     </li></ul></dd>
     
     
@@ -1114,12 +1221,17 @@
         
             
 <dt>
-    <h4 class="name" id="getHeight"><span class="type-signature"></span>getHeight<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="tearDown"><span class="type-signature"></span>tearDown<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
+    
+    <div class="description">
+        Tear down function to execute after each dispatch
+  function.
+    </div>
     
 
     
@@ -1151,7 +1263,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line71">line 71</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line168">line 168</a>
     </li></ul></dd>
     
     
@@ -1179,12 +1291,16 @@
         
             
 <dt>
-    <h4 class="name" id="getWidth"><span class="type-signature"></span>getWidth<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="w"><span class="type-signature"></span>w<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
 <dd>
     
+    
+    <div class="description">
+        Action for the 'W' key.
+    </div>
     
 
     
@@ -1216,202 +1332,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line65">line 65</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line127">line 127</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="setHeight"><span class="type-signature"></span>setHeight<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line84">line 84</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="setWidth"><span class="type-signature"></span>setWidth<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Texture.js.html">textures/Texture.js</a>, <a href="Texture.js.html#line77">line 77</a>
+        <a href="WASDController.js.html">inputs/WASDController.js</a>, <a href="WASDController.js.html#line100">line 100</a>
     </li></ul></dd>
     
     
@@ -1458,7 +1379,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Fri Aug 09 2013 16:42:53 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Fri Aug 09 2013 16:42:54 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

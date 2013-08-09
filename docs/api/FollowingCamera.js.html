@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: inputs/InputManagerMouseEvent.js</title>
+    <title>JSDoc: Source: cameras/FollowingCamera.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: inputs/InputManagerMouseEvent.js</h1>
+    <h1 class="page-title">Source: cameras/FollowingCamera.js</h1>
     
     
 
@@ -26,84 +26,43 @@
     <section>
         <article>
             <pre class="prettyprint source"><code>/**
- * Mouse event.
+ * Camera that follows an {@link Grape2D.Object2D}, this means that the camera is always looking at the object (the lookAt property is the same as the object)
  *
- * @param  {!Event} rawEvent Raw DOM event.
- * @extends {Grape2D.InputManagerEvent}
+ * @param  {!Object} options Setup options. See {@link Grape2D.Camera}
+ * @param  {!Grape2D.Object2D} options.objectToFollow Object to be followed by the camera.
+ * @extends {Grape2D.Camera}
  * @constructor
  */
-Grape2D.InputManagerMouseEvent = function(rawEvent){
-	Grape2D.InputManagerEvent.call(this, rawEvent);
-	var bb = rawEvent.target.getBoundingClientRect();
-	/**
-	 * Place where the drag event happened. It should be a DOM element
-	 *   associated with a {Grape2D.Renderer}.
-	 *
-	 * @type {EventTarget}
-	 * @private
-	 */
-	this.target = rawEvent.target;
-	/**
-	 * Position relative to the renderer, where the event was triggered.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
-	 */
-	this.position = new Grape2D.Vector(rawEvent.clientX-bb.left, rawEvent.clientY-bb.top);
-	/**
-	 * Button that was pressed to trigger the event.
-	 * &lt;ol>
-	 * &lt;li>Left button.
-	 * &lt;li>Mouse wheel.
-	 * &lt;li>Right button.
-	 * &lt;/ol
-	 *
-	 * @type {!number}
-	 * @private
-	 */
-	this.button = rawEvent.button;
-	/**
-	 * Mouse wheel value. This value is only used when the &lt;code>
-	 *   rawEvent.type == "mousewheel"&lt;/code>. If the value is
-	 *   positive the wheel was moved upwards, if it's negative
-	 *   the wheel was moved downwards.
-	 *
-	 * @type {!number}
-	 * @private
-	 */
-	this.wheelDelta = 0;
-	if(rawEvent.type == "mousewheel"){
-		this.wheelDelta = rawEvent.wheelDelta;
-	}
+Grape2D.FollowingCamera = function(options){
+	Grape2D.Camera.call(this, options);
+	this.objectToFollow = options.objectToFollow;
 };
-Grape2D.InputManagerMouseEvent.prototype = Object.create(Grape2D.InputManagerEvent.prototype);
+Grape2D.FollowingCamera.prototype = Object.create(Grape2D.Camera.prototype);
 /**
- * Gets the element where the event happened.
- *
- * @return {EventTarget} Element.
- * @public
+ * @override
  */
-Grape2D.InputManagerMouseEvent.prototype.getTarget = function(){
-	return this.target;
+Grape2D.FollowingCamera.prototype.getLookAt = function(){
+	return this.objectToFollow.getPosition();
 };
 /**
- * Gets the position where the event was triggered.
+ * Gets the object to follow.
  *
- * @return {!Grape2D.Vector} Position.
+ * @return {!Grape2D.Object2D} Object that is following.
  * @public
  */
-Grape2D.InputManagerMouseEvent.prototype.getPosition = function(){
-	return this.position;
+Grape2D.FollowingCamera.prototype.getObjectToFollow = function(){
+	return this.objectToFollow;
 };
 /**
- * Gets the wheel data.
+ * Sets the object to follow.
  *
- * @return {!number} Wheel data.
+ * @param  {!Grape2D.Object2D} fo Object to follow.
  * @public
  */
-Grape2D.InputManagerMouseEvent.prototype.getWheelDelta = function(){
-	return this.wheelDelta;
-};</code></pre>
+Grape2D.FollowingCamera.prototype.setObjectToFollow = function(fo){
+	this.objectToFollow = fo;
+};
+</code></pre>
         </article>
     </section>
 

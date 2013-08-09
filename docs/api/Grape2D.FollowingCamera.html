@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Camera</title>
+    <title>JSDoc: Class: FollowingCamera</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: Camera</h1>
+    <h1 class="page-title">Class: FollowingCamera</h1>
     
     
 
@@ -29,7 +29,7 @@
     <h2>
         <span class="ancestors"><a href="Grape2D.html">Grape2D</a>.</span>
     
-    Camera
+    FollowingCamera
     </h2>
     
 </header>  
@@ -41,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Camera"><span class="type-signature"></span>new Camera<span class="signature">(<span class="optional">options</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="FollowingCamera"><span class="type-signature"></span>new FollowingCamera<span class="signature">(options)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -49,9 +49,7 @@
     
     
     <div class="description">
-        Camera is used to select the objects to display in a scene.
-  A camera doesn't rotate or scale objects in the x and y axis,
-  only the coordinates are changed to the transformation defined.
+        Camera that follows an <a href="Grape2D.Object2D.html">Grape2D.Object2D</a>, this means that the camera is always looking at the object (the lookAt property is the same as the object)
     </div>
     
 
@@ -72,8 +70,6 @@
 		
 		<th>Type</th>
 		
-		
-		<th>Argument</th>
 		
 		
 		
@@ -100,20 +96,10 @@
             </td>
             
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
             
             
             
-            
-            <td class="description last">Setup options.
+            <td class="description last">Setup options. See <a href="Grape2D.Camera.html">Grape2D.Camera</a>
                 <h6>Properties</h6>
                 
 
@@ -127,8 +113,6 @@
 		<th>Type</th>
 		
 		
-		<th>Argument</th>
-		
 		
 		
 		
@@ -141,104 +125,23 @@
 	
         <tr>
             
-                <td class="name"><code>scale</code></td>
+                <td class="name"><code>objectToFollow</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+<span class="param-type"><a href="Grape2D.Object2D.html">Grape2D.Object2D</a></span>
 
 
             
             </td>
             
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
             
             
             
-            
-            <td class="description last">The scale to be applied. There
-		are two ways to define the scale. This method is one, the other
-		is defined it directly in the transformation. If the two are set,
-		then the two are applied.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>lookAt</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">Defines the (center) position,
-		to where the camera is looking at.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>transformation</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Grape2D.Matrix.html">Grape2D.Matrix</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">Transformation matrix
-		to be applied to the object coordinates.</td>
+            <td class="description last">Object to be followed by the camera.</td>
         </tr>
 	
 	
@@ -275,7 +178,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Camera.js.html">cameras/Camera.js</a>, <a href="Camera.js.html#line17">line 17</a>
+        <a href="FollowingCamera.js.html">cameras/FollowingCamera.js</a>, <a href="FollowingCamera.js.html#line9">line 9</a>
     </li></ul></dd>
     
     
@@ -303,6 +206,12 @@
     
     </div>
     
+    
+        <h3 class="subsection-title">Extends</h3>
+        
+        <ul>
+            <li><a href="Grape2D.Camera.html">Grape2D.Camera</a></li>
+        </ul>
     
     
     
@@ -350,6 +259,11 @@
     
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#cM">Grape2D.Camera#cM</a>
+    </li></dd>
     
     
     
@@ -415,6 +329,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#icM">Grape2D.Camera#icM</a>
+    </li></dd>
+    
     
     
     
@@ -478,6 +397,11 @@
     
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#lookAt">Grape2D.Camera#lookAt</a>
+    </li></dd>
     
     
     
@@ -543,6 +467,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#scale">Grape2D.Camera#scale</a>
+    </li></dd>
+    
     
     
     
@@ -606,6 +535,11 @@
     
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#transformation">Grape2D.Camera#transformation</a>
+    </li></dd>
     
     
     
@@ -671,6 +605,11 @@
     
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#computeMatrix">Grape2D.Camera#computeMatrix</a>
+    </li></dd>
     
     
     
@@ -790,6 +729,11 @@
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#computeShape">Grape2D.Camera#computeShape</a>
+    </li></dd>
+    
     
     
     
@@ -855,7 +799,72 @@
         
             
 <dt>
-    <h4 class="name" id="getLookAt"><span class="type-signature"></span>getLookAt<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Grape2D.Vector.html">Grape2D.Vector</a>}</span></h4>
+    <h4 class="name" id="getLookAt"><span class="type-signature"></span>getLookAt<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="FollowingCamera.js.html">cameras/FollowingCamera.js</a>, <a href="FollowingCamera.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getObjectToFollow"><span class="type-signature"></span>getObjectToFollow<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Grape2D.Object2D.html">Grape2D.Object2D</a>}</span></h4>
     
     
 </dt>
@@ -863,7 +872,7 @@
     
     
     <div class="description">
-        Gets the look at property.
+        Gets the object to follow.
     </div>
     
 
@@ -896,7 +905,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Camera.js.html">cameras/Camera.js</a>, <a href="Camera.js.html#line140">line 140</a>
+        <a href="FollowingCamera.js.html">cameras/FollowingCamera.js</a>, <a href="FollowingCamera.js.html#line26">line 26</a>
     </li></ul></dd>
     
     
@@ -921,7 +930,7 @@
     
             
 <div class="param-desc">
-    The look at.
+    Object that is following.
 </div>
 
 
@@ -932,7 +941,7 @@
 	</dt>
 	<dd>
 		
-<span class="param-type"><a href="Grape2D.Vector.html">Grape2D.Vector</a></span>
+<span class="param-type"><a href="Grape2D.Object2D.html">Grape2D.Object2D</a></span>
 
 
 	</dd>
@@ -973,6 +982,11 @@ not taken into account.
     
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#getScale">Grape2D.Camera#getScale</a>
+    </li></dd>
     
     
     
@@ -1113,6 +1127,11 @@ not taken into account.
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#rescale">Grape2D.Camera#rescale</a>
+    </li></dd>
+    
     
     
     
@@ -1230,6 +1249,11 @@ not taken into account.
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#setLookAt">Grape2D.Camera#setLookAt</a>
+    </li></dd>
+    
     
     
     
@@ -1245,6 +1269,123 @@ not taken into account.
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="Camera.js.html">cameras/Camera.js</a>, <a href="Camera.js.html#line132">line 132</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setObjectToFollow"><span class="type-signature"></span>setObjectToFollow<span class="signature">(fo)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Sets the object to follow.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>fo</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Grape2D.Object2D.html">Grape2D.Object2D</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Object to follow.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="FollowingCamera.js.html">cameras/FollowingCamera.js</a>, <a href="FollowingCamera.js.html#line35">line 35</a>
     </li></ul></dd>
     
     
@@ -1370,6 +1511,11 @@ System (VCS), to get a vector in the World Coordinate System (WSC).
     
     
 
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#viewportToWcs">Grape2D.Camera#viewportToWcs</a>
+    </li></dd>
     
     
     
@@ -1535,6 +1681,11 @@ System (VSC).
     
 
     
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Grape2D.Camera.html#wcsToViewport">Grape2D.Camera#wcsToViewport</a>
+    </li></dd>
+    
     
     
     
@@ -1618,7 +1769,7 @@ System (VSC).
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Fri Aug 09 2013 16:42:47 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Fri Aug 09 2013 16:42:49 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -84,6 +84,19 @@ Grape2D.CollisionDispatcher = {
 		return cchecker.aabbVsPoint(aabb, point);
 	},
 	/**
+	 * Checks if a ray intersects an AABB.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.AABB} aabb An AABB.
+	 * @param  {!Grape2D.Ray} ray A ray.
+	 * @return {!boolean} True if intersects.
+	 * @static
+	 * @private
+	 */
+	aabbVsRay: function(cchecker, aabb, ray) {
+		return cchecker.aabbVsRay(aabb, ray);
+	},
+	/**
 	 * Collides a Circle against an AABB.
 	 *
 	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
@@ -134,6 +147,19 @@ Grape2D.CollisionDispatcher = {
 	 */
 	circleVsPoint: function(cchecker, circle, point) {
 		return cchecker.circleVsPoint(circle, point);
+	},
+	/**
+	 * Checks if a ray intersects a circle.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Circle} circle A circle.
+	 * @param  {!Grape2D.Ray} ray A ray.
+	 * @return {!boolean} True if intersects.
+	 * @static
+	 * @private
+	 */
+	circleVsRay: function(cchecker, circle, ray) {
+		return cchecker.circleVsRay(circle, ray);
 	},
 	/**
 	 * Collides a polygon against an AABB.
@@ -188,6 +214,19 @@ Grape2D.CollisionDispatcher = {
 		return cchecker.polygonVsPoint(polygon, point);
 	},
 	/**
+	 * Checks if a ray intersects a polygon.
+	 *
+	 * @param  {!Grape2D.CollisionChecker} cchecker Checker of the collision.
+	 * @param  {!Grape2D.Polygon} polygon A polygon.
+	 * @param  {!Grape2D.Ray} ray A ray.
+	 * @return {!boolean} True if intersects.
+	 * @static
+	 * @private
+	 */
+	polygonVsRay: function(cchecker, polygon, ray) {
+		return cchecker.polygonVsRay(polygon, ray);
+	},
+	/**
 	 * Object used to dispatch the collision.
 	 *
 	 * @type {!Object}
@@ -199,8 +238,8 @@ Grape2D.CollisionDispatcher = {
 	 * Dispatches a collision between two primitives.
 	 *
 	 * @param  {!Grape2D.CollisionChecker} cchecker A collision checker.
-	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} a Shape to test.
-	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} b Shape to collide with the first
+	 * @param  {!(Grape2D.Shape|Grape2D.Vector|Grape2D.Ray)} a Shape to test.
+	 * @param  {!(Grape2D.Shape|Grape2D.Vector|Grape2D.Ray)} b Shape to collide with the first
 	 *   one, or a point to check it it's inside.
 	 * @return {!boolean} Result of the collision.
 	 * @public
@@ -215,19 +254,22 @@ Grape2D.CollisionDispatcher.dcache = {
 		"AABB": Grape2D.CollisionDispatcher.aabbVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.aabbVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.aabbVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.aabbVsPoint
+		"Vector": Grape2D.CollisionDispatcher.aabbVsPoint,
+		"Ray": Grape2D.CollisionDispatcher.aabbVsRay
 	},
 	"Circle": {
 		"AABB": Grape2D.CollisionDispatcher.circleVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.circleVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.circleVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.circleVsPoint
+		"Vector": Grape2D.CollisionDispatcher.circleVsPoint,
+		"Ray": Grape2D.CollisionDispatcher.circleVsRay
 	},
 	"Polygon": {
 		"AABB": Grape2D.CollisionDispatcher.polygonVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.polygonVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.polygonVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.polygonVsPoint
+		"Vector": Grape2D.CollisionDispatcher.polygonVsPoint,
+		"Ray": Grape2D.CollisionDispatcher.polygonVsRay
 	}
 };</code></pre>
         </article>
@@ -239,13 +281,13 @@ Grape2D.CollisionDispatcher.dcache = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Emitter.html">Emitter</a></li><li><a href="Grape2D.Field.html">Field</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerDragEvent.html">InputManagerDragEvent</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.InputManagerMouseEvent.html">InputManagerMouseEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Particle.html">Particle</a></li><li><a href="Grape2D.ParticleSystem.html">ParticleSystem</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Grape2D.AABB.html">AABB</a></li><li><a href="Grape2D.AabbBVFactory.html">AabbBVFactory</a></li><li><a href="Grape2D.AliasingCamera.html">AliasingCamera</a></li><li><a href="Grape2D.BVFactory.html">BVFactory</a></li><li><a href="Grape2D.BVFactorySingleton.html">BVFactorySingleton</a></li><li><a href="Grape2D.BVHStrategy.html">BVHStrategy</a></li><li><a href="Grape2D.BVHStrategySingleton.html">BVHStrategySingleton</a></li><li><a href="Grape2D.BVHTree.html">BVHTree</a></li><li><a href="Grape2D.Camera.html">Camera</a></li><li><a href="Grape2D.Canvas.html">Canvas</a></li><li><a href="Grape2D.CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Grape2D.Circle.html">Circle</a></li><li><a href="Grape2D.CollisionChecker.html">CollisionChecker</a></li><li><a href="Grape2D.CollisionCheckerSingleton.html">CollisionCheckerSingleton</a></li><li><a href="Grape2D.CollisionDispatcher.html">CollisionDispatcher</a></li><li><a href="Grape2D.Emitter.html">Emitter</a></li><li><a href="Grape2D.Field.html">Field</a></li><li><a href="Grape2D.FollowingCamera.html">FollowingCamera</a></li><li><a href="Grape2D.Game.html">Game</a></li><li><a href="Grape2D.GenericCollisionChecker.html">GenericCollisionChecker</a></li><li><a href="Grape2D.InputManager.html">InputManager</a></li><li><a href="Grape2D.InputManagerDragEvent.html">InputManagerDragEvent</a></li><li><a href="Grape2D.InputManagerEvent.html">InputManagerEvent</a></li><li><a href="Grape2D.InputManagerMouseEvent.html">InputManagerMouseEvent</a></li><li><a href="Grape2D.ITexture.html">ITexture</a></li><li><a href="Grape2D.Map.html">Map</a></li><li><a href="Grape2D.Matrix.html">Matrix</a></li><li><a href="Grape2D.MedianCutBVHStrategy.html">MedianCutBVHStrategy</a></li><li><a href="Grape2D.Object2D.html">Object2D</a></li><li><a href="Grape2D.Particle.html">Particle</a></li><li><a href="Grape2D.ParticleSystem.html">ParticleSystem</a></li><li><a href="Grape2D.Polygon.html">Polygon</a></li><li><a href="Grape2D.Ray.html">Ray</a></li><li><a href="Grape2D.Renderer.html">Renderer</a></li><li><a href="Grape2D.SATCollisionChecker.html">SATCollisionChecker</a></li><li><a href="Grape2D.Scene.html">Scene</a></li><li><a href="Grape2D.SceneGroup.html">SceneGroup</a></li><li><a href="Grape2D.SceneLayer.html">SceneLayer</a></li><li><a href="Grape2D.Shape.html">Shape</a></li><li><a href="Grape2D.SimpleGame.html">SimpleGame</a></li><li><a href="Grape2D.SimpleMap.html">SimpleMap</a></li><li><a href="Grape2D.Texture.html">Texture</a></li><li><a href="Grape2D.TopDownBVHNode.html">TopDownBVHNode</a></li><li><a href="Grape2D.TopDownBVHTree.html">TopDownBVHTree</a></li><li><a href="Grape2D.utils.Clock.html">Clock</a></li><li><a href="Grape2D.Vector.html">Vector</a></li><li><a href="Grape2D.VoidTexture.html">VoidTexture</a></li><li><a href="Grape2D.WASDController.html">WASDController</a></li><li><a href="Grape2D.WireframeRenderer.html">WireframeRenderer</a></li></ul><h3>Namespaces</h3><ul><li><a href="Grape2D.html">Grape2D</a></li><li><a href="Grape2D.Math.html">Math</a></li><li><a href="Grape2D.utils.html">utils</a></li></ul><h3>Global</h3><ul><li>{!number}</li><li>{!string}</li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Jul 30 2013 21:22:49 GMT+0100 (BST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Fri Aug 09 2013 16:42:45 GMT+0100 (BST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: inputs/InputManagerMouseEvent.js</title>
+    <title>JSDoc: Source: objects/Ray.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Source: inputs/InputManagerMouseEvent.js</h1>
+    <h1 class="page-title">Source: objects/Ray.js</h1>
     
     
 
@@ -26,84 +26,79 @@
     <section>
         <article>
             <pre class="prettyprint source"><code>/**
- * Mouse event.
+ * Ray.
  *
- * @param  {!Event} rawEvent Raw DOM event.
- * @extends {Grape2D.InputManagerEvent}
+ * @param  {!Grape2D.Vector} start Start of the ray.
+ * @param  {!Grape2D.Vector} direction Direction of the ray.
+ * @param  {!number} length Direction of the ray.
  * @constructor
  */
-Grape2D.InputManagerMouseEvent = function(rawEvent){
-	Grape2D.InputManagerEvent.call(this, rawEvent);
-	var bb = rawEvent.target.getBoundingClientRect();
+Grape2D.Ray = function(start, direction, length){
+	this.start = start;
+	this.direction = direction;
+	this.length = length;
+	this.end = direction.clone().multiplyByScalar(length).add(start);
+};
+
+Grape2D.Ray.prototype = {
+	constructor: Grape2D.Ray,
 	/**
-	 * Place where the drag event happened. It should be a DOM element
-	 *   associated with a {Grape2D.Renderer}.
+	 * Gets the start position of the ray.
 	 *
-	 * @type {EventTarget}
-	 * @private
+	 * @return {!Grape2D.Vector} Start of the ray.
+	 * @public
 	 */
-	this.target = rawEvent.target;
+	getStart: function(){
+		return this.start;
+	},
 	/**
-	 * Position relative to the renderer, where the event was triggered.
+	 * Gets the direction of the ray.
 	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
+	 * @return {!Grape2D.Vector} Direction of the ray.
+	 * @public
 	 */
-	this.position = new Grape2D.Vector(rawEvent.clientX-bb.left, rawEvent.clientY-bb.top);
+	getDirection: function(){
+		return this.direction;
+	},
 	/**
-	 * Button that was pressed to trigger the event.
-	 * &lt;ol>
-	 * &lt;li>Left button.
-	 * &lt;li>Mouse wheel.
-	 * &lt;li>Right button.
-	 * &lt;/ol
+	 * Gets the length of the ray.
 	 *
-	 * @type {!number}
-	 * @private
+	 * @return {!number} Length of the ray.
+	 * @public
 	 */
-	this.button = rawEvent.button;
+	getLength: function(){
+		return this.length;
+	},
 	/**
-	 * Mouse wheel value. This value is only used when the &lt;code>
-	 *   rawEvent.type == "mousewheel"&lt;/code>. If the value is
-	 *   positive the wheel was moved upwards, if it's negative
-	 *   the wheel was moved downwards.
+	 * Gets the end position of the ray. This is computed,
+	 *   resulting from from the scalar multiplication
+	 *   of the direction by the length, added by the start
+	 *   position.
 	 *
-	 * @type {!number}
-	 * @private
+	 * @return {!Grape2D.Vector} End of the ray.
+	 * @public
 	 */
-	this.wheelDelta = 0;
-	if(rawEvent.type == "mousewheel"){
-		this.wheelDelta = rawEvent.wheelDelta;
+	getEnd: function(){
+		return this.end;
+	},
+	/**
+	 * Gets the static type
+	 *
+	 * @return {!string} Type.
+	 * @public
+	 */
+	getStaticType: function(){
+		return Grape2D.Ray.STATIC_TYPE;
 	}
 };
-Grape2D.InputManagerMouseEvent.prototype = Object.create(Grape2D.InputManagerEvent.prototype);
 /**
- * Gets the element where the event happened.
+ * Type.
  *
- * @return {EventTarget} Element.
- * @public
+ * @constant {!string}
+ * @static
+ * @private
  */
-Grape2D.InputManagerMouseEvent.prototype.getTarget = function(){
-	return this.target;
-};
-/**
- * Gets the position where the event was triggered.
- *
- * @return {!Grape2D.Vector} Position.
- * @public
- */
-Grape2D.InputManagerMouseEvent.prototype.getPosition = function(){
-	return this.position;
-};
-/**
- * Gets the wheel data.
- *
- * @return {!number} Wheel data.
- * @public
- */
-Grape2D.InputManagerMouseEvent.prototype.getWheelDelta = function(){
-	return this.wheelDelta;
-};</code></pre>
+Grape2D.Ray.STATIC_TYPE = "Ray";</code></pre>
         </article>
     </section>
 

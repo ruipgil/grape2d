@@ -5,7 +5,7 @@
  * @public
  */
 var Grape2D = {
-	version: '1.1.3-alpha'
+	version: '1.2.0-alpha'
 };
 /**
  * Credits for the requestAnimationFrame and cancelAnimationFrame
@@ -569,6 +569,36 @@ Grape2D.Vector.prototype = {
 		return vector.x * this.x + vector.y * this.y;
 	},
 	/**
+	 * Positive distance between the x coordinates this vector an
+	 *   another one.
+	 *
+	 * @param  {!Grape2D.Vector} vector A vector.
+	 * @return {!number} Positive distance of the x coordinate.
+	 * @public
+	 */
+	xDistanceTo: function(vector){
+		if(this.x>vector.x){
+			return Grape2D.Math.abs(this.x-vector.x);
+		}else{
+			return Grape2D.Math.abs(vector.x-this.x);
+		}
+	},
+	/**
+	 * Positive distance between the y coordinates this vector an
+	 *   another one.
+	 *
+	 * @param  {!Grape2D.Vector} vector A vector.
+	 * @return {!number} Positive distance of the y coordinate.
+	 * @public
+	 */
+	yDistanceTo: function(vector){
+		if(this.y>vector.y){
+			return Grape2D.Math.abs(this.y-vector.y);
+		}else{
+			return Grape2D.Math.abs(vector.y-this.y);
+		}
+	},
+	/**
 	 * Checks if the components of one vector are equal to the
 	 *   components to another one.
 	 *
@@ -624,6 +654,15 @@ Grape2D.Vector.prototype = {
 		this.x = 0;
 		this.y = 0;
 		return this;
+	},
+	/**
+	 * Gets the type of the object. This is used by the collision
+	 *   dispatcher.
+	 *
+	 * @return {!string} Type.
+	 */
+	getStaticType: function(){
+		return Grape2D.Vector.STATIC_TYPE;
 	}
 };
 
@@ -651,6 +690,14 @@ Grape2D.Vector.createFromPoints = function(a, b) {
 Grape2D.Vector.createFromAngle = function(angle, magnitude) {
 	return new Grape2D.Vector(magnitude * Grape2D.Math.cos(angle), magnitude * Grape2D.Math.sin(angle));
 };
+/**
+ * Type as a string.
+ *
+ * @type {!string}
+ * @static
+ * @private
+ */
+Grape2D.Vector.STATIC_TYPE = "Vector";
 /**
  * Matrix defines a 3x3 matrix indicated to deal with 2D operations.
  *   If it's instantiated with no arguments then, it becomes the
@@ -1044,7 +1091,16 @@ Grape2D.Renderer.prototype = {
 	 *   coordinates.
 	 * @public
 	 */
-	renderLineSegment: function(start, end, camera) {}
+	renderLineSegment: function(start, end, camera) {},
+	/**
+	 * Renders a point to the renderer.
+	 *
+	 * @param  {!Grape2D.Vector} point Point position.
+	 * @param  {!Grape2D.Camera} camera Camera to transform the
+	 *   coordinates.
+	 * @public
+	 */
+	renderPoint: function(point, camera){}
 };
 /**
  * This is a simple abstraction of the canvas object,
@@ -1951,6 +2007,15 @@ Grape2D.CanvasRenderer.prototype.renderLineSegment = function(start, end, camera
 	this.canvas.stroke();
 };
 /**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.renderPoint = function(point, camera) {
+	var center = camera.wcsToViewport(this, point);
+	this.canvas.beginPath();
+	this.canvas.arc(center.x, center.y, 2, 0, Grape2D.Math.PIx2, false);
+	this.canvas.fill();
+}
+/**
  * Only renders the wireframe of (the bounding box of)
  *   {@link Grape2D.Object2D}, using another {@link Grape2D.Renderer}, 
  *   such as {@link Grape2D.CanvasRenderer}. This class is a bridge,
@@ -2018,8 +2083,7 @@ Grape2D.WireframeRenderer.prototype.renderTexture = function (texture, position)
  * @override
  */
 Grape2D.WireframeRenderer.prototype.renderObject2D = function (obj, camera) {
-	var objCenter = camera.wcsToViewport(this, obj.getPosition());
-	this.renderer.canvas.fillRect(objCenter.x, objCenter.y, 2, 2);
+	this.renderPoint(obj.getPosition(), camera);
 	obj.getBoundingBox().render(this, camera);
 };
 /**
@@ -2099,6 +2163,12 @@ Grape2D.WireframeRenderer.prototype.renderParticle = function(particle, camera) 
  */
 Grape2D.WireframeRenderer.prototype.renderLineSegment = function(start, end, camera) {
 	this.renderer.renderLineSegment(start, end, camera);
+};
+/**
+ * @override
+ */
+Grape2D.WireframeRenderer.prototype.renderPoint = function(point, camera) {
+	this.renderer.renderPoint(point, camera);
 };
 /**
  * Object2D represents an object of the scene.
@@ -4602,7 +4672,7 @@ Grape2D.InputManager.KEY = {
 //setup the global callbacks
 Grape2D.InputManager.setupGlobals();
 /**
- * Costum event.
+ * Custom event.
  *
  * @param  {!Event} ev The DOM event.
  * @constructor
@@ -4993,13 +5063,6 @@ Grape2D.WASDController.prototype = {
 Grape2D.Camera = function(options) {
 	options = options || {};
 	/**
-	 * Scale relative to the camera initialization.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
-	 */
-	this.rscale = new Grape2D.Vector(1, 1);
-	/**
 	 * Scale set by the user, should be defined in the matrix.
 	 *
 	 * @type {!Grape2D.Vector}
@@ -5049,13 +5112,13 @@ Grape2D.Camera.prototype = {
 		this.cM = this.transformation.clone();
 		//This operations should work fine, and it avoids a multiplication
 		//between the _cM matrix and a vector when converting coordinates
-		this.cM.v[0] *= this.scale.getX() * this.rscale.getX();
-		this.cM.v[1] *= this.scale.getX() * this.rscale.getX();
-		this.cM.v[2] *= this.scale.getX() * this.rscale.getX();
+		this.cM.v[0] *= this.scale.getX();
+		this.cM.v[1] *= this.scale.getX();
+		this.cM.v[2] *= this.scale.getX();
 
-		this.cM.v[3] *= this.scale.getY() * this.rscale.getY();
-		this.cM.v[4] *= this.scale.getY() * this.rscale.getY();
-		this.cM.v[5] *= this.scale.getY() * this.rscale.getY();
+		this.cM.v[3] *= this.scale.getY();
+		this.cM.v[4] *= this.scale.getY();
+		this.cM.v[5] *= this.scale.getY();
 
 		this.icM = this.cM.clone().invert();
 	},
@@ -5092,7 +5155,7 @@ Grape2D.Camera.prototype = {
 		v.setX(v.getX()-renderer.getHalfWidth());
 		v.setY(v.getY()-renderer.getHalfHeight());
 
-		v = this.icM.multiplyByVector(v).sub(this.getLookAt());
+		v = this.icM.multiplyByVector(v).add(this.getLookAt());
 
 		return v;
 	},
@@ -5103,8 +5166,7 @@ Grape2D.Camera.prototype = {
 	 * @public
 	 */
 	rescale: function(scale) {
-		this.rscale.setX( scale.getX() / this.scale.getX() );
-		this.rscale.setY( scale.getY() / this.scale.getY() );
+		this.scale.set(scale);
 		this.computeMatrix();
 	},
 	/**
@@ -5291,8 +5353,8 @@ Grape2D.Map.prototype = {
 	rebuild: function(){}
 };
 /**
- * @classdesc SimpleMap, represents a proof of concept. This is a simple map,
- *            that just implements a simple array to store objects.
+ * SimpleMap, represents a proof of concept. This is a simple map,
+ *   that just implements a simple array to store objects.
  *
  * @implements {Grape2D.Map}
  * @constructor
@@ -5506,8 +5568,9 @@ Grape2D.CollisionChecker.prototype = {
 	 */
 	polygonVsRay: function(polygon, ray){}
 };
+/* global Grape2D */
 /**
- * This implements generic methods of the collision controlle. Since
+ * This implements generic methods of the collision checker. Since
  *   from algorithm to algorithm only a few methods may be different.
  *   So only methods envolving polygons should be refined.
  *
@@ -5515,9 +5578,7 @@ Grape2D.CollisionChecker.prototype = {
  * @constructor
  */
 Grape2D.GenericCollisionChecker = function() {};
-
 Grape2D.GenericCollisionChecker.prototype = Object.create(Grape2D.CollisionChecker);
-
 /**
  * @override
  */
@@ -5536,13 +5597,6 @@ Grape2D.GenericCollisionChecker.prototype.aabbVsAabb = function(aabb1, aabb2) {
 		max: aabb2.getMaxY()
 	}) >= 0;
 };
-
-/**
- * @override
- */
-Grape2D.GenericCollisionChecker.prototype.aabbVsPoint = function(aabb, point) {
-	return aabb.getMinX() <= point.getX() && aabb.getMaxX() >= point.getX() && aabb.getMinY() <= point.getY() && aabb.getMaxY() >= point.getY();
-};
 /**
  * @override
  */
@@ -5554,8 +5608,8 @@ Grape2D.GenericCollisionChecker.prototype.aabbVsCircle = function(aabb, circle) 
 /**
  * @override
  */
-Grape2D.GenericCollisionChecker.prototype.circleVsAabb = function(circle, aabb) {
-	return this.aabbVsCircle(aabb, circle);
+Grape2D.GenericCollisionChecker.prototype.aabbVsPoint = function(aabb, point) {
+	return aabb.getMinX() <= point.getX() && aabb.getMaxX() >= point.getX() && aabb.getMinY() <= point.getY() && aabb.getMaxY() >= point.getY();
 };
 /**
  * Must be refined.
@@ -5565,18 +5619,10 @@ Grape2D.GenericCollisionChecker.prototype.aabbVsRay = function(aabb, ray) {
 	return false;
 };
 /**
- * Must be refined.
  * @override
  */
-Grape2D.GenericCollisionChecker.prototype.circleVsRay = function(circle, ray) {
-	return false;
-};
-/**
- * Must be refined.
- * @override
- */
-Grape2D.GenericCollisionChecker.prototype.polygonVsRay = function(polygon, ray) {
-	return false;
+Grape2D.GenericCollisionChecker.prototype.circleVsAabb = function(circle, aabb) {
+	return this.aabbVsCircle(aabb, circle);
 };
 /**
  * @override
@@ -5589,6 +5635,13 @@ Grape2D.GenericCollisionChecker.prototype.circleVsCircle = function(circle1, cir
  */
 Grape2D.GenericCollisionChecker.prototype.circleVsPoint = function(circle, point) {
 	return Grape2D.Math.sqrt(Grape2D.Math.sq(circle.getPosition().getX() - point.getX()) + Grape2D.Math.sq(circle.getPosition().getY() - point.getY())) <= circle.getRadius();
+};
+/**
+ * Must be refined.
+ * @override
+ */
+Grape2D.GenericCollisionChecker.prototype.circleVsRay = function(circle, ray) {
+	return false;
 };
 /**
  * @override
@@ -5655,6 +5708,13 @@ Grape2D.GenericCollisionChecker.prototype.polygonVsPoint = function(polygon, poi
 	return true;
 };
 /**
+ * Must be refined.
+ * @override
+ */
+Grape2D.GenericCollisionChecker.prototype.polygonVsRay = function(polygon, ray) {
+	return false;
+};
+/**
  * Concrete collision checker, that implements the SAT algorithm.
  *
  *
@@ -5678,10 +5738,8 @@ Grape2D.SATCollisionChecker.prototype.aabbVsPolygon = function(aabb, polygon) {
  * @override
  */
 Grape2D.SATCollisionChecker.prototype.polygonVsPolygon = function(polygon1, polygon2) {
-	var ca1 = this.computeAxis(polygon1),
-		ca2 = this.computeAxis(polygon2);
-	var axis = this.selectAxis(ca1, ca2);
-	var p1Intv = this.computeIntervals(polygon1.getComputedVertexList(), axis),
+	var axis = this.selectAxis(this.computeAxis(polygon1), this.computeAxis(polygon2)),
+		p1Intv = this.computeIntervals(polygon1.getComputedVertexList(), axis),
 		p2Intv = this.computeIntervals(polygon2.getComputedVertexList(), axis),
 		overlap;
 
@@ -5877,20 +5935,20 @@ Grape2D.SATCollisionChecker.aabbToVertexList = function(aabb) {
 	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[3].setX(aabb.getMaxX());
 	Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST[3].setY(aabb.getMaxY());
 	return Grape2D.SATCollisionChecker.SHARED_AABB_TO_VERTEX_LIST;
-}
+};
 /**
  * @override
  */
 Grape2D.SATCollisionChecker.prototype.circleVsRay = function(circle, ray) {
 	var ptv = circle.getPosition().clone().sub(ray.getStart()),
-		projv = ptv.dot(ray.getDirection());
+		projv = ptv.dot(ray.getDirection()),
+		closest;
 	if (projv < 0) {
 		closest = ray.getStart().clone();
 	} else if (projv >= ray.getLength()) {
 		closest = ray.getEnd().clone();
 	} else {
-		var proj = ray.getDirection().clone().multiplyByScalar(projv),
-			closest = proj.add(ray.getStart());
+		closest = ray.getDirection().clone().multiplyByScalar(projv).add(ray.getStart());
 	}
 	closest.negate().add(circle.getPosition());
 	return closest.lengthSquared() <= Grape2D.Math.sq(circle.getRadius());
@@ -5925,14 +5983,6 @@ Grape2D.SATCollisionChecker.prototype.polygonVsRay = function(polygon, ray) {
 		return false;
 	}
 };
-/**
- * Cache of the predefined set of AABB axis.
- *
- * @type {!Array.<Grape2D.Vector>}
- * @private
- * @static
- */
-Grape2D.SATCollisionChecker.aabbAxis = [new Grape2D.Vector(1, 0), new Grape2D.Vector(0, 1)];
 /**
  * Dispatch the collisions, providing a simple interface.
  *
@@ -6162,21 +6212,21 @@ Grape2D.CollisionDispatcher.dcache = {
 		"AABB": Grape2D.CollisionDispatcher.aabbVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.aabbVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.aabbVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.aabbVsPoint,
+		"Vector": Grape2D.CollisionDispatcher.aabbVsPoint,
 		"Ray": Grape2D.CollisionDispatcher.aabbVsRay
 	},
 	"Circle": {
 		"AABB": Grape2D.CollisionDispatcher.circleVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.circleVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.circleVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.circleVsPoint,
+		"Vector": Grape2D.CollisionDispatcher.circleVsPoint,
 		"Ray": Grape2D.CollisionDispatcher.circleVsRay
 	},
 	"Polygon": {
 		"AABB": Grape2D.CollisionDispatcher.polygonVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.polygonVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.polygonVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.polygonVsPoint,
+		"Vector": Grape2D.CollisionDispatcher.polygonVsPoint,
 		"Ray": Grape2D.CollisionDispatcher.polygonVsRay
 	}
 };
@@ -6249,7 +6299,7 @@ Grape2D.BVHTree.prototype = Object.create(Grape2D.Map.prototype);
  * @implements {Grape2D.BVHTree}
  * @constructor
  */
-Grape2D.TopDownBVHTree = function(objs){
+Grape2D.TopDownBVHTree = function(objs) {
 	/**
 	 * Objects of the tree
 	 * @type {!Array.<Grape2D.Object2D>}
@@ -6263,7 +6313,7 @@ Grape2D.TopDownBVHTree = function(objs){
 	 */
 	this.rootNode = null;
 	//builds the tree if needed be.
-	if(this.objs.length){
+	if (this.objs.length) {
 		this.rebuild();
 	}
 };
@@ -6271,17 +6321,17 @@ Grape2D.TopDownBVHTree = function(objs){
 Grape2D.TopDownBVHTree.prototype = Object.create(Grape2D.BVHTree.prototype);
 /**
  * (Re)Builds the tree, based on the objects present on the stack.
- * 
+ *
  * @override
  */
-Grape2D.TopDownBVHTree.prototype.rebuild = function(){
+Grape2D.TopDownBVHTree.prototype.rebuild = function() {
 	this.rootNode = new Grape2D.TopDownBVHNode(null, this.objs);
 };
 /**
  * Adding objects to the tree will not cause it to rebuild.
  * @override
  */
-Grape2D.TopDownBVHTree.prototype.add = function(obj){
+Grape2D.TopDownBVHTree.prototype.add = function(obj) {
 	this.objs.push(obj);
 };
 /**
@@ -6295,32 +6345,44 @@ Grape2D.TopDownBVHTree.prototype.remove = function(obj) {
  * @override
  */
 Grape2D.TopDownBVHTree.prototype.query = function(bv) {
-	return this.rootNode.query(bv);
+	if (this.rootNode) {
+		return this.rootNode.query(bv);
+	} else {
+		return [];
+	}
 };
 /**
  * @override
  */
 Grape2D.TopDownBVHTree.prototype.queryPoint = function(vector) {
-	return this.rootNode.queryPoint(vector);
+	if (this.rootNode) {
+		return this.rootNode.query(vector);
+	} else {
+		return [];
+	}
 };
 /**
  * @override
  */
 Grape2D.TopDownBVHTree.prototype.queryRay = function(ray) {
-	return this.rootNode.queryRay(ray);
+	if (this.rootNode) {
+		return this.rootNode.queryRay(ray);
+	} else {
+		return null;
+	}
 };
 /**
  * @override
  */
-Grape2D.TopDownBVHTree.prototype.clear = function(){
+Grape2D.TopDownBVHTree.prototype.clear = function() {
 	this.objs = [];
 	this.rootNode = null;
 };
 /**
  * @override
  */
-Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
-	for(var i=0; i<this.objs.length; i++){
+Grape2D.TopDownBVHTree.prototype.update = function(dt, scene) {
+	for (var i = 0; i < this.objs.length; i++) {
 		this.objs[i].update(dt, scene);
 	}
 };
@@ -6330,7 +6392,7 @@ Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
  * @return  {?Grape2D.TopDownBVHNode} Root node of the tree.
  * @public
  */
-Grape2D.TopDownBVHTree.prototype.getRootNode = function(){
+Grape2D.TopDownBVHTree.prototype.getRootNode = function() {
 	return this.rootNode;
 };
 /**
@@ -6448,8 +6510,12 @@ Grape2D.TopDownBVHNode.prototype = {
 				this.bv = factory.merge(this.bv, objects[i].getBoundingBox());
 			}
 
-			this.left = new Grape2D.TopDownBVHNode(this, r.left);
-			this.right = new Grape2D.TopDownBVHNode(this, r.right);
+			if (r.left.length > 0) {
+				this.left = new Grape2D.TopDownBVHNode(this, r.left);
+			}
+			if (r.right.length > 0) {
+				this.right = new Grape2D.TopDownBVHNode(this, r.right);
+			}
 		}
 	},
 	/**
@@ -6506,7 +6572,7 @@ Grape2D.TopDownBVHNode.prototype = {
 	 * @public
 	 */
 	getRight: function() {
-		return this.left;
+		return this.right;
 	},
 	/**
 	 * Queries a shape or a point to find if it is colliding.
@@ -6522,12 +6588,12 @@ Grape2D.TopDownBVHNode.prototype = {
 			i;
 		if (this.leaf) {
 			for (i = 0; i < this.objects.length; i++) {
-				if (Grape2D.CollisionCheckerSingleton.collide(shape, this.objects[i].getBoundingBox())) {
+				if (Grape2D.CollisionCheckerSingleton.collide(this.objects[i].getBoundingBox(), shape)) {
 					res.push(this.objects[i]);
 				}
 			}
 		} else {
-			if (Grape2D.CollisionCheckerSingleton.collide(shape, this.bv)) {
+			if (Grape2D.CollisionCheckerSingleton.collide(this.bv, shape)) {
 				var list = this.left.query(shape);
 				for (i = 0; i < list.length; i++) {
 					res.push(list[i]);
