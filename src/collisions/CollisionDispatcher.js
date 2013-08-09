@@ -227,21 +227,21 @@ Grape2D.CollisionDispatcher.dcache = {
 		"AABB": Grape2D.CollisionDispatcher.aabbVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.aabbVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.aabbVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.aabbVsPoint,
+		"Vector": Grape2D.CollisionDispatcher.aabbVsPoint,
 		"Ray": Grape2D.CollisionDispatcher.aabbVsRay
 	},
 	"Circle": {
 		"AABB": Grape2D.CollisionDispatcher.circleVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.circleVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.circleVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.circleVsPoint,
+		"Vector": Grape2D.CollisionDispatcher.circleVsPoint,
 		"Ray": Grape2D.CollisionDispatcher.circleVsRay
 	},
 	"Polygon": {
 		"AABB": Grape2D.CollisionDispatcher.polygonVsAabb,
 		"Circle": Grape2D.CollisionDispatcher.polygonVsCircle,
 		"Polygon": Grape2D.CollisionDispatcher.polygonVsPolygon,
-		"Point": Grape2D.CollisionDispatcher.polygonVsPoint,
+		"Vector": Grape2D.CollisionDispatcher.polygonVsPoint,
 		"Ray": Grape2D.CollisionDispatcher.polygonVsRay
 	}
 };
