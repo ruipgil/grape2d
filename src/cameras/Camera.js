@@ -17,13 +17,6 @@
 Grape2D.Camera = function(options) {
 	options = options || {};
 	/**
-	 * Scale relative to the camera initialization.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
-	 */
-	this.rscale = new Grape2D.Vector(1, 1);
-	/**
 	 * Scale set by the user, should be defined in the matrix.
 	 *
 	 * @type {!Grape2D.Vector}
@@ -73,13 +66,13 @@ Grape2D.Camera.prototype = {
 		this.cM = this.transformation.clone();
 		//This operations should work fine, and it avoids a multiplication
 		//between the _cM matrix and a vector when converting coordinates
-		this.cM.v[0] *= this.scale.getX() * this.rscale.getX();
-		this.cM.v[1] *= this.scale.getX() * this.rscale.getX();
-		this.cM.v[2] *= this.scale.getX() * this.rscale.getX();
+		this.cM.v[0] *= this.scale.getX();
+		this.cM.v[1] *= this.scale.getX();
+		this.cM.v[2] *= this.scale.getX();
 
-		this.cM.v[3] *= this.scale.getY() * this.rscale.getY();
-		this.cM.v[4] *= this.scale.getY() * this.rscale.getY();
-		this.cM.v[5] *= this.scale.getY() * this.rscale.getY();
+		this.cM.v[3] *= this.scale.getY();
+		this.cM.v[4] *= this.scale.getY();
+		this.cM.v[5] *= this.scale.getY();
 
 		this.icM = this.cM.clone().invert();
 	},
@@ -116,7 +109,7 @@ Grape2D.Camera.prototype = {
 		v.setX(v.getX()-renderer.getHalfWidth());
 		v.setY(v.getY()-renderer.getHalfHeight());
 
-		v = this.icM.multiplyByVector(v).sub(this.getLookAt());
+		v = this.icM.multiplyByVector(v).add(this.getLookAt());
 
 		return v;
 	},
@@ -127,8 +120,7 @@ Grape2D.Camera.prototype = {
 	 * @public
 	 */
 	rescale: function(scale) {
-		this.rscale.setX( scale.getX() / this.scale.getX() );
-		this.rscale.setY( scale.getY() / this.scale.getY() );
+		this.scale.set(scale);
 		this.computeMatrix();
 	},
 	/**
