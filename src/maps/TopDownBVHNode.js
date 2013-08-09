@@ -100,8 +100,12 @@ Grape2D.TopDownBVHNode.prototype = {
 				this.bv = factory.merge(this.bv, objects[i].getBoundingBox());
 			}
 
-			this.left = new Grape2D.TopDownBVHNode(this, r.left);
-			this.right = new Grape2D.TopDownBVHNode(this, r.right);
+			if (r.left.length > 0) {
+				this.left = new Grape2D.TopDownBVHNode(this, r.left);
+			}
+			if (r.right.length > 0) {
+				this.right = new Grape2D.TopDownBVHNode(this, r.right);
+			}
 		}
 	},
 	/**
@@ -158,7 +162,7 @@ Grape2D.TopDownBVHNode.prototype = {
 	 * @public
 	 */
 	getRight: function() {
-		return this.left;
+		return this.right;
 	},
 	/**
 	 * Queries a shape or a point to find if it is colliding.
@@ -174,12 +178,12 @@ Grape2D.TopDownBVHNode.prototype = {
 			i;
 		if (this.leaf) {
 			for (i = 0; i < this.objects.length; i++) {
-				if (Grape2D.CollisionCheckerSingleton.collide(shape, this.objects[i].getBoundingBox())) {
+				if (Grape2D.CollisionCheckerSingleton.collide(this.objects[i].getBoundingBox(), shape)) {
 					res.push(this.objects[i]);
 				}
 			}
 		} else {
-			if (Grape2D.CollisionCheckerSingleton.collide(shape, this.bv)) {
+			if (Grape2D.CollisionCheckerSingleton.collide(this.bv, shape)) {
 				var list = this.left.query(shape);
 				for (i = 0; i < list.length; i++) {
 					res.push(list[i]);

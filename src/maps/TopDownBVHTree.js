@@ -7,7 +7,7 @@
  * @implements {Grape2D.BVHTree}
  * @constructor
  */
-Grape2D.TopDownBVHTree = function(objs){
+Grape2D.TopDownBVHTree = function(objs) {
 	/**
 	 * Objects of the tree
 	 * @type {!Array.<Grape2D.Object2D>}
@@ -21,7 +21,7 @@ Grape2D.TopDownBVHTree = function(objs){
 	 */
 	this.rootNode = null;
 	//builds the tree if needed be.
-	if(this.objs.length){
+	if (this.objs.length) {
 		this.rebuild();
 	}
 };
@@ -29,17 +29,17 @@ Grape2D.TopDownBVHTree = function(objs){
 Grape2D.TopDownBVHTree.prototype = Object.create(Grape2D.BVHTree.prototype);
 /**
  * (Re)Builds the tree, based on the objects present on the stack.
- * 
+ *
  * @override
  */
-Grape2D.TopDownBVHTree.prototype.rebuild = function(){
+Grape2D.TopDownBVHTree.prototype.rebuild = function() {
 	this.rootNode = new Grape2D.TopDownBVHNode(null, this.objs);
 };
 /**
  * Adding objects to the tree will not cause it to rebuild.
  * @override
  */
-Grape2D.TopDownBVHTree.prototype.add = function(obj){
+Grape2D.TopDownBVHTree.prototype.add = function(obj) {
 	this.objs.push(obj);
 };
 /**
@@ -53,32 +53,44 @@ Grape2D.TopDownBVHTree.prototype.remove = function(obj) {
  * @override
  */
 Grape2D.TopDownBVHTree.prototype.query = function(bv) {
-	return this.rootNode.query(bv);
+	if (this.rootNode) {
+		return this.rootNode.query(bv);
+	} else {
+		return [];
+	}
 };
 /**
  * @override
  */
 Grape2D.TopDownBVHTree.prototype.queryPoint = function(vector) {
-	return this.rootNode.queryPoint(vector);
+	if (this.rootNode) {
+		return this.rootNode.query(vector);
+	} else {
+		return [];
+	}
 };
 /**
  * @override
  */
 Grape2D.TopDownBVHTree.prototype.queryRay = function(ray) {
-	return this.rootNode.queryRay(ray);
+	if (this.rootNode) {
+		return this.rootNode.queryRay(ray);
+	} else {
+		return null;
+	}
 };
 /**
  * @override
  */
-Grape2D.TopDownBVHTree.prototype.clear = function(){
+Grape2D.TopDownBVHTree.prototype.clear = function() {
 	this.objs = [];
 	this.rootNode = null;
 };
 /**
  * @override
  */
-Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
-	for(var i=0; i<this.objs.length; i++){
+Grape2D.TopDownBVHTree.prototype.update = function(dt, scene) {
+	for (var i = 0; i < this.objs.length; i++) {
 		this.objs[i].update(dt, scene);
 	}
 };
@@ -88,7 +100,7 @@ Grape2D.TopDownBVHTree.prototype.update = function(dt, scene){
  * @return  {?Grape2D.TopDownBVHNode} Root node of the tree.
  * @public
  */
-Grape2D.TopDownBVHTree.prototype.getRootNode = function(){
+Grape2D.TopDownBVHTree.prototype.getRootNode = function() {
 	return this.rootNode;
 };
 /**
