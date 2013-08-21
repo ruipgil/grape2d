@@ -100,12 +100,8 @@ Grape2D.TopDownBVHNode.prototype = {
 				this.bv = factory.merge(this.bv, objects[i].getBoundingBox());
 			}
 
-			if (r.left.length > 0) {
-				this.left = new Grape2D.TopDownBVHNode(this, r.left);
-			}
-			if (r.right.length > 0) {
-				this.right = new Grape2D.TopDownBVHNode(this, r.right);
-			}
+			this.left = new Grape2D.TopDownBVHNode(this, r.left);
+			this.right = new Grape2D.TopDownBVHNode(this, r.right);
 		}
 	},
 	/**
