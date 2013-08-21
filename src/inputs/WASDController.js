@@ -9,7 +9,7 @@
  *   If a key it's press, lets say W, and it's opposite is also
  *   pressed, in this case S, the controller keeps the state that
  *   indicated that W is pressed. But when the key W is lifted
- *   up (key up event), the controller ways for the next event,
+ *   up (key up event), the controller waits for the next event,
  *   and S is not automatically press (for the controller).
  *
  * @param  {!Grape2D.Renderer} renderer Renderer to bind the events.
@@ -54,38 +54,54 @@ Grape2D.WASDController = function(renderer) {
 	var that = this;
 	// W key handlers
 	this.im.addKeyDown(Grape2D.InputManager.KEY.W, function() {
-		if (!that.sLock) {
+		if (!that.sLock && !that.wLock) {
+			that.w();
 			that.wLock = true;
 		}
 	});
 	this.im.addKeyUp(Grape2D.InputManager.KEY.W, function() {
+		if(that.wLock){
+			that.wUp();
+		}
 		that.wLock = false;
 	});
 	// S key handlers
 	this.im.addKeyDown(Grape2D.InputManager.KEY.S, function() {
-		if (!that.wLock) {
+		if (!that.wLock && !that.sLock) {
+			that.s();
 			that.sLock = true;
 		}
 	});
 	this.im.addKeyUp(Grape2D.InputManager.KEY.S, function() {
+		if(that.sLock){
+			that.sUp();
+		}
 		that.sLock = false;
 	});
 	// A key handlers
 	this.im.addKeyDown(Grape2D.InputManager.KEY.A, function() {
-		if (!that.dLock) {
+		if (!that.dLock && !that.aLock) {
+			that.a();
 			that.aLock = true;
 		}
 	});
 	this.im.addKeyUp(Grape2D.InputManager.KEY.A, function() {
+		if(that.aLock){
+			that.aUp();
+		}
 		that.aLock = false;
 	});
 	// D key handlers
 	this.im.addKeyDown(Grape2D.InputManager.KEY.D, function() {
-		if (!that.aLock) {
+		if (!that.aLock && !that.dLock) {
+			that.d();
 			that.dLock = true;
 		}
 	});
 	this.im.addKeyUp(Grape2D.InputManager.KEY.D, function() {
+		if(that.dLock){
+			that.dUp();
+		}
 		that.dLock = false;
 	});
 };
@@ -98,6 +114,12 @@ Grape2D.WASDController.prototype = {
 	 * @public
 	 */
 	w: function() {},
+	/**
+	 * Action for when the 'W' keys is released.
+	 *
+	 * @public
+	 */
+	wUp: function() {},
 	/**
 	 * Checks if the key 'W' is pressed.
 	 *
@@ -114,6 +136,12 @@ Grape2D.WASDController.prototype = {
 	 */
 	a: function() {},
 	/**
+	 * Action for when the 'A' keys is released.
+	 *
+	 * @public
+	 */
+	aUp: function() {},
+	/**
 	 * Checks if the key 'A' is pressed.
 	 *
 	 * @return {!boolean} True if it's pressed.
@@ -128,6 +156,12 @@ Grape2D.WASDController.prototype = {
 	 * @public
 	 */
 	s: function() {},
+	/**
+	 * Action for when the 'S' keys is released.
+	 *
+	 * @public
+	 */
+	sUp: function() {},
 	/**
 	 * Checks if the key 'S' is pressed.
 	 *
@@ -144,6 +178,12 @@ Grape2D.WASDController.prototype = {
 	 */
 	d: function() {},
 	/**
+	 * Action for when the 'D' keys is released.
+	 *
+	 * @public
+	 */
+	dUp: function() {},
+	/**
 	 * Checks if the key 'D' is pressed.
 	 *
 	 * @return {!boolean} True if it's pressed.
@@ -151,39 +191,5 @@ Grape2D.WASDController.prototype = {
 	 */
 	isD: function() {
 		return this.dLock;
-	},
-	/**
-	 * Setup function to execute before each dispatch
-	 *   function.
-	 *
-	 * @public
-	 */
-	setup: function() {},
-	/**
-	 * Tear down function to execute after each dispatch
-	 *   function.
-	 *
-	 * @public
-	 */
-	tearDown: function() {},
-	/**
-	 * It executes the functions for the keys pressed.
-	 *
-	 * @public
-	 */
-	dispatch: function() {
-		this.setup();
-		if (this.wLock) {
-			this.w();
-		} else if (this.sLock) {
-			this.s();
-		}
-
-		if (this.aLock) {
-			this.a();
-		} else if (this.dLock) {
-			this.d();
-		}
-		this.tearDown();
 	}
-}
+};
