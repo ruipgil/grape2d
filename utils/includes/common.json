@@ -64,6 +64,11 @@
 	"../src/scenes/SceneLayer.js",
 
 	"../src/utils/Game.js",
-	"../src/utils/SimpleGame.js"
+	"../src/utils/SimpleGame.js",
+
+	"../src/network/WebSocket.js",
+	"../src/network/WebSocketMessageDispatcher.js",
+
+	"../src/utils/debug/TopDownBVHTreeDebugger.js"
 
 ]
