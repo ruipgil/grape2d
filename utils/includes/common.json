@@ -4,6 +4,7 @@
 	"../src/utils/Polyfill.js",
 	"../src/utils/Utils.js",
 	"../src/utils/Clock.js",
+	"../src/utils/SynchronizedClock.js",
 
 	"../src/math/Math.js",
 	"../src/math/Vector.js",

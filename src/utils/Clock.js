@@ -49,5 +49,14 @@ Grape2D.utils.Clock.prototype = {
 		this.timeEl = 0;
 		this.frameCount = 0;
 		this.end = time;
+	},
+	/**
+	 * Gets the current time in miliseconds.
+	 *
+	 * @return {!number} Current time.
+	 * @public
+	 */
+	getTime: function(){
+		return new Date().getTime();
 	}
 };
