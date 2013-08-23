@@ -5,17 +5,17 @@
  * @extends {Grape2D.Clock}
  * @constructor
  */
-Grape2D.SynchronizedClock = function() {
-	Grape2D.Clock.call(this);
+Grape2D.utils.SynchronizedClock = function() {
+	Grape2D.utils.Clock.call(this);
 	this.deltaSync = 0;
 };
 
-Grape2D.SynchronizedClock.prototype = Object.create(Grape2D.Clock.prototype);
+Grape2D.utils.SynchronizedClock.prototype = Object.create(Grape2D.utils.Clock.prototype);
 /**
  * @override
  */
-Grape2D.SynchronizedClock.getTime = function() {
-	return Grape2D.Clock.prototype.getTime.call(this) + this.deltaSync;
+Grape2D.utils.SynchronizedClock.getTime = function() {
+	return Grape2D.utils.Clock.prototype.getTime.call(this) + this.deltaSync;
 };
 /**
  * Synchronizes the clock acording to a timestamp.
@@ -25,6 +25,6 @@ Grape2D.SynchronizedClock.getTime = function() {
  * @param  {!number} syncTime Time right now.
  * @public
  */
-Grape2D.SynchronizedClock.sync = function(syncTime) {
-	this.deltaSync = syncTime - Grape2D.Clock.prototype.getTime.call(this);
+Grape2D.utils.SynchronizedClock.sync = function(syncTime) {
+	this.deltaSync = syncTime - Grape2D.utils.Clock.prototype.getTime.call(this);
 };

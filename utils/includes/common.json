@@ -69,6 +69,7 @@
 
 	"../src/network/WebSocket.js",
 	"../src/network/WebSocketMessageDispatcher.js",
+	"../src/network/SnapshotHistory.js",
 
 	"../src/utils/debug/TopDownBVHTreeDebugger.js"
 
