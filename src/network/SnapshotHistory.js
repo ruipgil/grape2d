@@ -77,6 +77,7 @@ Grape2D.SnapshotHistory.prototype = {
 				return this.history[i].data;
 			}
 		}
+		return null;
 	},
 	/**
 	 * Gets the history list.
