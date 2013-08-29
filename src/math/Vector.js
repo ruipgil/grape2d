@@ -236,7 +236,7 @@ Grape2D.Vector.prototype = {
 	 * @public
 	 */
 	distanceTo: function(vector) {
-		return Grape2D.Math.sqrt(Grape2D.Math.sq(vector.x-this.x) + Grape2D.Math.sq(vector.y-this.y));
+		return Grape2D.Math.sqrt(Grape2D.Math.sq(vector.x - this.x) + Grape2D.Math.sq(vector.y - this.y));
 	},
 	/**
 	 * Calculates the squared distace between this and another vector.
@@ -256,11 +256,11 @@ Grape2D.Vector.prototype = {
 	 * @return {!number} Positive distance of the x coordinate.
 	 * @public
 	 */
-	xDistanceTo: function(vector){
-		if(this.x>vector.x){
-			return Grape2D.Math.abs(this.x-vector.x);
-		}else{
-			return Grape2D.Math.abs(vector.x-this.x);
+	xDistanceTo: function(vector) {
+		if (this.x > vector.x) {
+			return Grape2D.Math.abs(this.x - vector.x);
+		} else {
+			return Grape2D.Math.abs(vector.x - this.x);
 		}
 	},
 	/**
@@ -271,11 +271,11 @@ Grape2D.Vector.prototype = {
 	 * @return {!number} Positive distance of the y coordinate.
 	 * @public
 	 */
-	yDistanceTo: function(vector){
-		if(this.y>vector.y){
-			return Grape2D.Math.abs(this.y-vector.y);
-		}else{
-			return Grape2D.Math.abs(vector.y-this.y);
+	yDistanceTo: function(vector) {
+		if (this.y > vector.y) {
+			return Grape2D.Math.abs(this.y - vector.y);
+		} else {
+			return Grape2D.Math.abs(vector.y - this.y);
 		}
 	},
 	/**
@@ -330,7 +330,7 @@ Grape2D.Vector.prototype = {
 	 * @return {!Grape2D.Vector} This vector.
 	 * @public
 	 */
-	reset: function(){
+	reset: function() {
 		this.x = 0;
 		this.y = 0;
 		return this;
@@ -341,7 +341,7 @@ Grape2D.Vector.prototype = {
 	 *
 	 * @return {!string} Type.
 	 */
-	getStaticType: function(){
+	getStaticType: function() {
 		return Grape2D.Vector.STATIC_TYPE;
 	}
 };
@@ -356,7 +356,7 @@ Grape2D.Vector.prototype = {
  * @static
  */
 Grape2D.Vector.createFromPoints = function(a, b) {
-	return (new Grape2D.Vector(b.x - a.x, b.y - a.y));
+	return new Grape2D.Vector(b.x - a.x, b.y - a.y);
 };
 /**
  * Creates a vector from an angle and magnitude.
@@ -369,6 +369,18 @@ Grape2D.Vector.createFromPoints = function(a, b) {
  */
 Grape2D.Vector.createFromAngle = function(angle, magnitude) {
 	return new Grape2D.Vector(magnitude * Grape2D.Math.cos(angle), magnitude * Grape2D.Math.sin(angle));
+};
+/**
+ * Linear interpolation between two vectors.
+ *
+ * @param  {!Grape2D.Vector} start Start interpolation position.
+ * @param  {!Grape2D.Vector} end End interpolation position.
+ * @param  {!number} prc Percentage of the interpolation.
+ * @return {!Grape2D.Vector} Interpolated vector.
+ * @public
+ */
+Grape2D.Vector.lerp = function(start, end, prc) {
+	return end.clone().sub(start).multiplyByScalar(prc);
 };
 /**
  * Type as a string.
