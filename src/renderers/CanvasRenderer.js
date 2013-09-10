@@ -75,6 +75,12 @@ Grape2D.CanvasRenderer.prototype.renderObject2D = function(obj, camera) {
 /**
  * @override
  */
+Grape2D.CanvasRenderer.prototype.renderNetworkObject2D = function(obj, pos, camera) {
+	obj.getTexture().render(this, camera.wcsToViewport(this, pos));
+};
+/**
+ * @override
+ */
 Grape2D.CanvasRenderer.prototype.renderImage = function(image, sx, sy, sw, sh, dx, dy, dw, dh) {
 	this.canvas.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
 };
@@ -166,6 +172,12 @@ Grape2D.CanvasRenderer.prototype.setStrokeColor = function(color) {
  */
 Grape2D.CanvasRenderer.prototype.setFillColor = function(color) {
 	this.canvas.setFillStyle(color);
+};
+/**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.setTextFont = function(font) {
+	this.canvas.setFont(font);
 };
 /**
  * @override

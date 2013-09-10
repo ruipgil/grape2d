@@ -67,6 +67,15 @@ Grape2D.Renderer.prototype = {
 	 */
 	renderObject2D: function(obj, camera) {},
 	/**
+	 * Renders an network object to the renderer.
+	 *
+	 * @param  {!Grape2D.NetworkObject2D} obj Network object.
+	 * @param  {!Grape2D.Vector} pos Lerped position of the object.
+	 * @param  {!Grape2D.Camera} camera Camera to transform the coordinates.
+	 * @public
+	 */
+	renderNetworkObject2D: function(obj, pos, camera) {},
+	/**
 	 * Renders an image to the screen
 	 *
 	 * @param  {!Image} image DOM image.
@@ -166,6 +175,13 @@ Grape2D.Renderer.prototype = {
 	 */
 	renderParticle: function(particle, camera) {},
 	/**
+	 * Sets the text font.
+	 *
+	 * @param {!string} font Text font.
+	 * @public
+	 */
+	setTextFont: function(font) {},
+	/**
 	 * Renders a line segment to the renderer.
 	 *
 	 * @param  {!Grape2D.Vector} start Start position of the line.
@@ -183,5 +199,5 @@ Grape2D.Renderer.prototype = {
 	 *   coordinates.
 	 * @public
 	 */
-	renderPoint: function(point, camera){}
+	renderPoint: function(point, camera) {}
 };
