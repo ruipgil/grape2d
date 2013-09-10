@@ -19,7 +19,7 @@ Grape2D.SnapshotHistory = function(cap) {
 	/**
 	 * List with the history record.
 	 *
-	 * @type {!Array.<Object.<string, (number|string)>>}
+	 * @type {!Array.<!Grape2D.Snapshot>}
 	 * @private
 	 */
 	this.history = [];
@@ -30,19 +30,16 @@ Grape2D.SnapshotHistory.prototype = {
 	 * Adds a snapshot to the history. Discards the older one
 	 *   if it has reached the entry limit.
 	 *
-	 * @param {!string} snapshot Snapshot received.
+	 * @param {!Grape2D.Snapshot} snapshot Snapshot received.
 	 * @public
 	 */
-	add: function(time, snapshot) {
+	add: function(snapshot) {
 		if (this.history.length >= this.cap) {
 			this.history.shift();
 		}
-		this.history.push({
-			time: time,
-			data: snapshot
-		});
+		this.history.push(snapshot);
 		this.history.sort(function(a, b){
-			return a.time-b.time;
+			return a.getTime()-b.getTime();
 		});
 	},
 	/**
@@ -50,14 +47,14 @@ Grape2D.SnapshotHistory.prototype = {
 	 *   given time.
 	 *
 	 * @param  {!number} time Reference time, in milliseconds.
-	 * @return {?string} A string if it has found a valid
+	 * @return {?Grape2D.Snapshot} A string if it has found a valid
 	 *   snapshot before the time, null otherwise.
 	 * @public
 	 */
 	getBefore: function(time) {
 		for (var i = this.history.length-1; i >= 0; i--) {
-			if (this.history[i].time < time) {
-				return this.history[i].data;
+			if (this.history[i].getTime() < time) {
+				return this.history[i];
 			}
 		}
 		return null;
@@ -67,14 +64,14 @@ Grape2D.SnapshotHistory.prototype = {
 	 *   given time.
 	 *
 	 * @param  {!number} time Reference time, in milliseconds.
-	 * @return {?string} A string if it has found a valid
+	 * @return {?Grape2D.Snapshot} A string if it has found a valid
 	 *   snapshot after the time, null otherwise.
 	 * @public
 	 */
 	getAfter: function(time) {
 		for (var i = 0; i < this.history.length; i++) {
-			if (this.history[i].time > time) {
-				return this.history[i].data;
+			if (this.history[i].getTime() > time) {
+				return this.history[i];
 			}
 		}
 		return null;
@@ -82,7 +79,7 @@ Grape2D.SnapshotHistory.prototype = {
 	/**
 	 * Gets the history list.
 	 *
-	 * @return {!Array.<Object.<string, (number|string)>>} Snapshot
+	 * @return {!Array.<!Grape2D.Snapshot>} Snapshot
 	 *   history record.
 	 * @public
 	 */
