@@ -93,10 +93,10 @@ Grape2D.Math = {
 		return Math.ceil(n);
 	},
 	/**
-	 * Rounds a number to the unit
+	 * Rounds a number to the unit.
 	 *
-	 * @param  {!number} n the number
-	 * @return {!number} the rounded number
+	 * @param  {!number} n Number to round.
+	 * @return {!number} Rounded number.
 	 * @public
 	 * @static
 	 */
@@ -106,6 +106,63 @@ Grape2D.Math = {
 		} else {
 			return~~ (n - 0.5);
 		}
+	},
+	/**
+	 * Rounds a number to first decimal.
+	 *
+	 * @param  {!number} n Number to round.
+	 * @return {!number} Rounded number.
+	 * @public
+	 * @static
+	 */
+	roundOne: function(n){
+		return Grape2D.Math.round(n*10)*0.1;
+	},
+	/**
+	 * Rounds a number to second decimal.
+	 *
+	 * @param  {!number} n Number to round.
+	 * @return {!number} Rounded number.
+	 * @public
+	 * @static
+	 */
+	roundTwo: function(n){
+		return Grape2D.Math.round(n*100)*0.01;
+	},
+	/**
+	 * Rounds a number to third decimal.
+	 *
+	 * @param  {!number} n Number to round.
+	 * @return {!number} Rounded number.
+	 * @public
+	 * @static
+	 */
+	roundThree: function(n){
+		return Grape2D.Math.round(n*1000)*0.001;
+	},
+	/**
+	 * Rounds a number to fourth decimal.
+	 *
+	 * @param  {!number} n Number to round.
+	 * @return {!number} Rounded number.
+	 * @public
+	 * @static
+	 */
+	roundFour: function(n){
+		return Grape2D.Math.round(n*10000)*0.0001;
+	},
+	/**
+	 * Rounds a number to nth decimal.
+	 *
+	 * @param  {!number} number Number to round.
+	 * @param  {!number} n Decimals to round.
+	 * @return {!number} Rounded number.
+	 * @public
+	 * @static
+	 */
+	roundN: function(number, n){
+		var f = Grape2D.Math.pow(2, 10);
+		return Grape2D.Math.round(n*f)/f;
 	},
 	/**
 	 * Get a random float
