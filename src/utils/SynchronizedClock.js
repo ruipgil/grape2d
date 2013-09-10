@@ -21,16 +21,15 @@ Grape2D.utils.SynchronizedClock.prototype = Object.create(Grape2D.utils.Clock.pr
  * @override
  */
 Grape2D.utils.SynchronizedClock.prototype.getTime = function() {
-	return Grape2D.utils.Clock.prototype.getTime.call(this) + this.deltaSync;
+	return Grape2D.utils.Clock.prototype.getTime.call(this) - this.deltaSync;
 };
 /**
- * Synchronizes the clock acording to a timestamp.
- *   This stores a delta value between the current time
- *   and a given sync time.
+ * Synchronizes this clock with a remote clock, based on the
+ *   time difference.
  *
- * @param  {!number} syncTime Time right now.
+ * @param  {!number} syncTime Time difference between clocks.
  * @public
  */
 Grape2D.utils.SynchronizedClock.prototype.sync = function(syncTime) {
-	this.deltaSync = syncTime - Grape2D.utils.Clock.prototype.getTime.call(this);
+	this.deltaSync = syncTime;
 };
