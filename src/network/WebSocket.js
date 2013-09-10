@@ -77,7 +77,6 @@ Grape2D.WebSocket.prototype = {
 	 * Sends a message to the web socket.
 	 *
 	 * @param  {!string} msg Message to send.
-	 * @return {!boolean} True if it has succeed
 	 * @public
 	 */
 	send: function(msg) {
