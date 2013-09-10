@@ -52,7 +52,7 @@ Grape2D.LagSimulator.prototype = {
 	 * @public
 	 */
 	getVariation: function(){
-		return this.latency;
+		return this.variation;
 	},
 	/**
 	 * Sets the variation.
@@ -71,6 +71,9 @@ Grape2D.LagSimulator.prototype = {
 	 * @public
 	 */
 	simulate: function(fn){
-		setTimeout(fn, Grape2D.Math.randInt(this.latency-this.variation, this.latency+this.variation));
+		var r = Grape2D.Math.randInt(this.latency-this.variation, this.latency+this.variation);
+		setTimeout(function(){
+			fn(r);
+		}, r);
 	}
 };
