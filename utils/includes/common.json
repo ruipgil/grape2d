@@ -15,7 +15,9 @@
 	"../src/renderers/CanvasRenderer.js",
 	"../src/renderers/WireframeRenderer.js",
 
+	"../src/objects/Object2DProcessor.js",
 	"../src/objects/Object2D.js",
+	"../src/objects/NetworkObject2D.js",
 	"../src/objects/Shape.js",
 	"../src/objects/AABB.js",
 	"../src/objects/Circle.js",
@@ -68,10 +70,19 @@
 	"../src/utils/SimpleGame.js",
 
 	"../src/network/WebSocket.js",
-	"../src/network/WebSocketMessageDispatcher.js",
+	"../src/network/WebSocketMetrics.js",
 	"../src/network/SnapshotHistory.js",
 	"../src/network/LagSimulator.js",
 
-	"../src/utils/debug/TopDownBVHTreeDebugger.js"
+	"../src/network/SnapshotManager.js",
+	"../src/network/SnapshotManagerSingleton.js",
+	"../src/network/SnapshotNetworkObject2D.js",
+	"../src/network/SnapshotEvent.js",
+	"../src/network/Snapshot.js",
+
+	"../src/utils/MessageDispatcher.js",
+	"../src/utils/TimerDispatcher.js",
+	"../src/utils/debug/TopDownBVHTreeDebugger.js",
+	"../src/utils/debug/NetworkDebugger.js"
 
 ]
