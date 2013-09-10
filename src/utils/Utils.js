@@ -20,6 +20,14 @@ Grape2D.utils = {
 			height: window.innerHeight
 		};
 	},
+	/**
+	 * Requests an animation frame.
+	 *
+	 * @param  {!Function} fn Callback function.
+	 * @return {!number} Request ID.
+	 * @public
+	 * @static
+	 */
 	requestAnimationFrame: function(fn){
 		if(Grape2D.NODE){
 			return Grape2D.WINDOW.requestAnimationFrame(fn);
@@ -28,11 +36,12 @@ Grape2D.utils = {
 		}
 	},
 	/**
-	 * [cancelAnimationFrame description]
+	 * Cancels an animation frame request.
 	 *
-	 * @param  {[type]} op [description]
-	 *
-	 * @return {[type]} [description]
+	 * @param  {!number} op Animation frame request ID.
+	 * @public
+	 * @static
+	 * 
 	 * @suppress {undefinedVars}
 	 */
 	cancelAnimationFrame: function(op){
