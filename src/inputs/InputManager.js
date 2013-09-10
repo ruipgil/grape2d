@@ -754,14 +754,16 @@ Grape2D.InputManager.resizeDispatcher = function() {
 };
 /**
  * Setups globals callbacks. It must be called once for this to work.
- * 
+ *
  * @public
  */
 Grape2D.InputManager.setupGlobals = function() {
-	window.addEventListener('resize', Grape2D.InputManager.resizeDispatcher(), false);
-	window.addEventListener('keyup', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyUp), false);
-	window.addEventListener('keydown', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyDown), false);
-	window.addEventListener('keypress', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyPress), false);
+	if (!Grape2D.NODE) {
+		window.addEventListener('resize', Grape2D.InputManager.resizeDispatcher(), false);
+		window.addEventListener('keyup', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyUp), false);
+		window.addEventListener('keydown', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyDown), false);
+		window.addEventListener('keypress', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyPress), false);
+	}
 };
 /**
  * Registry of non-specific events.

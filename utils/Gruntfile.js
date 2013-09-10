@@ -20,8 +20,9 @@ module.exports = function(grunt) {
 					language_in: 'ECMASCRIPT5_STRICT',
 					summary_detail_level: 3,
 					warning_level: 'VERBOSE',
-					create_source_map: destMinFile+'.map',
-					source_map_format: 'V3'
+					create_source_map: destMinFile + '.map',
+					source_map_format: 'V3',
+					output_wrapper: '(function(){ try{ NODE = window; NODE = false; }catch(e){ NODE = true; } %output%if(NODE){module.exports = Grape2D;}else{window.Grape2D = Grape2D} })()'
 				}
 			}
 		},
@@ -35,7 +36,9 @@ module.exports = function(grunt) {
 		},
 		concat: {
 			options: {
-				separator: '\n'
+				separator: '\n',
+				banner: '(function(){ try{ NODE = window; NODE = false; }catch(e){ NODE = true; }\n',
+				footer: '\nif(NODE){module.exports = Grape2D;}else{window.Grape2D = Grape2D}})()'
 			},
 			dist: {
 				src: sourceFiles,
