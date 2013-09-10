@@ -36,7 +36,6 @@ test("GetBefore test", function(){
 test("GetAfter test", function(){
 	var sh = new Grape2D.SnapshotHistory(10);
 	fillSnapshotHistry(sh, 10, 5);
-	console.log(sh);
 	equal(sh.getAfter(3).time, 5, "After firts passed.");
 	equal(sh.getAfter(6).time, 7, "After in the middle passed.");
 	equal(sh.getAfter(19), null, "After at the end passed.");
@@ -48,6 +47,5 @@ test("Cap test", function() {
 	equal(sh.getCap(), 5, "Set cap passed.");
 	fillSnapshotHistry(sh, 5);
 	sh.setCap(4);
-	console.log(sh);
 	ok((sh.getCap() == 4) && (sh.getHistory().length == 4), "Lowered cap passed.");
 });
