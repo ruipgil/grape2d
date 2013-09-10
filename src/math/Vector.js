@@ -343,6 +343,15 @@ Grape2D.Vector.prototype = {
 	 */
 	getStaticType: function() {
 		return Grape2D.Vector.STATIC_TYPE;
+	},
+	/**
+	 * Gets if both x and y coordinates are zero.
+	 *
+	 * @return {!boolean} True if the coordinates are zero.
+	 * @public
+	 */
+	isZero: function() {
+		return this.x == 0 && this.y == 0;
 	}
 };
 
@@ -380,7 +389,7 @@ Grape2D.Vector.createFromAngle = function(angle, magnitude) {
  * @public
  */
 Grape2D.Vector.lerp = function(start, end, prc) {
-	return end.clone().sub(start).multiplyByScalar(prc);
+	return start.clone().add(end.clone().sub(start).multiplyByScalar(prc));
 };
 /**
  * Type as a string.
