@@ -16,7 +16,7 @@ var Grape2D = {
 	 * @public
 	 * @constant
 	 */
-	version: '1.2.0-alpha',
+	version: '1.3.0-alpha',
 	/**
 	 * Constant that indicates if its not running in the browser.
 	 *   False if it's not, true if it is. This is "redeclared"

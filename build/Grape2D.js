@@ -1,3 +1,8 @@
+(function(){ try{ NODE = window; NODE = false; }catch(e){ NODE = true; }
+/**
+ * @type {!boolean}
+ */
+var NODE;
 /**
  * This is the main namespace.
  * 
@@ -5,41 +10,69 @@
  * @public
  */
 var Grape2D = {
-	version: '1.2.0-alpha'
+	/**
+	 * Grape2D's version. It follows the {@link http://semver.org/} protocol.
+	 *
+	 * @type {string}
+	 * @public
+	 * @constant
+	 */
+	version: '1.3.0-alpha',
+	/**
+	 * Constant that indicates if its not running in the browser.
+	 *   False if it's not, true if it is. This is "redeclared"
+	 *   to avoid <code>variable NODE is undeclared</code>
+	 *   type warnings at compile time.
+	 *
+	 * @type {!boolean}
+	 * @public
+	 */
+	NODE: NODE,
+	/**
+	 * Window object. This is an empty object if the <code>window</code>
+	 *   variable is not defined.
+	 *
+	 * @type {!(Object|Window)}
+	 * @public
+	 * @constant
+	 */
+	WINDOW: (NODE?{}:window),
 };
 /**
- * Credits for the requestAnimationFrame and cancelAnimationFrame
+ * This is a modified version of the requestAnimationFrame and cancelAnimationFrame polyfill
  *   {@link https://gist.github.com/paulirish/1579671}
  *   {@link http://paulirish.com/2011/requestanimationframe-for-smart-animating/}
  *   {@link http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating}
  *   requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel.
  *   Under the MIT license.
  */
-(function() {
+(function(w) {
 	var lastTime = 0;
 	var vendors = ['ms', 'moz', 'webkit', 'o'];
-	for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-		window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-		window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+	for (var x = 0; x < vendors.length && !w.requestAnimationFrame; ++x) {
+		w.requestAnimationFrame = w[vendors[x] + 'RequestAnimationFrame'];
+		w.cancelAnimationFrame = w[vendors[x] + 'CancelAnimationFrame'] || w[vendors[x] + 'CancelRequestAnimationFrame'];
 	}
 
-	if (!window.requestAnimationFrame)
-		window.requestAnimationFrame = function(callback, element) {
+	if (!w.requestAnimationFrame) {
+		w.requestAnimationFrame = function(callback, element) {
 			var currTime = new Date().getTime();
 			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-			var id = window.setTimeout(function() {
+			var id = setTimeout(function() {
 					callback(currTime + timeToCall);
 				},
 				timeToCall);
 			lastTime = currTime + timeToCall;
 			return id;
 		};
+	}
 
-	if (!window.cancelAnimationFrame)
-		window.cancelAnimationFrame = function(id) {
+	if (!w.cancelAnimationFrame){
+		w.cancelAnimationFrame = function(id) {
 			clearTimeout(id);
 		};
-}());
+	}
+}(Grape2D.WINDOW));
 /**
  * Browser independent utils
  *
@@ -61,7 +94,38 @@ Grape2D.utils = {
 			width: window.innerWidth,
 			height: window.innerHeight
 		};
-	}
+	},
+	/**
+	 * Requests an animation frame.
+	 *
+	 * @param  {!Function} fn Callback function.
+	 * @return {!number} Request ID.
+	 * @public
+	 * @static
+	 */
+	requestAnimationFrame: function(fn){
+		if(Grape2D.NODE){
+			return Grape2D.WINDOW.requestAnimationFrame(fn);
+		}else{
+			return requestAnimationFrame(fn);
+		}
+	},
+	/**
+	 * Cancels an animation frame request.
+	 *
+	 * @param  {!number} op Animation frame request ID.
+	 * @public
+	 * @static
+	 * 
+	 * @suppress {undefinedVars}
+	 */
+	cancelAnimationFrame: function(op){
+		if(Grape2D.NODE){
+			return Grape2D.WINDOW.cancelAnimationFrame(op);
+		}else{
+			return cancelAnimationFrame(op);
+		}
+	},
 };
 /**
  * Clock is used to keep count of the time elapse between
@@ -114,7 +178,60 @@ Grape2D.utils.Clock.prototype = {
 		this.timeEl = 0;
 		this.frameCount = 0;
 		this.end = time;
+	},
+	/**
+	 * Gets the current time in miliseconds.
+	 *
+	 * @return {!number} Current time.
+	 * @public
+	 */
+	getTime: function(){
+		return new Date().getTime();
+	},
+	/**
+	 * Gets the current fps count.
+	 *
+	 * @return {!number} Fps count.
+	 * @public
+	 */
+	getFps: function(){
+		return this.fps;
 	}
+};
+/**
+ * A synchronized clock can keep the same time generation as,
+ *   for example, a remote server.
+ *
+ * @extends {Grape2D.utils.Clock}
+ * @constructor
+ */
+Grape2D.utils.SynchronizedClock = function() {
+	Grape2D.utils.Clock.call(this);
+	/**
+	 * Time diference between clocks.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.deltaSync = 0;
+};
+
+Grape2D.utils.SynchronizedClock.prototype = Object.create(Grape2D.utils.Clock.prototype);
+/**
+ * @override
+ */
+Grape2D.utils.SynchronizedClock.prototype.getTime = function() {
+	return Grape2D.utils.Clock.prototype.getTime.call(this) - this.deltaSync;
+};
+/**
+ * Synchronizes this clock with a remote clock, based on the
+ *   time difference.
+ *
+ * @param  {!number} syncTime Time difference between clocks.
+ * @public
+ */
+Grape2D.utils.SynchronizedClock.prototype.sync = function(syncTime) {
+	this.deltaSync = syncTime;
 };
 /**
  * Math describes the namespace that holds math functions and
@@ -211,10 +328,10 @@ Grape2D.Math = {
 		return Math.ceil(n);
 	},
 	/**
-	 * Rounds a number to the unit
+	 * Rounds a number to the unit.
 	 *
-	 * @param  {!number} n the number
-	 * @return {!number} the rounded number
+	 * @param  {!number} n Number to round.
+	 * @return {!number} Rounded number.
 	 * @public
 	 * @static
 	 */
@@ -224,6 +341,63 @@ Grape2D.Math = {
 		} else {
 			return~~ (n - 0.5);
 		}
+	},
+	/**
+	 * Rounds a number to first decimal.
+	 *
+	 * @param  {!number} n Number to round.
+	 * @return {!number} Rounded number.
+	 * @public
+	 * @static
+	 */
+	roundOne: function(n){
+		return Grape2D.Math.round(n*10)*0.1;
+	},
+	/**
+	 * Rounds a number to second decimal.
+	 *
+	 * @param  {!number} n Number to round.
+	 * @return {!number} Rounded number.
+	 * @public
+	 * @static
+	 */
+	roundTwo: function(n){
+		return Grape2D.Math.round(n*100)*0.01;
+	},
+	/**
+	 * Rounds a number to third decimal.
+	 *
+	 * @param  {!number} n Number to round.
+	 * @return {!number} Rounded number.
+	 * @public
+	 * @static
+	 */
+	roundThree: function(n){
+		return Grape2D.Math.round(n*1000)*0.001;
+	},
+	/**
+	 * Rounds a number to fourth decimal.
+	 *
+	 * @param  {!number} n Number to round.
+	 * @return {!number} Rounded number.
+	 * @public
+	 * @static
+	 */
+	roundFour: function(n){
+		return Grape2D.Math.round(n*10000)*0.0001;
+	},
+	/**
+	 * Rounds a number to nth decimal.
+	 *
+	 * @param  {!number} number Number to round.
+	 * @param  {!number} n Decimals to round.
+	 * @return {!number} Rounded number.
+	 * @public
+	 * @static
+	 */
+	roundN: function(number, n){
+		var f = Grape2D.Math.pow(2, 10);
+		return Grape2D.Math.round(n*f)/f;
 	},
 	/**
 	 * Get a random float
@@ -556,7 +730,7 @@ Grape2D.Vector.prototype = {
 	 * @public
 	 */
 	distanceTo: function(vector) {
-		return Grape2D.Math.sqrt(Grape2D.Math.sq(vector.x-this.x) + Grape2D.Math.sq(vector.y-this.y));
+		return Grape2D.Math.sqrt(Grape2D.Math.sq(vector.x - this.x) + Grape2D.Math.sq(vector.y - this.y));
 	},
 	/**
 	 * Calculates the squared distace between this and another vector.
@@ -576,11 +750,11 @@ Grape2D.Vector.prototype = {
 	 * @return {!number} Positive distance of the x coordinate.
 	 * @public
 	 */
-	xDistanceTo: function(vector){
-		if(this.x>vector.x){
-			return Grape2D.Math.abs(this.x-vector.x);
-		}else{
-			return Grape2D.Math.abs(vector.x-this.x);
+	xDistanceTo: function(vector) {
+		if (this.x > vector.x) {
+			return Grape2D.Math.abs(this.x - vector.x);
+		} else {
+			return Grape2D.Math.abs(vector.x - this.x);
 		}
 	},
 	/**
@@ -591,11 +765,11 @@ Grape2D.Vector.prototype = {
 	 * @return {!number} Positive distance of the y coordinate.
 	 * @public
 	 */
-	yDistanceTo: function(vector){
-		if(this.y>vector.y){
-			return Grape2D.Math.abs(this.y-vector.y);
-		}else{
-			return Grape2D.Math.abs(vector.y-this.y);
+	yDistanceTo: function(vector) {
+		if (this.y > vector.y) {
+			return Grape2D.Math.abs(this.y - vector.y);
+		} else {
+			return Grape2D.Math.abs(vector.y - this.y);
 		}
 	},
 	/**
@@ -650,7 +824,7 @@ Grape2D.Vector.prototype = {
 	 * @return {!Grape2D.Vector} This vector.
 	 * @public
 	 */
-	reset: function(){
+	reset: function() {
 		this.x = 0;
 		this.y = 0;
 		return this;
@@ -661,8 +835,17 @@ Grape2D.Vector.prototype = {
 	 *
 	 * @return {!string} Type.
 	 */
-	getStaticType: function(){
+	getStaticType: function() {
 		return Grape2D.Vector.STATIC_TYPE;
+	},
+	/**
+	 * Gets if both x and y coordinates are zero.
+	 *
+	 * @return {!boolean} True if the coordinates are zero.
+	 * @public
+	 */
+	isZero: function() {
+		return this.x == 0 && this.y == 0;
 	}
 };
 
@@ -676,7 +859,7 @@ Grape2D.Vector.prototype = {
  * @static
  */
 Grape2D.Vector.createFromPoints = function(a, b) {
-	return (new Grape2D.Vector(b.x - a.x, b.y - a.y));
+	return new Grape2D.Vector(b.x - a.x, b.y - a.y);
 };
 /**
  * Creates a vector from an angle and magnitude.
@@ -689,6 +872,18 @@ Grape2D.Vector.createFromPoints = function(a, b) {
  */
 Grape2D.Vector.createFromAngle = function(angle, magnitude) {
 	return new Grape2D.Vector(magnitude * Grape2D.Math.cos(angle), magnitude * Grape2D.Math.sin(angle));
+};
+/**
+ * Linear interpolation between two vectors.
+ *
+ * @param  {!Grape2D.Vector} start Start interpolation position.
+ * @param  {!Grape2D.Vector} end End interpolation position.
+ * @param  {!number} prc Percentage of the interpolation.
+ * @return {!Grape2D.Vector} Interpolated vector.
+ * @public
+ */
+Grape2D.Vector.lerp = function(start, end, prc) {
+	return start.clone().add(end.clone().sub(start).multiplyByScalar(prc));
 };
 /**
  * Type as a string.
@@ -984,6 +1179,15 @@ Grape2D.Renderer.prototype = {
 	 */
 	renderObject2D: function(obj, camera) {},
 	/**
+	 * Renders an network object to the renderer.
+	 *
+	 * @param  {!Grape2D.NetworkObject2D} obj Network object.
+	 * @param  {!Grape2D.Vector} pos Lerped position of the object.
+	 * @param  {!Grape2D.Camera} camera Camera to transform the coordinates.
+	 * @public
+	 */
+	renderNetworkObject2D: function(obj, pos, camera) {},
+	/**
 	 * Renders an image to the screen
 	 *
 	 * @param  {!Image} image DOM image.
@@ -1083,6 +1287,13 @@ Grape2D.Renderer.prototype = {
 	 */
 	renderParticle: function(particle, camera) {},
 	/**
+	 * Sets the text font.
+	 *
+	 * @param {!string} font Text font.
+	 * @public
+	 */
+	setTextFont: function(font) {},
+	/**
 	 * Renders a line segment to the renderer.
 	 *
 	 * @param  {!Grape2D.Vector} start Start position of the line.
@@ -1100,7 +1311,7 @@ Grape2D.Renderer.prototype = {
 	 *   coordinates.
 	 * @public
 	 */
-	renderPoint: function(point, camera){}
+	renderPoint: function(point, camera) {}
 };
 /**
  * This is a simple abstraction of the canvas object,
@@ -1894,6 +2105,12 @@ Grape2D.CanvasRenderer.prototype.renderObject2D = function(obj, camera) {
 /**
  * @override
  */
+Grape2D.CanvasRenderer.prototype.renderNetworkObject2D = function(obj, pos, camera) {
+	obj.getTexture().render(this, camera.wcsToViewport(this, pos));
+};
+/**
+ * @override
+ */
 Grape2D.CanvasRenderer.prototype.renderImage = function(image, sx, sy, sw, sh, dx, dy, dw, dh) {
 	this.canvas.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
 };
@@ -1989,6 +2206,12 @@ Grape2D.CanvasRenderer.prototype.setFillColor = function(color) {
 /**
  * @override
  */
+Grape2D.CanvasRenderer.prototype.setTextFont = function(font) {
+	this.canvas.setFont(font);
+};
+/**
+ * @override
+ */
 Grape2D.CanvasRenderer.prototype.renderParticle = function(particle, camera) {
 	var center = camera.wcsToViewport(this, particle.getPosition());
 	this.canvas.beginPath();
@@ -2017,16 +2240,16 @@ Grape2D.CanvasRenderer.prototype.renderPoint = function(point, camera) {
 }
 /**
  * Only renders the wireframe of (the bounding box of)
- *   {@link Grape2D.Object2D}, using another {@link Grape2D.Renderer}, 
+ *   {@link Grape2D.Object2D}, using another {@link Grape2D.Renderer},
  *   such as {@link Grape2D.CanvasRenderer}. This class is a bridge,
  *   so in fact the renderer provided is the one that is being used.
  *
  * @param  {!Grape2D.Renderer} renderer The renderer to use.
- * 
+ *
  * @implements {Grape2D.Renderer}
  * @constructor
  */
-Grape2D.WireframeRenderer = function (renderer) {
+Grape2D.WireframeRenderer = function(renderer) {
 	/**
 	 * Renderer to use as an helper.
 	 *
@@ -2040,104 +2263,111 @@ Grape2D.WireframeRenderer.prototype = Object.create(Grape2D.Renderer.prototype);
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.getWidth = function(){
+Grape2D.WireframeRenderer.prototype.getWidth = function() {
 	return this.renderer.getWidth();
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.getHalfWidth = function(){
+Grape2D.WireframeRenderer.prototype.getHalfWidth = function() {
 	return this.renderer.getHalfWidth();
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.setWidth = function(width){
+Grape2D.WireframeRenderer.prototype.setWidth = function(width) {
 	this.renderer.setWidth(width);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.getHeight = function(){
+Grape2D.WireframeRenderer.prototype.getHeight = function() {
 	return this.renderer.getHeight();
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.getHalfHeight = function(){
+Grape2D.WireframeRenderer.prototype.getHalfHeight = function() {
 	return this.renderer.getHalfHeight();
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.setHeight = function(height){
+Grape2D.WireframeRenderer.prototype.setHeight = function(height) {
 	this.renderer.setHeight(height);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderTexture = function (texture, position) {
+Grape2D.WireframeRenderer.prototype.renderTexture = function(texture, position) {
 	this.renderer.renderTexture(texture, position);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderObject2D = function (obj, camera) {
+Grape2D.WireframeRenderer.prototype.renderObject2D = function(obj, camera) {
 	this.renderPoint(obj.getPosition(), camera);
 	obj.getBoundingBox().render(this, camera);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderImage = function (image, sx, sy, sw, sh, dx, dy, dw, dh) {
+Grape2D.WireframeRenderer.prototype.renderNetworkObject2D = function(obj, pos, camera) {
+	this.renderPoint(obj.getPosition(), camera);
+	obj.getBoundingBox().render(this, camera);
+};
+/**
+ * @override
+ */
+Grape2D.WireframeRenderer.prototype.renderImage = function(image, sx, sy, sw, sh, dx, dy, dw, dh) {
 	this.renderer.renderImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderAABB = function (aabb, camera) {
+Grape2D.WireframeRenderer.prototype.renderAABB = function(aabb, camera) {
 	this.renderer.renderAABB(aabb, camera);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderCircle = function (circle, camera) {
+Grape2D.WireframeRenderer.prototype.renderCircle = function(circle, camera) {
 	this.renderer.renderCircle(circle, camera);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderPolygon = function (polygon, camera) {
+Grape2D.WireframeRenderer.prototype.renderPolygon = function(polygon, camera) {
 	this.renderer.renderPolygon(polygon, camera);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderText = function (text, position) {
+Grape2D.WireframeRenderer.prototype.renderText = function(text, position) {
 	this.renderer.renderText(text, position);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.start = function () {
+Grape2D.WireframeRenderer.prototype.start = function() {
 	this.renderer.start();
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.end = function () {
+Grape2D.WireframeRenderer.prototype.end = function() {
 	this.renderer.end();
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.appendToDOMElement = function (elm) {
+Grape2D.WireframeRenderer.prototype.appendToDOMElement = function(elm) {
 	this.renderer.appendToDOMElement(elm);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.getDOMElement = function () {
+Grape2D.WireframeRenderer.prototype.getDOMElement = function() {
 	return this.renderer.getDOMElement();
 };
 /**
@@ -2151,6 +2381,12 @@ Grape2D.WireframeRenderer.prototype.setStrokeColor = function(color) {
  */
 Grape2D.WireframeRenderer.prototype.setFillColor = function(color) {
 	this.renderer.setFillColor(color);
+};
+/**
+ * @override
+ */
+Grape2D.WireframeRenderer.prototype.setTextFont = function(font) {
+	this.renderer.setTextFont(font);
 };
 /**
  * @override
@@ -2169,6 +2405,30 @@ Grape2D.WireframeRenderer.prototype.renderLineSegment = function(start, end, cam
  */
 Grape2D.WireframeRenderer.prototype.renderPoint = function(point, camera) {
 	this.renderer.renderPoint(point, camera);
+};
+/**
+ * Processes objects. Visitor pattern.
+ *
+ * @interface
+ */
+Grape2D.Object2DProcessor = function() {};
+
+Grape2D.Object2DProcessor.prototype = {
+	constructor: Grape2D.Object2DProcessor,
+	/**
+	 * Processes an Object2D.
+	 *
+	 * @param  {!Grape2D.Object2D} object2d An Object2D.
+	 * @public
+	 */
+	processObject2D: function(object2d) {},
+	/**
+	 * Processes an NetworkObject2D.
+	 *
+	 * @param  {!Grape2D.NetworkObject2D} networkObject2D A NetworkObject2D.
+	 * @public
+	 */
+	processNetworkObject2D: function(networkObject2D) {}
 };
 /**
  * Object2D represents an object of the scene.
@@ -2490,7 +2750,87 @@ Grape2D.Object2D.prototype = {
 	 * @param  {!Grape2D.Scene} scene Scene where this object is.
 	 * @public
 	 */
-	update: function (dt, scene) {}
+	update: function (dt, scene) {},
+	/**
+	 * Processes this object thought a processor. Same as a visitor
+	 *   pattern.
+	 *
+	 * @param  {Grape2D.Object2DProcessor} processor A processor.
+	 * @public
+	 */
+	process: function(processor) {
+		processor.processObject2D(this);
+	}
+};
+/**
+ * This specifies an {@link Grape2D.Object2D} that is to be transmitted to the client or server, at any time.
+ *
+ * @param {!Object=} options Setup options. See {@link Grape2D.Object2D}.
+ * @param {!(number|string)} options.id Object unique identifier.
+ * @extends {Grape2D.Object2D}
+ * @constructor
+ */
+Grape2D.NetworkObject2D = function(options) {
+	Grape2D.Object2D.call(this, options);
+	this.id = options.id || 0;
+};
+
+Grape2D.NetworkObject2D.prototype = Object.create(Grape2D.Object2D.prototype);
+/**
+ * @override
+ */
+Grape2D.NetworkObject2D.prototype.render = function(renderer, camera) {
+	var networkClone = Grape2D.SnapshotManagerSingleton.getSnapshotNetworkObject2D(this.id);
+	if (networkClone && !networkClone.getPosition().equals(this.getPosition())) {
+		var lerp = Grape2D.Vector.lerp(this.getPosition(), networkClone.getPosition(), Grape2D.SnapshotManagerSingleton.getLerpPercent());
+		this.renderInterpolate(renderer, camera, lerp);
+	} else {
+		Grape2D.Object2D.prototype.render.call(this, renderer, camera);
+	}
+};
+/**
+ * Renders an object in an interpolating position.
+ *
+ * @param  {!Grape2D.Renderer} renderer Renderer.
+ * @param  {!Grape2D.Camera} camera Camera.
+ * @param  {!Grape2D.Vector} lerpPosition Interpolating position.
+ * @public
+ */
+Grape2D.NetworkObject2D.prototype.renderInterpolate = function(renderer, camera, lerpPosition) {
+	renderer.renderNetworkObject2D(this, lerpPosition, camera);
+};
+/**
+ * @override
+ */
+Grape2D.NetworkObject2D.prototype.process = function(processor) {
+	processor.processNetworkObject2D(this);
+};
+/**
+ * Gets the object's id.
+ *
+ * @return {!(number|string)} Object's id.
+ * @public
+ */
+Grape2D.NetworkObject2D.prototype.getId = function() {
+	return this.id;
+};
+/**
+ * Sets the object's id.
+ *
+ * @param {!(number|string)} id Object's id.
+ * @public
+ */
+Grape2D.NetworkObject2D.prototype.setId = function(id) {
+	this.id = id;
+};
+/**
+ * Creates a clone object to be passed through the network.
+ *
+ * @return {!Grape2D.SnapshotNetworkObject2D} Network clone.
+ * @public
+ */
+Grape2D.NetworkObject2D.prototype.createNetworkClone = function() {
+	return new Grape2D.SnapshotNetworkObject2D(this.id, this.getPosition().getX(), this.getPosition().getY());
 };
 /**
  * Shape is an abstract class that describes "physical", objects.
@@ -4557,14 +4897,16 @@ Grape2D.InputManager.resizeDispatcher = function() {
 };
 /**
  * Setups globals callbacks. It must be called once for this to work.
- * 
+ *
  * @public
  */
 Grape2D.InputManager.setupGlobals = function() {
-	window.addEventListener('resize', Grape2D.InputManager.resizeDispatcher(), false);
-	window.addEventListener('keyup', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyUp), false);
-	window.addEventListener('keydown', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyDown), false);
-	window.addEventListener('keypress', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyPress), false);
+	if (!Grape2D.NODE) {
+		window.addEventListener('resize', Grape2D.InputManager.resizeDispatcher(), false);
+		window.addEventListener('keyup', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyUp), false);
+		window.addEventListener('keydown', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyDown), false);
+		window.addEventListener('keypress', Grape2D.InputManager.keyDispatcher(Grape2D.InputManager.globalRegistry.keyPress), false);
+	}
 };
 /**
  * Registry of non-specific events.
@@ -4866,7 +5208,7 @@ Grape2D.InputManagerDragEvent.prototype.getDelta = function(){
  *   If a key it's press, lets say W, and it's opposite is also
  *   pressed, in this case S, the controller keeps the state that
  *   indicated that W is pressed. But when the key W is lifted
- *   up (key up event), the controller ways for the next event,
+ *   up (key up event), the controller waits for the next event,
  *   and S is not automatically press (for the controller).
  *
  * @param  {!Grape2D.Renderer} renderer Renderer to bind the events.
@@ -4911,38 +5253,54 @@ Grape2D.WASDController = function(renderer) {
 	var that = this;
 	// W key handlers
 	this.im.addKeyDown(Grape2D.InputManager.KEY.W, function() {
-		if (!that.sLock) {
+		if (!that.sLock && !that.wLock) {
+			that.w();
 			that.wLock = true;
 		}
 	});
 	this.im.addKeyUp(Grape2D.InputManager.KEY.W, function() {
+		if(that.wLock){
+			that.wUp();
+		}
 		that.wLock = false;
 	});
 	// S key handlers
 	this.im.addKeyDown(Grape2D.InputManager.KEY.S, function() {
-		if (!that.wLock) {
+		if (!that.wLock && !that.sLock) {
+			that.s();
 			that.sLock = true;
 		}
 	});
 	this.im.addKeyUp(Grape2D.InputManager.KEY.S, function() {
+		if(that.sLock){
+			that.sUp();
+		}
 		that.sLock = false;
 	});
 	// A key handlers
 	this.im.addKeyDown(Grape2D.InputManager.KEY.A, function() {
-		if (!that.dLock) {
+		if (!that.dLock && !that.aLock) {
+			that.a();
 			that.aLock = true;
 		}
 	});
 	this.im.addKeyUp(Grape2D.InputManager.KEY.A, function() {
+		if(that.aLock){
+			that.aUp();
+		}
 		that.aLock = false;
 	});
 	// D key handlers
 	this.im.addKeyDown(Grape2D.InputManager.KEY.D, function() {
-		if (!that.aLock) {
+		if (!that.aLock && !that.dLock) {
+			that.d();
 			that.dLock = true;
 		}
 	});
 	this.im.addKeyUp(Grape2D.InputManager.KEY.D, function() {
+		if(that.dLock){
+			that.dUp();
+		}
 		that.dLock = false;
 	});
 };
@@ -4955,6 +5313,12 @@ Grape2D.WASDController.prototype = {
 	 * @public
 	 */
 	w: function() {},
+	/**
+	 * Action for when the 'W' keys is released.
+	 *
+	 * @public
+	 */
+	wUp: function() {},
 	/**
 	 * Checks if the key 'W' is pressed.
 	 *
@@ -4971,6 +5335,12 @@ Grape2D.WASDController.prototype = {
 	 */
 	a: function() {},
 	/**
+	 * Action for when the 'A' keys is released.
+	 *
+	 * @public
+	 */
+	aUp: function() {},
+	/**
 	 * Checks if the key 'A' is pressed.
 	 *
 	 * @return {!boolean} True if it's pressed.
@@ -4985,6 +5355,12 @@ Grape2D.WASDController.prototype = {
 	 * @public
 	 */
 	s: function() {},
+	/**
+	 * Action for when the 'S' keys is released.
+	 *
+	 * @public
+	 */
+	sUp: function() {},
 	/**
 	 * Checks if the key 'S' is pressed.
 	 *
@@ -5001,6 +5377,12 @@ Grape2D.WASDController.prototype = {
 	 */
 	d: function() {},
 	/**
+	 * Action for when the 'D' keys is released.
+	 *
+	 * @public
+	 */
+	dUp: function() {},
+	/**
 	 * Checks if the key 'D' is pressed.
 	 *
 	 * @return {!boolean} True if it's pressed.
@@ -5008,42 +5390,8 @@ Grape2D.WASDController.prototype = {
 	 */
 	isD: function() {
 		return this.dLock;
-	},
-	/**
-	 * Setup function to execute before each dispatch
-	 *   function.
-	 *
-	 * @public
-	 */
-	setup: function() {},
-	/**
-	 * Tear down function to execute after each dispatch
-	 *   function.
-	 *
-	 * @public
-	 */
-	tearDown: function() {},
-	/**
-	 * It executes the functions for the keys pressed.
-	 *
-	 * @public
-	 */
-	dispatch: function() {
-		this.setup();
-		if (this.wLock) {
-			this.w();
-		} else if (this.sLock) {
-			this.s();
-		}
-
-		if (this.aLock) {
-			this.a();
-		} else if (this.dLock) {
-			this.d();
-		}
-		this.tearDown();
 	}
-}
+};
 /**
  * Camera is used to select the objects to display in a scene.
  *   A camera doesn't rotate or scale objects in the x and y axis,
@@ -6510,12 +6858,8 @@ Grape2D.TopDownBVHNode.prototype = {
 				this.bv = factory.merge(this.bv, objects[i].getBoundingBox());
 			}
 
-			if (r.left.length > 0) {
-				this.left = new Grape2D.TopDownBVHNode(this, r.left);
-			}
-			if (r.right.length > 0) {
-				this.right = new Grape2D.TopDownBVHNode(this, r.right);
-			}
+			this.left = new Grape2D.TopDownBVHNode(this, r.left);
+			this.right = new Grape2D.TopDownBVHNode(this, r.right);
 		}
 	},
 	/**
@@ -7279,6 +7623,14 @@ Grape2D.VoidTexture.prototype.render = function(){
 	return;
 };
 /**
+ * Static void texture. Useful to spare memory.
+ *
+ * @type {Grape2D.VoidTexture}
+ * @public
+ * @constant
+ */
+Grape2D.VoidTexture.STATIC = new Grape2D.VoidTexture();
+/**
  * A scene controls, at a high level, the running of the game.
  *   Being responsible for the updating and rendering.
  *   This is the component object of what is a composite pattern.
@@ -7552,10 +7904,9 @@ Grape2D.SimpleGame.prototype.start = function() {
 };
 /**
  * @override
- * @suppress {undefinedVars}
  */
 Grape2D.SimpleGame.prototype.stop = function() {
-	cancelAnimationFrame(this.raf);
+	Grape2D.utils.cancelAnimationFrame(this.raf);
 };
 /**
  * @override
@@ -7575,10 +7926,1309 @@ Grape2D.SimpleGame.prototype.update = function(dt) {
 Grape2D.SimpleGame.prototype.animate = function() {
 	var that = this,
 		dt = this.clock.update();
-	this.raf = requestAnimationFrame(function() {
+	this.raf = Grape2D.utils.requestAnimationFrame(function() {
 		that.animate();
 	});
 	this.update(dt);
 	this.render();
 	this.renderer.renderText("FPS: "+this.clock.fps, new Grape2D.Vector(10,10));
 };
+/**
+ * WebSocket abstraction. This, unlike the browser implementation,
+ *   doesn't (try to) establish the connection immediately. Instead
+ *   the method <code>open()</code> must be called.
+ *
+ * @param {!Object} options Setup options.
+ * @param {!string} options.address Address of the web socket server.
+ * @param {!string=} options.protocol Web socket protocol.
+ * @param {!Grape2D.utils.SynchronizedClock=} options.clock A clock, to
+ *   to be synchronized with the clock of the server.
+ *
+ * @constructor
+ */
+Grape2D.WebSocket = function(options) {
+	options = options || {};
+	/**
+	 * List of callback for the on message event.
+	 *
+	 * @type {!Array.<!Function>}
+	 * @private
+	 */
+	this.onmessageCallback = [];
+	/**
+	 * List of callback for the on close event.
+	 *
+	 * @type {!Array.<!Function>}
+	 * @private
+	 */
+	this.oncloseCallback = [];
+	/**
+	 * List of callback for the on open event.
+	 *
+	 * @type {!Array.<!Function>}
+	 * @private
+	 */
+	this.onopenCallback = [];
+	/**
+	 * List of callback for messages sent.
+	 *
+	 * @type {!Array.<!Function>}
+	 * @private
+	 */
+	this.onsendCallback = [];
+	/**
+	 * Web socket.
+	 *
+	 * @type {?WebSocket}
+	 * @private
+	 */
+	this.ws = null;
+	/**
+	 * Address to connect.
+	 *
+	 * @type {!string}
+	 * @private
+	 */
+	this.address = options.address;
+	/**
+	 * Connection's protocol.
+	 *
+	 * @type {(string|undefined)}
+	 * @private
+	 */
+	this.protocol = options.protocol || undefined;
+	/**
+	 * Network metrics.
+	 *
+	 * @type {!Grape2D.WebSocketMetrics}
+	 * @private
+	 */
+	this.metrics = new Grape2D.WebSocketMetrics(this, options.clock || undefined);
+};
+
+Grape2D.WebSocket.prototype = {
+	constructor: Grape2D.WebSocket,
+	/**
+	 * Sends a message to the web socket.
+	 *
+	 * @param  {!string} msg Message to send.
+	 * @public
+	 */
+	send: function(msg) {
+		if (this.isOpen()) {
+			this.ws.send(msg)
+			for (var i = 0; i < this.onsendCallback.length; i++) {
+				this.onsendCallback[i](msg);
+			}
+		}
+	},
+	/**
+	 * Adds a callback for the sned event.
+	 *
+	 * @param {Function} callback Callback function.
+	 * @public
+	 */
+	addOnSend: function(callback) {
+		this.onsendCallback.push(callback);
+	},
+	/**
+	 * Removes a callback for the send event.
+	 *
+	 * @param {Function} callback Callback function.
+	 * @public
+	 */
+	removeOnSend: function(callback) {
+		var idx = this.onsendCallback.indexOf(callback);
+		if (idx > -1) {
+			this.onsendCallback.splice(idx, 1);
+		}
+	},
+	/**
+	 * Adds a callback for the on message event.
+	 *
+	 * @param {Function} callback Callback function.
+	 * @public
+	 */
+	addOnMessage: function(callback) {
+		this.onmessageCallback.push(callback);
+	},
+	/**
+	 * Removes a callback for the on message event.
+	 *
+	 * @param {Function} callback Callback function.
+	 * @public
+	 */
+	removeOnMessage: function(callback) {
+		var idx = this.onmessageCallback.indexOf(callback);
+		if (idx > -1) {
+			this.onmessageCallback.splice(idx, 1);
+		}
+	},
+	/**
+	 * Adds a callback for the on close event.
+	 *
+	 * @param {Function} callback Callback function.
+	 * @public
+	 */
+	addOnClose: function(callback) {
+		this.oncloseCallback.push(callback);
+	},
+	/**
+	 * Removes a callback for the on close event.
+	 *
+	 * @param {Function} callback Callback function.
+	 * @public
+	 */
+	removeOnClose: function(callback) {
+		var idx = this.oncloseCallback.indexOf(callback);
+		if (idx > -1) {
+			this.oncloseCallback.splice(idx, 1);
+		}
+	},
+	/**
+	 * Adds a callback for the on open event.
+	 *
+	 * @param {Function} callback Callback function.
+	 * @public
+	 */
+	addOnOpen: function(callback) {
+		this.onopenCallback.push(callback);
+	},
+	/**
+	 * Removes a callback for the on open event.
+	 *
+	 * @param {Function} callback Callback function.
+	 * @public
+	 */
+	removeOnOpen: function(callback) {
+		var idx = this.onopenCallback.indexOf(callback);
+		if (idx > -1) {
+			this.onopenCallback.splice(idx, 1);
+		}
+	},
+	/**
+	 * Closes the connection.
+	 *
+	 * @public
+	 */
+	close: function() {
+		this.ws.close();
+	},
+	/**
+	 * Opens the connection. This method must be called, for
+	 *   the connection to be established.
+	 *
+	 * @public
+	 */
+	open: function() {
+		var that = this;
+		this.ws = new WebSocket(this.address, this.protocol);
+		this.ws.onopen = function(event) {
+			for (var i = 0; i < that.onopenCallback.length; i++) {
+				that.onopenCallback[i](event);
+			}
+		};
+		this.ws.onmessage = function(event) {
+			for (var i = 0; i < that.onmessageCallback.length; i++) {
+				that.onmessageCallback[i](event.data, event);
+			}
+		};
+		this.ws.onclose = function(event) {
+			for (var i = 0; i < that.oncloseCallback.length; i++) {
+				that.oncloseCallback[i](event);
+			}
+		};
+	},
+	/**
+	 * Gets the metrics of this web socket.
+	 *
+	 * @return {!Grape2D.WebSocketMetrics} Web socket's metrics.
+	 * @public
+	 */
+	getMetrics: function() {
+		return this.metrics;
+	},
+	/**
+	 * Checks if the web socket is open.
+	 *
+	 * @return {!boolean} True if it's open.
+	 * @public
+	 */
+	isOpen: function() {
+		return this.ws.readyState == this.ws.OPEN;
+	}
+};
+/**
+ * WebSocketMetrics class.
+ *
+ * @param {!Grape2D.WebSocket} webSocket WebSocket to bind.
+ * @param {!Grape2D.utils.SynchronizedClock=} syncClock A clock
+ *   synchronized with the server.
+ * @constructor
+ */
+Grape2D.WebSocketMetrics = function(webSocket, syncClock) {
+	/**
+	 * Web Socket binded.
+	 *
+	 * @type {!Grape2D.WebSocket}
+	 * @public
+	 */
+	this.ws = webSocket;
+	/**
+	 * Accumulated ping.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.pingAc = 0;
+	/**
+	 * Ping responses received.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.pingSamplesReceived = 0;
+	/**
+	 * Accumulative clock synchronization.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.syncAc = 0;
+	/**
+	 * Ping samples to send to the server.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.pingSamples = 10;
+	/**
+	 * Last ping value registered.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.pingValue = 0;
+	/**
+	 * Last time the ping value was registered.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.lastPing = 0;
+	/**
+	 * Total number of bytes sent.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.bytesSent = 0;
+	/**
+	 * Total number of bytes received.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.bytesReceived = 0;
+	/**
+	 * Time when the web socket was opened.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.start = 0;
+	/**
+	 * Bytes of the last message received.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.lastReceived = 0;
+	/**
+	 * Bytes of the last message sent.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.lastSent = 0;
+	/**
+	 * Synchronized clock with the server.
+	 *
+	 * @type {!Grape2D.utils.SynchronizedClock}
+	 * @private
+	 */
+	this.syncClock = syncClock || new Grape2D.utils.SynchronizedClock();
+
+	var that = this;
+	this.ws.addOnOpen(function() {
+		that.start = that.syncClock.getTime();
+	});
+	this.ws.addOnMessage(function(message) {
+		var byteSize = message.length;
+		that.bytesReceived += byteSize;
+		that.lastReceived = byteSize;
+		if (message.indexOf(Grape2D.WebSocketMetrics.PING_PREFIX) === 0) {
+			that.pongReceived(message);
+		}
+	});
+	this.ws.addOnSend(function(message) {
+		var byteSize = message.length;
+		that.bytesSent += byteSize;
+		that.lastSent = byteSize;
+	});
+};
+
+Grape2D.WebSocketMetrics.prototype = {
+	constructor: Grape2D.WebSocketMetrics,
+	/**
+	 * Sends a ping message.
+	 *
+	 * @public
+	 */
+	ping: function() {
+		this.pingStop = true;
+		this.pingAc = 0;
+		this.syncAc = 0;
+		this.pongSamplesReceived = 0;
+		var that = this;
+		for (var i = this.pingSamples; i > 0; i--) {
+			setTimeout(function() {
+				that.ws.send(Grape2D.WebSocketMetrics.PING_PREFIX + " " + (new Date().getTime()));
+			}, 20 * i);
+		}
+	},
+	/**
+	 * Sends back a pong message.
+	 *
+	 * @param  {!string} message Ping message, received.
+	 * @public
+	 */
+	pong: function(message) {
+		this.ws.send(message + " " + this.syncClock.getTime());
+	},
+	/**
+	 * Pong message handler. This is used to calculate the ping
+	 *   and synchronize the clock with the server.
+	 *
+	 * @param  {!string} message Pong response message.
+	 * @public
+	 */
+	pongReceived: function(message) {
+		var t4 = new Date().getTime(),
+			d = message.split(" "),
+			t1 = Number(d[1]),
+			t2 = Number(d[2]),
+			t3 = t2,
+			theta, delta;
+		theta = ((t2 - t1) + (t3 - t4)) * 0.5;
+		delta = (t4 - t1);
+		this.pingAc += delta;
+		this.syncAc += theta - delta * 0.5;
+		this.pingSamplesReceived++;
+		this.lastPing = t4;
+		if (this.pingSamplesReceived == this.pingSamples) {
+			this.pingValue = Grape2D.Math.ceil(this.pingAc / this.pingSamples);
+			this.pingSamplesReceived = 0;
+			this.syncClock.sync(Grape2D.Math.floor(this.syncAc / this.pingSamples));
+		}
+	},
+	/**
+	 * Gets the network latency, in milliseconds.
+	 *
+	 * @return {!number} Ping value.
+	 * @public
+	 */
+	getPing: function() {
+		return this.pingValue;
+	},
+	/**
+	 * Gets the last time a pong response was received.
+	 *
+	 * @return {!number} Timestamp, in milliseconds.
+	 * @public
+	 */
+	getLastPing: function() {
+		return this.lastPing;
+	},
+	/**
+	 * Gets the number of bytes sent, on the last message.
+	 *
+	 * @return {!number} Bytes sent.
+	 * @public
+	 */
+	getLastBytesSent: function() {
+		return this.lastSent;
+	},
+	/**
+	 * Gets the total number of bytes sent.
+	 *
+	 * @return {!number} Bytes sent.
+	 * @public
+	 */
+	getBytesSent: function() {
+		return this.bytesSent;
+	},
+	/**
+	 * Gets the number of bytes sent per second. Average
+	 *   between the total number of bytes sent and the
+	 *   time since the web socket was open.
+	 *
+	 * @return {!number} Average bytes per second.
+	 * @public
+	 */
+	getBytesSentPerSec: function() {
+		return this.bytesSent / ((new Date().getTime()) - this.start);
+	},
+	/**
+	 * Gets the number of bytes received, on the last message.
+	 *
+	 * @return {!number} Bytes received.
+	 * @public
+	 */
+	getLastBytesReceived: function() {
+		return this.lastReceived;
+	},
+	/**
+	 * Gets the total number of bytes received.
+	 *
+	 * @return {!number} Bytes received.
+	 * @public
+	 */
+	getBytesReceived: function() {
+		return this.bytesSent;
+	},
+	/**
+	 * Gets the number of bytes sent per second. Average
+	 *   between the total number of bytes sent and the
+	 *   time since the web socket was open.
+	 *
+	 * @return {!number} Average bytes per second.
+	 * @public
+	 */
+	getBytesReceivedPerSec: function() {
+		return this.bytesReceived / ((new Date().getTime()) - this.start);
+	}
+};
+/**
+ * Prefix of the ping message. Any message with this prefix
+ *   is treated as a ping message.
+ *
+ * @type {!string}
+ * @public
+ * @constant
+ */
+Grape2D.WebSocketMetrics.PING_PREFIX = "'";
+/**
+ * This holds a limited history of snapshots received from
+ *   the server. The snapshots are organized by the order
+ *   received, and hold the current time when they were
+ *   received.
+ *
+ * @param {!number=} cap Maximum number of entries on the
+ *   history. The default value is 10.
+ * @constructor
+ */
+Grape2D.SnapshotHistory = function(cap) {
+	/**
+	 * Maximum length of the history.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.cap = cap || 10;
+	/**
+	 * List with the history record.
+	 *
+	 * @type {!Array.<!Grape2D.Snapshot>}
+	 * @private
+	 */
+	this.history = [];
+};
+Grape2D.SnapshotHistory.prototype = {
+	constructor: Grape2D.SnapshotHistory,
+	/**
+	 * Adds a snapshot to the history. Discards the older one
+	 *   if it has reached the entry limit.
+	 *
+	 * @param {!Grape2D.Snapshot} snapshot Snapshot received.
+	 * @public
+	 */
+	add: function(snapshot) {
+		if (this.history.length >= this.cap) {
+			this.history.shift();
+		}
+		this.history.push(snapshot);
+		this.history.sort(function(a, b){
+			return a.getTime()-b.getTime();
+		});
+	},
+	/**
+	 * Gets the snapshot received immediately before a
+	 *   given time.
+	 *
+	 * @param  {!number} time Reference time, in milliseconds.
+	 * @return {?Grape2D.Snapshot} A string if it has found a valid
+	 *   snapshot before the time, null otherwise.
+	 * @public
+	 */
+	getBefore: function(time) {
+		for (var i = this.history.length-1; i >= 0; i--) {
+			if (this.history[i].getTime() < time) {
+				return this.history[i];
+			}
+		}
+		return null;
+	},
+	/**
+	 * Gets the snapshot received immediately after a
+	 *   given time.
+	 *
+	 * @param  {!number} time Reference time, in milliseconds.
+	 * @return {?Grape2D.Snapshot} A string if it has found a valid
+	 *   snapshot after the time, null otherwise.
+	 * @public
+	 */
+	getAfter: function(time) {
+		for (var i = 0; i < this.history.length; i++) {
+			if (this.history[i].getTime() > time) {
+				return this.history[i];
+			}
+		}
+		return null;
+	},
+	/**
+	 * Gets the history list.
+	 *
+	 * @return {!Array.<!Grape2D.Snapshot>} Snapshot
+	 *   history record.
+	 * @public
+	 */
+	getHistory: function() {
+		return this.history;
+	},
+	/**
+	 * Gets the limit of snapshots recorded.
+	 *
+	 * @return {!number} Maximum number of snapshots that can
+	 *   be stored.
+	 * @public
+	 */
+	getCap: function() {
+		return this.cap;
+	},
+	/**
+	 * Sets the limit of snapshots recorded. If the limit is lower
+	 *   than the previous one, the record is adjusted to the correct
+	 *   length if needed be.
+	 *
+	 * @param {!number} cap Maximum number of snapshots that can
+	 *   be stored.
+	 * @public
+	 */
+	setCap: function(cap) {
+		this.cap = cap;
+		while (this.history.length > this.cap) {
+			this.history.shift();
+		}
+	}
+};
+/**
+ * Simulates lag behavior, by delayed function calls.
+ *
+ * @param {!Object=} options Setup options.
+ * @param {!number=} options.latency Desired based latency.
+ * @param {!number=} options.variation Variation of the base
+ *   latency. This will create an effective latency of <code>
+ *   rand(latency-variation, latency+variation)</code>
+ * @constructor
+ */
+Grape2D.LagSimulator = function(options) {
+	options = options || {};
+	/**
+	 * Base latency.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.latency = options.latency || 0;
+	/**
+	 * Latency variation.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.variation = options.variation || 0;
+};
+Grape2D.LagSimulator.prototype = {
+	constructor: Grape2D.LagSimulator,
+	/**
+	 * Gets the latency.
+	 *
+	 * @return {!number} Latency.
+	 * @public
+	 */
+	getLatency: function(){
+		return this.latency;
+	},
+	/**
+	 * Sets the latency.
+	 *
+	 * @param {!number} latency Latency.
+	 * @public
+	 */
+	setLatency: function(latency){
+		this.latency = latency;
+	},
+	/**
+	 * Gets the variation.
+	 *
+	 * @return {!number} Variation.
+	 * @public
+	 */
+	getVariation: function(){
+		return this.variation;
+	},
+	/**
+	 * Sets the variation.
+	 *
+	 * @param {!number} variation Variation.
+	 * @public
+	 */
+	setVariation: function(variation){
+		this.variation = variation;
+	},
+	/**
+	 * Simulates a lagged call to a function.
+	 *
+	 * @param  {!Function} fn Function to simulate
+	 *   the lag.
+	 * @public
+	 */
+	simulate: function(fn){
+		var r = Grape2D.Math.randInt(this.latency-this.variation, this.latency+this.variation);
+		setTimeout(function(){
+			fn(r);
+		}, r);
+	}
+};
+/**
+ * Snapshot manager.
+ *
+ * @param {!Grape2D.utils.Clock} clock A clock.
+ * @param {!Grape2D.SnapshotHistory} history Snapshot buffer.
+ * @param {!number} lerp Interpolation time, in millisecond.
+ * @constructor
+ */
+Grape2D.SnapshotManager = function(clock, history, lerp) {
+	/**
+	 * Game clock.
+	 *
+	 * @type {!Grape2D.utils.Clock}
+	 * @private
+	 */
+	this.clock = clock;
+	/**
+	 * Snapshot history.
+	 *
+	 * @type {!Grape2D.SnapshotHistory}
+	 * @private
+	 */
+	this.history = history;
+	/**
+	 * Interpolation time between state and snapshot.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.lerp = lerp || 100;
+	/**
+	 * Inverse of the interpolation time.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.iLerp = 1 / this.lerp;
+	/**
+	 * Current snapshot, being used.
+	 *
+	 * @type {?Grape2D.Snapshot}
+	 * @private
+	 */
+	this.currentSnapshot = null;
+	/**
+	 * Interpolation percent, of the cycle.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.lerpPercent = 0;
+};
+Grape2D.SnapshotManager.prototype = {
+	constructor: Grape2D.SnapshotManager,
+	/**
+	 * Gets the current snapshot.
+	 *
+	 * @return {?Grape2D.Snapshot} Snapshot object.
+	 * @public
+	 */
+	getSnapshot: function() {
+		return this.currentSnapshot;
+	},
+	/**
+	 * Gets a snapshot object by it's id.
+	 *
+	 * @param  {!(number|string)} id Object's id.
+	 * @return {Grape2D.SnapshotNetworkObject2D} Object.
+	 * @public
+	 */
+	getSnapshotNetworkObject2D: function(id) {
+		return (this.currentSnapshot ? this.currentSnapshot[id] : null);
+	},
+	/**
+	 * Gets the interpolation percentage.
+	 *
+	 * @return {!number} Number between 0 and 1.
+	 * @public
+	 */
+	getLerpPercent: function() {
+		return this.lerpPercent;
+	},
+	/**
+	 * Method to set up the cycle.
+	 *
+	 * @public
+	 */
+	update: function() {
+		var time = this.clock.getTime();
+		this.currentSnapshot = this.history.getBefore(time);
+		if (this.currentSnapshot) {
+			this.lerpPercent = (time - this.lerp - this.currentSnapshot.getTime()) / this.iLerp;
+		} else {
+			this.lerpPercent = 0;
+		}
+	}
+};
+/**
+ * Snapshot Manager Singleton.
+ *
+ * @class
+ */
+Grape2D.SnapshotManagerSingleton = {
+	/**
+	 * Snapshot Manager in use.
+	 *
+	 * @type {?Grape2D.SnapshotManager}
+	 * @private
+	 * @static
+	 */
+	instance: null,
+	/**
+	 * Sets a snapshot manager.
+	 *
+	 * @param {!Grape2D.SnapshotManager} instance Snapshot manager.
+	 * @public
+	 * @static
+	 */
+	setInstance: function(instance){
+		Grape2D.SnapshotManagerSingleton.instance = instance;
+	},
+	/**
+	 * Gets the snapshot manager.
+	 *
+	 * @return {?Grape2D.SnapshotManager} Snapshot manager.
+	 * @public
+	 * @static
+	 */
+	getInstance: function(){
+		return Grape2D.SnapshotManagerSingleton.instance;
+	},
+	/**
+	 * Gets a snapshot object by it's id. A snapshot manager must be set before.
+	 *
+	 * @param {!(number|string)} id Object's id.
+	 * @return {?Grape2D.SnapshotNetworkObject2D} Object with the id.
+	 * @public
+	 * @static
+	 */
+	getSnapshotNetworkObject2D: function(id){
+		return Grape2D.SnapshotManagerSingleton.instance.getSnapshotNetworkObject2D(id);
+	},
+	/**
+	 * Gets the current interpolation percentage.
+	 *
+	 * @return {!number} Percentage, between 0 and 1.
+	 * @public
+	 * @static
+	 */
+	getLerpPercent: function(){
+		return Grape2D.SnapshotManagerSingleton.instance.getLerpPercent();
+	},
+	/**
+	 * Updates the current snapshot manager.
+	 *
+	 * @public
+	 * @static
+	 */
+	update: function(){
+		Grape2D.SnapshotManagerSingleton.instance.update();
+	}
+};
+/**
+ * Represents a simplified version of a network object.
+ *   To be converted to or from a snapshot.
+ *
+ * @param {!(number|string)} id Object unique identifier.
+ * @param {!number} posX The x coordinate, of the position.
+ * @param {!number} posY The y coordinate, of the position.
+ * @constructor
+ */
+Grape2D.SnapshotNetworkObject2D = function(id, posX, posY) {
+	/**
+	 * Unique object id.
+	 *
+	 * @type {!(number|string)}
+	 * @private
+	 */
+	this.id = id;
+	/**
+	 * Object's position.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.position = new Grape2D.Vector(posX, posY);
+};
+
+Grape2D.SnapshotNetworkObject2D.prototype = {
+	constructor: Grape2D.SnapshotNetworkObject2D,
+	/**
+	 * Gets object's id.
+	 *
+	 * @return {!(number|string)} Object id.
+	 * @public
+	 */
+	getId: function() {
+		return this.id;
+	},
+	/**
+	 * Gets object's position.
+	 *
+	 * @return {!Grape2D.Vector} Object position.
+	 * @public
+	 */
+	getPosition: function() {
+		return this.position;
+	},
+	/**
+	 * Updates the corresponding {@link Grape2D.NetworkObject2D},
+	 *   with the data of this one.
+	 *
+	 * @param  {!Object=} param An arbitrary object.
+	 * @public
+	 */
+	updateNetworkObject2D: function(param) {
+		/*var nob = Grape2D.NetworkObject2DBase.get(this.id);
+		if (nob) {
+			nob.setPosition(this.position);
+		}*/
+	}
+};
+/**
+ * Grape2D.SnapshotEvent class.
+ *
+ * @param {!(number|string)} id Event unique identifier.
+ * @constructor
+ */
+Grape2D.SnapshotEvent = function(id) {
+	/**
+	 * Event unique identifier.
+	 *
+	 * @type {!(number|string)}
+	 * @private
+	 */
+	this.id = id;
+};
+
+Grape2D.SnapshotEvent.prototype = {
+	constructor: Grape2D.SnapshotEvent,
+	/**
+	 * Gets the event id.
+	 *
+	 * @return {!(number|string)} Event id.
+	 * @public
+	 */
+	getId: function() {
+		return this.id;
+	},
+	/**
+	 * Fires the event.
+	 *
+	 * @param {!Object=} param An arbitrary object.
+	 * @public
+	 */
+	fire: function(param) {}
+};
+/**
+ * Snapshot class.
+ *
+ * @param {!number} time Time of the snapshot.
+ * @param {!Array.<!Grape2D.SnapshotEvent>=} events List of events in
+ *   the snapshots.
+ * @param {!Object.<!(number|string), !Grape2D.SnapshotNetworkObject2D>=} networkObjects List
+ *   of objects in the snapshot.
+ * @constructor
+ */
+Grape2D.Snapshot = function(time, events, networkObjects) {
+	/**
+	 * Snapshot time.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.time = time;
+	/**
+	 * Snapshot events.
+	 *
+	 * @type {!Array.<!Grape2D.SnapshotEvent>}
+	 * @private
+	 */
+	this.events = events || [];
+	/**
+	 * Snapshot objects.
+	 *
+	 * @type {!Object.<!(number|string), !Grape2D.SnapshotNetworkObject2D>}
+	 * @private
+	 */
+	this.networkObjects = networkObjects || {};
+};
+
+Grape2D.Snapshot.prototype = {
+	constructor: Grape2D.Snapshot,
+	/**
+	 * Adds an event to the snapshot.
+	 *
+	 * @param {!Grape2D.SnapshotEvent} event Snapshot event.
+	 * @public
+	 */
+	addEvent: function(event) {
+		this.events.push(event);
+	},
+	/**
+	 * Adds an object to the snapshot.
+	 *
+	 * @param {!Grape2D.SnapshotNetworkObject2D} sno2d Snapshot object.
+	 * @public
+	 */
+	addSnapshotNetworkObject2D: function(sno2d) {
+		this.networkObjects[sno2d.getId()] = sno2d;
+	},
+	/**
+	 * Gets the snapshot time.
+	 *
+	 * @return {!number} Time.
+	 * @public
+	 */
+	getTime: function() {
+		return this.time;
+	},
+	/**
+	 * Gets the snapshot events.
+	 *
+	 * @return {!Array.<!Grape2D.SnapshotEvent>} Snapshot events.
+	 * @public
+	 */
+	getEvents: function() {
+		return this.events;
+	},
+	/**
+	 * Gets an object
+	 *
+	 * @param  {!(number|string)} id Object's id.
+	 * @return {!(Grape2D.SnapshotNetworkObject2D|undefined)} Object.
+	 */
+	getSnapshotNetworkObject2D: function(id) {
+		return this.networkObjects[id];
+	},
+	/**
+	 * Fires the events.
+	 *
+	 * @param  {!Object=} param An arbitrary object to be passed. Since
+	 *   events can be used widely an object with the necessary
+	 *   information may be passed.
+	 * @public
+	 */
+	fireEvents: function(param) {
+		for(var i=0; i<this.events.length; i++){
+			this.events[i].fire(param);
+		}
+	},
+	/**
+	 * Updates the {@link Grape2D.NetworkObject2D}s of this snapshot.
+	 *
+	 * @param  {!Object=} param An arbitrary object to be passed.
+	 * @public
+	 */
+	updateNetworkObject2D: function(param){
+		for(var x in this.networkObjects){
+			this.networkObjects[x].updateNetworkObject2D(param);
+		}
+	},
+	/**
+	 * Dispatches the tasks of this snapshot, by firing the events and
+	 *   updating {@link Grape2D.NetworkObject2D}s.
+	 *
+	 * @param  {!Object=} eventsParam Arbitrary object. To be passed to
+	 *   {@link Grape2D.Snapshot.fireEvents}.
+	 * @param  {!Object=} objsParam Arbitrary object. To be passed to
+	 *   {@link Grape2D.Snapshot.fireEvents}.
+	 * @public
+	 */
+	dispatch: function(eventsParam, objsParam){
+		this.fireEvents(eventsParam);
+		this.updateNetworkObject2D(objsParam);
+	}
+};
+/**
+ * Dispatches messages by callback function if they match the
+ *   correspondent regular expression.
+ *
+ * @constructor
+ */
+Grape2D.utils.MessageDispatcher = function() {
+	this.stack = [];
+};
+
+Grape2D.utils.MessageDispatcher.prototype = {
+	constructor: Grape2D.utils.MessageDispatcher,
+	/**
+	 * Adds callback for a message that returns <code>true</code>
+	 *   in the test of the regular expression.
+	 *
+	 * @param {!RegExp} regex Regular expression to match.
+	 * @param {function(!string, !Object=)} callback Function to be
+	 *   called when the message matches the regular expression.
+	 * @public
+	 */
+	add: function(regex, callback) {
+		this.stack.push({
+			regex: regex,
+			callback: callback
+		});
+	},
+	/**
+	 * Removes a callback.
+	 *
+	 * @param  {!RegExp} regex Regular expression associated with the
+	 *   callback to remove.
+	 * @public
+	 */
+	remove: function(regex) {
+		var rs = regex.toString();
+		for (var i = 0; i < this.stack.length; i++) {
+			if (this.stack[i].regex.toString() == rs) {
+				this.stack.splice(i, 1);
+			}
+		}
+	},
+	/**
+	 * Dispatches the callbacks associated with the regular expressions
+	 *   matching the message.
+	 *
+	 * @param  {!string} message Message to be dispatched.
+	 * @param  {!Object=} param Additional arguments to be passed
+	 *   through.
+	 * @public
+	 */
+	dispatch: function(message, param) {
+		var current;
+		for (var i = 0; i < this.stack.length; i++) {
+			current = this.stack[i];
+			if (current.regex.test(message)) {
+				this.stack[i].callback(message, param);
+			}
+		}
+	}
+};
+/**
+ * Timer class. This is not handling double calls or more for long intervals.
+ *
+ * @constructor
+ */
+Grape2D.utils.TimerDispatcher = function() {
+	/**
+	 * Internal representation of the callbacks and internal timers.
+	 *
+	 * @type {!Array.<Object.<!string,!(number|Function|boolean)>>}
+	 * @private
+	 */
+	this.tm = [];
+};
+
+Grape2D.utils.TimerDispatcher.prototype = {
+	constructor: Grape2D.utils.TimerDispatcher,
+	/**
+	 * Adds.
+	 *
+	 * @param {!number} interv Time interval between calls, in milliseconds.
+	 * @param {Function} callback Function to be called after the interval has run out.
+	 * @param {!boolean=} remove True to remove after it has been called one time.
+	 * @public
+	 */
+	add: function(interv, callback, remove) {
+		var storedObj = {
+			interval: interv,
+			callback: callback,
+			remaining: interv,
+			remove: remove || false
+		};
+		this.tm.push(storedObj);
+	},
+	/**
+	 * Dispatches the calls if its time for it, or updates the internal timers, preparing for the next update.
+	 *
+	 * @param  {!number} dt Delta time, since the last dispatch call.
+	 * @public
+	 */
+	dispatch: function(dt) {
+		var current;
+		var remove = [];
+		for (var i = 0; i < this.tm.length; i++) {
+			current = this.tm[i];
+			if (current.remaining <= dt) {
+				current.callback();
+				if (current.remove) {
+					remove.push(i);
+				} else {
+					current.remaining = Grape2D.Math.clamp(current.interval - (current.remaining - dt), 0, current.interval);
+				}
+			} else {
+				current.remaining -= dt;
+			}
+		}
+		for (i = 0; i < remove.length; i++) {
+			this.tm.splice(remove[i], 1);
+		}
+	}
+};
+/**
+ * Constant that represents a second.
+ *
+ * @type {!number}
+ * @constant
+ * @public
+ */
+Grape2D.utils.TimerDispatcher.SECOND = 1000;
+/**
+ * Constant that represents a minute.
+ *
+ * @type {!number}
+ * @constant
+ * @public
+ */
+Grape2D.utils.TimerDispatcher.MINUTE = Grape2D.utils.TimerDispatcher.SECOND * 60;
+/**
+ * Constant that represents an hour.
+ *
+ * @type {!number}
+ * @constant
+ * @public
+ */
+Grape2D.utils.TimerDispatcher.HOUR = Grape2D.utils.TimerDispatcher.MINUTE * 60;
+Grape2D.TopDownBVHTreeDebugger = {
+	renderNode: function(node, renderer, camera) {
+		node.getBoundingVolume().render(renderer, camera);
+		renderer.renderText(node.getDepth(), camera.wcsToViewport(renderer, node.getBoundingVolume().getPosition()));
+		if (node.getLeft()) {
+			renderer.setStrokeColor("rgba(0,255,0,0.6)");
+			Grape2D.TopDownBVHTreeDebugger.renderNode(node.getLeft(), renderer, camera);
+			renderer.setStrokeColor("rgba(0,0,0,1)");
+		}
+		if (node.getRight()) {
+			renderer.setStrokeColor("rgba(0,0,255,0.6)");
+			Grape2D.TopDownBVHTreeDebugger.renderNode(node.getRight(), renderer, camera);
+			renderer.setStrokeColor("rgba(0,0,0,1)");
+		}
+	},
+	render: function(tree, renderer, camera) {
+		if (tree.getRootNode()) {
+			Grape2D.TopDownBVHTreeDebugger.renderNode(tree.getRootNode(), renderer, camera);
+		}
+	}
+};
+/**
+ * Debugs the network data income and outcome, by rendering
+ *   that information to the renderer.
+ *
+ * @class
+ */
+Grape2D.utils.NetworkDebugger = {
+	/**
+	 * Position of the ping information.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @public
+	 * @static
+	 */
+	pingPos: new Grape2D.Vector(85, 20),
+	/**
+	 * Position of the last income data size.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @public
+	 * @static
+	 */
+	inPos: new Grape2D.Vector(20, 35),
+	/**
+	 * Position of the income rate of data.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @public
+	 * @static
+	 */
+	inRatePos: new Grape2D.Vector(88, 35),
+	/**
+	 * Position of the last outcome data size.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @public
+	 * @static
+	 */
+	outPos: new Grape2D.Vector(20, 50),
+	/**
+	 * Position of the outcome rate of data.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @public
+	 * @static
+	 */
+	outRatePos: new Grape2D.Vector(88, 50),
+	/**
+	 * Debug text font.
+	 *
+	 * @type {!string}
+	 * @public
+	 * @static
+	 */
+	textFont: "13px Consolas",
+	/**
+	 * Renders the information to a renderer.
+	 *
+	 * @param  {!Grape2D.WebSocket} webSocket Web socket to debug.
+	 * @param  {!Grape2D.Renderer} renderer Renderer to render the
+	 *   debug information.
+	 * @param  {!Grape2D.Camera} camera Camera to transform the
+	 *   coordinates.
+	 * @public
+	 * @static
+	 */
+	render: function(webSocket, renderer, camera) {
+		var metrics = webSocket.getMetrics();
+		renderer.setTextFont(Grape2D.utils.NetworkDebugger.textFont);
+		renderer.renderText("ping: " + metrics.getPing() + " ms", Grape2D.utils.NetworkDebugger.pingPos);
+		renderer.renderText("in : " + metrics.getLastBytesReceived(), Grape2D.utils.NetworkDebugger.inPos);
+		renderer.renderText(Grape2D.Math.roundTwo(metrics.getBytesReceivedPerSec()) + " k/s", Grape2D.utils.NetworkDebugger.inRatePos);
+		renderer.renderText("out: " + metrics.getLastBytesSent(), Grape2D.utils.NetworkDebugger.outPos);
+		renderer.renderText(Grape2D.Math.roundTwo(metrics.getBytesSentPerSec()) + " k/s", Grape2D.utils.NetworkDebugger.outRatePos);
+	}
+};
+if(NODE){module.exports = Grape2D;}else{window.Grape2D = Grape2D}})()
