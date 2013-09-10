@@ -318,5 +318,15 @@ Grape2D.Object2D.prototype = {
 	 * @param  {!Grape2D.Scene} scene Scene where this object is.
 	 * @public
 	 */
-	update: function (dt, scene) {}
+	update: function (dt, scene) {},
+	/**
+	 * Processes this object thought a processor. Same as a visitor
+	 *   pattern.
+	 *
+	 * @param  {Grape2D.Object2DProcessor} processor A processor.
+	 * @public
+	 */
+	process: function(processor) {
+		processor.processObject2D(this);
+	}
 };
