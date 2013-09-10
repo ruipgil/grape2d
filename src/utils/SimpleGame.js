@@ -95,10 +95,9 @@ Grape2D.SimpleGame.prototype.start = function() {
 };
 /**
  * @override
- * @suppress {undefinedVars}
  */
 Grape2D.SimpleGame.prototype.stop = function() {
-	cancelAnimationFrame(this.raf);
+	Grape2D.utils.cancelAnimationFrame(this.raf);
 };
 /**
  * @override
@@ -118,7 +117,7 @@ Grape2D.SimpleGame.prototype.update = function(dt) {
 Grape2D.SimpleGame.prototype.animate = function() {
 	var that = this,
 		dt = this.clock.update();
-	this.raf = requestAnimationFrame(function() {
+	this.raf = Grape2D.utils.requestAnimationFrame(function() {
 		that.animate();
 	});
 	this.update(dt);
