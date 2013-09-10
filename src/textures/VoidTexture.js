@@ -49,3 +49,11 @@ Grape2D.VoidTexture.prototype.setHeight = function(height){
 Grape2D.VoidTexture.prototype.render = function(){
 	return;
 };
+/**
+ * Static void texture. Useful to spare memory.
+ *
+ * @type {Grape2D.VoidTexture}
+ * @public
+ * @constant
+ */
+Grape2D.VoidTexture.STATIC = new Grape2D.VoidTexture();
