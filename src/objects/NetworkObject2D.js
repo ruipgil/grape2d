@@ -19,9 +19,9 @@ Grape2D.NetworkObject2D.prototype.render = function(renderer, camera) {
 	var networkClone = Grape2D.SnapshotManagerSingleton.getSnapshotNetworkObject2D(this.id);
 	if (networkClone && !networkClone.getPosition().equals(this.getPosition())) {
 		var lerp = Grape2D.Vector.lerp(this.getPosition(), networkClone.getPosition(), Grape2D.SnapshotManagerSingleton.getLerpPercent());
-		this.renderInterpolate(renderer, camera, lerp);
+		this.renderInterpolate(renderer, camera, lerp, snapshot);
 	} else {
-		Grape2D.Object2D.prototype.render.call(this, renderer, camera);
+		this.renderNormal(renderer, camera);
 	}
 };
 /**
@@ -34,6 +34,9 @@ Grape2D.NetworkObject2D.prototype.render = function(renderer, camera) {
  */
 Grape2D.NetworkObject2D.prototype.renderInterpolate = function(renderer, camera, lerpPosition) {
 	renderer.renderNetworkObject2D(this, lerpPosition, camera);
+};
+Grape2D.NetworkObject2D.prototype.renderNormal = function(renderer, camera) {
+	Grape2D.Object2D.prototype.render.call(this, renderer, camera);
 };
 /**
  * @override

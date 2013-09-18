@@ -207,4 +207,28 @@ Grape2D.CanvasRenderer.prototype.renderPoint = function(point, camera) {
 	this.canvas.beginPath();
 	this.canvas.arc(center.x, center.y, 2, 0, Grape2D.Math.PIx2, false);
 	this.canvas.fill();
-}
+};
+/**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.save = function() {
+	this.canvas.save();
+};
+/**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.restore = function() {
+	this.canvas.restore();
+};
+/**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.translate = function(vector) {
+	this.canvas.translate(vector.getX(), vector.getY());
+};
+/**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.rotate = function(angle) {
+	this.canvas.rotate(angle);
+};

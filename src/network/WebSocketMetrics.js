@@ -107,9 +107,6 @@ Grape2D.WebSocketMetrics = function(webSocket, syncClock) {
 		var byteSize = message.length;
 		that.bytesReceived += byteSize;
 		that.lastReceived = byteSize;
-		if (message.indexOf(Grape2D.WebSocketMetrics.PING_PREFIX) === 0) {
-			that.pongReceived(message);
-		}
 	});
 	this.ws.addOnSend(function(message) {
 		var byteSize = message.length;
@@ -123,42 +120,45 @@ Grape2D.WebSocketMetrics.prototype = {
 	/**
 	 * Sends a ping message.
 	 *
+	 * @param {function(number):string} pingEncoder Function that
+	 *   encodes the ping message.
 	 * @public
 	 */
-	ping: function() {
+	ping: function(pingEncoder) {
 		this.pingStop = true;
 		this.pingAc = 0;
 		this.syncAc = 0;
 		this.pongSamplesReceived = 0;
-		var that = this;
+		var that = this,
+			fn = function() {
+				that.ws.send(pingEncoder(new Date().getTime()));
+			};
 		for (var i = this.pingSamples; i > 0; i--) {
-			setTimeout(function() {
-				that.ws.send(Grape2D.WebSocketMetrics.PING_PREFIX + " " + (new Date().getTime()));
-			}, 20 * i);
+			setTimeout(fn, 20 * i);
 		}
 	},
 	/**
 	 * Sends back a pong message.
 	 *
+	 * @param  {!function(string, number)} pongEncoder Function that
+	 *   encodes the pong function.
 	 * @param  {!string} message Ping message, received.
 	 * @public
 	 */
-	pong: function(message) {
-		this.ws.send(message + " " + this.syncClock.getTime());
+	pong: function(pongEncoder, message) {
+		this.ws.send(pongEncoder(message, this.syncClock.getTime()));
 	},
 	/**
 	 * Pong message handler. This is used to calculate the ping
 	 *   and synchronize the clock with the server.
 	 *
-	 * @param  {!string} message Pong response message.
+	 * @param  {!number} t1 Request time.
+	 * @param  {!number} t2 Request receiving time.
+	 * @param  {!number} t4 Pong message time.
 	 * @public
 	 */
-	pongReceived: function(message) {
-		var t4 = new Date().getTime(),
-			d = message.split(" "),
-			t1 = Number(d[1]),
-			t2 = Number(d[2]),
-			t3 = t2,
+	pongReceived: function(t1, t2, t4) {
+		var t3 = t2,
 			theta, delta;
 		theta = ((t2 - t1) + (t3 - t4)) * 0.5;
 		delta = (t4 - t1);
@@ -249,12 +249,3 @@ Grape2D.WebSocketMetrics.prototype = {
 		return this.bytesReceived / ((new Date().getTime()) - this.start);
 	}
 };
-/**
- * Prefix of the ping message. Any message with this prefix
- *   is treated as a ping message.
- *
- * @type {!string}
- * @public
- * @constant
- */
-Grape2D.WebSocketMetrics.PING_PREFIX = "'";

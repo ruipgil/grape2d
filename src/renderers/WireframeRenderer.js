@@ -166,3 +166,27 @@ Grape2D.WireframeRenderer.prototype.renderLineSegment = function(start, end, cam
 Grape2D.WireframeRenderer.prototype.renderPoint = function(point, camera) {
 	this.renderer.renderPoint(point, camera);
 };
+/**
+ * @override
+ */
+Grape2D.WireframeRenderer.prototype.save = function() {
+	this.renderer.save();
+};
+/**
+ * @override
+ */
+Grape2D.WireframeRenderer.prototype.restore = function() {
+	this.renderer.restore();
+};
+/**
+ * @override
+ */
+Grape2D.WireframeRenderer.prototype.translate = function(vector) {
+	this.renderer.translate(vector.getX(), vector.getY());
+};
+/**
+ * @override
+ */
+Grape2D.WireframeRenderer.prototype.rotate = function(angle) {
+	this.renderer.rotate(angle);
+};

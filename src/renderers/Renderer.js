@@ -199,5 +199,33 @@ Grape2D.Renderer.prototype = {
 	 *   coordinates.
 	 * @public
 	 */
-	renderPoint: function(point, camera) {}
+	renderPoint: function(point, camera) {},
+	/**
+	 * Saves the current renderer setting, i.e. translation state,
+	 *   rotation, font style, etc.
+	 *
+	 * @public
+	 */
+	save: function() {},
+	/**
+	 * Restores a the last saved state.
+	 *
+	 * @public
+	 */
+	restore: function() {},
+	/**
+	 * Translates rendering position. The default value is <code>
+	 *   (0,0)</code>.
+	 *
+	 * @param {!Grape2D.Vector} vector Translation value.
+	 * @public
+	 */
+	translate: function(vector) {},
+	/**
+	 * Rotates.
+	 *
+	 * @param {!number} angle Angle to rotate, in rads.
+	 * @public
+	 */
+	rotate: function(angle) {}
 };
