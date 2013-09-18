@@ -71,17 +71,24 @@
 
 	"../src/network/WebSocket.js",
 	"../src/network/WebSocketMetrics.js",
-	"../src/network/SnapshotHistory.js",
 	"../src/network/LagSimulator.js",
 
-	"../src/network/SnapshotManager.js",
-	"../src/network/SnapshotManagerSingleton.js",
-	"../src/network/SnapshotNetworkObject2D.js",
-	"../src/network/SnapshotEvent.js",
-	"../src/network/Snapshot.js",
+	"../src/network/snapshot/SnapshotHistory.js",
+	"../src/network/snapshot/SnapshotManager.js",
+	"../src/network/snapshot/SnapshotManagerSingleton.js",
+	"../src/network/snapshot/SnapshotElement.js",
+	"../src/network/snapshot/SnapshotElementProcessor.js",
+	"../src/network/snapshot/SnapshotNetworkObject2D.js",
+	"../src/network/snapshot/SnapshotEvent.js",
+	"../src/network/snapshot/Snapshot.js",
+	"../src/network/snapshot/ISnapshotEncoder.js",
+	"../src/network/snapshot/ISnapshotDecoder.js",
+	"../src/network/snapshot/SnapshotEncoder.js",
+	"../src/network/snapshot/SnapshotDecoder.js",
 
 	"../src/utils/MessageDispatcher.js",
 	"../src/utils/TimerDispatcher.js",
+	
 	"../src/utils/debug/TopDownBVHTreeDebugger.js",
 	"../src/utils/debug/NetworkDebugger.js"
 
