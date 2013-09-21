@@ -19,7 +19,7 @@ Grape2D.NetworkObject2D.prototype.render = function(renderer, camera) {
 	var networkClone = Grape2D.SnapshotManagerSingleton.getSnapshotNetworkObject2D(this.id);
 	if (networkClone && !networkClone.getPosition().equals(this.getPosition())) {
 		var lerp = Grape2D.Vector.lerp(this.getPosition(), networkClone.getPosition(), Grape2D.SnapshotManagerSingleton.getLerpPercent());
-		this.renderInterpolate(renderer, camera, lerp, snapshot);
+		this.renderInterpolate(renderer, camera, lerp, networkClone);
 	} else {
 		this.renderNormal(renderer, camera);
 	}
@@ -30,11 +30,20 @@ Grape2D.NetworkObject2D.prototype.render = function(renderer, camera) {
  * @param  {!Grape2D.Renderer} renderer Renderer.
  * @param  {!Grape2D.Camera} camera Camera.
  * @param  {!Grape2D.Vector} lerpPosition Interpolating position.
+ * @param  {!Grape2D.SnapshotNetworkObject2D} snapshot Snapshot being used to
+ *   interpolate this object.
  * @public
  */
-Grape2D.NetworkObject2D.prototype.renderInterpolate = function(renderer, camera, lerpPosition) {
+Grape2D.NetworkObject2D.prototype.renderInterpolate = function(renderer, camera, lerpPosition, snapshot) {
 	renderer.renderNetworkObject2D(this, lerpPosition, camera);
 };
+/**
+ * Renders an objects without being interpolated.
+ * 
+ * @param  {!Grape2D.Renderer} renderer Renderer.
+ * @param  {!Grape2D.Camera} camera Camera.
+ * @public
+ */
 Grape2D.NetworkObject2D.prototype.renderNormal = function(renderer, camera) {
 	Grape2D.Object2D.prototype.render.call(this, renderer, camera);
 };

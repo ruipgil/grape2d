@@ -176,11 +176,16 @@ Grape2D.Vector.prototype = {
 	 * @public
 	 */
 	getAngle: function() {
-		var angle = 1;
+		/*var angle = 1;
 		if (this.y < 0) {
 			angle = -1;
 		}
-		return Math.acos(this.x / this.length()) * angle;
+		return Math.acos(this.x / this.length()) * angle;*/
+		if(this.x>0){
+		return Math.atan(this.y/this.x);
+	}else{
+		return Math.PI+Math.atan(this.y/this.x);
+	}
 	},
 	/**
 	 * Gets the dot product of this and another vector.
@@ -216,6 +221,15 @@ Grape2D.Vector.prototype = {
 	 */
 	rightNormal: function() {
 		return new Grape2D.Vector(-this.y, this.x);
+	},
+	/**
+	 * Calculates the left normal of the vector.
+	 *
+	 * @return {!Grape2D.Vector} The left normal vector.
+	 * @public
+	 */
+	leftNormal: function() {
+		return new Grape2D.Vector(this.y, -this.x);
 	},
 	/**
 	 * Checks if two vectors are parallel.

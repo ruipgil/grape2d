@@ -4,14 +4,15 @@
  * @implements {Grape2D.ISnapshotDecoder}
  * @constructor
  */
-Grape2D.SnapshotDecoder = function() {};
+Grape2D.SnapshotDecoder = function() {
+	Grape2D.SnapshotDecoder.call(this);
+};
 
-Grape2D.SnapshotDecoder.prototype = {
-	constructor: Grape2D.SnapshotDecoder,
+Grape2D.SnapshotDecoder.prototype = Object.create(Grape2D.ISnapshotDecoder.prototype);
 	/**
 	 * @override
 	 */
-	decode: function(string) {
+Grape2D.SnapshotDecoder.prototype.decode = function(string) {
 		try {
 			var parsed = JSON.parse(string),
 				result = new Grape2D.Snapshot(Number(parsed.time));
@@ -25,7 +26,7 @@ Grape2D.SnapshotDecoder.prototype = {
 		} catch (e) {
 			return null;
 		}
-	},
+	};
 	/**
 	 * Decodes a snapshot network object.
 	 *
@@ -34,9 +35,9 @@ Grape2D.SnapshotDecoder.prototype = {
 	 *   network object.
 	 * @protected
 	 */
-	decodeSnapshotNetworkObject2D: function(object) {
+	Grape2D.SnapshotDecoder.prototype.decodeSnapshotNetworkObject2D= function(object) {
 		return new Grape2D.SnapshotNetworkObject2D(object.id, object.position.x, object.position.x);
-	},
+	};
 	/**
 	 * Decodes a snapshot event.
 	 *
@@ -44,7 +45,6 @@ Grape2D.SnapshotDecoder.prototype = {
 	 * @return {!Grape2D.SnapshotEvent} Decoded snapshot event.
 	 * @protected
 	 */
-	decodeSnapshotEvent: function(event) {
+	Grape2D.SnapshotDecoder.prototype.decodeSnapshotEvent = function(event) {
 		return new Grape2D.SnapshotEvent(event.id);
-	}
-};
+	};
