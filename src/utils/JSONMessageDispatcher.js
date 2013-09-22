@@ -21,7 +21,6 @@ Grape2D.utils.JSONMessageDispatcher.prototype.dispatch = function(message, param
 		parsed = JSON.parse(message);
 		testP = parsed[this.property];
 	}catch(e){
-		console.log(e);
 		return;
 	}
 	for (var i = 0; i < this.stack.length; i++) {
