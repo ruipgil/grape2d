@@ -87,6 +87,7 @@
 	"../src/network/snapshot/SnapshotDecoder.js",
 
 	"../src/utils/MessageDispatcher.js",
+	"../src/utils/JSONMessageDispatcher.js",
 	"../src/utils/TimerDispatcher.js",
 	
 	"../src/utils/debug/TopDownBVHTreeDebugger.js",
