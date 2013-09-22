@@ -2,95 +2,149 @@
  * Math describes the namespace that holds math functions and
  *   constants. Optimizations or browser specific functions for math
  *   sshould be implemented in this namespace.
+ *   A lot of material collected from {@link http://mudcu.be/journal/2011/11/bitwise-gems-and-other-optimizations/}.
  *
  * @namespace
  */
 Grape2D.Math = {
-
 	/**
-	 * PI value, with a 15 decimal aproximation
+	 * Value of the Euler's number.
+	 * 
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	E: Math.E,
+	/**
+	 * Value of the square root of two.
+	 * 
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	SQRT2: Math.SQRT2,
+	/**
+	 * Value of the square root of half.
+	 * 
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	SQRT1_2: Math.SQRT1_2,
+	/**
+	 * Value of .
+	 * 
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	LN2: Math.LN2,
+	/**
+	 * Value of .
+	 * 
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	LN10: Math.LN10,
+	/**
+	 * Value of .
+	 * 
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	LOG2E: Math.LOG2E,
+	/**
+	 * Value of .
+	 * 
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	LOG10E: Math.LOG10E,
+	/**
+	 * PI value.
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PI: 3.141592653589793,
-
+	PI: Math.PI,
 	/**
-	 * Two PI value, with a 15 decimal aproximation
+	 * Two PI value. Alias to <code>PI*2</code>.
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PIx2: 6.283185307179586,
-
+	PIx2: Math.PI*2,
 	/**
-	 * PI/2 value, with a 15 decimal aproximation
+	 * PI/2 value. Alias to <code>PI/2</code>.
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PId2: 1.5707963267948966,
-
+	PId2: Math.PI/2,
 	/**
-	 * PI/4 value, with a 15 decimal aproximation
+	 * PI/4 value. Alias to <code>PI/4</code>.
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PId4: 0.7853981633974483,
-
+	PId4: Math.PI/4,
 	/**
-	 * PI/6 value, with a 15 decimal aproximation
+	 * PI/6 value. Alias to <code>PI/6</code>.
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PId6: 0.5235987755982988,
-
+	PId6: Math.PI/6,
 	/**
-	 * PI/8 value, with a 15 decimal aproximation
+	 * PI/8 value. Alias to <code>PI/8</code>.
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PId8: 0.39269908169872414,
-
+	PId8: Math.PI/8,
 	/**
 	 * Returns the absolute value of a number
 	 *
-	 * @param {!number} number
-	 * @return {!number} returns the absolute number
+	 * @param {!number} n Number to get the absolute.
+	 * @return {!number} The absolute number.
 	 * @public
 	 * @static
 	 */
-	abs: function(number) {
-		return Math.abs(number);
+	abs: function(n) {
+		return n > 0 ? n : -n;
 	},
 	/**
 	 * Returns the floor of a number
 	 *
-	 * @param  {!number} n the number
-	 * @return {!number} the floored number
+	 * @param  {!number} n Number to floor.
+	 * @return {!number} Floored number.
 	 * @public
 	 * @static
 	 */
-	floor: function(n) {
-		return~~ n;
+	floor: function(i) {
+		//return n + (n < 0 ? -1 : 0) >> 0;
+		return ((i>0)?~~i:((i==~~i)?i:(~~i-1)));
 	},
 	/**
 	 * Returns the ceil of a number
 	 *
-	 * @param  {!number} n the number
-	 * @return {!number} the ceiled number
+	 * @param  {!number} n Number to ceil.
+	 * @return {!number} Ceiled number.
+	 * @public
+	 * @static
 	 */
-	ceil: function(n) {
-		return Math.ceil(n);
+	ceil: function(a) {
+		//return n + (n <= 0 ? 0 : 1) >> 0;
+		return~~a == a ? a : a < 0 ? ~~a : ~~a + 1;
 	},
 	/**
 	 * Rounds a number to the unit.
@@ -101,14 +155,10 @@ Grape2D.Math = {
 	 * @static
 	 */
 	round: function(n) {
-		if (n >= 0) {
-			return~~ (n + 0.5);
-		} else {
-			return~~ (n - 0.5);
-		}
+		return n + (n < 0 ? -0.5 : 0.5)>>0;
 	},
 	/**
-	 * Rounds a number to first decimal.
+	 * Rounds a number to the first decimal.
 	 *
 	 * @param  {!number} n Number to round.
 	 * @return {!number} Rounded number.
@@ -119,7 +169,7 @@ Grape2D.Math = {
 		return Grape2D.Math.round(n*10)*0.1;
 	},
 	/**
-	 * Rounds a number to second decimal.
+	 * Rounds a number to the second decimal.
 	 *
 	 * @param  {!number} n Number to round.
 	 * @return {!number} Rounded number.
@@ -130,7 +180,7 @@ Grape2D.Math = {
 		return Grape2D.Math.round(n*100)*0.01;
 	},
 	/**
-	 * Rounds a number to third decimal.
+	 * Rounds a number to the third decimal.
 	 *
 	 * @param  {!number} n Number to round.
 	 * @return {!number} Rounded number.
@@ -141,7 +191,7 @@ Grape2D.Math = {
 		return Grape2D.Math.round(n*1000)*0.001;
 	},
 	/**
-	 * Rounds a number to fourth decimal.
+	 * Rounds a number to the fourth decimal.
 	 *
 	 * @param  {!number} n Number to round.
 	 * @return {!number} Rounded number.
@@ -152,7 +202,7 @@ Grape2D.Math = {
 		return Grape2D.Math.round(n*10000)*0.0001;
 	},
 	/**
-	 * Rounds a number to nth decimal.
+	 * Rounds a number to the nth decimal.
 	 *
 	 * @param  {!number} number Number to round.
 	 * @param  {!number} n Decimals to round.
@@ -165,14 +215,14 @@ Grape2D.Math = {
 		return Grape2D.Math.round(n*f)/f;
 	},
 	/**
-	 * Get a random float
+	 * Generates a random float.
 	 *
-	 * @param  {!number} min the min possible value between min and
+	 * @param  {!number} min Min possible value between min and
 	 *   max, if max is defined. If not than it's the max value,
 	 *   between 0 and min.
-	 * @param  {?number} max optional, the max possible value, between
-	 *   min and max.
-	 * @return {!number} a random float number.
+	 * @param  {!number=} max Max possible value, between min
+	 *   and max.
+	 * @return {!number} A random float number.
 	 * @public
 	 * @static
 	 */
@@ -184,14 +234,13 @@ Grape2D.Math = {
 		}
 	},
 	/**
-	 * Get a random float
+	 * Generates a random integer.
 	 *
-	 * @param  {!number} min the min possible value between min and max,
+	 * @param  {!number} min Min possible value between min and max,
 	 *   if max is defined. If not than it's the max value, between
 	 *   0 and min.
-	 * @param  {?number} max optional, the max possible value, between
-	 *   min and max.
-	 * @return {!number} a random integer number
+	 * @param  {!number=} max Max possible value, between min and max.
+	 * @return {!number} A random integer number
 	 * @public
 	 * @static
 	 */
@@ -208,16 +257,35 @@ Grape2D.Math = {
 	sqrt: Math.sqrt,
 	/** @see Math.pow */
 	pow: Math.pow,
-	/** @see Math.min */
-	min: Math.min,
-	/** @see Math.max */
-	max: Math.max,
-
+	/**
+	 * Gets the minimum of two numbers.
+	 *
+	 * @param  {!number} a Number.
+	 * @param  {!number} b Number.
+	 * @return {!number} The minimum of the two.
+	 * @public
+	 * @static
+	 */
+	min: function(a, b){
+		return (a < b) ? a : b;
+	},
+	/**
+	 * Gets the maximum of two numbers.
+	 *
+	 * @param  {!number} a Number.
+	 * @param  {!number} b Number.
+	 * @return {!number} The maximum of the two.
+	 * @public
+	 * @static
+	 */
+	max: function(a, b){
+		return (a > b) ? a : b;
+	},
 	/**
 	 * Clamps a number.
 	 *
 	 * @param  {!number} x The number to clamp.
-	 * @param  {!number} min Lower limmit.
+	 * @param  {!number} min Lower limit.
 	 * @param  {!number} max Upper limit.
 	 * @return {!number} A number between min and max.
 	 * @public

@@ -11,7 +11,7 @@ test("floor", function() {
 	equal(48445, Grape2D.Math.floor(48445), "Positive integer.");
 	equal(956348, Grape2D.Math.floor(956348), "Positive float.");
 	equal(-8451232, Grape2D.Math.floor(-8451232), "Negative integer.");
-	equal(-6348, Grape2D.Math.floor(-6348.8431121), "Negative float.");
+	equal(-6349, Grape2D.Math.floor(-6348.8431121), "Negative float.");
 });
 test("ceil", function() {
 	equal(0, Grape2D.Math.ceil(0), "Zero.");
