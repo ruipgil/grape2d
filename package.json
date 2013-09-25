@@ -1,38 +1,38 @@
 {
-  "name": "Grape2D",
-  "version": "1.3.0-alpha",
-  "description": "Grape2D is a fast and complete 2D game engine, for javascript.",
-  "keywords": [
-    "2D",
-    "game",
-    "engine",
-    "javascript",
-    "canvas",
-    "webgl",
-    "rendering"
-  ],
-  "main": "./utils/Gruntfile.js",
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-closure-compiler": "0.0.19",
-    "grunt-contrib-qunit": "~0.2.2",
-    "grunt-jsdoc": "~0.4.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/ruipgil/grape2d.git"
-  },
-  "author": "Rui Gil",
-  "license": "MIT",
-  "readmeFilename": "README.md",
-  "gitHead": "c9ebe1c2496a7945af3cd686cf292591b28f4bbd",
-  "bugs": {
-    "url": "https://github.com/ruipgil/grape2d/issues"
-  }
+	"name": "Grape2D",
+	"version": "1.3.0-alpha",
+	"description": "Grape2D is a fast and complete 2D game engine, for javascript.",
+	"keywords": [
+		"2D",
+		"game",
+		"engine",
+		"javascript",
+		"canvas",
+		"webgl",
+		"rendering"
+	],
+	"main": "./utils/Gruntfile.js",
+	"directories": {
+		"doc": "docs",
+		"test": "tests"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"grunt": "~0.4.1",
+		"grunt-contrib-concat": "~0.3.0",
+		"grunt-closure-compiler": "0.0.19",
+		"grunt-contrib-qunit": "~0.2.2",
+		"grunt-jsdoc": "~0.4.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/ruipgil/grape2d.git"
+	},
+	"author": "Rui Gil",
+	"license": "MIT",
+	"readmeFilename": "README.md",
+	"gitHead": "c9ebe1c2496a7945af3cd686cf292591b28f4bbd",
+	"bugs": {
+		"url": "https://github.com/ruipgil/grape2d/issues"
+	}
 }
