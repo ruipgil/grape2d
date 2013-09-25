@@ -1,0 +1,11 @@
+{
+	"folders": [{
+		"path": "../"
+	}],
+	"build_systems": [{
+		"name": "Grape2D Dev",
+		"working_dir": "${project_path:${folder}}/utils",
+		"cmd": ["grunt", "dev", "--no-color"],
+		"shell": true
+	}]
+}
