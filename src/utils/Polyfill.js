@@ -1,4 +1,26 @@
 /**
+ * Sets up Grape2D for node.js or browser environment,
+ *   by setting Grape2D's global variables.
+ *   Inspired in underscore.js {@link https://github.com/jashkenas/underscore/blob/08d88b33359b26996fc06f5cc6bf84b4a7afe2d3/underscore.js}.
+ *
+ * @suppress {undefinedVars}
+ */
+(function() {
+	if (typeof exports !== 'undefined') {
+		if (typeof module !== 'undefined' && module.exports) {
+			exports = module.exports = Grape2D;
+		}
+		exports.Grape2D = Grape2D;
+		Grape2D.NODE = true;
+		Grape2D.WINDOW = {};
+	} else {
+		window.Grape2D = Grape2D;
+		Grape2D.NODE = false;
+		Grape2D.WINDOW = window;
+	}
+})();
+
+/**
  * This is a modified version of the requestAnimationFrame and cancelAnimationFrame polyfill
  *   {@link https://gist.github.com/paulirish/1579671}
  *   {@link http://paulirish.com/2011/requestanimationframe-for-smart-animating/}
@@ -27,7 +49,7 @@
 		};
 	}
 
-	if (!w.cancelAnimationFrame){
+	if (!w.cancelAnimationFrame) {
 		w.cancelAnimationFrame = function(id) {
 			clearTimeout(id);
 		};

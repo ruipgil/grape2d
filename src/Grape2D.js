@@ -1,8 +1,4 @@
 /**
- * @type {!boolean}
- */
-var NODE;
-/**
  * This is the main namespace.
  * 
  * @namespace
@@ -26,14 +22,13 @@ var Grape2D = {
 	 * @type {!boolean}
 	 * @public
 	 */
-	NODE: NODE,
+	NODE: false,
 	/**
 	 * Window object. This is an empty object if the <code>window</code>
 	 *   variable is not defined.
 	 *
 	 * @type {!(Object|Window)}
 	 * @public
-	 * @constant
 	 */
-	WINDOW: (NODE?{}:window),
+	WINDOW: {},
 };

@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 					warning_level: 'VERBOSE',
 					create_source_map: destMinFile + '.map',
 					source_map_format: 'V3',
-					output_wrapper: '(function(){ try{ NODE = window; NODE = false; }catch(e){ NODE = true; } %output%if(NODE){module.exports = Grape2D;}else{window.Grape2D = Grape2D} })()'
+					output_wrapper: '(function(){ %output% })()'
 				}
 			}
 		},
@@ -37,8 +37,8 @@ module.exports = function(grunt) {
 		concat: {
 			options: {
 				separator: '\n',
-				banner: '(function(){ try{ NODE = window; NODE = false; }catch(e){ NODE = true; }\n',
-				footer: '\nif(NODE){module.exports = Grape2D;}else{window.Grape2D = Grape2D}})()'
+				banner: '(function(){\n',
+				footer: '\n})()'
 			},
 			dist: {
 				src: sourceFiles,
