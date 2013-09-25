@@ -3,8 +3,13 @@
 		"path": "../"
 	}],
 	"build_systems": [{
+		"name": "Grape2D",
+		"working_dir": "${project_path:${folder}}",
+		"cmd": ["grunt", "--no-color"],
+		"shell": true
+	}, {
 		"name": "Grape2D Dev",
-		"working_dir": "${project_path:${folder}}/utils",
+		"working_dir": "${project_path:${folder}}",
 		"cmd": ["grunt", "dev", "--no-color"],
 		"shell": true
 	}]
