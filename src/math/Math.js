@@ -9,7 +9,7 @@
 Grape2D.Math = {
 	/**
 	 * Value of the Euler's number.
-	 * 
+	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
@@ -17,7 +17,7 @@ Grape2D.Math = {
 	E: Math.E,
 	/**
 	 * Value of the square root of two.
-	 * 
+	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
@@ -25,7 +25,7 @@ Grape2D.Math = {
 	SQRT2: Math.SQRT2,
 	/**
 	 * Value of the square root of half.
-	 * 
+	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
@@ -33,7 +33,7 @@ Grape2D.Math = {
 	SQRT1_2: Math.SQRT1_2,
 	/**
 	 * Value of .
-	 * 
+	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
@@ -41,7 +41,7 @@ Grape2D.Math = {
 	LN2: Math.LN2,
 	/**
 	 * Value of .
-	 * 
+	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
@@ -49,7 +49,7 @@ Grape2D.Math = {
 	LN10: Math.LN10,
 	/**
 	 * Value of .
-	 * 
+	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
@@ -57,7 +57,7 @@ Grape2D.Math = {
 	LOG2E: Math.LOG2E,
 	/**
 	 * Value of .
-	 * 
+	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
@@ -78,7 +78,7 @@ Grape2D.Math = {
 	 * @public
 	 * @constant
 	 */
-	PIx2: Math.PI*2,
+	PIx2: Math.PI * 2,
 	/**
 	 * PI/2 value. Alias to <code>PI/2</code>.
 	 *
@@ -86,7 +86,7 @@ Grape2D.Math = {
 	 * @public
 	 * @constant
 	 */
-	PId2: Math.PI/2,
+	PId2: Math.PI / 2,
 	/**
 	 * PI/4 value. Alias to <code>PI/4</code>.
 	 *
@@ -94,7 +94,7 @@ Grape2D.Math = {
 	 * @public
 	 * @constant
 	 */
-	PId4: Math.PI/4,
+	PId4: Math.PI / 4,
 	/**
 	 * PI/6 value. Alias to <code>PI/6</code>.
 	 *
@@ -102,7 +102,7 @@ Grape2D.Math = {
 	 * @public
 	 * @constant
 	 */
-	PId6: Math.PI/6,
+	PId6: Math.PI / 6,
 	/**
 	 * PI/8 value. Alias to <code>PI/8</code>.
 	 *
@@ -110,7 +110,7 @@ Grape2D.Math = {
 	 * @public
 	 * @constant
 	 */
-	PId8: Math.PI/8,
+	PId8: Math.PI / 8,
 	/**
 	 * Returns the absolute value of a number
 	 *
@@ -130,9 +130,8 @@ Grape2D.Math = {
 	 * @public
 	 * @static
 	 */
-	floor: function(i) {
-		//return n + (n < 0 ? -1 : 0) >> 0;
-		return ((i>0)?~~i:((i==~~i)?i:(~~i-1)));
+	floor: function(n) {
+		return ((n > 0) ? ~~n : ((n == ~~n) ? n : (~~n - 1)));
 	},
 	/**
 	 * Returns the ceil of a number
@@ -142,9 +141,8 @@ Grape2D.Math = {
 	 * @public
 	 * @static
 	 */
-	ceil: function(a) {
-		//return n + (n <= 0 ? 0 : 1) >> 0;
-		return~~a == a ? a : a < 0 ? ~~a : ~~a + 1;
+	ceil: function(n) {
+		return~~ n == n ? n : n < 0 ? ~~n : ~~n + 1;
 	},
 	/**
 	 * Rounds a number to the unit.
@@ -155,7 +153,7 @@ Grape2D.Math = {
 	 * @static
 	 */
 	round: function(n) {
-		return n + (n < 0 ? -0.5 : 0.5)>>0;
+		return n + (n < 0 ? -0.5 : 0.5) >> 0;
 	},
 	/**
 	 * Rounds a number to the first decimal.
@@ -165,8 +163,8 @@ Grape2D.Math = {
 	 * @public
 	 * @static
 	 */
-	roundOne: function(n){
-		return Grape2D.Math.round(n*10)*0.1;
+	roundOne: function(n) {
+		return Grape2D.Math.round(n * 10) * 0.1;
 	},
 	/**
 	 * Rounds a number to the second decimal.
@@ -176,8 +174,8 @@ Grape2D.Math = {
 	 * @public
 	 * @static
 	 */
-	roundTwo: function(n){
-		return Grape2D.Math.round(n*100)*0.01;
+	roundTwo: function(n) {
+		return Grape2D.Math.round(n * 100) * 0.01;
 	},
 	/**
 	 * Rounds a number to the third decimal.
@@ -187,8 +185,8 @@ Grape2D.Math = {
 	 * @public
 	 * @static
 	 */
-	roundThree: function(n){
-		return Grape2D.Math.round(n*1000)*0.001;
+	roundThree: function(n) {
+		return Grape2D.Math.round(n * 1000) * 0.001;
 	},
 	/**
 	 * Rounds a number to the fourth decimal.
@@ -198,8 +196,8 @@ Grape2D.Math = {
 	 * @public
 	 * @static
 	 */
-	roundFour: function(n){
-		return Grape2D.Math.round(n*10000)*0.0001;
+	roundFour: function(n) {
+		return Grape2D.Math.round(n * 10000) * 0.0001;
 	},
 	/**
 	 * Rounds a number to the nth decimal.
@@ -210,9 +208,9 @@ Grape2D.Math = {
 	 * @public
 	 * @static
 	 */
-	roundN: function(number, n){
+	roundN: function(number, n) {
 		var f = Grape2D.Math.pow(2, 10);
-		return Grape2D.Math.round(n*f)/f;
+		return Grape2D.Math.round(n * f) / f;
 	},
 	/**
 	 * Generates a random float.
@@ -266,7 +264,7 @@ Grape2D.Math = {
 	 * @public
 	 * @static
 	 */
-	min: function(a, b){
+	min: function(a, b) {
 		return (a < b) ? a : b;
 	},
 	/**
@@ -278,7 +276,7 @@ Grape2D.Math = {
 	 * @public
 	 * @static
 	 */
-	max: function(a, b){
+	max: function(a, b) {
 		return (a > b) ? a : b;
 	},
 	/**

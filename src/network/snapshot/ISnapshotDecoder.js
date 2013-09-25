@@ -10,8 +10,9 @@ Grape2D.ISnapshotDecoder.prototype = {
 	/**
 	 * Decodes a string into a snapshot.
 	 *
-	 * @return {!Grape2D.Snapshot} Snapshot decoded.
+	 * @param  {!string} encoded Snapshot encoded.
+	 * @return {?Grape2D.Snapshot} Snapshot decoded.
 	 * @public
 	 */
-	decode: function() {}
+	decode: function(encoded) {}
 };
