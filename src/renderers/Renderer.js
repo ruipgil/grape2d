@@ -120,7 +120,7 @@ Grape2D.Renderer.prototype = {
 	/**
 	 * Renders text to the renderer.
 	 *
-	 * @param  {!string} text Text to render.
+	 * @param  {!(string|number)} text Text to render.
 	 * @param  {!Grape2D.Vector} position Top left corner of the text.
 	 * @public
 	 */

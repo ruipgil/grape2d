@@ -3,10 +3,11 @@
  *
  * @param {!string} property Property to differentiate when
  *   selecting the dispatcher.
+ *
  * @extends {Grape2D.utils.MessageDispatcher}
  * @constructor
  */
-Grape2D.utils.JSONMessageDispatcher = function(property){
+Grape2D.utils.JSONMessageDispatcher = function(property) {
 	Grape2D.utils.MessageDispatcher.call(this);
 	this.property = property;
 };
@@ -15,12 +16,12 @@ Grape2D.utils.JSONMessageDispatcher.prototype = Object.create(Grape2D.utils.Mess
 /**
  * @override
  */
-Grape2D.utils.JSONMessageDispatcher.prototype.dispatch = function(message, param){
+Grape2D.utils.JSONMessageDispatcher.prototype.dispatch = function(message, param) {
 	var parsed, current, testP;
-	try{
+	try {
 		parsed = JSON.parse(message);
 		testP = parsed[this.property];
-	}catch(e){
+	} catch (e) {
 		return;
 	}
 	for (var i = 0; i < this.stack.length; i++) {

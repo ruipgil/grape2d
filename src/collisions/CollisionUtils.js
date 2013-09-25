@@ -1,4 +1,19 @@
+/**
+ * Utilities class for collision detection.
+ *
+ * @class
+ */
 Grape2D.CollisionUtils = {
+	/**
+	 * Calculates the Minkowski difference, between two polygons.
+	 *   It's not fully implemented yet.
+	 *
+	 * @param  {!Grape2D.Polygon} polyA Polygon.
+	 * @param  {!Grape2D.Polygon} polyB Polygon.
+	 * @return {!Array.<!Grape2D.Vector>} Vertex list.
+	 * @public
+	 * @static
+	 */
 	minkowskiDifference: function(polyA, polyB) {
 		var vertexList = [],
 			a = polyA.getVertexList(),
@@ -10,6 +25,17 @@ Grape2D.CollisionUtils = {
 		}
 		return vertexList;
 	},
+	/**
+	 * Calculates a quick hull, from a set of points.
+	 *   TODO.
+	 *
+	 * @param  {!Array.<!Grape2D.Vector>} pointList List of points.
+	 * @param  {?} left Left.
+	 * @param  {?} right Right.
+	 * @return {?} Result.
+	 * @public
+	 * @static
+	 */
 	quickHull: function(pointList, left, right) {
 		/*QuickHull (S, l, r)
 

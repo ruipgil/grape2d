@@ -15,15 +15,16 @@
 	"../src/renderers/CanvasRenderer.js",
 	"../src/renderers/WireframeRenderer.js",
 
+	"../src/shapes/Shape.js",
+	"../src/shapes/AABB.js",
+	"../src/shapes/Circle.js",
+	"../src/shapes/Polygon.js",
+	"../src/shapes/Ray.js",
+
 	"../src/objects/Object2DProcessor.js",
 	"../src/objects/Object2D.js",
 	"../src/objects/NetworkObject2D.js",
-	"../src/objects/Shape.js",
-	"../src/objects/AABB.js",
-	"../src/objects/Circle.js",
-	"../src/objects/Polygon.js",
 	"../src/objects/Particle.js",
-	"../src/objects/Ray.js",
 
 	"../src/particleSystem/ParticleSystem.js",
 	"../src/particleSystem/Emitter.js",

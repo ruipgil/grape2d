@@ -1,6 +1,7 @@
 /**
  * Processes objects. Visitor pattern.
  *
+ * @class
  * @interface
  */
 Grape2D.Object2DProcessor = function() {};

@@ -1,6 +1,7 @@
 /**
  * SnapshotElementProcessor class.
  *
+ * @class
  * @interface
  */
 Grape2D.SnapshotElementProcessor = function() {};

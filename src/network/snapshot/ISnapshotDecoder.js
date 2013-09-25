@@ -1,6 +1,7 @@
 /**
  * Interface for snapshot decoding.
  *
+ * @class
  * @interface
  */
 Grape2D.ISnapshotDecoder = function() {};
