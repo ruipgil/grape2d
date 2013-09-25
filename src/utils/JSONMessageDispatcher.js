@@ -16,7 +16,7 @@ Grape2D.utils.JSONMessageDispatcher.prototype = Object.create(Grape2D.utils.Mess
  * @override
  */
 Grape2D.utils.JSONMessageDispatcher.prototype.dispatch = function(message, param){
-	var parsed, currentm, testP;
+	var parsed, current, testP;
 	try{
 		parsed = JSON.parse(message);
 		testP = parsed[this.property];
