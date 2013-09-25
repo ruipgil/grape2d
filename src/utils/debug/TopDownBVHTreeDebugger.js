@@ -1,4 +1,4 @@
-Grape2D.TopDownBVHTreeDebugger = {
+Grape2D.utils.TopDownBVHTreeDebugger = {
 	renderNode: function(node, renderer, camera) {
 		node.getBoundingVolume().render(renderer, camera);
 		renderer.renderText(node.getDepth(), camera.wcsToViewport(renderer, node.getBoundingVolume().getPosition()));
