@@ -1,7 +1,7 @@
 /**
  * Math describes the namespace that holds math functions and
  *   constants. Optimizations or browser specific functions for math
- *   sshould be implemented in this namespace.
+ *   should be implemented in this namespace.
  *   A lot of material collected from {@link http://mudcu.be/journal/2011/11/bitwise-gems-and-other-optimizations/}.
  *
  * @namespace

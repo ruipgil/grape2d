@@ -1,8 +1,4 @@
-(function(){ try{ NODE = window; NODE = false; }catch(e){ NODE = true; }
-/**
- * @type {!boolean}
- */
-var NODE;
+(function(){
 /**
  * This is the main namespace.
  * 
@@ -27,17 +23,38 @@ var Grape2D = {
 	 * @type {!boolean}
 	 * @public
 	 */
-	NODE: NODE,
+	NODE: false,
 	/**
 	 * Window object. This is an empty object if the <code>window</code>
 	 *   variable is not defined.
 	 *
 	 * @type {!(Object|Window)}
 	 * @public
-	 * @constant
 	 */
-	WINDOW: (NODE?{}:window),
+	WINDOW: {},
 };
+/**
+ * Sets up Grape2D for node.js or browser environment,
+ *   by setting Grape2D's global variables.
+ *   Inspired in underscore.js {@link https://github.com/jashkenas/underscore/blob/08d88b33359b26996fc06f5cc6bf84b4a7afe2d3/underscore.js}.
+ *
+ * @suppress {undefinedVars}
+ */
+(function() {
+	if (typeof exports !== 'undefined') {
+		if (typeof module !== 'undefined' && module.exports) {
+			exports = module.exports = Grape2D;
+		}
+		exports.Grape2D = Grape2D;
+		Grape2D.NODE = true;
+		Grape2D.WINDOW = {};
+	} else {
+		window.Grape2D = Grape2D;
+		Grape2D.NODE = false;
+		Grape2D.WINDOW = window;
+	}
+})();
+
 /**
  * This is a modified version of the requestAnimationFrame and cancelAnimationFrame polyfill
  *   {@link https://gist.github.com/paulirish/1579671}
@@ -67,7 +84,7 @@ var Grape2D = {
 		};
 	}
 
-	if (!w.cancelAnimationFrame){
+	if (!w.cancelAnimationFrame) {
 		w.cancelAnimationFrame = function(id) {
 			clearTimeout(id);
 		};
@@ -236,96 +253,148 @@ Grape2D.utils.SynchronizedClock.prototype.sync = function(syncTime) {
 /**
  * Math describes the namespace that holds math functions and
  *   constants. Optimizations or browser specific functions for math
- *   sshould be implemented in this namespace.
+ *   should be implemented in this namespace.
+ *   A lot of material collected from {@link http://mudcu.be/journal/2011/11/bitwise-gems-and-other-optimizations/}.
  *
  * @namespace
  */
 Grape2D.Math = {
-
 	/**
-	 * PI value, with a 15 decimal aproximation
+	 * Value of the Euler's number.
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PI: 3.141592653589793,
-
+	E: Math.E,
 	/**
-	 * Two PI value, with a 15 decimal aproximation
+	 * Value of the square root of two.
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PIx2: 6.283185307179586,
-
+	SQRT2: Math.SQRT2,
 	/**
-	 * PI/2 value, with a 15 decimal aproximation
+	 * Value of the square root of half.
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PId2: 1.5707963267948966,
-
+	SQRT1_2: Math.SQRT1_2,
 	/**
-	 * PI/4 value, with a 15 decimal aproximation
+	 * Value of .
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PId4: 0.7853981633974483,
-
+	LN2: Math.LN2,
 	/**
-	 * PI/6 value, with a 15 decimal aproximation
+	 * Value of .
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PId6: 0.5235987755982988,
-
+	LN10: Math.LN10,
 	/**
-	 * PI/8 value, with a 15 decimal aproximation
+	 * Value of .
 	 *
 	 * @type {!number}
 	 * @public
 	 * @constant
 	 */
-	PId8: 0.39269908169872414,
-
+	LOG2E: Math.LOG2E,
+	/**
+	 * Value of .
+	 *
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	LOG10E: Math.LOG10E,
+	/**
+	 * PI value.
+	 *
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	PI: Math.PI,
+	/**
+	 * Two PI value. Alias to <code>PI*2</code>.
+	 *
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	PIx2: Math.PI * 2,
+	/**
+	 * PI/2 value. Alias to <code>PI/2</code>.
+	 *
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	PId2: Math.PI / 2,
+	/**
+	 * PI/4 value. Alias to <code>PI/4</code>.
+	 *
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	PId4: Math.PI / 4,
+	/**
+	 * PI/6 value. Alias to <code>PI/6</code>.
+	 *
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	PId6: Math.PI / 6,
+	/**
+	 * PI/8 value. Alias to <code>PI/8</code>.
+	 *
+	 * @type {!number}
+	 * @public
+	 * @constant
+	 */
+	PId8: Math.PI / 8,
 	/**
 	 * Returns the absolute value of a number
 	 *
-	 * @param {!number} number
-	 * @return {!number} returns the absolute number
+	 * @param {!number} n Number to get the absolute.
+	 * @return {!number} The absolute number.
 	 * @public
 	 * @static
 	 */
-	abs: function(number) {
-		return Math.abs(number);
+	abs: function(n) {
+		return n > 0 ? n : -n;
 	},
 	/**
 	 * Returns the floor of a number
 	 *
-	 * @param  {!number} n the number
-	 * @return {!number} the floored number
+	 * @param  {!number} n Number to floor.
+	 * @return {!number} Floored number.
 	 * @public
 	 * @static
 	 */
 	floor: function(n) {
-		return~~ n;
+		return ((n > 0) ? ~~n : ((n == ~~n) ? n : (~~n - 1)));
 	},
 	/**
 	 * Returns the ceil of a number
 	 *
-	 * @param  {!number} n the number
-	 * @return {!number} the ceiled number
+	 * @param  {!number} n Number to ceil.
+	 * @return {!number} Ceiled number.
+	 * @public
+	 * @static
 	 */
 	ceil: function(n) {
-		return Math.ceil(n);
+		return~~ n == n ? n : n < 0 ? ~~n : ~~n + 1;
 	},
 	/**
 	 * Rounds a number to the unit.
@@ -336,58 +405,54 @@ Grape2D.Math = {
 	 * @static
 	 */
 	round: function(n) {
-		if (n >= 0) {
-			return~~ (n + 0.5);
-		} else {
-			return~~ (n - 0.5);
-		}
+		return n + (n < 0 ? -0.5 : 0.5) >> 0;
 	},
 	/**
-	 * Rounds a number to first decimal.
+	 * Rounds a number to the first decimal.
 	 *
 	 * @param  {!number} n Number to round.
 	 * @return {!number} Rounded number.
 	 * @public
 	 * @static
 	 */
-	roundOne: function(n){
-		return Grape2D.Math.round(n*10)*0.1;
+	roundOne: function(n) {
+		return Grape2D.Math.round(n * 10) * 0.1;
 	},
 	/**
-	 * Rounds a number to second decimal.
+	 * Rounds a number to the second decimal.
 	 *
 	 * @param  {!number} n Number to round.
 	 * @return {!number} Rounded number.
 	 * @public
 	 * @static
 	 */
-	roundTwo: function(n){
-		return Grape2D.Math.round(n*100)*0.01;
+	roundTwo: function(n) {
+		return Grape2D.Math.round(n * 100) * 0.01;
 	},
 	/**
-	 * Rounds a number to third decimal.
+	 * Rounds a number to the third decimal.
 	 *
 	 * @param  {!number} n Number to round.
 	 * @return {!number} Rounded number.
 	 * @public
 	 * @static
 	 */
-	roundThree: function(n){
-		return Grape2D.Math.round(n*1000)*0.001;
+	roundThree: function(n) {
+		return Grape2D.Math.round(n * 1000) * 0.001;
 	},
 	/**
-	 * Rounds a number to fourth decimal.
+	 * Rounds a number to the fourth decimal.
 	 *
 	 * @param  {!number} n Number to round.
 	 * @return {!number} Rounded number.
 	 * @public
 	 * @static
 	 */
-	roundFour: function(n){
-		return Grape2D.Math.round(n*10000)*0.0001;
+	roundFour: function(n) {
+		return Grape2D.Math.round(n * 10000) * 0.0001;
 	},
 	/**
-	 * Rounds a number to nth decimal.
+	 * Rounds a number to the nth decimal.
 	 *
 	 * @param  {!number} number Number to round.
 	 * @param  {!number} n Decimals to round.
@@ -395,19 +460,19 @@ Grape2D.Math = {
 	 * @public
 	 * @static
 	 */
-	roundN: function(number, n){
+	roundN: function(number, n) {
 		var f = Grape2D.Math.pow(2, 10);
-		return Grape2D.Math.round(n*f)/f;
+		return Grape2D.Math.round(n * f) / f;
 	},
 	/**
-	 * Get a random float
+	 * Generates a random float.
 	 *
-	 * @param  {!number} min the min possible value between min and
+	 * @param  {!number} min Min possible value between min and
 	 *   max, if max is defined. If not than it's the max value,
 	 *   between 0 and min.
-	 * @param  {?number} max optional, the max possible value, between
-	 *   min and max.
-	 * @return {!number} a random float number.
+	 * @param  {!number=} max Max possible value, between min
+	 *   and max.
+	 * @return {!number} A random float number.
 	 * @public
 	 * @static
 	 */
@@ -419,14 +484,13 @@ Grape2D.Math = {
 		}
 	},
 	/**
-	 * Get a random float
+	 * Generates a random integer.
 	 *
-	 * @param  {!number} min the min possible value between min and max,
+	 * @param  {!number} min Min possible value between min and max,
 	 *   if max is defined. If not than it's the max value, between
 	 *   0 and min.
-	 * @param  {?number} max optional, the max possible value, between
-	 *   min and max.
-	 * @return {!number} a random integer number
+	 * @param  {!number=} max Max possible value, between min and max.
+	 * @return {!number} A random integer number
 	 * @public
 	 * @static
 	 */
@@ -443,16 +507,35 @@ Grape2D.Math = {
 	sqrt: Math.sqrt,
 	/** @see Math.pow */
 	pow: Math.pow,
-	/** @see Math.min */
-	min: Math.min,
-	/** @see Math.max */
-	max: Math.max,
-
+	/**
+	 * Gets the minimum of two numbers.
+	 *
+	 * @param  {!number} a Number.
+	 * @param  {!number} b Number.
+	 * @return {!number} The minimum of the two.
+	 * @public
+	 * @static
+	 */
+	min: function(a, b) {
+		return (a < b) ? a : b;
+	},
+	/**
+	 * Gets the maximum of two numbers.
+	 *
+	 * @param  {!number} a Number.
+	 * @param  {!number} b Number.
+	 * @return {!number} The maximum of the two.
+	 * @public
+	 * @static
+	 */
+	max: function(a, b) {
+		return (a > b) ? a : b;
+	},
 	/**
 	 * Clamps a number.
 	 *
 	 * @param  {!number} x The number to clamp.
-	 * @param  {!number} min Lower limmit.
+	 * @param  {!number} min Lower limit.
 	 * @param  {!number} max Upper limit.
 	 * @return {!number} A number between min and max.
 	 * @public
@@ -670,11 +753,16 @@ Grape2D.Vector.prototype = {
 	 * @public
 	 */
 	getAngle: function() {
-		var angle = 1;
+		/*var angle = 1;
 		if (this.y < 0) {
 			angle = -1;
 		}
-		return Math.acos(this.x / this.length()) * angle;
+		return Math.acos(this.x / this.length()) * angle;*/
+		if(this.x>0){
+		return Math.atan(this.y/this.x);
+	}else{
+		return Math.PI+Math.atan(this.y/this.x);
+	}
 	},
 	/**
 	 * Gets the dot product of this and another vector.
@@ -710,6 +798,15 @@ Grape2D.Vector.prototype = {
 	 */
 	rightNormal: function() {
 		return new Grape2D.Vector(-this.y, this.x);
+	},
+	/**
+	 * Calculates the left normal of the vector.
+	 *
+	 * @return {!Grape2D.Vector} The left normal vector.
+	 * @public
+	 */
+	leftNormal: function() {
+		return new Grape2D.Vector(this.y, -this.x);
 	},
 	/**
 	 * Checks if two vectors are parallel.
@@ -1232,7 +1329,7 @@ Grape2D.Renderer.prototype = {
 	/**
 	 * Renders text to the renderer.
 	 *
-	 * @param  {!string} text Text to render.
+	 * @param  {!(string|number)} text Text to render.
 	 * @param  {!Grape2D.Vector} position Top left corner of the text.
 	 * @public
 	 */
@@ -1311,7 +1408,35 @@ Grape2D.Renderer.prototype = {
 	 *   coordinates.
 	 * @public
 	 */
-	renderPoint: function(point, camera) {}
+	renderPoint: function(point, camera) {},
+	/**
+	 * Saves the current renderer setting, i.e. translation state,
+	 *   rotation, font style, etc.
+	 *
+	 * @public
+	 */
+	save: function() {},
+	/**
+	 * Restores a the last saved state.
+	 *
+	 * @public
+	 */
+	restore: function() {},
+	/**
+	 * Translates rendering position. The default value is <code>
+	 *   (0,0)</code>.
+	 *
+	 * @param {!Grape2D.Vector} vector Translation value.
+	 * @public
+	 */
+	translate: function(vector) {},
+	/**
+	 * Rotates.
+	 *
+	 * @param {!number} angle Angle to rotate, in rads.
+	 * @public
+	 */
+	rotate: function(angle) {}
 };
 /**
  * This is a simple abstraction of the canvas object,
@@ -2237,7 +2362,31 @@ Grape2D.CanvasRenderer.prototype.renderPoint = function(point, camera) {
 	this.canvas.beginPath();
 	this.canvas.arc(center.x, center.y, 2, 0, Grape2D.Math.PIx2, false);
 	this.canvas.fill();
-}
+};
+/**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.save = function() {
+	this.canvas.save();
+};
+/**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.restore = function() {
+	this.canvas.restore();
+};
+/**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.translate = function(vector) {
+	this.canvas.translate(vector.getX(), vector.getY());
+};
+/**
+ * @override
+ */
+Grape2D.CanvasRenderer.prototype.rotate = function(angle) {
+	this.canvas.rotate(angle);
+};
 /**
  * Only renders the wireframe of (the bounding box of)
  *   {@link Grape2D.Object2D}, using another {@link Grape2D.Renderer},
@@ -2407,430 +2556,28 @@ Grape2D.WireframeRenderer.prototype.renderPoint = function(point, camera) {
 	this.renderer.renderPoint(point, camera);
 };
 /**
- * Processes objects. Visitor pattern.
- *
- * @interface
- */
-Grape2D.Object2DProcessor = function() {};
-
-Grape2D.Object2DProcessor.prototype = {
-	constructor: Grape2D.Object2DProcessor,
-	/**
-	 * Processes an Object2D.
-	 *
-	 * @param  {!Grape2D.Object2D} object2d An Object2D.
-	 * @public
-	 */
-	processObject2D: function(object2d) {},
-	/**
-	 * Processes an NetworkObject2D.
-	 *
-	 * @param  {!Grape2D.NetworkObject2D} networkObject2D A NetworkObject2D.
-	 * @public
-	 */
-	processNetworkObject2D: function(networkObject2D) {}
-};
-/**
- * Object2D represents an object of the scene.
- *   An Object2D is a simple scene object which the main
- *   purpose is to render a texture at a position. More
- *   complex behaviors should be implemented by others
- *   objects that inherit from Object2D.
- *
- * @param {!Grape2D.Vector=} options.position The position of the shape
- * @param {!boolean=} options.visible True to render the object, false
- *		otherwise.
- * @param {!Grape2D.Texture} options.texture The texture of the object.
- * @param {!Grape2D.Vector=} options.textureOffset The offset position
- *		of the texture relative to the objects position.
- * @param {!Grape2D.Shape} options.boundingBox The primary use of the
- *		bounding box is to select the items to display in the renderer,
- *		other behaviors such as collision detection can be done with
- *		this property, in some simple cases. So the bounding box should
- *		bounded tightly to what's supposed to be seen.
- * @param {!Grape2D.Vector=} options.boundingBoxOffset The offset
- *		position of the bounding box relative to the objects position.
- * @param {!boolean=} options.castShadow Used by the IlluminatedRenderer
- *		to render this object shadow.
- * @param {!boolean=} options.receiveLight Used by the IlluminatedRenderer
- *		to render the objects texture with a light overlay, if set to true.
- *
- * @constructor
- */
-Grape2D.Object2D = function (options) {
-
-	/**
-	 * Object's position.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
-	 */
-	this.position = options.position || new Grape2D.Vector();
-
-	/**
-	 * Visible property.
-	 *
-	 * @type {!boolean}
-	 * @private
-	 */
-	this.visible = options.visible || true;
-
-	/**
-	 * The texture of the object.
-	 *
-	 * @type {!Grape2D.Texture}
-	 * @private
-	 */
-	this.texture = options.texture;
-	/**
-	 * The offset of the texture.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
-	 */
-	this.textureOffset = options.textureOffset || new Grape2D.Vector();
-	/**
-	 * The position of the texture. It is computed from the object's position and the texture offset.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
-	 */
-	this.texturePosition = new Grape2D.Vector();
-	//computes the texture position.
-	this.computeTexturePosition();
-	/**
-	 * Object's bounding box.
-	 *
-	 * @type {!Grape2D.Shape}
-	 * @private
-	 */
-	this.boundingBox = options.boundingBox;
-	/**
-	 * Bounding box offset.
-	 *
-	 * @type {!Grape2D.Vector}
-	 * @private
-	 */
-	this.boundingBoxOffset = options.boundingBoxOffset || new Grape2D.Vector();
-
-	this.computeBoundingBoxPosition();
-
-	/**
-	 * Object cast shadow.
-	 *
-	 * @type {!boolean}
-	 * @private
-	 */
-	this.castShadow = options.castShadow || false;
-	/**
-	 * Object can receive light.
-	 *
-	 * @type {!boolean}
-	 * @private
-	 */
-	this.receiveLight = options.receiveLight || false;
-
-};
-
-Grape2D.Object2D.prototype = {
-	constructor: Grape2D.Object2D,
-	/**
-	 * Checks if the object should be rendered.
-	 *
-	 * @return {!boolean} True if it can be rendered.
-	 * @public
-	 */
-	isVisible: function () {
-		return this.visible;
-	},
-	/**
-	 * Sets if an object should be rendered.
-	 *
-	 * @param  {!boolean} visible True, so that it renders, false
-	 *   otherwise.
-	 * @public
-	 */
-	setVisible: function (visible) {
-		this.visible = visible;
-		return;
-	},
-	/**
-	 * Gets the texture of the object.
-	 *
-	 * @return {!Grape2D.Texture} The texture of the object.
-	 * @public
-	 */
-	getTexture: function () {
-		return this.texture;
-	},
-	/**
-	 * Sets the texture of the object.
-	 *
-	 * @param  {!Grape2D.Texture} texture The texture.
-	 * @public
-	 */
-	setTexture: function (texture) {
-		this.texture = texture;
-		return;
-	},
-	/**
-	 * Gets the bounding box of the object.
-	 *
-	 * @return {!Grape2D.Shape} The shape of the object.
-	 * @public
-	 */
-	getBoundingBox: function () {
-		return this.boundingBox;
-	},
-	/**
-	 * Sets the bounding box of the object.
-	 * Also, the position of the new bounding box, will be transformed
-	 *   in the default offset of the bounding box.
-	 *
-	 * @param  {!Grape2D.Shape} boundingBox The bounding box.
-	 * @public
-	 */
-	setBoundingBox: function (boundingBox) {
-		this.boundingBox = boundingBox;
-		this.computeBoundingBoxPosition();
-		return;
-	},
-	/**
-	 * Checks if the object can cast shadows.
-	 *
-	 * @return {!boolean} True if it cast shadows, false otherwise.
-	 * @public
-	 */
-	canCastShadow: function () {
-		return this.castShadow;
-	},
-	/**
-	 * Sets if an object can cast shadows.
-	 *
-	 * @param  {!boolean} castShadow True to cast shadows, false
-	 *   otherwise.
-	 * @public
-	 */
-	setCastShadow: function (castShadow) {
-		this.castShadow = castShadow;
-		return;
-	},
-	/**
-	 * Checks if an object can receive light.
-	 *
-	 * @return {!boolean} True if it receives light.
-	 * @public
-	 */
-	canReceiveLight: function () {
-		return this.receiveLight;
-	},
-	/**
-	 * Sets if the object can receive light.
-	 *
-	 * @param  {!boolean} receiveLight True if it receives light.
-	 * @public
-	 */
-	setReceiveLight: function (receiveLight) {
-		this.receiveLight = receiveLight;
-		return;
-	},
-	/**
-	 * Gets the object position. Be careful, because it returns the
-	 *   vector used by the object, and not a copy. Use it wisely.
-	 *
-	 * @return {!Grape2D.Vector} The position of the object.
-	 * @public
-	 */
-	getPosition: function () {
-		return this.position;
-	},
-	/**
-	 * Sets the object position.
-	 *
-	 * @param  {!Grape2D.Vector} position The position of the object.
-	 * @public
-	 */
-	setPosition: function (position) {
-		this.position.set(position);
-		this.computeBoundingBoxPosition();
-		this.computeTexturePosition();
-	},
-	/**
-	 * Sets the texture offset.
-	 *
-	 * @param  {!Grape2D.Vector} offset The offset of the texture, from
-	 *   the object's position.
-	 * @public
-	 */
-	setTextureOffset: function (offset) {
-		this.textureOffset.set(offset);
-		this.computeTexturePosition();
-	},
-	/**
-	 * Gets the texture offset
-	 *
-	 * @return {!Grape2D.Vector} The texture offset.
-	 * @public
-	 */
-	getTextureOffset: function () {
-		return this.textureOffset;
-	},
-	/**
-	 * Sets the bounding box offset.
-	 *
-	 * @param  {!Grape2D.Vector} offset The offset of the bounding
-	 *   box, from the object's position.
-	 * @public
-	 */
-	setBoundingBoxOffset: function (offset) {
-		this.boundingBoxOffset.set(offset);
-		this.computeBoundingBoxPosition();
-	},
-	/**
-	 * Gets the bounding box offset
-	 *
-	 * @return {!Grape2D.Vector} The bounding box offset.
-	 * @public
-	 */
-	getBoundingBoxOffset: function () {
-		return this.boundingBoxOffset;
-	},
-	/**
-	 * Computes the bounding box position, from the object's position
-	 *   and bounding box offset.
-	 * @protected
-	 */
-	computeBoundingBoxPosition: function () {
-		this.boundingBox.setPosition(this.position);
-		this.boundingBox.getPosition().add(this.boundingBoxOffset);
-	},
-	/**
-	 * Gets the bounding box position.
-	 *
-	 * @return {!Grape2D.Vector} The center position of the bounding box.
-	 * @public
-	 */
-	getBoundingBoxPosition: function () {
-		return this.boundingBox.getPosition();
-	},
-	/**
-	 * Computes the texture position of the object, from the object's
-	 *   position and texture offset.
-	 * @protected
-	 */
-	computeTexturePosition: function () {
-		this.texturePosition.set(this.position).add(this.textureOffset);
-	},
-	/**
-	 * Gets the texture position.
-	 *
-	 * @return {!Grape2D.Vector} The position of the texture
-	 * @public
-	 */
-	getTexturePosition: function () {
-		return this.texturePosition;
-	},
-	/**
-	 * Renders the object to a renderer.
-	 *
-	 * @param  {!Grape2D.Renderer} renderer The place to render the
-	 *   object.
-	 * @param  {!Grape2D.Camera} camera The camera, that will
-	 *   transform the positions.
-	 * @public
-	 */
-	render: function (renderer, camera) {
-		renderer.renderObject2D(this, camera);
-	},
-	/**
-	 * Updates the object. This method should be refined in further
-	 *   subclasses if needed be.
-	 *
-	 * @param  {!number} dt Time interval.
-	 * @param  {!Grape2D.Scene} scene Scene where this object is.
-	 * @public
-	 */
-	update: function (dt, scene) {},
-	/**
-	 * Processes this object thought a processor. Same as a visitor
-	 *   pattern.
-	 *
-	 * @param  {Grape2D.Object2DProcessor} processor A processor.
-	 * @public
-	 */
-	process: function(processor) {
-		processor.processObject2D(this);
-	}
-};
-/**
- * This specifies an {@link Grape2D.Object2D} that is to be transmitted to the client or server, at any time.
- *
- * @param {!Object=} options Setup options. See {@link Grape2D.Object2D}.
- * @param {!(number|string)} options.id Object unique identifier.
- * @extends {Grape2D.Object2D}
- * @constructor
- */
-Grape2D.NetworkObject2D = function(options) {
-	Grape2D.Object2D.call(this, options);
-	this.id = options.id || 0;
-};
-
-Grape2D.NetworkObject2D.prototype = Object.create(Grape2D.Object2D.prototype);
-/**
  * @override
  */
-Grape2D.NetworkObject2D.prototype.render = function(renderer, camera) {
-	var networkClone = Grape2D.SnapshotManagerSingleton.getSnapshotNetworkObject2D(this.id);
-	if (networkClone && !networkClone.getPosition().equals(this.getPosition())) {
-		var lerp = Grape2D.Vector.lerp(this.getPosition(), networkClone.getPosition(), Grape2D.SnapshotManagerSingleton.getLerpPercent());
-		this.renderInterpolate(renderer, camera, lerp);
-	} else {
-		Grape2D.Object2D.prototype.render.call(this, renderer, camera);
-	}
-};
-/**
- * Renders an object in an interpolating position.
- *
- * @param  {!Grape2D.Renderer} renderer Renderer.
- * @param  {!Grape2D.Camera} camera Camera.
- * @param  {!Grape2D.Vector} lerpPosition Interpolating position.
- * @public
- */
-Grape2D.NetworkObject2D.prototype.renderInterpolate = function(renderer, camera, lerpPosition) {
-	renderer.renderNetworkObject2D(this, lerpPosition, camera);
+Grape2D.WireframeRenderer.prototype.save = function() {
+	this.renderer.save();
 };
 /**
  * @override
  */
-Grape2D.NetworkObject2D.prototype.process = function(processor) {
-	processor.processNetworkObject2D(this);
+Grape2D.WireframeRenderer.prototype.restore = function() {
+	this.renderer.restore();
 };
 /**
- * Gets the object's id.
- *
- * @return {!(number|string)} Object's id.
- * @public
+ * @override
  */
-Grape2D.NetworkObject2D.prototype.getId = function() {
-	return this.id;
+Grape2D.WireframeRenderer.prototype.translate = function(vector) {
+	this.renderer.translate(vector.getX(), vector.getY());
 };
 /**
- * Sets the object's id.
- *
- * @param {!(number|string)} id Object's id.
- * @public
+ * @override
  */
-Grape2D.NetworkObject2D.prototype.setId = function(id) {
-	this.id = id;
-};
-/**
- * Creates a clone object to be passed through the network.
- *
- * @return {!Grape2D.SnapshotNetworkObject2D} Network clone.
- * @public
- */
-Grape2D.NetworkObject2D.prototype.createNetworkClone = function() {
-	return new Grape2D.SnapshotNetworkObject2D(this.id, this.getPosition().getX(), this.getPosition().getY());
+Grape2D.WireframeRenderer.prototype.rotate = function(angle) {
+	this.renderer.rotate(angle);
 };
 /**
  * Shape is an abstract class that describes "physical", objects.
@@ -3276,6 +3023,519 @@ Grape2D.Polygon.prototype.setPosition = function(vector){
  */
 Grape2D.Polygon.TYPE = "Polygon";
 /**
+ * Ray.
+ *
+ * @param  {!Grape2D.Vector} start Start of the ray.
+ * @param  {!Grape2D.Vector} direction Direction of the ray.
+ * @param  {!number} length Direction of the ray.
+ * @constructor
+ */
+Grape2D.Ray = function(start, direction, length){
+	this.start = start;
+	this.direction = direction;
+	this.length = length;
+	this.end = direction.clone().multiplyByScalar(length).add(start);
+};
+
+Grape2D.Ray.prototype = {
+	constructor: Grape2D.Ray,
+	/**
+	 * Gets the start position of the ray.
+	 *
+	 * @return {!Grape2D.Vector} Start of the ray.
+	 * @public
+	 */
+	getStart: function(){
+		return this.start;
+	},
+	/**
+	 * Gets the direction of the ray.
+	 *
+	 * @return {!Grape2D.Vector} Direction of the ray.
+	 * @public
+	 */
+	getDirection: function(){
+		return this.direction;
+	},
+	/**
+	 * Gets the length of the ray.
+	 *
+	 * @return {!number} Length of the ray.
+	 * @public
+	 */
+	getLength: function(){
+		return this.length;
+	},
+	/**
+	 * Gets the end position of the ray. This is computed,
+	 *   resulting from from the scalar multiplication
+	 *   of the direction by the length, added by the start
+	 *   position.
+	 *
+	 * @return {!Grape2D.Vector} End of the ray.
+	 * @public
+	 */
+	getEnd: function(){
+		return this.end;
+	},
+	/**
+	 * Gets the static type
+	 *
+	 * @return {!string} Type.
+	 * @public
+	 */
+	getStaticType: function(){
+		return Grape2D.Ray.STATIC_TYPE;
+	}
+};
+/**
+ * Type.
+ *
+ * @constant {!string}
+ * @static
+ * @private
+ */
+Grape2D.Ray.STATIC_TYPE = "Ray";
+/**
+ * Processes objects. Visitor pattern.
+ *
+ * @class
+ * @interface
+ */
+Grape2D.Object2DProcessor = function() {};
+
+Grape2D.Object2DProcessor.prototype = {
+	constructor: Grape2D.Object2DProcessor,
+	/**
+	 * Processes an Object2D.
+	 *
+	 * @param  {!Grape2D.Object2D} object2d An Object2D.
+	 * @public
+	 */
+	processObject2D: function(object2d) {},
+	/**
+	 * Processes an NetworkObject2D.
+	 *
+	 * @param  {!Grape2D.NetworkObject2D} networkObject2D A NetworkObject2D.
+	 * @public
+	 */
+	processNetworkObject2D: function(networkObject2D) {}
+};
+/**
+ * Object2D represents an object of the scene.
+ *   An Object2D is a simple scene object which the main
+ *   purpose is to render a texture at a position. More
+ *   complex behaviors should be implemented by others
+ *   objects that inherit from Object2D.
+ *
+ * @param {!Grape2D.Vector=} options.position The position of the shape
+ * @param {!boolean=} options.visible True to render the object, false
+ *		otherwise.
+ * @param {!Grape2D.Texture} options.texture The texture of the object.
+ * @param {!Grape2D.Vector=} options.textureOffset The offset position
+ *		of the texture relative to the objects position.
+ * @param {!Grape2D.Shape} options.boundingBox The primary use of the
+ *		bounding box is to select the items to display in the renderer,
+ *		other behaviors such as collision detection can be done with
+ *		this property, in some simple cases. So the bounding box should
+ *		bounded tightly to what's supposed to be seen.
+ * @param {!Grape2D.Vector=} options.boundingBoxOffset The offset
+ *		position of the bounding box relative to the objects position.
+ * @param {!boolean=} options.castShadow Used by the IlluminatedRenderer
+ *		to render this object shadow.
+ * @param {!boolean=} options.receiveLight Used by the IlluminatedRenderer
+ *		to render the objects texture with a light overlay, if set to true.
+ *
+ * @constructor
+ */
+Grape2D.Object2D = function (options) {
+
+	/**
+	 * Object's position.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.position = options.position || new Grape2D.Vector();
+
+	/**
+	 * Visible property.
+	 *
+	 * @type {!boolean}
+	 * @private
+	 */
+	this.visible = options.visible || true;
+
+	/**
+	 * The texture of the object.
+	 *
+	 * @type {!Grape2D.Texture}
+	 * @private
+	 */
+	this.texture = options.texture;
+	/**
+	 * The offset of the texture.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.textureOffset = options.textureOffset || new Grape2D.Vector();
+	/**
+	 * The position of the texture. It is computed from the object's position and the texture offset.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.texturePosition = new Grape2D.Vector();
+	//computes the texture position.
+	this.computeTexturePosition();
+	/**
+	 * Object's bounding box.
+	 *
+	 * @type {!Grape2D.Shape}
+	 * @private
+	 */
+	this.boundingBox = options.boundingBox;
+	/**
+	 * Bounding box offset.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.boundingBoxOffset = options.boundingBoxOffset || new Grape2D.Vector();
+
+	this.computeBoundingBoxPosition();
+
+	/**
+	 * Object cast shadow.
+	 *
+	 * @type {!boolean}
+	 * @private
+	 */
+	this.castShadow = options.castShadow || false;
+	/**
+	 * Object can receive light.
+	 *
+	 * @type {!boolean}
+	 * @private
+	 */
+	this.receiveLight = options.receiveLight || false;
+
+};
+
+Grape2D.Object2D.prototype = {
+	constructor: Grape2D.Object2D,
+	/**
+	 * Checks if the object should be rendered.
+	 *
+	 * @return {!boolean} True if it can be rendered.
+	 * @public
+	 */
+	isVisible: function () {
+		return this.visible;
+	},
+	/**
+	 * Sets if an object should be rendered.
+	 *
+	 * @param  {!boolean} visible True, so that it renders, false
+	 *   otherwise.
+	 * @public
+	 */
+	setVisible: function (visible) {
+		this.visible = visible;
+		return;
+	},
+	/**
+	 * Gets the texture of the object.
+	 *
+	 * @return {!Grape2D.Texture} The texture of the object.
+	 * @public
+	 */
+	getTexture: function () {
+		return this.texture;
+	},
+	/**
+	 * Sets the texture of the object.
+	 *
+	 * @param  {!Grape2D.Texture} texture The texture.
+	 * @public
+	 */
+	setTexture: function (texture) {
+		this.texture = texture;
+		return;
+	},
+	/**
+	 * Gets the bounding box of the object.
+	 *
+	 * @return {!Grape2D.Shape} The shape of the object.
+	 * @public
+	 */
+	getBoundingBox: function () {
+		return this.boundingBox;
+	},
+	/**
+	 * Sets the bounding box of the object.
+	 * Also, the position of the new bounding box, will be transformed
+	 *   in the default offset of the bounding box.
+	 *
+	 * @param  {!Grape2D.Shape} boundingBox The bounding box.
+	 * @public
+	 */
+	setBoundingBox: function (boundingBox) {
+		this.boundingBox = boundingBox;
+		this.computeBoundingBoxPosition();
+		return;
+	},
+	/**
+	 * Checks if the object can cast shadows.
+	 *
+	 * @return {!boolean} True if it cast shadows, false otherwise.
+	 * @public
+	 */
+	canCastShadow: function () {
+		return this.castShadow;
+	},
+	/**
+	 * Sets if an object can cast shadows.
+	 *
+	 * @param  {!boolean} castShadow True to cast shadows, false
+	 *   otherwise.
+	 * @public
+	 */
+	setCastShadow: function (castShadow) {
+		this.castShadow = castShadow;
+		return;
+	},
+	/**
+	 * Checks if an object can receive light.
+	 *
+	 * @return {!boolean} True if it receives light.
+	 * @public
+	 */
+	canReceiveLight: function () {
+		return this.receiveLight;
+	},
+	/**
+	 * Sets if the object can receive light.
+	 *
+	 * @param  {!boolean} receiveLight True if it receives light.
+	 * @public
+	 */
+	setReceiveLight: function (receiveLight) {
+		this.receiveLight = receiveLight;
+		return;
+	},
+	/**
+	 * Gets the object position. Be careful, because it returns the
+	 *   vector used by the object, and not a copy. Use it wisely.
+	 *
+	 * @return {!Grape2D.Vector} The position of the object.
+	 * @public
+	 */
+	getPosition: function () {
+		return this.position;
+	},
+	/**
+	 * Sets the object position.
+	 *
+	 * @param  {!Grape2D.Vector} position The position of the object.
+	 * @public
+	 */
+	setPosition: function (position) {
+		this.position.set(position);
+		this.computeBoundingBoxPosition();
+		this.computeTexturePosition();
+	},
+	/**
+	 * Sets the texture offset.
+	 *
+	 * @param  {!Grape2D.Vector} offset The offset of the texture, from
+	 *   the object's position.
+	 * @public
+	 */
+	setTextureOffset: function (offset) {
+		this.textureOffset.set(offset);
+		this.computeTexturePosition();
+	},
+	/**
+	 * Gets the texture offset
+	 *
+	 * @return {!Grape2D.Vector} The texture offset.
+	 * @public
+	 */
+	getTextureOffset: function () {
+		return this.textureOffset;
+	},
+	/**
+	 * Sets the bounding box offset.
+	 *
+	 * @param  {!Grape2D.Vector} offset The offset of the bounding
+	 *   box, from the object's position.
+	 * @public
+	 */
+	setBoundingBoxOffset: function (offset) {
+		this.boundingBoxOffset.set(offset);
+		this.computeBoundingBoxPosition();
+	},
+	/**
+	 * Gets the bounding box offset
+	 *
+	 * @return {!Grape2D.Vector} The bounding box offset.
+	 * @public
+	 */
+	getBoundingBoxOffset: function () {
+		return this.boundingBoxOffset;
+	},
+	/**
+	 * Computes the bounding box position, from the object's position
+	 *   and bounding box offset.
+	 * @protected
+	 */
+	computeBoundingBoxPosition: function () {
+		this.boundingBox.setPosition(this.position);
+		this.boundingBox.getPosition().add(this.boundingBoxOffset);
+	},
+	/**
+	 * Gets the bounding box position.
+	 *
+	 * @return {!Grape2D.Vector} The center position of the bounding box.
+	 * @public
+	 */
+	getBoundingBoxPosition: function () {
+		return this.boundingBox.getPosition();
+	},
+	/**
+	 * Computes the texture position of the object, from the object's
+	 *   position and texture offset.
+	 * @protected
+	 */
+	computeTexturePosition: function () {
+		this.texturePosition.set(this.position).add(this.textureOffset);
+	},
+	/**
+	 * Gets the texture position.
+	 *
+	 * @return {!Grape2D.Vector} The position of the texture
+	 * @public
+	 */
+	getTexturePosition: function () {
+		return this.texturePosition;
+	},
+	/**
+	 * Renders the object to a renderer.
+	 *
+	 * @param  {!Grape2D.Renderer} renderer The place to render the
+	 *   object.
+	 * @param  {!Grape2D.Camera} camera The camera, that will
+	 *   transform the positions.
+	 * @public
+	 */
+	render: function (renderer, camera) {
+		renderer.renderObject2D(this, camera);
+	},
+	/**
+	 * Updates the object. This method should be refined in further
+	 *   subclasses if needed be.
+	 *
+	 * @param  {!number} dt Time interval.
+	 * @param  {!Grape2D.Scene} scene Scene where this object is.
+	 * @public
+	 */
+	update: function (dt, scene) {},
+	/**
+	 * Processes this object thought a processor. Same as a visitor
+	 *   pattern.
+	 *
+	 * @param  {Grape2D.Object2DProcessor} processor A processor.
+	 * @public
+	 */
+	process: function(processor) {
+		processor.processObject2D(this);
+	}
+};
+/**
+ * This specifies an {@link Grape2D.Object2D} that is to be transmitted to the client or server, at any time.
+ *
+ * @param {!Object=} options Setup options. See {@link Grape2D.Object2D}.
+ * @param {!(number|string)} options.id Object unique identifier.
+ * @extends {Grape2D.Object2D}
+ * @constructor
+ */
+Grape2D.NetworkObject2D = function(options) {
+	Grape2D.Object2D.call(this, options);
+	this.id = options.id || 0;
+};
+
+Grape2D.NetworkObject2D.prototype = Object.create(Grape2D.Object2D.prototype);
+/**
+ * @override
+ */
+Grape2D.NetworkObject2D.prototype.render = function(renderer, camera) {
+	var networkClone = Grape2D.SnapshotManagerSingleton.getSnapshotNetworkObject2D(this.id);
+	if (networkClone && !networkClone.getPosition().equals(this.getPosition())) {
+		var lerp = Grape2D.Vector.lerp(this.getPosition(), networkClone.getPosition(), Grape2D.SnapshotManagerSingleton.getLerpPercent());
+		this.renderInterpolate(renderer, camera, lerp, networkClone);
+	} else {
+		this.renderNormal(renderer, camera);
+	}
+};
+/**
+ * Renders an object in an interpolating position.
+ *
+ * @param  {!Grape2D.Renderer} renderer Renderer.
+ * @param  {!Grape2D.Camera} camera Camera.
+ * @param  {!Grape2D.Vector} lerpPosition Interpolating position.
+ * @param  {!Grape2D.SnapshotNetworkObject2D} snapshot Snapshot being used to
+ *   interpolate this object.
+ * @public
+ */
+Grape2D.NetworkObject2D.prototype.renderInterpolate = function(renderer, camera, lerpPosition, snapshot) {
+	renderer.renderNetworkObject2D(this, lerpPosition, camera);
+};
+/**
+ * Renders an objects without being interpolated.
+ * 
+ * @param  {!Grape2D.Renderer} renderer Renderer.
+ * @param  {!Grape2D.Camera} camera Camera.
+ * @public
+ */
+Grape2D.NetworkObject2D.prototype.renderNormal = function(renderer, camera) {
+	Grape2D.Object2D.prototype.render.call(this, renderer, camera);
+};
+/**
+ * @override
+ */
+Grape2D.NetworkObject2D.prototype.process = function(processor) {
+	processor.processNetworkObject2D(this);
+};
+/**
+ * Gets the object's id.
+ *
+ * @return {!(number|string)} Object's id.
+ * @public
+ */
+Grape2D.NetworkObject2D.prototype.getId = function() {
+	return this.id;
+};
+/**
+ * Sets the object's id.
+ *
+ * @param {!(number|string)} id Object's id.
+ * @public
+ */
+Grape2D.NetworkObject2D.prototype.setId = function(id) {
+	this.id = id;
+};
+/**
+ * Creates a clone object to be passed through the network.
+ *
+ * @return {!Grape2D.SnapshotNetworkObject2D} Network clone.
+ * @public
+ */
+Grape2D.NetworkObject2D.prototype.createNetworkClone = function() {
+	return new Grape2D.SnapshotNetworkObject2D(this.id, this.getPosition().getX(), this.getPosition().getY());
+};
+/**
  * Particle.
  *
  * @param  {!Object=} options Setup options. See {@link Grape2D.Shape}
@@ -3434,80 +3694,6 @@ Grape2D.Particle.prototype.update = function(dt, scene) {
 	this.position.setY(this.position.getY() + this.velocity.getY() * dt);
 	this.lifeTime -= dt;
 };
-/**
- * Ray.
- *
- * @param  {!Grape2D.Vector} start Start of the ray.
- * @param  {!Grape2D.Vector} direction Direction of the ray.
- * @param  {!number} length Direction of the ray.
- * @constructor
- */
-Grape2D.Ray = function(start, direction, length){
-	this.start = start;
-	this.direction = direction;
-	this.length = length;
-	this.end = direction.clone().multiplyByScalar(length).add(start);
-};
-
-Grape2D.Ray.prototype = {
-	constructor: Grape2D.Ray,
-	/**
-	 * Gets the start position of the ray.
-	 *
-	 * @return {!Grape2D.Vector} Start of the ray.
-	 * @public
-	 */
-	getStart: function(){
-		return this.start;
-	},
-	/**
-	 * Gets the direction of the ray.
-	 *
-	 * @return {!Grape2D.Vector} Direction of the ray.
-	 * @public
-	 */
-	getDirection: function(){
-		return this.direction;
-	},
-	/**
-	 * Gets the length of the ray.
-	 *
-	 * @return {!number} Length of the ray.
-	 * @public
-	 */
-	getLength: function(){
-		return this.length;
-	},
-	/**
-	 * Gets the end position of the ray. This is computed,
-	 *   resulting from from the scalar multiplication
-	 *   of the direction by the length, added by the start
-	 *   position.
-	 *
-	 * @return {!Grape2D.Vector} End of the ray.
-	 * @public
-	 */
-	getEnd: function(){
-		return this.end;
-	},
-	/**
-	 * Gets the static type
-	 *
-	 * @return {!string} Type.
-	 * @public
-	 */
-	getStaticType: function(){
-		return Grape2D.Ray.STATIC_TYPE;
-	}
-};
-/**
- * Type.
- *
- * @constant {!string}
- * @static
- * @private
- */
-Grape2D.Ray.STATIC_TYPE = "Ray";
 /**
  * Particle system.
  *
@@ -8267,9 +8453,6 @@ Grape2D.WebSocketMetrics = function(webSocket, syncClock) {
 		var byteSize = message.length;
 		that.bytesReceived += byteSize;
 		that.lastReceived = byteSize;
-		if (message.indexOf(Grape2D.WebSocketMetrics.PING_PREFIX) === 0) {
-			that.pongReceived(message);
-		}
 	});
 	this.ws.addOnSend(function(message) {
 		var byteSize = message.length;
@@ -8283,42 +8466,45 @@ Grape2D.WebSocketMetrics.prototype = {
 	/**
 	 * Sends a ping message.
 	 *
+	 * @param {function(number):string} pingEncoder Function that
+	 *   encodes the ping message.
 	 * @public
 	 */
-	ping: function() {
+	ping: function(pingEncoder) {
 		this.pingStop = true;
 		this.pingAc = 0;
 		this.syncAc = 0;
 		this.pongSamplesReceived = 0;
-		var that = this;
+		var that = this,
+			fn = function() {
+				that.ws.send(pingEncoder(new Date().getTime()));
+			};
 		for (var i = this.pingSamples; i > 0; i--) {
-			setTimeout(function() {
-				that.ws.send(Grape2D.WebSocketMetrics.PING_PREFIX + " " + (new Date().getTime()));
-			}, 20 * i);
+			setTimeout(fn, 20 * i);
 		}
 	},
 	/**
 	 * Sends back a pong message.
 	 *
+	 * @param  {!function(string, number)} pongEncoder Function that
+	 *   encodes the pong function.
 	 * @param  {!string} message Ping message, received.
 	 * @public
 	 */
-	pong: function(message) {
-		this.ws.send(message + " " + this.syncClock.getTime());
+	pong: function(pongEncoder, message) {
+		this.ws.send(pongEncoder(message, this.syncClock.getTime()));
 	},
 	/**
 	 * Pong message handler. This is used to calculate the ping
 	 *   and synchronize the clock with the server.
 	 *
-	 * @param  {!string} message Pong response message.
+	 * @param  {!number} t1 Request time.
+	 * @param  {!number} t2 Request receiving time.
+	 * @param  {!number} t4 Pong message time.
 	 * @public
 	 */
-	pongReceived: function(message) {
-		var t4 = new Date().getTime(),
-			d = message.split(" "),
-			t1 = Number(d[1]),
-			t2 = Number(d[2]),
-			t3 = t2,
+	pongReceived: function(t1, t2, t4) {
+		var t3 = t2,
 			theta, delta;
 		theta = ((t2 - t1) + (t3 - t4)) * 0.5;
 		delta = (t4 - t1);
@@ -8410,14 +8596,84 @@ Grape2D.WebSocketMetrics.prototype = {
 	}
 };
 /**
- * Prefix of the ping message. Any message with this prefix
- *   is treated as a ping message.
+ * Simulates lag behavior, by delayed function calls.
  *
- * @type {!string}
- * @public
- * @constant
+ * @param {!Object=} options Setup options.
+ * @param {!number=} options.latency Desired based latency.
+ * @param {!number=} options.variation Variation of the base
+ *   latency. This will create an effective latency of <code>
+ *   rand(latency-variation, latency+variation)</code>
+ * @constructor
  */
-Grape2D.WebSocketMetrics.PING_PREFIX = "'";
+Grape2D.LagSimulator = function(options) {
+	options = options || {};
+	/**
+	 * Base latency.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.latency = options.latency || 0;
+	/**
+	 * Latency variation.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.variation = options.variation || 0;
+};
+Grape2D.LagSimulator.prototype = {
+	constructor: Grape2D.LagSimulator,
+	/**
+	 * Gets the latency.
+	 *
+	 * @return {!number} Latency.
+	 * @public
+	 */
+	getLatency: function(){
+		return this.latency;
+	},
+	/**
+	 * Sets the latency.
+	 *
+	 * @param {!number} latency Latency.
+	 * @public
+	 */
+	setLatency: function(latency){
+		this.latency = latency;
+	},
+	/**
+	 * Gets the variation.
+	 *
+	 * @return {!number} Variation.
+	 * @public
+	 */
+	getVariation: function(){
+		return this.variation;
+	},
+	/**
+	 * Sets the variation.
+	 *
+	 * @param {!number} variation Variation.
+	 * @public
+	 */
+	setVariation: function(variation){
+		this.variation = variation;
+	},
+	/**
+	 * Simulates a lagged call to a function.
+	 *
+	 * @param  {!Function} fn Function to simulate
+	 *   the lag.
+	 * @public
+	 */
+	simulate: function(fn){
+		var r = Grape2D.Math.randInt(this.latency-this.variation, this.latency+this.variation);
+		setTimeout(function(){
+			fn(r);
+		}, r);
+	}
+};
 /**
  * This holds a limited history of snapshots received from
  *   the server. The snapshots are organized by the order
@@ -8530,85 +8786,6 @@ Grape2D.SnapshotHistory.prototype = {
 		while (this.history.length > this.cap) {
 			this.history.shift();
 		}
-	}
-};
-/**
- * Simulates lag behavior, by delayed function calls.
- *
- * @param {!Object=} options Setup options.
- * @param {!number=} options.latency Desired based latency.
- * @param {!number=} options.variation Variation of the base
- *   latency. This will create an effective latency of <code>
- *   rand(latency-variation, latency+variation)</code>
- * @constructor
- */
-Grape2D.LagSimulator = function(options) {
-	options = options || {};
-	/**
-	 * Base latency.
-	 *
-	 * @type {!number}
-	 * @private
-	 */
-	this.latency = options.latency || 0;
-	/**
-	 * Latency variation.
-	 *
-	 * @type {!number}
-	 * @private
-	 */
-	this.variation = options.variation || 0;
-};
-Grape2D.LagSimulator.prototype = {
-	constructor: Grape2D.LagSimulator,
-	/**
-	 * Gets the latency.
-	 *
-	 * @return {!number} Latency.
-	 * @public
-	 */
-	getLatency: function(){
-		return this.latency;
-	},
-	/**
-	 * Sets the latency.
-	 *
-	 * @param {!number} latency Latency.
-	 * @public
-	 */
-	setLatency: function(latency){
-		this.latency = latency;
-	},
-	/**
-	 * Gets the variation.
-	 *
-	 * @return {!number} Variation.
-	 * @public
-	 */
-	getVariation: function(){
-		return this.variation;
-	},
-	/**
-	 * Sets the variation.
-	 *
-	 * @param {!number} variation Variation.
-	 * @public
-	 */
-	setVariation: function(variation){
-		this.variation = variation;
-	},
-	/**
-	 * Simulates a lagged call to a function.
-	 *
-	 * @param  {!Function} fn Function to simulate
-	 *   the lag.
-	 * @public
-	 */
-	simulate: function(fn){
-		var r = Grape2D.Math.randInt(this.latency-this.variation, this.latency+this.variation);
-		setTimeout(function(){
-			fn(r);
-		}, r);
 	}
 };
 /**
@@ -8774,15 +8951,68 @@ Grape2D.SnapshotManagerSingleton = {
 	}
 };
 /**
+ * SnapshotElement class.
+ *
+ * @class
+ * @interface
+ */
+Grape2D.SnapshotElement = function() {};
+
+Grape2D.SnapshotElement.prototype = {
+	constructor: Grape2D.SnapshotElement,
+	/**
+	 * Processes the element.
+	 *
+	 * @param  {!Grape2D.SnapshotElementProcessor} processor Processor.
+	 * @public
+	 */
+	process: function(processor) {}
+};
+/**
+ * SnapshotElementProcessor class.
+ *
+ * @class
+ * @interface
+ */
+Grape2D.SnapshotElementProcessor = function() {};
+
+Grape2D.SnapshotElementProcessor.prototype = {
+	constructor: Grape2D.SnapshotElementProcessor,
+	/**
+	 * Processes a snapshot.
+	 *
+	 * @param  {!Grape2D.Snapshot} snapshot Snapshot.
+	 * @public
+	 */
+	processSnapshot: function(snapshot) {},
+	/**
+	 * Processes a snapshot event.
+	 *
+	 * @param  {!Grape2D.SnapshotEvent} snapshotEvent Snapshot event.
+	 * @public
+	 */
+	processSnapshotEvent: function(snapshotEvent) {},
+	/**
+	 * Processes a snapshot network object 2D.
+	 *
+	 * @param  {!Grape2D.SnapshotNetworkObject2D} snapshotNO2D Snapshot
+	 *   network object 2D.
+	 * @public
+	 */
+	processSnapshotNetworkObject2D: function(snapshotNO2D) {}
+};
+/**
  * Represents a simplified version of a network object.
  *   To be converted to or from a snapshot.
  *
  * @param {!(number|string)} id Object unique identifier.
  * @param {!number} posX The x coordinate, of the position.
  * @param {!number} posY The y coordinate, of the position.
+ * @implements {Grape2D.SnapshotElement}
  * @constructor
  */
 Grape2D.SnapshotNetworkObject2D = function(id, posX, posY) {
+	Grape2D.SnapshotElement.call(this);
 	/**
 	 * Unique object id.
 	 *
@@ -8799,47 +9029,48 @@ Grape2D.SnapshotNetworkObject2D = function(id, posX, posY) {
 	this.position = new Grape2D.Vector(posX, posY);
 };
 
-Grape2D.SnapshotNetworkObject2D.prototype = {
-	constructor: Grape2D.SnapshotNetworkObject2D,
-	/**
-	 * Gets object's id.
-	 *
-	 * @return {!(number|string)} Object id.
-	 * @public
-	 */
-	getId: function() {
-		return this.id;
-	},
-	/**
-	 * Gets object's position.
-	 *
-	 * @return {!Grape2D.Vector} Object position.
-	 * @public
-	 */
-	getPosition: function() {
-		return this.position;
-	},
-	/**
-	 * Updates the corresponding {@link Grape2D.NetworkObject2D},
-	 *   with the data of this one.
-	 *
-	 * @param  {!Object=} param An arbitrary object.
-	 * @public
-	 */
-	updateNetworkObject2D: function(param) {
-		/*var nob = Grape2D.NetworkObject2DBase.get(this.id);
-		if (nob) {
-			nob.setPosition(this.position);
-		}*/
-	}
+Grape2D.SnapshotNetworkObject2D.prototype = Object.create(Grape2D.SnapshotElement.prototype);
+/**
+ * Gets object's id.
+ *
+ * @return {!(number|string)} Object id.
+ * @public
+ */
+Grape2D.SnapshotNetworkObject2D.prototype.getId = function() {
+	return this.id;
+};
+/**
+ * Gets object's position.
+ *
+ * @return {!Grape2D.Vector} Object position.
+ * @public
+ */
+Grape2D.SnapshotNetworkObject2D.prototype.getPosition = function() {
+	return this.position;
+};
+/**
+ * Updates the corresponding {@link Grape2D.NetworkObject2D},
+ *   with the data of this one.
+ *
+ * @param  {!Object=} param An arbitrary object.
+ * @public
+ */
+Grape2D.SnapshotNetworkObject2D.prototype.updateNetworkObject2D = function(param) {};
+/**
+ * @override
+ */
+Grape2D.SnapshotNetworkObject2D.prototype.process = function(processor) {
+	processor.processSnapshotNetworkObject2D(this);
 };
 /**
  * Grape2D.SnapshotEvent class.
  *
  * @param {!(number|string)} id Event unique identifier.
+ * @implements {Grape2D.SnapshotElement}
  * @constructor
  */
 Grape2D.SnapshotEvent = function(id) {
+	Grape2D.SnapshotElement.call(this);
 	/**
 	 * Event unique identifier.
 	 *
@@ -8849,24 +9080,29 @@ Grape2D.SnapshotEvent = function(id) {
 	this.id = id;
 };
 
-Grape2D.SnapshotEvent.prototype = {
-	constructor: Grape2D.SnapshotEvent,
-	/**
-	 * Gets the event id.
-	 *
-	 * @return {!(number|string)} Event id.
-	 * @public
-	 */
-	getId: function() {
-		return this.id;
-	},
-	/**
-	 * Fires the event.
-	 *
-	 * @param {!Object=} param An arbitrary object.
-	 * @public
-	 */
-	fire: function(param) {}
+Grape2D.SnapshotEvent.prototype = Object.create(Grape2D.SnapshotElement.prototype);
+
+/**
+ * Gets the event id.
+ *
+ * @return {!(number|string)} Event id.
+ * @public
+ */
+Grape2D.SnapshotEvent.prototype.getId = function() {
+	return this.id;
+};
+/**
+ * Fires the event.
+ *
+ * @param {!Object=} param An arbitrary object.
+ * @public
+ */
+Grape2D.SnapshotEvent.prototype.fire = function(param) {};
+/**
+ * @override
+ */
+Grape2D.SnapshotEvent.prototype.process = function(processor) {
+	processor.processSnapshotEvent(this);
 };
 /**
  * Snapshot class.
@@ -8876,9 +9112,11 @@ Grape2D.SnapshotEvent.prototype = {
  *   the snapshots.
  * @param {!Object.<!(number|string), !Grape2D.SnapshotNetworkObject2D>=} networkObjects List
  *   of objects in the snapshot.
+ * @implements {Grape2D.SnapshotElement}
  * @constructor
  */
 Grape2D.Snapshot = function(time, events, networkObjects) {
+	Grape2D.SnapshotElement.call(this);
 	/**
 	 * Snapshot time.
 	 *
@@ -8902,91 +9140,308 @@ Grape2D.Snapshot = function(time, events, networkObjects) {
 	this.networkObjects = networkObjects || {};
 };
 
-Grape2D.Snapshot.prototype = {
-	constructor: Grape2D.Snapshot,
-	/**
-	 * Adds an event to the snapshot.
-	 *
-	 * @param {!Grape2D.SnapshotEvent} event Snapshot event.
-	 * @public
-	 */
-	addEvent: function(event) {
-		this.events.push(event);
-	},
-	/**
-	 * Adds an object to the snapshot.
-	 *
-	 * @param {!Grape2D.SnapshotNetworkObject2D} sno2d Snapshot object.
-	 * @public
-	 */
-	addSnapshotNetworkObject2D: function(sno2d) {
-		this.networkObjects[sno2d.getId()] = sno2d;
-	},
-	/**
-	 * Gets the snapshot time.
-	 *
-	 * @return {!number} Time.
-	 * @public
-	 */
-	getTime: function() {
-		return this.time;
-	},
-	/**
-	 * Gets the snapshot events.
-	 *
-	 * @return {!Array.<!Grape2D.SnapshotEvent>} Snapshot events.
-	 * @public
-	 */
-	getEvents: function() {
-		return this.events;
-	},
-	/**
-	 * Gets an object
-	 *
-	 * @param  {!(number|string)} id Object's id.
-	 * @return {!(Grape2D.SnapshotNetworkObject2D|undefined)} Object.
-	 */
-	getSnapshotNetworkObject2D: function(id) {
-		return this.networkObjects[id];
-	},
-	/**
-	 * Fires the events.
-	 *
-	 * @param  {!Object=} param An arbitrary object to be passed. Since
-	 *   events can be used widely an object with the necessary
-	 *   information may be passed.
-	 * @public
-	 */
-	fireEvents: function(param) {
-		for(var i=0; i<this.events.length; i++){
-			this.events[i].fire(param);
-		}
-	},
-	/**
-	 * Updates the {@link Grape2D.NetworkObject2D}s of this snapshot.
-	 *
-	 * @param  {!Object=} param An arbitrary object to be passed.
-	 * @public
-	 */
-	updateNetworkObject2D: function(param){
-		for(var x in this.networkObjects){
-			this.networkObjects[x].updateNetworkObject2D(param);
-		}
-	},
-	/**
-	 * Dispatches the tasks of this snapshot, by firing the events and
-	 *   updating {@link Grape2D.NetworkObject2D}s.
-	 *
-	 * @param  {!Object=} eventsParam Arbitrary object. To be passed to
-	 *   {@link Grape2D.Snapshot.fireEvents}.
-	 * @param  {!Object=} objsParam Arbitrary object. To be passed to
-	 *   {@link Grape2D.Snapshot.fireEvents}.
-	 * @public
-	 */
-	dispatch: function(eventsParam, objsParam){
-		this.fireEvents(eventsParam);
-		this.updateNetworkObject2D(objsParam);
+Grape2D.Snapshot.prototype = Object.create(Grape2D.SnapshotElement.prototype);
+/**
+ * Adds an event to the snapshot.
+ *
+ * @param {!Grape2D.SnapshotEvent} event Snapshot event.
+ * @public
+ */
+Grape2D.Snapshot.prototype.addEvent = function(event) {
+	this.events.push(event);
+};
+/**
+ * Adds an object to the snapshot.
+ *
+ * @param {!Grape2D.SnapshotNetworkObject2D} sno2d Snapshot object.
+ * @public
+ */
+Grape2D.Snapshot.prototype.addSnapshotNetworkObject2D = function(sno2d) {
+	this.networkObjects[sno2d.getId()] = sno2d;
+};
+/**
+ * Gets the snapshot time.
+ *
+ * @return {!number} Time.
+ * @public
+ */
+Grape2D.Snapshot.prototype.getTime = function() {
+	return this.time;
+};
+/**
+ * Gets the snapshot events.
+ *
+ * @return {!Array.<!Grape2D.SnapshotEvent>} Snapshot events.
+ * @public
+ */
+Grape2D.Snapshot.prototype.getSnapshotEvents = function() {
+	return this.events;
+};
+/**
+ * Gets the list of objects.
+ *
+ * @return {!Grape2D.SnapshotNetworkObject2D} Objects.
+ * @public
+ */
+Grape2D.Snapshot.prototype.getSnapshotNetworkObjects2D = function() {
+	return this.networkObjects;
+};
+/**
+ * Fires the events.
+ *
+ * @param  {!Object=} param An arbitrary object to be passed. Since
+ *   events can be used widely an object with the necessary
+ *   information may be passed.
+ * @public
+ */
+Grape2D.Snapshot.prototype.fireEvents = function(param) {
+	for (var i = 0; i < this.events.length; i++) {
+		this.events[i].fire(param);
 	}
+};
+/**
+ * Updates the {@link Grape2D.NetworkObject2D}s of this snapshot.
+ *
+ * @param  {!Object=} param An arbitrary object to be passed.
+ * @public
+ */
+Grape2D.Snapshot.prototype.updateNetworkObject2D = function(param) {
+	for (var x in this.networkObjects) {
+		this.networkObjects[x].updateNetworkObject2D(param);
+	}
+};
+/**
+ * Dispatches the tasks of this snapshot, by firing the events and
+ *   updating {@link Grape2D.NetworkObject2D}s.
+ *
+ * @param  {!Object=} eventsParam Arbitrary object. To be passed to
+ *   {@link Grape2D.Snapshot.fireEvents}.
+ * @param  {!Object=} objsParam Arbitrary object. To be passed to
+ *   {@link Grape2D.Snapshot.fireEvents}.
+ * @public
+ */
+Grape2D.Snapshot.prototype.dispatch = function(eventsParam, objsParam) {
+	this.fireEvents(eventsParam);
+	this.updateNetworkObject2D(objsParam);
+};
+/**
+ * @override
+ */
+Grape2D.Snapshot.prototype.process = function(processor) {
+	processor.processSnapshot(this);
+};
+/**
+ * Interface for snapshot encoding.
+ *
+ * @extends {Grape2D.SnapshotElementProcessor}
+ * @interface
+ */
+Grape2D.ISnapshotEncoder = function() {
+	Grape2D.SnapshotElementProcessor.call(this);
+};
+
+Grape2D.ISnapshotEncoder.prototype = Object.create(Grape2D.SnapshotElementProcessor.prototype);
+/**
+ * Gets the result of the encoding.
+ *
+ * @return {!string} Snapshot encoded.
+ * @public
+ */
+Grape2D.ISnapshotEncoder.prototype.getResult = function() {};
+/**
+ * Interface for snapshot decoding.
+ *
+ * @class
+ * @interface
+ */
+Grape2D.ISnapshotDecoder = function() {};
+
+Grape2D.ISnapshotDecoder.prototype = {
+	constructor: Grape2D.ISnapshotDecoder,
+	/**
+	 * Decodes a string into a snapshot.
+	 *
+	 * @param  {!string} encoded Snapshot encoded.
+	 * @return {?Grape2D.Snapshot} Snapshot decoded.
+	 * @public
+	 */
+	decode: function(encoded) {}
+};
+/**
+ * Encodes snapshot.
+ *
+ * @implements {Grape2D.ISnapshotEncoder}
+ * @constructor
+ */
+Grape2D.SnapshotEncoder = function() {
+	Grape2D.SnapshotElementProcessor.call(this);
+	this.events = [];
+	this.objects = [];
+	this.time = 0;
+};
+
+Grape2D.SnapshotEncoder.prototype = Object.create(Grape2D.SnapshotElementProcessor.prototype);
+/**
+ * Adds an encoded event.
+ *
+ * @param {!Object} event Event encoded.
+ * @protected
+ */
+Grape2D.SnapshotEncoder.prototype.addEventEncoded = function(event) {
+	this.events.push(event);
+};
+/**
+ * Gets the list of snapshot events encoded.
+ *
+ * @return {!Array.<!Object>} Events encoded.
+ * @protected
+ */
+Grape2D.SnapshotEncoder.prototype.getEventsEncoded = function() {
+	return this.events;
+};
+/**
+ * Gets the list of snapshot network objects encoded.
+ *
+ * @return {!Array.<!Object>} Objects encoded.
+ * @protected
+ */
+Grape2D.SnapshotEncoder.prototype.getObjectsEncoded = function() {
+	return this.objects;
+};
+/**
+ * Adds an encoded network object.
+ *
+ * @param {!Object} obj Network object encoded.
+ * @protected
+ */
+Grape2D.SnapshotEncoder.prototype.addObjectEncoded = function(obj) {
+	this.objects.push(obj);
+};
+/**
+ * Sets the time.
+ *
+ * @param {!number} time Time.
+ * @protected
+ */
+Grape2D.SnapshotEncoder.prototype.setTime = function(time) {
+	this.time = time;
+};
+/**
+ * Gets the time.
+ *
+ * @return {!number} Time.
+ * @protected
+ */
+Grape2D.SnapshotEncoder.prototype.getTime = function() {
+	return this.time;
+};
+/**
+ * @override
+ */
+Grape2D.SnapshotEncoder.prototype.getResult = function() {
+	return JSON.stringify({
+		time: this.time,
+		events: this.events,
+		objects: this.objects
+	});
+};
+/**
+ * @override
+ */
+Grape2D.SnapshotEncoder.prototype.processSnapshot = function(snapshot) {
+	var events = snapshot.getSnapshotEvents(),
+		objs = snapshot.getSnapshotNetworkObjects2D();
+
+	this.events = [];
+	this.objects = [];
+	this.time = snapshot.getTime();
+
+	for (var e in events) {
+		events[e].process(this);
+	}
+	for (var o in objs) {
+		objs[o].process(this);
+	}
+};
+/**
+ * @override
+ */
+Grape2D.SnapshotEncoder.prototype.processSnapshotEvent = function(snapshotEvent) {
+	this.addEventEncoded({
+		id: snapshotEvent.getId()
+	});
+};
+/**
+ * Encodes a {@link Grape2D.Vector}.
+ *
+ * @param  {!Grape2D.Vector} vector Vector to encode.
+ * @return {!Object} Vector encoded.
+ * @protected
+ */
+Grape2D.SnapshotEncoder.prototype.processVector = function(vector) {
+	return {
+		x: vector.getX(),
+		y: vector.getY()
+	};
+};
+/**
+ * @override
+ */
+Grape2D.SnapshotEncoder.prototype.processSnapshotNetworkObject2D = function(snapshotNO2D) {
+	this.addObjectEncoded({
+		id: snapshotNO2D.getId(),
+		position: this.processVector(snapshotNO2D.getPosition())
+	});
+};
+/**
+ * Decodes a snapshot representation, into a {@link Grape2D.Snapshot}.
+ *
+ * @implements {Grape2D.ISnapshotDecoder}
+ * @constructor
+ */
+Grape2D.SnapshotDecoder = function() {
+	Grape2D.ISnapshotDecoder.call(this);
+};
+
+Grape2D.SnapshotDecoder.prototype = Object.create(Grape2D.ISnapshotDecoder.prototype);
+/**
+ * @override
+ */
+Grape2D.SnapshotDecoder.prototype.decode = function(string) {
+	try {
+		var parsed = JSON.parse(string),
+			result = new Grape2D.Snapshot(Number(parsed.time));
+		for (var e in parsed.events) {
+			result.addEvent(this.decodeSnapshotEvent(parsed.events[e]));
+		}
+		for (var b in parsed.objects) {
+			result.addSnapshotNetworkObject2D(this.decodeSnapshotNetworkObject2D(parsed.objects[b]));
+		}
+		return result;
+	} catch (e) {
+		return null;
+	}
+};
+/**
+ * Decodes a snapshot network object.
+ *
+ * @param  {!Object} object Encoded object.
+ * @return {!Grape2D.SnapshotNetworkObject2D} Decoded snapshot
+ *   network object.
+ * @protected
+ */
+Grape2D.SnapshotDecoder.prototype.decodeSnapshotNetworkObject2D = function(object) {
+	return new Grape2D.SnapshotNetworkObject2D(object.id, object.position.x, object.position.x);
+};
+/**
+ * Decodes a snapshot event.
+ *
+ * @param  {!Object} event Encoded event.
+ * @return {!Grape2D.SnapshotEvent} Decoded snapshot event.
+ * @protected
+ */
+Grape2D.SnapshotDecoder.prototype.decodeSnapshotEvent = function(event) {
+	return new Grape2D.SnapshotEvent(event.id);
 };
 /**
  * Dispatches messages by callback function if they match the
@@ -9046,6 +9501,39 @@ Grape2D.utils.MessageDispatcher.prototype = {
 			if (current.regex.test(message)) {
 				this.stack[i].callback(message, param);
 			}
+		}
+	}
+};
+/**
+ * Dispatches JSON messages, according with a property.
+ *
+ * @param {!string} property Property to differentiate when
+ *   selecting the dispatcher.
+ *
+ * @extends {Grape2D.utils.MessageDispatcher}
+ * @constructor
+ */
+Grape2D.utils.JSONMessageDispatcher = function(property) {
+	Grape2D.utils.MessageDispatcher.call(this);
+	this.property = property;
+};
+
+Grape2D.utils.JSONMessageDispatcher.prototype = Object.create(Grape2D.utils.MessageDispatcher.prototype);
+/**
+ * @override
+ */
+Grape2D.utils.JSONMessageDispatcher.prototype.dispatch = function(message, param) {
+	var parsed, current, testP;
+	try {
+		parsed = JSON.parse(message);
+		testP = parsed[this.property];
+	} catch (e) {
+		return;
+	}
+	for (var i = 0; i < this.stack.length; i++) {
+		current = this.stack[i];
+		if (current.regex.test(testP)) {
+			this.stack[i].callback(parsed, param);
 		}
 	}
 };
@@ -9134,24 +9622,57 @@ Grape2D.utils.TimerDispatcher.MINUTE = Grape2D.utils.TimerDispatcher.SECOND * 60
  * @public
  */
 Grape2D.utils.TimerDispatcher.HOUR = Grape2D.utils.TimerDispatcher.MINUTE * 60;
-Grape2D.TopDownBVHTreeDebugger = {
+/**
+ * Visual debugger for the {@link Grape2D.TopDownBVHTree}
+ *   map structure.
+ *
+ * @class
+ */
+Grape2D.utils.TopDownBVHTreeDebugger = {
+	/**
+	 * Renders the debug information for a {@link Grape2D.TopDownBVHNode}.
+	 *
+	 * @param  {!Grape2D.TopDownBVHNode} node Node.
+	 * @param  {!Grape2D.Renderer} renderer Renderer.
+	 * @param  {!Grape2D.Camera} camera Camera.
+	 * @public
+	 * @static
+	 */
 	renderNode: function(node, renderer, camera) {
 		node.getBoundingVolume().render(renderer, camera);
 		renderer.renderText(node.getDepth(), camera.wcsToViewport(renderer, node.getBoundingVolume().getPosition()));
-		if (node.getLeft()) {
+		var left = node.getLeft(),
+			right = node.getRight();
+		if (left) {
+			/** typedef {!Grape2D.TopDownBVHNode} */
+			left;
 			renderer.setStrokeColor("rgba(0,255,0,0.6)");
-			Grape2D.TopDownBVHTreeDebugger.renderNode(node.getLeft(), renderer, camera);
+			Grape2D.utils.TopDownBVHTreeDebugger.renderNode(left, renderer, camera);
 			renderer.setStrokeColor("rgba(0,0,0,1)");
 		}
-		if (node.getRight()) {
+		if (right) {
+			/** typedef {!Grape2D.TopDownBVHNode} */
+			right;
 			renderer.setStrokeColor("rgba(0,0,255,0.6)");
-			Grape2D.TopDownBVHTreeDebugger.renderNode(node.getRight(), renderer, camera);
+			Grape2D.utils.TopDownBVHTreeDebugger.renderNode(right, renderer, camera);
 			renderer.setStrokeColor("rgba(0,0,0,1)");
 		}
 	},
+	/**
+	 * Renders the debug information for a {@link Grape2D.TopDownBVHTree}.
+	 *
+	 * @param  {!Grape2D.TopDownBVHTree} tree Tree.
+	 * @param  {!Grape2D.Renderer} renderer Renderer.
+	 * @param  {!Grape2D.Camera} camera Camera.
+	 * @public
+	 * @static
+	 */
 	render: function(tree, renderer, camera) {
-		if (tree.getRootNode()) {
-			Grape2D.TopDownBVHTreeDebugger.renderNode(tree.getRootNode(), renderer, camera);
+		var root = tree.getRootNode();
+		if (root) {
+			/** typedef {!Grape2D.TopDownBVHNode} */
+			root;
+			Grape2D.utils.TopDownBVHTreeDebugger.renderNode(root, renderer, camera);
 		}
 	}
 };
@@ -9231,4 +9752,4 @@ Grape2D.utils.NetworkDebugger = {
 		renderer.renderText(Grape2D.Math.roundTwo(metrics.getBytesSentPerSec()) + " k/s", Grape2D.utils.NetworkDebugger.outRatePos);
 	}
 };
-if(NODE){module.exports = Grape2D;}else{window.Grape2D = Grape2D}})()
+})()
