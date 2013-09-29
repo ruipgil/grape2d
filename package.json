@@ -11,11 +11,7 @@
 		"webgl",
 		"rendering"
 	],
-	"main": "./utils/Gruntfile.js",
-	"directories": {
-		"doc": "docs",
-		"test": "tests"
-	},
+	"main": "./build/Grape2D.js",
 	"dependencies": {},
 	"devDependencies": {
 		"grunt": "~0.4.1",
