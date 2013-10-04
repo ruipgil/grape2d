@@ -1,13 +1,13 @@
 module.exports = function(grunt) {
-	var sourceFiles = grunt.file.readJSON('./includes/common.json'),
-		destMinFile = '../build/<%= pkg.name %>.min.js',
-		destFile = '../build/<%= pkg.name %>.js';
+	var sourceFiles = grunt.file.readJSON('./utils/includes/common.json'),
+		destMinFile = './build/<%= pkg.name %>.min.js',
+		destFile = './build/<%= pkg.name %>.js';
 
 	grunt.initConfig({
-		pkg: grunt.file.readJSON('../package.json'),
+		pkg: grunt.file.readJSON('./package.json'),
 		qunit: {
 			target: {
-				src: ['../tests/qunit/**.html']
+				src: ['./tests/qunit/**.html']
 			}
 		},
 		'closure-compiler': {
@@ -30,7 +30,7 @@ module.exports = function(grunt) {
 			dist: {
 				src: sourceFiles,
 				options: {
-					destination: '../docs/api/'
+					destination: './docs/api/'
 				}
 			}
 		},
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
 			dist: {
 				src: sourceFiles,
 				dest: destFile,
-			},
+			}
 		}
 
 	});

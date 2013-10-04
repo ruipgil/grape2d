@@ -1,3 +1,4 @@
+cd ..
 mkdir node_modules
 call npm install grunt@0.4.1 --save-dev,
 call npm install grunt-contrib-concat@0.3.0 --save-dev,
