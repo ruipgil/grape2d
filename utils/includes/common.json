@@ -5,6 +5,9 @@
 	"../src/utils/Utils.js",
 	"../src/utils/Clock.js",
 	"../src/utils/SynchronizedClock.js",
+	"../src/utils/IdGenerator.js",
+	"../src/utils/NumberIdGenerator.js",
+	"../src/utils/StringIdGenerator.js",
 
 	"../src/math/Math.js",
 	"../src/math/Vector.js",
@@ -25,6 +28,8 @@
 	"../src/objects/Object2D.js",
 	"../src/objects/NetworkObject2D.js",
 	"../src/objects/Particle.js",
+
+	"../src/objects/NetworkObject2DIdGeneratorSingleton.js",
 
 	"../src/particleSystem/ParticleSystem.js",
 	"../src/particleSystem/Emitter.js",
