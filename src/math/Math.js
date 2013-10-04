@@ -134,6 +134,17 @@ Grape2D.Math = {
 		return ((n > 0) ? ~~n : ((n == ~~n) ? n : (~~n - 1)));
 	},
 	/**
+	 * Returns the of a positive number.
+	 *
+	 * @param  {!number} n Number to floor.
+	 * @return {!number} Floored number.
+	 * @public
+	 * @static
+	 */
+	floorPositive: function(n){
+		return ~~n;
+	},
+	/**
 	 * Returns the ceil of a number
 	 *
 	 * @param  {!number} n Number to ceil.
