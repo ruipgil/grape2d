@@ -8,7 +8,7 @@
  */
 Grape2D.NetworkObject2D = function(options) {
 	Grape2D.Object2D.call(this, options);
-	this.id = Grape2D.NetworkObject2DIdGeneratorSingleton.request();
+	this.id = options.id || Grape2D.NetworkObject2DIdGeneratorSingleton.request();
 };
 
 Grape2D.NetworkObject2D.prototype = Object.create(Grape2D.Object2D.prototype);
