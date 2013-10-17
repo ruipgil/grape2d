@@ -98,9 +98,7 @@ Grape2D.SnapshotEncoder.prototype.processSnapshot = function(snapshot) {
  * @override
  */
 Grape2D.SnapshotEncoder.prototype.processSnapshotEvent = function(snapshotEvent) {
-	this.addEventEncoded({
-		id: snapshotEvent.getId()
-	});
+	this.addEventEncoded({});
 };
 /**
  * Encodes a {@link Grape2D.Vector}.

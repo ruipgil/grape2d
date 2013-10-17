@@ -251,6 +251,106 @@ Grape2D.utils.SynchronizedClock.prototype.sync = function(syncTime) {
 	this.deltaSync = syncTime;
 };
 /**
+ * Interface responsible to generate unique ids.
+ *
+ * @template T
+ *
+ * @class
+ * @interface
+ */
+Grape2D.utils.IdGenerator = function() {};
+
+Grape2D.utils.IdGenerator.prototype = {
+	constructor: Grape2D.utils.IdGenerator,
+	/**
+	 * Requests a new unique id.
+	 *
+	 * @return {!T} Id.
+	 * @template T
+	 * @public
+	 */
+	request: function() {}
+};
+/**
+ * Generates a unique number id.
+ *
+ * @implements {Grape2D.utils.IdGenerator}
+ * @constructor
+ */
+Grape2D.utils.NumberIdGenerator = function(){
+	Grape2D.utils.IdGenerator.call(this);
+	/**
+	 * Current id.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.currentId = 0;
+};
+
+Grape2D.utils.NumberIdGenerator.prototype = Object.create(Grape2D.utils.IdGenerator.prototype);
+/**
+ * @override
+ */
+Grape2D.utils.NumberIdGenerator.prototype.request = function(){
+	return this.currentId++;
+};
+/**
+ * Generates a unique string id, based on a representation of the string in
+ *
+ * @implements {Grape2D.utils.IdGenerator}
+ * @constructor
+ */
+Grape2D.utils.StringIdGenerator = function() {
+	Grape2D.utils.IdGenerator.call(this);
+	/**
+	 * Number of ids generated.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
+	this.currentId = 0;
+};
+
+Grape2D.utils.StringIdGenerator.prototype = Object.create(Grape2D.utils.IdGenerator.prototype);
+/**
+ * @override
+ */
+Grape2D.utils.StringIdGenerator.prototype.request = function() {
+	return Grape2D.utils.StringIdGenerator.generate(this.currentId++);
+};
+/**
+ * Generates an string id based on a number.
+ *
+ * @param  {!number} nid Number id.
+ * @return {!string} String representation of the number.
+ * @public
+ * @static
+ */
+Grape2D.utils.StringIdGenerator.generate = function(nid) {
+	if (nid < 61) {
+		return Grape2D.utils.StringIdGenerator.charEncode(nid);
+	} else {
+		return Grape2D.utils.StringIdGenerator.generate(Grape2D.Math.floorPositive(nid / 62) - 1) + Grape2D.utils.StringIdGenerator.charEncode(nid % 62);
+	}
+};
+/**
+ * Encodes a number into a character.
+ *
+ * @param  {!number} code Number to be encoded.
+ * @return {!string} Character encoded.
+ * @public
+ * @static
+ */
+Grape2D.utils.StringIdGenerator.charEncode = function(code) {
+	if (code > 36) {
+		return String.fromCharCode(code + 29);
+	} else if (code > 10) {
+		return String.fromCharCode(code + 61);
+	}
+	return code + "";
+};
+/**
  * Math describes the namespace that holds math functions and
  *   constants. Optimizations or browser specific functions for math
  *   should be implemented in this namespace.
@@ -384,6 +484,17 @@ Grape2D.Math = {
 	 */
 	floor: function(n) {
 		return ((n > 0) ? ~~n : ((n == ~~n) ? n : (~~n - 1)));
+	},
+	/**
+	 * Returns the of a positive number.
+	 *
+	 * @param  {!number} n Number to floor.
+	 * @return {!number} Floored number.
+	 * @public
+	 * @static
+	 */
+	floorPositive: function(n){
+		return ~~n;
 	},
 	/**
 	 * Returns the ceil of a number
@@ -3463,7 +3574,7 @@ Grape2D.Object2D.prototype = {
  */
 Grape2D.NetworkObject2D = function(options) {
 	Grape2D.Object2D.call(this, options);
-	this.id = options.id || 0;
+	this.id = options.id || Grape2D.NetworkObject2DIdGeneratorSingleton.request();
 };
 
 Grape2D.NetworkObject2D.prototype = Object.create(Grape2D.Object2D.prototype);
@@ -3693,6 +3804,51 @@ Grape2D.Particle.prototype.update = function(dt, scene) {
 	this.position.setX(this.position.getX() + this.velocity.getX() * dt);
 	this.position.setY(this.position.getY() + this.velocity.getY() * dt);
 	this.lifeTime -= dt;
+};
+/**
+ * Generates unique ids for {@link Grape2D.NetworkObject2D}.
+ *
+ * @class
+ */
+Grape2D.NetworkObject2DIdGeneratorSingleton = {
+	/**
+	 * Id generator instance.
+	 *
+	 * @type {!Grape2D.utils.IdGenerator}
+	 * @private
+	 * @static
+	 */
+	instance: new Grape2D.utils.StringIdGenerator(),
+	/**
+	 * Gets the generator instance.
+	 *
+	 * @return {!Grape2D.utils.IdGenerator} Id generator instance.
+	 * @public
+	 * @static
+	 */
+	getGenerator: function(){
+		return Grape2D.NetworkObject2DIdGeneratorSingleton.instance;
+	},
+	/**
+	 * Sets the generator instance.
+	 *
+	 * @param  {!Grape2D.utils.IdGenerator} instance Id generator instance.
+	 * @public
+	 * @static
+	 */
+	setGenerator: function(instance){
+		Grape2D.NetworkObject2DIdGeneratorSingleton.instance = instance;
+	},
+	/**
+	 * Requests an ID. This is a shortcut to
+	 *   <code>Grape2D.NetworkObject2DIdGeneratorSingleton.getInstance().request()</code>.
+	 *
+	 * @return {?} An unique id.
+	 * @public
+	 */
+	request: function(){
+		return Grape2D.NetworkObject2DIdGeneratorSingleton.instance.request();
+	}
 };
 /**
  * Particle system.
@@ -9069,28 +9225,11 @@ Grape2D.SnapshotNetworkObject2D.prototype.process = function(processor) {
  * @implements {Grape2D.SnapshotElement}
  * @constructor
  */
-Grape2D.SnapshotEvent = function(id) {
+Grape2D.SnapshotEvent = function() {
 	Grape2D.SnapshotElement.call(this);
-	/**
-	 * Event unique identifier.
-	 *
-	 * @type {!(number|string)}
-	 * @private
-	 */
-	this.id = id;
 };
 
 Grape2D.SnapshotEvent.prototype = Object.create(Grape2D.SnapshotElement.prototype);
-
-/**
- * Gets the event id.
- *
- * @return {!(number|string)} Event id.
- * @public
- */
-Grape2D.SnapshotEvent.prototype.getId = function() {
-	return this.id;
-};
 /**
  * Fires the event.
  *
@@ -9367,9 +9506,7 @@ Grape2D.SnapshotEncoder.prototype.processSnapshot = function(snapshot) {
  * @override
  */
 Grape2D.SnapshotEncoder.prototype.processSnapshotEvent = function(snapshotEvent) {
-	this.addEventEncoded({
-		id: snapshotEvent.getId()
-	});
+	this.addEventEncoded({});
 };
 /**
  * Encodes a {@link Grape2D.Vector}.
