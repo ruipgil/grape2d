@@ -21,7 +21,7 @@ BoxSample.prototype = Object.create(ColorBox.prototype);
  * @override
  */
 BoxSample.prototype.update = function(dt, scene) {
-	this.ap = (this.ap + dt * BoxSample.CONST) % Grape2D.Math.PIx2;
+	this.ap = (this.ap + dt * BoxSample.CONST*(Grape2D.Math.pow(1, this.getPosition().length()))) % Grape2D.Math.PIx2;
 	this.setPosition(
 		new Grape2D.Vector(
 			this.center.x + Grape2D.Math.cos(this.ap) * this.extension,
@@ -33,7 +33,7 @@ BoxSample.prototype.update = function(dt, scene) {
  * @type {number}
  * @constant
  */
-BoxSample.CONST = 0.002;
+BoxSample.CONST = 0.0002;
 
 var aabb1 = new Grape2D.AABB({
 		width: 50,
@@ -58,6 +58,21 @@ var aabb1 = new Grape2D.AABB({
  */
 var AABBMerging = function(renderer, scene, camera) {
 	Grape2D.SimpleGame.call(this, renderer, scene, camera);
+	this.im = new Grape2D.InputManager(renderer);
+	this.selected = obj2;
+	var that = this;
+	this.im.addMouseDown(function(evnt){
+		var ext = that.getCamera().viewportToWcs(that.getRenderer(), evnt.getPosition());
+		that.selected.extension = ext.length();
+		that.selected.setPosition(ext);
+		that.selected.ap = ext.getAngle();
+	});
+	this.im.addKeyDown(Grape2D.InputManager.KEY.B, function(){
+		that.selected = obj1;
+	});
+	this.im.addKeyDown(Grape2D.InputManager.KEY.R, function(){
+		that.selected = obj2;
+	});
 };
 AABBMerging.prototype = Object.create(Grape2D.SimpleGame.prototype);
 var map;
@@ -92,6 +107,8 @@ AABBMerging.prototype.setup = function() {
 		color: 'rgba(0,255,0,1)'
 	});
 
+	this.selected = obj2;
+
 	map = this.getScene().getMap();
 	map.add(obj1);
 	map.add(obj2);
@@ -114,6 +131,12 @@ AABBMerging.prototype.update = function(dt) {
 	obj3.setPosition(aabbtemp.getPosition());
 	obj3.setBoundingBox(aabbtemp);
 	this.getScene().getMap().rebuild();
+};
+
+AABBMerging.prototype.render = function() {
+	Grape2D.SimpleGame.prototype.render.call(this);
+	this.getRenderer().renderText("Press R to select the red AABB, and B for the blue one.", new Grape2D.Vector(10,30));
+	this.getRenderer().renderText("The AABB's rotate around the center, click on the screen to change the position of the selected AABB.", new Grape2D.Vector(10,50));
 };
 
 var size = Grape2D.utils.getDocumentSize(),
