@@ -260,7 +260,7 @@ Grape2D.Vector.prototype = {
 	 * @public
 	 */
 	sqDistanceTo: function(vector) {
-		return vector.x * this.x + vector.y * this.y;
+		return Grape2D.Math.sq(vector.x - this.x) + Grape2D.Math.sq(vector.y - this.y);
 	},
 	/**
 	 * Positive distance between the x coordinates this vector an
