@@ -19,13 +19,13 @@ Grape2D.GenericCollisionChecker.prototype.aabbVsAabb = function(aabb1, aabb2) {
 	}, {
 		min: aabb2.getMinX(),
 		max: aabb2.getMaxX()
-	}) >= 0 && Grape2D.Math.overlaps({
+	}) > 0 && Grape2D.Math.overlaps({
 		min: aabb1.getMinY(),
 		max: aabb1.getMaxY()
 	}, {
 		min: aabb2.getMinY(),
 		max: aabb2.getMaxY()
-	}) >= 0;
+	}) > 0;
 };
 /**
  * @override
@@ -98,15 +98,27 @@ Grape2D.GenericCollisionChecker.prototype.aabbVsPolygon = function(aabb, polygon
  * @override
  */
 Grape2D.GenericCollisionChecker.prototype.circleVsPolygon = function(circle, polygon) {
-	var list = polygon.getComputedVertexList(),
-		cPos = circle.getPosition(),
-		r = Grape2D.Math.sq(circle.getRadius());
-	for (var i = 0; i < list.length; i++) {
-		if (list[i].sqDistanceTo(cPos) >= r) {
-			return true;
+	var axisList = Grape2D.SATUtils.computePolygonAxis(polygon);
+	var vertexList = polygon.getComputedVertexList();
+	for (var i = 0; i < vertexList.length; i++) {
+		axisList.push(circle.getPosition().clone().sub(vertexList[i]).normalize());
+	}
+	var axis, min = Infinity;
+	var polyInterval = Grape2D.SATUtils.computeIntervals(vertexList, axisList);
+	var circleInterval = [];
+	for (var i = 0; i < axisList.length; i++) {
+		circleInterval.push({
+			min: circle.getPosition().dot(axisList[i]) - circle.getRadius(),
+			max: circle.getPosition().dot(axisList[i]) + circle.getRadius()
+		});
+	}
+	for (i = 0; i < polyInterval.length; i++) {
+		var overlaps = Grape2D.Math.overlaps(polyInterval[i], circleInterval[i]);
+		if (overlaps < 0) {
+			return false;
 		}
 	}
-	return false;
+	return true;
 };
 /**
  * Must be refined.
@@ -121,21 +133,33 @@ Grape2D.GenericCollisionChecker.prototype.polygonVsPolygon = function(polygon1, 
  * @override
  */
 Grape2D.GenericCollisionChecker.prototype.polygonVsPoint = function(polygon, point) {
-	var list = polygon.getVertexList(),
+	//debugger;
+	var list = polygon.getComputedVertexList(),
 		tVertex = [],
 		i, n;
 
-	tVertex.push(list[0].clone().sub(point));
-	for (i = 0, n = 0; i < tVertex.length; ++i) {
+	for (i = 0; i < list.length; i++) {
+		tVertex.push(list[i].clone().sub(point));
+	}
+	for (i = 0, n = 0; i < tVertex.length; i++) {
 		n = (i + 1) % tVertex.length;
-		if (n > 0) {
-			tVertex.push(list[n].clone().sub(point));
-		}
-		if (tVertex[n].getX() * tVertex[i].getY() - tVertex[i].getX() * tVertex[n].getY()) {
+		if ((tVertex[n].getX() * tVertex[i].getY() - tVertex[i].getX() * tVertex[n].getY()) < 0) {
 			return false;
 		}
 	}
 	return true;
+	/*
+	//tVertex.push(list[0].clone().sub(point));
+	for (i = 0, n = 0; i < tVertex.length; ++i) {
+		n = (i + 1) % tVertex.length;
+		//if (n > 0) {
+			tVertex.push(list[n].clone().sub(point));
+		//}
+		if ((tVertex[n].getX() * tVertex[i].getY() - tVertex[i].getX() * tVertex[n].getY())>0) {
+			return false;
+		}
+	}
+	return true;*/
 };
 /**
  * Must be refined.
