@@ -9,7 +9,7 @@ test("AABB vs AABB colliding", function(){
 		aabb2 = new Grape2D.AABB({
 			width:2,
 			height:4,
-			position: new Grape2D.Vector(0,3)
+			position: new Grape2D.Vector(0,2.99)
 		});
 	ok(satInstance.aabbVsAabb(aabb1, aabb2), "They're colliding.");
 });
