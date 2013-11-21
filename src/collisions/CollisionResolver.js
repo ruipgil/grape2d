@@ -1,5 +1,5 @@
 /**
- * Grape2D.CollisionResolver class.
+ * CollisionResolver class.
  *
  * @constructor
  */
@@ -7,6 +7,15 @@ Grape2D.CollisionResolver = function() {};
 
 Grape2D.CollisionResolver.prototype = {
 	constructor: Grape2D.CollisionResolver,
+	/**
+	 * Collides an {@link Grape2D.AABB} to an {@link Grape2D.AABB}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with an {@link Grape2D.AABB}
+	 *   and a {@link Grape2D.AABB}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
 	aabbVsAabb: function(m) {
 		var a = m.getA(),
 			b = m.getB(),
@@ -16,16 +25,16 @@ Grape2D.CollisionResolver.prototype = {
 			aExtent = (abox.getMaxX() - abox.getMinX()) / 2,
 			bExtent = (bbox.getMaxX() - bbox.getMinX()) / 2,
 			xOverlap = aExtent + bExtent - Grape2D.Math.abs(n.getX());
-		if (xOverlap > 0) {
+		if (xOverlap >= 0) {
 			aExtent = (abox.getMaxY() - abox.getMinY()) / 2;
 			bExtent = (bbox.getMaxY() - bbox.getMinY()) / 2;
 			var yOverlap = aExtent + bExtent - Grape2D.Math.abs(n.getY());
 			if (yOverlap > 0) {
-				if (xOverlap > yOverlap) {
+				if (xOverlap < yOverlap) {
 					if (n.getX() < 0) {
 						m.setNormal(new Grape2D.Vector(-1, 0));
 					} else {
-						m.setNormal(new Grape2D.Vector(1, 0)); //original : new Grape2D.Vector(0,0)
+						m.setNormal(new Grape2D.Vector(1, 0));
 					}
 					m.setPenetration(xOverlap);
 					return true;
@@ -42,16 +51,26 @@ Grape2D.CollisionResolver.prototype = {
 		}
 		return false;
 	},
+	//this method is still incongruent with the collision checker
+	/**
+	 * Collides an {@link Grape2D.AABB} to an {@link Grape2D.Circle}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with an {@link Grape2D.AABB}
+	 *   and a {@link Grape2D.Circle}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
 	aabbVsCircle: function(m) {
-		var a = m.getA(),
-			b = m.getB(),
+		var a = m.getA().getBoundingBox(),
+			b = m.getB().getBoundingBox(),
 			n = b.getPosition().clone().sub(a.getPosition()),
-			closest = n,
-			xExtent = (a.getBoundingBox().getMaxX() - a.getBoundingBox().getMinX()) / 2,
-			yExtent = (a.getBoundingBox().getMaxY() - a.getBoundingBox().getMinY()) / 2,
+			closest = n.clone(),
+			xExtent = a.getHalfWidth(),
+			yExtent = a.getHalfHeight(),
 			inside = false;
-		closest.setX(Grape2D.Math.clamp(-xExtent, xExtent, closest.getX()));
-		closest.sety(Grape2D.Math.clamp(-yExtent, yExtent, closest.getY()));
+		closest.setX(Grape2D.Math.clamp(closest.getX(), -xExtent, xExtent));
+		closest.setY(Grape2D.Math.clamp(closest.getY(), -yExtent, yExtent));
 		if (n.equals(closest)) {
 			inside = true;
 			if (Grape2D.Math.abs(n.getX()) > Grape2D.Math.abs(n.getY())) {
@@ -69,175 +88,234 @@ Grape2D.CollisionResolver.prototype = {
 			}
 		}
 
-		var normal = n.sub(closest);
-		var d = normal.LengthSquared();
-		var r = b.getBoundingBox().getRadius();
+		var normal = n.clone().sub(closest);
+		var d = normal.lengthSquared();
+		var r = b.getRadius();
 
-		if (d > r * r && !inside) {
+		if (d > (r * r) && !inside) {
 			return false;
 		}
 
 		d = Grape2D.Math.sqrt(d);
 		if (inside) {
-			m.setNormal(-n); //not correct!!
+			m.setNormal(normal.normalize().negate());
 			m.setPenetration(r + d);
 		} else {
-			m.setNormal(n);
-			m.penetration = r + d;
+			m.setNormal(normal.normalize());
+			m.setPenetration(r - d);
 		}
 
 		return true;
 	},
+	/**
+	 * Collides an {@link Grape2D.AABB} to an {@link Grape2D.Polygon}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with an {@link Grape2D.AABB}
+	 *   and a {@link Grape2D.Polygon}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
 	aabbVsPolygon: function(m) {
-		var aabbAsPolygon = Grape2D.BVFactorySingleton.create(m.getA());
-		var temp = m.getA();
-		m.setA(aabbAsPolygon);
+		var temp = m.getA().getBoundingBox();
+		var pos = temp.getPosition();
+		//var aabbAsPolygon = Grape2D.BVFactorySingleton.create(temp);
+		var aabbAsPolygon = new Grape2D.Polygon({
+			vertexList: [
+				new Grape2D.Vector(-temp.getHalfWidth(), -temp.getHalfHeight()),
+				new Grape2D.Vector(temp.getHalfWidth(), -temp.getHalfHeight()),
+				new Grape2D.Vector(temp.getHalfWidth(), temp.getHalfHeight()),
+				new Grape2D.Vector(-temp.getHalfWidth(), temp.getHalfHeight())
+			]
+		});
+		m.getA().setBoundingBox(aabbAsPolygon);
 		var result = this.polygonVsPolygon(m);
-		m.setA(temp);
+		m.getA().setBoundingBox(temp);
 		return result;
 	},
-	aabbVsRay: function(m) {},
+	/**
+	 * Collides an {@link Grape2D.AABB} to an {@link Grape2D.Ray}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with an {@link Grape2D.AABB}
+	 *   and a {@link Grape2D.Ray}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
+	aabbVsRay: function(m) {
+		return false;
+	},
+	/**
+	 * Collides an {@link Grape2D.Circle} to an {@link Grape2D.AABB}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with a {@link Grape2D.Circle}
+	 *   and a {@link Grape2D.AABB}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
 	circleVsAabb: function(m) {
 		var result = this.aabbVsCircle(m.invert());
 		m.invert();
 		return result;
 	},
+	/**
+	 * Collides an {@link Grape2D.Circle} to an {@link Grape2D.Circle}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with a {@link Grape2D.Circle}
+	 *   and a {@link Grape2D.Circle}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
 	circleVsCircle: function(m) {
-		var a = m.getA(),
-			b = m.getB(),
+		var a = m.getA().getBoundingBox(),
+			b = m.getB().getBoundingBox(),
 			n = b.getPosition().clone().sub(a.getPosition()),
-			r = Grape2D.Math.sq(a.getBoundingBox().getRadius() + b.getBoundingBox().getRadius());
+			r = a.getRadius() + b.getRadius();
 
-		if (n.lengthSquared() > r) {
+		if (n.lengthSquared() > Grape2D.Math.sq(r)) {
 			return false;
 		}
 
 		var d = n.length();
 		if (d != 0) {
 			m.setPenetration(r - d);
-			m.setNormal(n.div(d)); //probably not implemented
-			return true;
+			m.setNormal(n.normalize());
 		} else {
 			m.setPenetration(a.getRadius());
 			m.setNormal(new Grape2D.Vector(1, 0));
-			return true;
 		}
 
+		return true;
+	},
+	/**
+	 * Collides an {@link Grape2D.Circle} to an {@link Grape2D.Polygon}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with a {@link Grape2D.Circle}
+	 *   and a {@link Grape2D.Polygon}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
+	circleVsPolygon: function(m) {
+		var polygon = /** @type {!Grape2D.Polygon} */ (m.getB().getBoundingBox());
+		var circle = /** @type {!Grape2D.Circle} */ (m.getA().getBoundingBox());
+		var axisList = Grape2D.SATUtils.computePolygonAxis(polygon);
+		var vertexList = polygon.getComputedVertexList();
+		for (var i = 0; i < vertexList.length; i++) {
+			axisList.push(circle.getPosition().clone().sub(vertexList[i]).normalize());
+		}
+		var axis, min = Infinity;
+		var polyInterval = Grape2D.SATUtils.computeIntervals(vertexList, axisList);
+		var circleInterval = [];
+		for (var i = 0; i < axisList.length; i++) {
+			circleInterval.push({
+				min: circle.getPosition().dot(axisList[i]) - circle.getRadius(),
+				max: circle.getPosition().dot(axisList[i]) + circle.getRadius()
+			});
+		}
+		for (i = 0; i < polyInterval.length; i++) {
+			var overlaps = Grape2D.Math.overlaps(polyInterval[i], circleInterval[i]);
+			if (overlaps < 0) {
+				return false;
+			}
+			if (min > overlaps) {
+				axis = axisList[i];
+				min = overlaps;
+			}
+		}
+		m.setPenetration(min);
+		m.setNormal(axis.negate());
+		return true;
+	},
+	/**
+	 * Collides an {@link Grape2D.Circle} to an {@link Grape2D.Ray}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with a {@link Grape2D.Circle}
+	 *   and a {@link Grape2D.Ray}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
+	circleVsRay: function(m) {
 		return false;
 	},
-	circleVsPolygon: function(m) {
-
-	},
-	circleVsRay: function(m) {},
+	/**
+	 * Collides an {@link Grape2D.Polygon} to an {@link Grape2D.AABB}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with a {@link Grape2D.Polygon}
+	 *   and a {@link Grape2D.AABB}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
 	polygonVsAabb: function(m) {
 		var result = this.aabbVsPolygon(m.invert());
 		m.invert();
 		return result;
 	},
+	/**
+	 * Collides an {@link Grape2D.Polygon} to an {@link Grape2D.Circle}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with a {@link Grape2D.Polygon}
+	 *   and a {@link Grape2D.Circle}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
 	polygonVsCircle: function(m) {
-		var result = this.circleVsAabb(m.invert());
+		var result = this.circleVsPolygon(m.invert());
 		m.invert();
 		return result;
 	},
+	/**
+	 * Collides an {@link Grape2D.Polygon} to an {@link Grape2D.Polygon}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with a {@link Grape2D.Polygon}
+	 *   and a {@link Grape2D.Polygon}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
 	polygonVsPolygon: function(m) {
-		function compileAxis(polygon) {
-			var vertices = polygon.getComputedVertexList(),
-				axis = [],
-				b;
-			//is it possible to just delete repetitions?
-			for (var i = 0; i < vertices.length; i++) {
-				b = new Grape2D.Vector(-(vertices[(i + 1) % vertices.length].x - vertices[i].x), -(vertices[(i + 1) % vertices.length].y - vertices[i].y));
-				b.normalize();
-				axis.push(b.rightNormal());
-			}
-			for (i = 0; i < axis.length; i++) {
-				for (var j = i + 1; j < axis.length; j++) {
-					if (axis[j].parallelTo(axis[i])) {
-						axis.splice(j, 1);
-						break;
-					}
-				}
-			}
-			return axis;
-		}
+		var polygon1 = /** @type {!Grape2D.Polygon} */ (m.getA().getBoundingBox());
+		var polygon2 = /** @type {!Grape2D.Polygon} */ (m.getB().getBoundingBox());
+		var pa1 = Grape2D.SATUtils.computePolygonAxis(polygon1);
+		var pa2 = Grape2D.SATUtils.computePolygonAxis(polygon2);
+		var axisList = Grape2D.SATUtils.selectAxis(pa1, pa2),
+			p1Intv = Grape2D.SATUtils.computeIntervals(polygon1.getComputedVertexList(), axisList),
+			p2Intv = Grape2D.SATUtils.computeIntervals(polygon2.getComputedVertexList(), axisList),
+			overlap, axis;
 
-		function compileIntervals(polygon) {
-			var vertices = polygon.getComputedVertexList(),
-				intvByAxis = [],
-				aa, ab,
-				temp, min, max;
-
-			for (var i = 0; i < axis.length; i++) {
-				max = -Infinity;
-				min = Infinity;
-				for (var j = 0; j < vertices.length; j++) {
-					aa = vertices[j].dotProduct(axis[i]);
-					ab = vertices[(j + 1) % axis.length].dotProduct(axis[i]);
-					if (aa > max) {
-						max = aa;
-					}
-					if (aa < min) {
-						min = aa;
-					}
-					if (ab > max) {
-						max = ab;
-					}
-					if (ab < min) {
-						min = aa;
-					}
-				}
-				intvByAxis.push({
-					min: min,
-					max: max
-				});
-			}
-
-			return intvByAxis;
-		}
-
-		var axis = compileAxis(m.getA().getBoundingBox()).concat(m.getB().getBoundingBox());
-		for (var i = 0; i < axis.length; i++) {
-			for (var j = i + 1; j < axis.length; j++) {
-				if (axis[i].equals(axis[j])) {
-					axis.splice(j, 1);
-				}
-			}
-		}
-
-		var t = compileIntervals(m.getA().getBoundingBox());
-		var s = compileIntervals(m.getB().getBoundingBox());
-
-		var axisOl, minOl = Infinity,
-			ol;
-
-		for (i = 0; i < axis.length; i++) {
-			var ol = Grape2D.Math.overlaps(s[i], t[i]);
-			if (ol < 0) {
+		var min = Infinity;
+		for (var i = 0; i < axisList.length; i++) {
+			overlap = Grape2D.Math.overlaps(p1Intv[i], p2Intv[i]);
+			if (overlap < 0) {
 				return false;
 			}
-			if (minOl > ol) {
-				axisOl = axis[i];
-				minOl = ol;
+			if (min > overlap) {
+				axis = axisList[i];
+				min = overlap;
 			}
 		}
-		m.setNormal(axisOl);
-		m.setPenetration(minOl);
+		m.setPenetration(min);
+		if (axis.dot(polygon2.getPosition().clone().sub(polygon1.getPosition())) < 0) {
+			axis.negate();
+		}
+		m.setNormal(axis);
+		return true;
 	},
-	polygonVsRay: function(m) {},
-	rayVsAabb: function(m) {
-		var result = this.aabbVsRay(m.invert());
-		m.invert();
-		return result;
-	},
-	rayVsCircle: function(m) {
-		var result = this.circleVsRay(m.invert());
-		m.invert();
-		return result;
-	},
-	rayVsPolygon: function(m) {
-		var result = this.polygonVsRay(m.invert());
-		m.invert();
-		return result;
-	},
-	rayVsRay: function(m) {}
+	/**
+	 * Collides an {@link Grape2D.Polygon} to an {@link Grape2D.Ray}.
+	 *   If they're colliding stores useful information in the manifold.
+	 *
+	 * @param  {!Grape2D.Manifold} m Manifold with a {@link Grape2D.Polygon}
+	 *   and a {@link Grape2D.Ray}.
+	 * @return {!boolean} True if they collide. False otherwise.
+	 * @public
+	 */
+	polygonVsRay: function(m) {
+		return false;
+	}
 };
