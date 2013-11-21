@@ -50,9 +50,13 @@
 
 	"./src/collisions/CollisionChecker.js",
 	"./src/collisions/GenericCollisionChecker.js",
+	"./src/collisions/SATUtils.js",
 	"./src/collisions/SATCollisionChecker.js",
 	"./src/collisions/CollisionDispatcher.js",
 	"./src/collisions/CollisionCheckerSingleton.js",
+	"./src/collisions/CollisionResolver.js",
+	"./src/collisions/Manifold.js",
+	"./src/collisions/ManifoldDispatcher.js",
 
 	"./src/maps/BVHTree.js",
 	"./src/maps/TopDownBVHTree.js",
@@ -79,18 +83,6 @@
 	"./src/network/WebSocketMetrics.js",
 	"./src/network/LagSimulator.js",
 
-	"./src/network/snapshot/SnapshotHistory.js",
-	"./src/network/snapshot/SnapshotManager.js",
-	"./src/network/snapshot/SnapshotManagerSingleton.js",
-	"./src/network/snapshot/SnapshotElement.js",
-	"./src/network/snapshot/SnapshotElementProcessor.js",
-	"./src/network/snapshot/SnapshotNetworkObject2D.js",
-	"./src/network/snapshot/SnapshotEvent.js",
-	"./src/network/snapshot/Snapshot.js",
-	"./src/network/snapshot/ISnapshotEncoder.js",
-	"./src/network/snapshot/ISnapshotDecoder.js",
-	"./src/network/snapshot/SnapshotEncoder.js",
-	"./src/network/snapshot/SnapshotDecoder.js",
 
 	"./src/utils/MessageDispatcher.js",
 	"./src/utils/JSONMessageDispatcher.js",
