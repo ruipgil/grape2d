@@ -301,7 +301,7 @@ Grape2D.Math = {
 	 * @static
 	 */
 	clamp: function(x, min, max) {
-		return x < min ? min : (x > max ? max : x);
+		return x <= min ? min : (x > max ? max : x);
 	},
 
 	/**
