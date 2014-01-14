@@ -50,6 +50,16 @@ Grape2D.Texture = function(options) {
 	 * @private
 	 */
 	this.buffer = new Grape2D.CanvasRenderer();
+	/**
+	 * WebGL buffer. This texture is only suitable to one WegGL context.
+	 * It's planned the introduction of shared resources, then it will
+	 *   be possile to support multiple WebGL renderers.
+	 * This buffer starts <code>null</code>, and after the image loading should be an {@see WegGLTexture}. If the texture turns dirty again, it also should set to <code>null</code>
+	 *
+	 * @type {?WebGLTexture}
+	 * @private
+	 */
+	this.glBuffer = null;
 	if (options.image) {
 		this.bufferImage(options.image);
 	} else if (options.useTexure) {
@@ -104,7 +114,7 @@ Grape2D.Texture.prototype.getHalfHeight = function() {
  * @public
  */
 Grape2D.Texture.prototype.getBuffer = function() {
-	return this.buffer.canvas.canvas;
+	return this.buffer.canvas;
 };
 /**
  * Changes the internal buffer and load an image, with it's
@@ -118,14 +128,17 @@ Grape2D.Texture.prototype.bufferImage = function(image) {
 	this.setWidth(image.width);
 	this.setHeight(image.height);
 
-	this.buffer = new Grape2D.CanvasRenderer();
-	this.buffer.renderImage(image, 0, 0, this.width, this.height, 0, 0, this.width, this.height);
+	this.buffer = new Grape2D.Canvas({
+		width: this.width,
+		height: this.height
+	}).drawImage(image, 0, 0, this.width, this.height, 0, 0, this.width, this.height);
+	this.glBuffer = null;
 };
 /**
  * @override
  */
-Grape2D.Texture.prototype.render = function(renderer, position){
-	renderer.renderTexture(this, position);
+Grape2D.Texture.prototype.render = function(renderer, camera) {
+	renderer.renderTexture(this, camera);
 };
 /**
  * Creates a Texture and loads an image asynchronously.
@@ -141,6 +154,7 @@ Grape2D.Texture.prototype.render = function(renderer, position){
 Grape2D.Texture.createFromImage = function(src, callback) {
 	var image = new Image(),
 		that = new Grape2D.Texture();
+	image.crossOrigin = "Anonymous";
 
 	image.onload = function(evt) {
 		that.bufferImage(this);
