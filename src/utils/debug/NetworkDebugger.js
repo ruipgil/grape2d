@@ -66,7 +66,7 @@ Grape2D.utils.NetworkDebugger = {
 	 */
 	render: function(webSocket, renderer, camera) {
 		var metrics = webSocket.getMetrics();
-		renderer.setTextFont(Grape2D.utils.NetworkDebugger.textFont);
+		//renderer.setTextFont(Grape2D.utils.NetworkDebugger.textFont);
 		renderer.renderText("ping: " + metrics.getPing() + " ms", Grape2D.utils.NetworkDebugger.pingPos);
 		renderer.renderText("in : " + metrics.getLastBytesReceived(), Grape2D.utils.NetworkDebugger.inPos);
 		renderer.renderText(Grape2D.Math.roundTwo(metrics.getBytesReceivedPerSec()) + " k/s", Grape2D.utils.NetworkDebugger.inRatePos);

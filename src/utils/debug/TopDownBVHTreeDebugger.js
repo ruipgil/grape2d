@@ -22,16 +22,16 @@ Grape2D.utils.TopDownBVHTreeDebugger = {
 		if (left) {
 			/** typedef {!Grape2D.TopDownBVHNode} */
 			left;
-			renderer.setStrokeColor("rgba(0,255,0,0.6)");
+			//renderer.setStrokeColor("rgba(0,255,0,0.6)");
 			Grape2D.utils.TopDownBVHTreeDebugger.renderNode(left, renderer, camera);
-			renderer.setStrokeColor("rgba(0,0,0,1)");
+			//renderer.setStrokeColor("rgba(0,0,0,1)");
 		}
 		if (right) {
 			/** typedef {!Grape2D.TopDownBVHNode} */
 			right;
-			renderer.setStrokeColor("rgba(0,0,255,0.6)");
+			//renderer.setStrokeColor("rgba(0,0,255,0.6)");
 			Grape2D.utils.TopDownBVHTreeDebugger.renderNode(right, renderer, camera);
-			renderer.setStrokeColor("rgba(0,0,0,1)");
+			//renderer.setStrokeColor("rgba(0,0,0,1)");
 		}
 	},
 	/**
