@@ -51,6 +51,14 @@ Grape2D.Renderer.prototype = {
 	 */
 	setHeight: function(height) {},
 	/**
+	 * Renders a colored shape.
+	 *
+	 * @param  {!Grape2D.ColoredShape} shape The colored shape to render.
+	 * @param  {!Grape2D.Camera} camera The camera to transform the colored shape.
+	 * @public
+	 */
+	renderColoredShape: function(shape, camera){},
+	/**
 	 * Renders a texture to a position on the renderer.
 	 *
 	 * @param  {!Grape2D.ITexture} texture The texture to render
@@ -75,21 +83,6 @@ Grape2D.Renderer.prototype = {
 	 * @public
 	 */
 	renderNetworkObject2D: function(obj, pos, camera) {},
-	/**
-	 * Renders an image to the screen
-	 *
-	 * @param  {!Image} image DOM image.
-	 * @param  {!number} sx Start x coordinate of the image to render.
-	 * @param  {!number} sy Start y coordinate of the image to render.
-	 * @param  {!number} sw Width of the image to render.
-	 * @param  {!number} sh Height of the image to render.
-	 * @param  {!number} dx Start x coordinate in the renderer, for the image.
-	 * @param  {!number} dy Start y coordinate in the renderer, for the image.
-	 * @param  {!number} dw Width of the image in the renderer.
-	 * @param  {!number} dh Height of the image in the renderer.
-	 * @public
-	 */
-	renderImage: function(image, sx, sy, sw, sh, dx, dy, dw, dh) {},
 	/**
 	 * Renders the wireframe of an AABB.
 	 *
@@ -128,9 +121,11 @@ Grape2D.Renderer.prototype = {
 	/**
 	 * Prepares a render cycle. This method should be called once, at
 	 *   the begining of the rendering cycle.
+	 *
+	 * @param {!Grape2D.Camera} camera Camera to render the scene.
 	 * @public
 	 */
-	start: function() {},
+	start: function(camera) {},
 	/**
 	 * Commits everything to render. This method should be called once,
 	 *   at the end of the rendering cycle.
@@ -152,19 +147,25 @@ Grape2D.Renderer.prototype = {
 	 */
 	getDOMElement: function() {},
 	/**
-	 * Sets a new stroke color.
+	 * Sets the coloring mode to stroke.
 	 *
-	 * @param  {!string} color New color to use when stroking.
 	 * @public
 	 */
-	setStrokeColor: function(color) {},
+	setStrokeColorMode: function() {},
 	/**
-	 * Sets a new fill color.
+	 * Sets the coloring mode to fill.
 	 *
-	 * @param  {!string} color New color to use when filling.
 	 * @public
 	 */
-	setFillColor: function(color) {},
+	setFillColorMode: function(color) {},
+	/**
+	 * Sets the color current color, to be used in the
+	 *   color mode.
+	 *
+	 * @param {!Grape2D.Color} color Color to be used.
+	 * @public
+	 */
+	setColor: function(color){},
 	/**
 	 * Renders a particle to the renderer.
 	 *
@@ -174,13 +175,6 @@ Grape2D.Renderer.prototype = {
 	 * @public
 	 */
 	renderParticle: function(particle, camera) {},
-	/**
-	 * Sets the text font.
-	 *
-	 * @param {!string} font Text font.
-	 * @public
-	 */
-	setTextFont: function(font) {},
 	/**
 	 * Renders a line segment to the renderer.
 	 *
@@ -199,33 +193,5 @@ Grape2D.Renderer.prototype = {
 	 *   coordinates.
 	 * @public
 	 */
-	renderPoint: function(point, camera) {},
-	/**
-	 * Saves the current renderer setting, i.e. translation state,
-	 *   rotation, font style, etc.
-	 *
-	 * @public
-	 */
-	save: function() {},
-	/**
-	 * Restores a the last saved state.
-	 *
-	 * @public
-	 */
-	restore: function() {},
-	/**
-	 * Translates rendering position. The default value is <code>
-	 *   (0,0)</code>.
-	 *
-	 * @param {!Grape2D.Vector} vector Translation value.
-	 * @public
-	 */
-	translate: function(vector) {},
-	/**
-	 * Rotates.
-	 *
-	 * @param {!number} angle Angle to rotate, in rads.
-	 * @public
-	 */
-	rotate: function(angle) {}
+	renderPoint: function(point, camera) {}
 };

@@ -79,12 +79,6 @@ Grape2D.WireframeRenderer.prototype.renderNetworkObject2D = function(obj, pos, c
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderImage = function(image, sx, sy, sw, sh, dx, dy, dw, dh) {
-	this.renderer.renderImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
-};
-/**
- * @override
- */
 Grape2D.WireframeRenderer.prototype.renderAABB = function(aabb, camera) {
 	this.renderer.renderAABB(aabb, camera);
 };
@@ -133,20 +127,26 @@ Grape2D.WireframeRenderer.prototype.getDOMElement = function() {
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.setStrokeColor = function(color) {
-	this.renderer.setStrokeColor(color);
+Grape2D.WireframeRenderer.prototype.setStrokeColorMode = function() {
+	this.renderer.setStrokeColorMode();
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.setFillColor = function(color) {
-	this.renderer.setFillColor(color);
+Grape2D.WireframeRenderer.prototype.setFillColorMode = function() {
+	this.renderer.setFillColorMode();
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.setTextFont = function(font) {
-	this.renderer.setTextFont(font);
+Grape2D.WireframeRenderer.prototype.setColor = function(color) {
+	this.renderer.setColor(color);
+};
+/**
+ * @override
+ */
+Grape2D.WireframeRenderer.prototype.renderColoredShape = function(shape, camera) {
+	this.renderer.renderColoredShape(shape, camera);
 };
 /**
  * @override
@@ -165,28 +165,4 @@ Grape2D.WireframeRenderer.prototype.renderLineSegment = function(start, end, cam
  */
 Grape2D.WireframeRenderer.prototype.renderPoint = function(point, camera) {
 	this.renderer.renderPoint(point, camera);
-};
-/**
- * @override
- */
-Grape2D.WireframeRenderer.prototype.save = function() {
-	this.renderer.save();
-};
-/**
- * @override
- */
-Grape2D.WireframeRenderer.prototype.restore = function() {
-	this.renderer.restore();
-};
-/**
- * @override
- */
-Grape2D.WireframeRenderer.prototype.translate = function(vector) {
-	this.renderer.translate(vector.getX(), vector.getY());
-};
-/**
- * @override
- */
-Grape2D.WireframeRenderer.prototype.rotate = function(angle) {
-	this.renderer.rotate(angle);
 };
