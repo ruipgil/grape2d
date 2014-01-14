@@ -57,23 +57,17 @@ Grape2D.Camera = function(options) {
 
 Grape2D.Camera.prototype = {
 	constructor: Grape2D.Camera,
+	getProjection: function(){
+		return this.transformation;
+	},
 	/**
 	 * Computes the matrix for better performances.
 	 *
 	 * @protected
 	 */
 	computeMatrix: function() {
-		this.cM = this.transformation.clone();
-		//This operations should work fine, and it avoids a multiplication
-		//between the _cM matrix and a vector when converting coordinates
-		this.cM.v[0] *= this.scale.getX();
-		this.cM.v[1] *= this.scale.getX();
-		this.cM.v[2] *= this.scale.getX();
-
-		this.cM.v[3] *= this.scale.getY();
-		this.cM.v[4] *= this.scale.getY();
-		this.cM.v[5] *= this.scale.getY();
-
+		this.cM.set(this.transformation);
+		this.cM.scale(this.scale.getX(), this.scale.getY());
 		this.icM = this.cM.clone().invert();
 	},
 	/**
@@ -88,9 +82,6 @@ Grape2D.Camera.prototype = {
 	 */
 	wcsToViewport: function(renderer, vector) {
 		var v = this.cM.multiplyByVector(vector.clone().sub(this.getLookAt()));
-
-		v.setX(v.getX()+renderer.getHalfWidth());
-		v.setY(v.getY()+renderer.getHalfHeight());
 
 		return v;
 	},
