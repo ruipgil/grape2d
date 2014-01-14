@@ -19,12 +19,20 @@ Grape2D.Matrix = function(aa, ab, ac, ba, bb, bc, ca, cb, cc) {
 	/**
 	 * Matrix elements.
 	 *
-	 * @type {!Array.<number>}
+	 * @type {!Float32Array}
 	 * @public
 	 */
-	this.v = [];
+	this.v = new Float32Array(9);
 	if (aa !== undefined) {
-		this.v = [aa, ab, ac, ba, bb, bc, ca, cb, cc];
+		this.v[0] = aa;
+		this.v[1] = ab;
+		this.v[2] = ac;
+		this.v[3] = ba;
+		this.v[4] = bb;
+		this.v[5] = bc;
+		this.v[6] = ca;
+		this.v[7] = cb;
+		this.v[8] = cc;
 	} else {
 		this.identity();
 	}
@@ -49,9 +57,26 @@ Grape2D.Matrix.prototype = {
 	 */
 	set: function(aa, ab, ac, ba, bb, bc, ca, cb, cc) {
 		var tv = this.v;
-		tv[0] = tv[4] = tv[8] = 1;
-		tv[1] = tv[2] = tv[3] = tv[5] = tv[6] = tv[7] = 0;
+		tv[0] = aa;
+		tv[1] = ab;
+		tv[2] = ac;
+
+		tv[3] = ba;
+		tv[4] = bb;
+		tv[5] = bc;
+
+		tv[6] = ca;
+		tv[7] = cb;
+		tv[8] = cc;
+
 		return this;
+	},
+	setFromMatrix: function(matrix){
+		var mv = matrix.v;
+		return this.set(
+			mv[0], mv[1], mv[2], 
+			mv[3], mv[4], mv[5], 
+			mv[6], mv[7], mv[8]);
 	},
 	/**
 	 * Adds to this matrix another one.
@@ -72,7 +97,9 @@ Grape2D.Matrix.prototype = {
 	 * @public
 	 */
 	identity: function() {
-		this.v = [1, 0, 0, 0, 1, 0, 0, 0, 1];
+		var tv = this.v;
+		tv[0] = tv[4] = tv[8] = 1;
+		tv[1] = tv[2] = tv[3] = tv[5] = tv[6] = tv[7] = 0;
 		return this;
 	},
 	/**
@@ -84,7 +111,7 @@ Grape2D.Matrix.prototype = {
 	invert: function() {
 		var det = this.determinant(),
 			v = this.v;
-		this.v = [
+		this.v = new Float32Array([
 			v[4] * v[8] - v[5] * v[7],
 			v[2] * v[7] - v[1] * v[8],
 			v[1] * v[5] - v[2] * v[4],
@@ -96,7 +123,7 @@ Grape2D.Matrix.prototype = {
 			v[3] * v[7] - v[4] * v[6],
 			v[1] * v[6] - v[0] * v[7],
 			v[0] * v[4] - v[1] * v[3]
-		];
+		]);
 		return this.multiplyByScalar(1 / det);
 	},
 	/**
@@ -172,6 +199,56 @@ Grape2D.Matrix.prototype = {
 			ca, cb, cc
 		);
 	},
+	selfMultiplyByMatrix: function(matrix) {
+		var v = this.v,
+			m = matrix.v,
+			aa = v[0] * m[0] + v[1] * m[3] + v[2] * m[6],
+			ab = v[0] * m[1] + v[1] * m[4] + v[2] * m[7],
+			ac = v[0] * m[2] + v[1] * m[5] + v[2] * m[8],
+			ba = v[3] * m[0] + v[4] * m[3] + v[5] * m[6],
+			bb = v[3] * m[1] + v[4] * m[4] + v[5] * m[7],
+			bc = v[3] * m[2] + v[4] * m[5] + v[5] * m[8],
+			ca = v[6] * m[0] + v[7] * m[3] + v[8] * m[6],
+			cb = v[6] * m[1] + v[7] * m[4] + v[8] * m[7],
+			cc = v[6] * m[2] + v[7] * m[5] + v[8] * m[8];
+
+		this.set(
+			aa, ab, ac,
+			ba, bb, bc,
+			ca, cb, cc);
+		return this;
+	},
+	translate: function(x, y) {
+		this.v[6] = this.v[0] * x + this.v[1] * y + this.v[6];
+		this.v[7] = this.v[3] * x + this.v[4] * y + this.v[7];
+		return this;
+	},
+	scale: function(x, y) {
+		var v = this.v;
+		v[0] *= x;
+		v[1] *= y;
+		v[3] *= x;
+		v[4] *= y;
+		return this;
+	},
+	rotate: function(angle) {
+		var c = Grape2D.Math.cos(angle),
+			s = Grape2D.Math.sin(angle),
+			v = this.v,
+			aa = v[0] * c + v[1] * s,
+			ab = -v[0] * s + v[1] * s,
+			ba = v[3] * c + v[4] * s,
+			bb = -v[3] * s + v[4] * s,
+			ca = v[6] * c + v[7] * s,
+			cb = -v[6] * s + v[7] * s;
+		v[0] = aa;
+		v[1] = ab;
+		v[3] = ba;
+		v[4] = bb;
+		v[6] = ca;
+		v[7] = cb;
+		return this;
+	},
 	/**
 	 * Transposes the matrix.
 	 *
@@ -212,6 +289,28 @@ Grape2D.Matrix.prototype = {
 		return "Grape2D.Matrix\n" + this.v[0] + " " + this.v[1] + " " + this.v[2] + "\n" +
 			this.v[3] + " " + this.v[4] + " " + this.v[5] + "\n" +
 			this.v[6] + " " + this.v[7] + " " + this.v[8];
+	},
+	getRaw: function() {
+		return this.v;
 	}
-
+};
+Grape2D.Matrix.createFromTranslation = function(x, y) {
+	return new Grape2D.Matrix(
+		1, 0, x,
+		0, 1, y,
+		0, 0, 1);
+};
+Grape2D.Matrix.createFromScale = function(x, y) {
+	return new Grape2D.Matrix(
+		x, 0, 0,
+		0, y, 0,
+		0, 0, 1);
+};
+Grape2D.Matrix.createFromRotation = function(angle) {
+	var c = Grape2D.Math.cos(angle),
+		s = Grape2D.Math.sin(angle);
+	return new Grape2D.Matrix(
+		c, -s, 0,
+		s, c, 0,
+		0, 0, 1);
 };
