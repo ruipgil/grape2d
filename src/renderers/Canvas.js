@@ -281,21 +281,21 @@ Grape2D.Canvas.prototype = {
 	/**
 	 * Sets the stroke style.
 	 *
-	 * @param  {!string} value Stroke color. In a valid CSS3 format.
+	 * @param  {!Grape2D.Color} color Stroke color.
 	 * @return {!Grape2D.Canvas} This canvas.
 	 */
-	setStrokeStyle: function(value) {
-		this.context.strokeStyle = value;
+	setStrokeStyle: function(color) {
+		this.context.strokeStyle = color.toString();
 		return this;
 	},
 	/**
 	 * Sets the fill style.
 	 *
-	 * @param  {!string} value Fill color. In a valid CSS3 format.
+	 * @param  {!Grape2D.Color} color Fill color.
 	 * @return {!Grape2D.Canvas} This canvas.
 	 */
-	setFillStyle: function(value) {
-		this.context.fillStyle = value;
+	setFillStyle: function(color) {
+		this.context.fillStyle = color.toString();
 		return this;
 	},
 	/**
@@ -331,11 +331,11 @@ Grape2D.Canvas.prototype = {
 	/**
 	 * Sets the shadow color.
 	 *
-	 * @param  {!string} value Shadow color in a valid CSS3 format.
+	 * @param  {!Grape2D.Color} color Shadow color.
 	 * @return {!Grape2D.Canvas} This canvas.
 	 */
-	setShadowColor: function(value) {
-		this.context.shadowColor = value;
+	setShadowColor: function(color) {
+		this.context.shadowColor = color.toString();
 		return this;
 	},
 	/**
@@ -711,5 +711,15 @@ Grape2D.Canvas.prototype = {
 	 */
 	clear: function() {
 		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	},
+	/**
+	 * Adds an event listener to the DOM element.
+	 *
+	 * @param {!string} on Event to listen.
+	 * @param {!Function} callback Event callback.
+	 * @param {!boolean=} bubble Event bubbles.
+	 */
+	addEventListener: function(on, callback, bubble){
+		this.canvas.addEventListener(on, callback, bubble || false);
 	}
 };
