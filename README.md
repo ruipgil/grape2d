@@ -77,11 +77,12 @@ Grape2D is easy to build and only requires some pre-requirements:
 
 * ```` nodejs ```` + ```` npm ````
 * closure compiler, with the environment variable ````CLOSURE_PATH```` pointing to the installation folder, not to the bin folder. See [grunt-closure-compiler page](https://github.com/gmarty/grunt-closure-compiler) for more details.
-* run ````installDev.bat````, it downloads the required dependencies for grunt.
+* run ````npm install````, it downloads the required dependencies for grunt.
 
 With that, in the utils folder, run:
 
-* ```` grunt ```` to build it,
+* ```` grunt ```` to build it with uglify and closure-compiler,
+* ```` grunt dev ```` to build it with uglify,
 * ```` grunt doc ```` to build just the API documentation,
 * ```` grunt test ```` to run QUnit tests,
 * ```` grunt all ```` to build it, build the API documentation and run the tests.

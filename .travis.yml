@@ -1,4 +1,8 @@
 language: node_js
+branches:
+  only:
+    - master
+    - dev
 node_js:
   - "0.11"
   - "0.10"
