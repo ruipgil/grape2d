@@ -4,8 +4,26 @@
  */
 Grape2D.WebGLRenderer = function(options) {
 	options = options || {};
+	/**
+	 * Width of the renderer. The default value is 800.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
 	this.width = options.width || 800;
+	/**
+	 * Height of the renderer. The default value is 600.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
 	this.height = options.height || 600;
+	/**
+	 * Raw canvas DOM element.
+	 *
+	 * @type {!Element}
+	 * @protected
+	 */
 	this.canvas = document.createElement("canvas");
 	this.canvas.width = this.width;
 	this.canvas.height = this.height;
@@ -22,6 +40,8 @@ Grape2D.WebGLRenderer = function(options) {
 	this.clearColor = options.clearColor || new Grape2D.Color();
 	this.gl.clearColor(this.clearColor.getR(), this.clearColor.getG(), this.clearColor.getB(), this.clearColor.getA());
 
+	this.clearFlag = options.depthBuffer ? (this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT) : this.gl.COLOR_BUFFER_BIT;
+
 	this.buffer = this.gl.createBuffer();
 
 	/**
@@ -30,9 +50,9 @@ Grape2D.WebGLRenderer = function(options) {
 	 * @type {!Grape2D.WebGLProgram}
 	 * @private
 	 */
-	this.shaderProgram = new Grape2D.WebGLProgram(document.getElementById("textureVertexShader").textContent, document.getElementById("textureFragmentShader").textContent);
-	//this.textureShaderProgram = options.textureShaderProgram || Grape2D.WebGLProgram.createTextureDefault();
-	//this.colorShaderProgram = options.colorShaderProgram || Grape2D.WebGLProgram.createColorDefault();
+	this.shaderProgram; // = new Grape2D.WebGLProgram(document.getElementById("textureVertexShader").textContent, document.getElementById("textureFragmentShader").textContent);
+	this.textureShaderProgram = options.textureShaderProgram || Grape2D.WebGLProgram.createTextureDefault();
+	this.colorShaderProgram = options.colorShaderProgram || Grape2D.WebGLProgram.createColorDefault();
 
 	this.modelView = new Grape2D.MatrixStack();
 	this.projection = new Grape2D.Matrix();
@@ -43,7 +63,7 @@ Grape2D.WebGLRenderer = function(options) {
 	this.camera = null;
 
 	var that = this;
-	this.canvas.addEventListener("resize", function(){
+	this.canvas.addEventListener("resize", function() {
 		that.init();
 	}, false);
 
@@ -60,7 +80,9 @@ Grape2D.WebGLRenderer.prototype.init = function() {
 	this.projection = Grape2D.Matrix.createFromScale(2 / this.width, 2 / this.height);
 };
 Grape2D.WebGLRenderer.prototype.initShaders = function() {
-	this.shaderProgram.compile(this.gl).use();
+	//this.shaderProgram.compile(this.gl).use();
+	this.textureShaderProgram.compile(this.gl).use();
+	this.colorShaderProgram.compile(this.gl).use();
 };
 /**
  * @override
@@ -113,7 +135,7 @@ Grape2D.WebGLRenderer.prototype.generateTextureBuffer = function(texture) {
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 };
-Grape2D.WebGLRenderer.prototype.changeShader = function(shader){
+Grape2D.WebGLRenderer.prototype.changeShader = function(shader) {
 	shader.use();
 	this.shaderProgram = shader;
 };
@@ -121,7 +143,7 @@ Grape2D.WebGLRenderer.prototype.changeShader = function(shader){
  * @override
  */
 Grape2D.WebGLRenderer.prototype.renderTexture = function(texture, camera, temp) {
-	//this.changeShader(this.textureShaderProgram);
+	this.changeShader(this.textureShaderProgram);
 	var scale = 1,
 		hw = texture.getHalfWidth(),
 		hh = texture.getHalfHeight();
@@ -142,11 +164,10 @@ Grape2D.WebGLRenderer.prototype.renderTexture = function(texture, camera, temp) 
 	//object position
 	var vertexPositionBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer);
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-		-hw, -hh,
-		-hw, hh,
-		 hw, hh,
-		 hw, -hh]), gl.STATIC_DRAW);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-hw, -hh, -hw, hh,
+		hw, hh,
+		hw, -hh
+	]), gl.STATIC_DRAW);
 
 	var vertexIndexBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vertexIndexBuffer);
@@ -155,7 +176,7 @@ Grape2D.WebGLRenderer.prototype.renderTexture = function(texture, camera, temp) 
 	];
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(vertexIndices), gl.STATIC_DRAW);
 
-	this.shaderProgram.setUniform("textureCenter", temp.getX(), temp.getY());
+	this.shaderProgram.setUniform("textureCenter", temp);
 
 	gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer);
 	this.shaderProgram.setAttribute("vertexPosition");
@@ -169,7 +190,7 @@ Grape2D.WebGLRenderer.prototype.renderTexture = function(texture, camera, temp) 
 
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vertexIndexBuffer);
 	this.setMatrixUniforms();
-	
+
 	gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
 };
 /**
@@ -189,16 +210,16 @@ Grape2D.WebGLRenderer.prototype.renderNetworkObject2D = function(obj, pos, camer
  * @override
  */
 Grape2D.WebGLRenderer.prototype.renderAABB = function(aabb, camera) {
-	//this.changeShader(this.colorShaderProgram);
+	this.changeShader(this.colorShaderProgram);
 	var temp = [
 		//1,1
-		 aabb.getHalfWidth(),  aabb.getHalfHeight(),
+		aabb.getHalfWidth(), aabb.getHalfHeight(),
 		//1,-1
-		 aabb.getHalfWidth(), -aabb.getHalfHeight(),
+		aabb.getHalfWidth(), -aabb.getHalfHeight(),
 		//-1,-1
 		-aabb.getHalfWidth(), -aabb.getHalfHeight(),
 		//-1,1
-		-aabb.getHalfWidth(),  aabb.getHalfHeight()
+		-aabb.getHalfWidth(), aabb.getHalfHeight()
 	];
 	this.modelView.pushIdentity().translate(aabb.getPosition());
 	this.lineRender(new Float32Array(temp), 4, camera);
@@ -208,7 +229,7 @@ Grape2D.WebGLRenderer.prototype.renderAABB = function(aabb, camera) {
  * @override
  */
 Grape2D.WebGLRenderer.prototype.renderCircle = function(circle, camera) {
-	//this.changeShader(this.colorShaderProgram);
+	this.changeShader(this.colorShaderProgram);
 	var n = Grape2D.WebGLRenderer.CIRCLE_PRECISION,
 		g, n1 = 1 / n,
 		temp = [];
@@ -229,16 +250,16 @@ Grape2D.WebGLRenderer.prototype.lineRender = function(vertexList, n, camera, fla
 	this.gl.drawArrays(flag || this.gl.LINE_LOOP, 0, n);
 };
 Grape2D.WebGLRenderer.prototype.setMatrixUniforms = function() {
-	this.shaderProgram.setUniform("rendererProjectionMatrix", this.projection.getRaw());
-	this.shaderProgram.setUniform("cameraProjectionMatrix", this.camera.getProjection().getRaw());
-	this.shaderProgram.setUniform("modelViewMatrix", this.modelView.getHead().getRaw());
+	this.shaderProgram.setUniform("rendererProjectionMatrix", this.projection);
+	this.shaderProgram.setUniform("cameraProjectionMatrix", this.camera.getProjection());
+	this.shaderProgram.setUniform("modelViewMatrix", this.modelView.getHead());
 	//this.shaderProgram.setUniform("vertexColor", this.color.getRaw());
 };
 /**
  * @override
  */
 Grape2D.WebGLRenderer.prototype.renderPolygon = function(polygon, camera) {
-	//this.changeShader(this.colorShaderProgram);
+	this.changeShader(this.colorShaderProgram);
 	this.modelView.pushIdentity().translate(polygon.getPosition());
 	var polyVert = polygon.getVertexList(),
 		l = polyVert.length,
@@ -260,12 +281,10 @@ Grape2D.WebGLRenderer.prototype.renderText = function(text, position) {
  * @override
  */
 Grape2D.WebGLRenderer.prototype.start = function(camera) {
-	this.gl.viewport(0, 0, this.gl.viewportWidth, this.gl.viewportHeight);
-	this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+	this.gl.viewport(0, 0, this.width, this.height);
+	this.gl.clear(this.clearFlag);
 
 	this.camera = camera;
-
-	//this.projNCam.setFromMatrix(this.projection).selfMultiplyByMatrix(camera.getProjection());
 
 	this.modelView.reset().pushIdentity();
 };
@@ -321,7 +340,7 @@ Grape2D.WebGLRenderer.prototype.renderParticle = function(particle, camera) {
  * @override
  */
 Grape2D.WebGLRenderer.prototype.renderLineSegment = function(start, end, camera) {
-	//this.changeShader(this.colorShaderProgram);
+	this.changeShader(this.colorShaderProgram);
 	var verteces = new Float32Array([start.getX(), start.getY(), end.getX(), end.getY()]);
 	this.lineRender(verteces, 2, camera, this.gl.LINES);
 };
@@ -329,7 +348,7 @@ Grape2D.WebGLRenderer.prototype.renderLineSegment = function(start, end, camera)
  * @override
  */
 Grape2D.WebGLRenderer.prototype.renderPoint = function(point, camera) {
-	//this.changeShader(this.colorShaderProgram);
+	this.changeShader(this.colorShaderProgram);
 	this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffer);
 	this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([point.getX(), point.getY()]), this.gl.STATIC_DRAW);
 	this.shaderProgram.setAttribute("vertexPosition");
