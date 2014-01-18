@@ -7,10 +7,6 @@
  *   functions for them. Making it very easy to send information to 
  *   the shaders. There are some kind of limitations that comes form 
  *   this:<ul>
- *   <li> vec2 are the only kind of vectors that maintain it's entire
- *     structure. As opposed to vec3 and vec4 where the last component
- *     will always be 1, and in the case of vec4 the third component
- *     will be 0.
  *   <li> Any mat3 passed should be transposed, since Grape2D's
  *     representation of matrix is row-major where WebGL is
  *     column-major.
@@ -95,7 +91,10 @@ Grape2D.WebGLProgram.prototype = {
 	 * Sets a uniform variable.
 	 *
 	 * @param {!string} name Uniform name.
-	 * @param {?} a First argument.
+	 * @param {!number} a First argument.
+	 * @param {!number} b Second argument.
+	 * @param {!number} c Third argument.
+	 * @param {!number} d Fourth argument.
 	 * @public
 	 */
 	setUniform: function(name, a, b, c, d) {
@@ -105,7 +104,10 @@ Grape2D.WebGLProgram.prototype = {
 	 * Sets an attribute variable.
 	 *
 	 * @param {!string} name Name of the attribute.
-	 * @param {?} a Fisrt argument.
+	 * @param {!number} a First argument.
+	 * @param {!number} b Second argument.
+	 * @param {!number} c Third argument.
+	 * @param {!number} d Fourth argument.
 	 * @public
 	 */
 	setAttribute: function(name, a, b, c, d) {
@@ -227,18 +229,18 @@ Grape2D.WebGLProgram.prototype.buildAssociationObject = function() {
 			});
 		}),
 		u4vi = (function(id) {
-			return (function(vector) {
-				gl.uniform4i(id, vector.getX(), vector.getY(), 0, 1);
+			return (function(v1, v2, v3) {
+				gl.uniform4i(id, v1, v2, v3, v4);
 			});
 		}),
 		u3vi = (function(id) {
-			return (function(vector) {
-				gl.uniform3i(id, vector.getX(), vector.getY(), 1);
+			return (function(v1, v2, v3) {
+				gl.uniform3i(id, v1, v2, v3);
 			});
 		}),
 		u2vi = (function(id) {
-			return (function(vector) {
-				gl.uniform2i(id, vector.getX(), vector.getY());
+			return (function(v1, v2) {
+				gl.uniform2i(id, v1, v2);
 			});
 		}),
 
@@ -275,18 +277,18 @@ Grape2D.WebGLProgram.prototype.buildAssociationObject = function() {
 	return {
 		"uniform": {
 			"vec4": (function(id) {
-				return (function(vector) {
-					gl.uniform4f(id, vector.getX(), vector.getY(), 0, 1);
+				return (function(v1, v2, v3, v4) {
+					gl.uniform4f(id, v1, v2, v3, v4);
 				});
 			}),
 			"vec3": (function(id) {
-				return (function(vector) {
-					gl.uniform3f(id, vector.getX(), vector.getY(), 1);
+				return (function(v1, v2, v3) {
+					gl.uniform3f(id, v1, v2, v3);
 				});
 			}),
 			"vec2": (function(id) {
-				return (function(vector) {
-					gl.uniform2f(id, vector.getX(), vector.getY());
+				return (function(v1, v2) {
+					gl.uniform2f(id, v1, v2);
 				});
 			}),
 			"bvec4": u4vi,
