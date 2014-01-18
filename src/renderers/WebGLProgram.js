@@ -1,6 +1,30 @@
 /**
- * Grape2D.WebGLProgram class.
+ * This is an higher level abstraction of a WebGKProgram. To be
+ *   created it needs a vertex shader and a fragment shader. After 
+ *   that it needs to be compiled by a WebGLRendering context. At 
+ *   compiling it does "lower-level" compiling operations, it also 
+ *   extracts the uniforms and attributes to create the right setter 
+ *   functions for them. Making it very easy to send information to 
+ *   the shaders. There are some kind of limitations that comes form 
+ *   this:<ul>
+ *   <li> vec2 are the only kind of vectors that maintain it's entire
+ *     structure. As opposed to vec3 and vec4 where the last component
+ *     will always be 1, and in the case of vec4 the third component
+ *     will be 0.
+ *   <li> Any mat3 passed should be transposed, since Grape2D's
+ *     representation of matrix is row-major where WebGL is
+ *     column-major.
+ *   <li> mat2 and mat4 are not supported as uniforms. A "built-in"
+ *     function is provided so to cast a mat3 matrix (without being
+ *     transposed) to a mat4 matrix, in the vertex shader. The 
+ *     function is <code>grape2DMatrixToMat4</code> and receives a
+ *     mat3 and returns a mat4.
+ *   <li> Matrices are not supported as attributes.
+ *   </ul>
  *
+ * @param {!string} vertexShaderStr Vertex shader as a string.
+ * @param {!string} fragmentShaderStr Fragment shader as a string.
+ * 
  * @constructor
  */
 Grape2D.WebGLProgram = function(vertexShaderStr, fragmentShaderStr) {
