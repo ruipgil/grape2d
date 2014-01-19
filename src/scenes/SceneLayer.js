@@ -29,9 +29,9 @@ Grape2D.SceneLayer.prototype.update = function(dt) {
  */
 Grape2D.SceneLayer.prototype.render = function(renderer, camera) {
 	var elms = this.map.query(Grape2D.BVFactorySingleton.getFactory().createSceneBV(renderer, camera));
-	renderer.start();
+	renderer.start(camera);
 	for (var i = 0; i < elms.length; i++) {
-		elms[i].render(renderer, camera);
+		elms[i].render(renderer);
 	}
 	renderer.end();
 };

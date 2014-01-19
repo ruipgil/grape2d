@@ -37,7 +37,7 @@ Grape2D.Shape.prototype.setPosition = function(position) {
 /**
  * @override
  */
-Grape2D.Shape.prototype.render = function(renderer, camera) {
+Grape2D.Shape.prototype.render = function(renderer) {
 	return;
 };
 /**

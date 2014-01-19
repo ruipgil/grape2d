@@ -64,8 +64,8 @@ Grape2D.Polygon.prototype.getComputedVertexList = function(){
 /**
  * @override
  */
-Grape2D.Polygon.prototype.render = function(renderer, camera){
-	renderer.renderPolygon(this, camera);
+Grape2D.Polygon.prototype.render = function(renderer){
+	renderer.renderPolygon(this);
 };
 /**
  * @override

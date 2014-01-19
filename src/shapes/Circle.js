@@ -43,8 +43,8 @@ Grape2D.Circle.prototype.setRadius = function(radius){
 /**
  * @override
  */
-Grape2D.Circle.prototype.render = function(renderer, camera){
-	renderer.renderCircle(this, camera);
+Grape2D.Circle.prototype.render = function(renderer){
+	renderer.renderCircle(this);
 };
 /**
  * @override

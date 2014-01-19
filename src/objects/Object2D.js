@@ -303,12 +303,10 @@ Grape2D.Object2D.prototype = {
 	 *
 	 * @param  {!Grape2D.Renderer} renderer The place to render the
 	 *   object.
-	 * @param  {!Grape2D.Camera} camera The camera, that will
-	 *   transform the positions.
 	 * @public
 	 */
-	render: function (renderer, camera) {
-		renderer.renderObject2D(this, camera);
+	render: function (renderer) {
+		renderer.renderObject2D(this);
 	},
 	/**
 	 * Updates the object. This method should be refined in further

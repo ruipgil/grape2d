@@ -75,8 +75,8 @@ Grape2D.ColoredShape.prototype.setPosition = function(position) {
 /**
  * @override
  */
-Grape2D.ColoredShape.prototype.render = function(renderer, camera) {
-	renderer.renderColoredShape(this, camera);
+Grape2D.ColoredShape.prototype.render = function(renderer) {
+	renderer.renderColoredShape(this);
 };
 /**
  * @override

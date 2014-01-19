@@ -167,9 +167,9 @@ Grape2D.ParticleSystem.prototype.getPosition = function(){
 /**
  * @override
  */
-Grape2D.ParticleSystem.prototype.render = function(renderer, camera){
+Grape2D.ParticleSystem.prototype.render = function(renderer){
 	for(var i=0; i<this.emitters.length;i++){
-		this.emitters[i].render(renderer, camera);
+		this.emitters[i].render(renderer);
 	}
-	this.getBoundingBox().render(renderer, camera);
+	this.getBoundingBox().render(renderer);
 };

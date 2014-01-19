@@ -26,11 +26,9 @@ Grape2D.IShape.prototype = {
 	 *
 	 * @param  {!Grape2D.Renderer} renderer The renderer to render the
 	 *   shape's wireframe.
-	 * @param  {!Grape2D.Camera} camera The camera to transform the
-	 *   positions.
 	 * @public
 	 */
-	render: function(renderer, camera) {},
+	render: function(renderer) {},
 	/**
 	 * Creates a bounding volume, based in this one and in a
 	 *   {@link Grape2D.BVFactory}.

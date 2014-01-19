@@ -161,8 +161,8 @@ Grape2D.AABB.prototype.setHeight = function(height) {
 /**
  * @override
  */
-Grape2D.AABB.prototype.render = function(renderer, camera) {
-	renderer.renderAABB(this, camera);
+Grape2D.AABB.prototype.render = function(renderer) {
+	renderer.renderAABB(this);
 };
 /**
  * @override

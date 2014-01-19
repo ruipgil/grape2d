@@ -360,14 +360,13 @@ Grape2D.Emitter.prototype = {
 	 * Renders the particles into a renderer.
 	 *
 	 * @param  {!Grape2D.Renderer} renderer Renderer.
-	 * @param  {!Grape2D.Camera} camera Camera.
 	 * @public
 	 */
-	render: function(renderer, camera) {
+	render: function(renderer) {
 		this.renderedParticles = 0;
 		for (var i = 0; i < this.particles.length; i++) {
 			if (this.particles[i].isAlive()) {
-				this.particles[i].render(renderer, camera);
+				this.particles[i].render(renderer);
 				this.renderedParticles++;
 			}
 		}

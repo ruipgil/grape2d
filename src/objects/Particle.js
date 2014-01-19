@@ -94,8 +94,8 @@ Grape2D.Particle.prototype.setLifeTime = function(lifeTime) {
 /**
  * @override
  */
-Grape2D.Particle.prototype.render = function(renderer, camera) {
-	renderer.renderParticle(this, camera);
+Grape2D.Particle.prototype.render = function(renderer) {
+	renderer.renderParticle(this);
 };
 /**
  * Checks if the particle is in the alive state.
