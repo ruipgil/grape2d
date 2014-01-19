@@ -721,5 +721,17 @@ Grape2D.Canvas.prototype = {
 	 */
 	addEventListener: function(on, callback, bubble){
 		this.canvas.addEventListener(on, callback, bubble || false);
+	},
+	/**
+	 * Set the style of the DOM element.
+	 *
+	 * @param {!Object.<!string, !(number|string)>} style Object where
+	 *   the key corresponds to the CSS name.
+	 * @public
+	 */
+	setStyle: function(style){
+		for(var i in style){
+			this.canvas.style[i] = style[i];
+		}
 	}
 };

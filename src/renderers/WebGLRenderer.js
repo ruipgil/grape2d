@@ -74,7 +74,7 @@ Grape2D.WebGLRenderer = function(options) {
 	/**
 	 * General purpose buffer.
 	 *
-	 * @type {!WegGLBuffer}
+	 * @type {!WebGLBuffer}
 	 * @private
 	 */
 	this.buffer = this.gl.createBuffer();
@@ -206,7 +206,7 @@ Grape2D.WebGLRenderer.prototype.setHeight = function(height) {
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderColoredShape = function(shape, camera) {
+Grape2D.WebGLRenderer.prototype.renderColoredShape = function(shape) {
 	return;
 };
 /**
@@ -216,13 +216,14 @@ Grape2D.WebGLRenderer.prototype.renderColoredShape = function(shape, camera) {
  * @private
  */
 Grape2D.WebGLRenderer.prototype.generateTextureBuffer = function(texture) {
-	var gl = this.gl;
-	texture.glBuffer = gl.createTexture();
-	gl.bindTexture(gl.TEXTURE_2D, texture.glBuffer);
+	var gl = this.gl,
+		buffer = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, buffer);
 	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.getBuffer());
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+	texture.setGlBuffer(buffer);
 };
 /**
  * Changes the current program.
@@ -231,13 +232,19 @@ Grape2D.WebGLRenderer.prototype.generateTextureBuffer = function(texture) {
  * @public
  */
 Grape2D.WebGLRenderer.prototype.changeProgram = function(program) {
+	if(this.shaderProgram === program){
+		return;
+	}
+	if(this.shaderProgram){
+		this.shaderProgram.unuse();
+	}
 	program.use();
 	this.shaderProgram = program;
 };
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderTexture = function(texture, camera, temp) {
+Grape2D.WebGLRenderer.prototype.renderTexture = function(texture) {
 	this.changeProgram(this.textureShaderProgram);
 	var scale = 1,
 		hw = texture.getHalfWidth(),
@@ -271,8 +278,6 @@ Grape2D.WebGLRenderer.prototype.renderTexture = function(texture, camera, temp) 
 	];
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(vertexIndices), gl.STATIC_DRAW);
 
-	this.shaderProgram.setUniform("textureCenter", temp.getX(), temp.getY());
-
 	gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer);
 	this.shaderProgram.setAttribute("vertexPosition");
 
@@ -291,19 +296,19 @@ Grape2D.WebGLRenderer.prototype.renderTexture = function(texture, camera, temp) 
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderObject2D = function(obj, camera) {
-	obj.getTexture().render(this, camera);
+Grape2D.WebGLRenderer.prototype.renderObject2D = function(obj) {
+	obj.getTexture().render(this);
 };
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderNetworkObject2D = function(obj, pos, camera) {
+Grape2D.WebGLRenderer.prototype.renderNetworkObject2D = function(obj, pos) {
 	return;
 };
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderAABB = function(aabb, camera) {
+Grape2D.WebGLRenderer.prototype.renderAABB = function(aabb) {
 	this.changeProgram(this.colorShaderProgram);
 	var temp = [
 		//1,1
@@ -322,7 +327,7 @@ Grape2D.WebGLRenderer.prototype.renderAABB = function(aabb, camera) {
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderCircle = function(circle, camera) {
+Grape2D.WebGLRenderer.prototype.renderCircle = function(circle) {
 	this.changeProgram(this.colorShaderProgram);
 	var n = Grape2D.WebGLRenderer.CIRCLE_PRECISION,
 		g, n1 = 1 / n,
@@ -349,7 +354,7 @@ Grape2D.WebGLRenderer.prototype.renderCircle = function(circle, camera) {
  */
 Grape2D.WebGLRenderer.prototype.lineRender = function(vertexList, n, flag) {
 	this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffer);
-	this.gl.bufferData(this.gl.ARRAY_BUFFER, vertexList, this.gl.DYNAMIC_DRAW);
+	this.gl.bufferData(this.gl.ARRAY_BUFFER, vertexList, this.gl.STATIC_DRAW);
 	this.shaderProgram.setAttribute("vertexPosition");
 	this.setMatrixUniforms();
 	this.shaderProgram.setUniform("vertexColor", this.color.getR(), this.color.getG(), this.color.getB(), this.color.getA());
@@ -368,7 +373,7 @@ Grape2D.WebGLRenderer.prototype.setMatrixUniforms = function() {
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderPolygon = function(polygon, camera) {
+Grape2D.WebGLRenderer.prototype.renderPolygon = function(polygon) {
 	this.changeProgram(this.colorShaderProgram);
 	this.modelView.pushIdentity().translate(polygon.getPosition());
 	var polyVert = polygon.getVertexList(),
@@ -383,7 +388,7 @@ Grape2D.WebGLRenderer.prototype.renderPolygon = function(polygon, camera) {
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderText = function(text, position) {
+Grape2D.WebGLRenderer.prototype.renderText = function(text) {
 	//this.canvas.fillText(text, position.getX(), position.getY());
 	return;
 };
@@ -406,13 +411,13 @@ Grape2D.WebGLRenderer.prototype.end = function() {};
  * @override
  */
 Grape2D.WebGLRenderer.prototype.appendToDOMElement = function(elm) {
-	this.canvas.appendOn(elm);
+	elm.appendChild(this.canvas);
 };
 /**
  * @override
  */
 Grape2D.WebGLRenderer.prototype.getDOMElement = function() {
-	return this.canvas.canvas;
+	return this.canvas;
 };
 /**
  * Gets the 2D context of teh canvas element.
@@ -452,7 +457,7 @@ Grape2D.WebGLRenderer.prototype.setFillColorMode = function() {};
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderParticle = function(particle, camera) {
+Grape2D.WebGLRenderer.prototype.renderParticle = function(particle) {
 	/*var center = camera.wcsToViewport(this, particle.getPosition());
 	this.canvas.beginPath();
 	this.canvas.arc(center.x, center.y, 1, 0, Grape2D.Math.PIx2, false);
@@ -461,15 +466,15 @@ Grape2D.WebGLRenderer.prototype.renderParticle = function(particle, camera) {
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderLineSegment = function(start, end, camera) {
+Grape2D.WebGLRenderer.prototype.renderLineSegment = function(start, end) {
 	this.changeProgram(this.colorShaderProgram);
 	var verteces = new Float32Array([start.getX(), start.getY(), end.getX(), end.getY()]);
-	this.lineRender(verteces, 2, camera, this.gl.LINES);
+	this.lineRender(verteces, 2, this.gl.LINES);
 };
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderPoint = function(point, camera) {
+Grape2D.WebGLRenderer.prototype.renderPoint = function(point) {
 	this.changeProgram(this.colorShaderProgram);
 	this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffer);
 	this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([point.getX(), point.getY()]), this.gl.STATIC_DRAW);

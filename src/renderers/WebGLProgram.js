@@ -1,18 +1,18 @@
 /**
  * This is an higher level abstraction of a WebGKProgram. To be
- *   created it needs a vertex shader and a fragment shader. After 
- *   that it needs to be compiled by a WebGLRendering context. At 
- *   compiling it does "lower-level" compiling operations, it also 
- *   extracts the uniforms and attributes to create the right setter 
- *   functions for them. Making it very easy to send information to 
- *   the shaders. There are some kind of limitations that comes form 
+ *   created it needs a vertex shader and a fragment shader. After
+ *   that it needs to be compiled by a WebGLRendering context. At
+ *   compiling it does "lower-level" compiling operations, it also
+ *   extracts the uniforms and attributes to create the right setter
+ *   functions for them. Making it very easy to send information to
+ *   the shaders. There are some kind of limitations that comes form
  *   this:<ul>
  *   <li> Any mat3 passed should be transposed, since Grape2D's
  *     representation of matrix is row-major where WebGL is
  *     column-major.
  *   <li> mat2 and mat4 are not supported as uniforms. A "built-in"
  *     function is provided so to cast a mat3 matrix (without being
- *     transposed) to a mat4 matrix, in the vertex shader. The 
+ *     transposed) to a mat4 matrix, in the vertex shader. The
  *     function is <code>grape2DMatrixToMat4</code> and receives a
  *     mat3 and returns a mat4.
  *   <li> Matrices are not supported as attributes.
@@ -20,7 +20,7 @@
  *
  * @param {!string} vertexShaderStr Vertex shader as a string.
  * @param {!string} fragmentShaderStr Fragment shader as a string.
- * 
+ *
  * @constructor
  */
 Grape2D.WebGLProgram = function(vertexShaderStr, fragmentShaderStr) {
@@ -60,7 +60,7 @@ Grape2D.WebGLProgram = function(vertexShaderStr, fragmentShaderStr) {
 	 * Cached locations and setting functions of the uniforms and
 	 *   attributes of the program.
 	 *
-	 * @type {!Object.<!string, !Object.<!string, !(number|function)>>}
+	 * @type {!Object.<!string, !Object.<!string, ?>>}
 	 * @private
 	 */
 	this.cache = {
@@ -132,8 +132,7 @@ Grape2D.WebGLProgram.prototype = {
 		gl.attachShader(shaderProgram, this.compileShader(this.fragmentShader, gl, gl.FRAGMENT_SHADER));
 		gl.linkProgram(shaderProgram);
 		if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-			alert("Couldn't initialize the shader program");
-			return;
+			throw new Error("Couldn't initialize the shader program");
 		} else {
 			this.gl = gl;
 		}
@@ -160,6 +159,15 @@ Grape2D.WebGLProgram.prototype = {
 	 */
 	use: function() {
 		this.gl.useProgram(this.compiled);
+		for (var i in this.cache.attribute) {
+			this.gl.enableVertexAttribArray(this.cache.attribute[i].id);
+		}
+		return this;
+	},
+	unuse: function() {
+		for (var i in this.cache.attribute) {
+			this.gl.disableVertexAttribArray(this.cache.attribute[i].id);
+		}
 		return this;
 	},
 	/**
@@ -194,7 +202,8 @@ Grape2D.WebGLProgram.prototype.compileSetters = function(wShader) {
 		asso = this.buildAssociationObject(),
 		rg = /(attribute|uniform) ((?:(?:(?:[i|b])?vec|mat)(?:[2|3|4]))|int|unsigned int|float|bool|sampler2D|samplerCube) ([\w|\d|_]+);/g,
 		result,
-		id, type, varName, varType;
+		id = null,
+		type, varName, varType;
 	while ((result = rg.exec(wShader)) !== null) {
 		type = result[1];
 		varType = result[2];
@@ -217,7 +226,7 @@ Grape2D.WebGLProgram.prototype.compileSetters = function(wShader) {
  *   be called with an attribute/uniform id. That call will return the
  *   set function for that uniform/attribute.
  *
- * @return {!Object.<!string, !Object.<!string, !function>>} The
+ * @return {!Object.<!string, !Object.<!string, !function( (WebGLUniformLocation|number) ):function(!(number|Grape2D.Matrix), ...[number])>>} The
  *   association object.
  * @public
  */
@@ -229,7 +238,7 @@ Grape2D.WebGLProgram.prototype.buildAssociationObject = function() {
 			});
 		}),
 		u4vi = (function(id) {
-			return (function(v1, v2, v3) {
+			return (function(v1, v2, v3, v4) {
 				gl.uniform4i(id, v1, v2, v3, v4);
 			});
 		}),
@@ -251,25 +260,25 @@ Grape2D.WebGLProgram.prototype.buildAssociationObject = function() {
 		},
 
 		avaa1 = (function(id) {
-			gl.enableVertexAttribArray(id);
+			//gl.enableVertexAttribArray(id);
 			return (function(stride, offset) {
 				gl.vertexAttribPointer(id, 1, gl.FLOAT, false, stride || 0, offset || 0);
 			});
 		}),
 		avaa2 = (function(id) {
-			gl.enableVertexAttribArray(id);
+			//gl.enableVertexAttribArray(id);
 			return (function(stride, offset) {
 				gl.vertexAttribPointer(id, 2, gl.FLOAT, false, stride || 0, offset || 0);
 			});
 		}),
 		avaa3 = (function(id) {
-			gl.enableVertexAttribArray(id);
+			//gl.enableVertexAttribArray(id);
 			return (function(stride, offset) {
 				gl.vertexAttribPointer(id, 3, gl.FLOAT, false, stride || 0, offset || 0);
 			});
 		}),
 		avaa4 = (function(id) {
-			gl.enableVertexAttribArray(id);
+			//gl.enableVertexAttribArray(id);
 			return (function(stride, offset) {
 				gl.vertexAttribPointer(id, 4, gl.FLOAT, false, stride || 0, offset || 0);
 			});
@@ -426,7 +435,6 @@ Grape2D.WebGLProgram.DEFAULT_TEXTR_VS = [
 	"uniform mat3 modelViewMatrix;",
 	"uniform vec2 cameraPosition;",
 
-	"uniform vec2 textureCenter;",
 	"attribute vec2 textureCoord;",
 	"attribute vec2 vertexPosition;",
 
@@ -437,7 +445,7 @@ Grape2D.WebGLProgram.DEFAULT_TEXTR_VS = [
 	"center = grape2DMatrixToMat4(rendererProjectionMatrix) * ",
 	"grape2DMatrixToMat4(cameraProjectionMatrix) * ",
 	"grape2DMatrixToMat4(modelViewMatrix) * ",
-	"vec4(textureCenter, 0.0, 1.0);",
+	"vec4(0.0, 0.0, 0.0, 1.0);",
 
 	"vPos = ",
 	"grape2DMatrixToMat4(rendererProjectionMatrix) * ",

@@ -54,10 +54,9 @@ Grape2D.Renderer.prototype = {
 	 * Renders a colored shape.
 	 *
 	 * @param  {!Grape2D.ColoredShape} shape The colored shape to render.
-	 * @param  {!Grape2D.Camera} camera The camera to transform the colored shape.
 	 * @public
 	 */
-	renderColoredShape: function(shape, camera){},
+	renderColoredShape: function(shape){},
 	/**
 	 * Renders a texture to a position on the renderer.
 	 *
@@ -70,54 +69,45 @@ Grape2D.Renderer.prototype = {
 	 * Renders an object to the renderer.
 	 *
 	 * @param  {!Grape2D.Object2D} obj Object to render.
-	 * @param  {!Grape2D.Camera} camera Camera to transform the coordinates.
 	 * @public
 	 */
-	renderObject2D: function(obj, camera) {},
+	renderObject2D: function(obj) {},
 	/**
 	 * Renders an network object to the renderer.
 	 *
 	 * @param  {!Grape2D.NetworkObject2D} obj Network object.
 	 * @param  {!Grape2D.Vector} pos Lerped position of the object.
-	 * @param  {!Grape2D.Camera} camera Camera to transform the coordinates.
 	 * @public
 	 */
-	renderNetworkObject2D: function(obj, pos, camera) {},
+	renderNetworkObject2D: function(obj, pos) {},
 	/**
 	 * Renders the wireframe of an AABB.
 	 *
 	 * @param  {!Grape2D.AABB} aabb The AABB to render.
-	 * @param  {!Grape2D.Camera} camera The camera to transfrom the
-	 *   coordinates.
 	 * @public
 	 */
-	renderAABB: function(aabb, camera) {},
+	renderAABB: function(aabb) {},
 	/**
 	 * Renders the wireframe of a circle.
 	 *
 	 * @param  {!Grape2D.Circle} circle Circle to render.
-	 * @param  {!Grape2D.Camera} camera The camera to transfrom the
-	 *   coordinates.
 	 * @public
 	 */
-	renderCircle: function(circle, camera) {},
+	renderCircle: function(circle) {},
 	/**
 	 * Renders the wireframe of a polygon.
 	 *
 	 * @param  {!Grape2D.Polygon} polygon Polygon to render.
-	 * @param  {!Grape2D.Camera} camera The camera to transfrom the
-	 *   coordinates.
 	 * @public
 	 */
-	renderPolygon: function(polygon, camera) {},
+	renderPolygon: function(polygon) {},
 	/**
 	 * Renders text to the renderer.
 	 *
 	 * @param  {!(string|number)} text Text to render.
-	 * @param  {!Grape2D.Vector} position Top left corner of the text.
 	 * @public
 	 */
-	renderText: function(text, position) {},
+	renderText: function(text) {},
 	/**
 	 * Prepares a render cycle. This method should be called once, at
 	 *   the begining of the rendering cycle.
@@ -170,28 +160,22 @@ Grape2D.Renderer.prototype = {
 	 * Renders a particle to the renderer.
 	 *
 	 * @param  {!Grape2D.Particle} particle Particle to render.
-	 * @param  {!Grape2D.Camera} camera Camera to transform the
-	 *   coordinates.
 	 * @public
 	 */
-	renderParticle: function(particle, camera) {},
+	renderParticle: function(particle) {},
 	/**
 	 * Renders a line segment to the renderer.
 	 *
 	 * @param  {!Grape2D.Vector} start Start position of the line.
 	 * @param  {!Grape2D.Vector} end End position of the line.
-	 * @param  {!Grape2D.Camera} camera Camera to transform the
-	 *   coordinates.
 	 * @public
 	 */
-	renderLineSegment: function(start, end, camera) {},
+	renderLineSegment: function(start, end) {},
 	/**
 	 * Renders a point to the renderer.
 	 *
 	 * @param  {!Grape2D.Vector} point Point position.
-	 * @param  {!Grape2D.Camera} camera Camera to transform the
-	 *   coordinates.
 	 * @public
 	 */
-	renderPoint: function(point, camera) {}
+	renderPoint: function(point) {}
 };

@@ -116,6 +116,14 @@ Grape2D.Texture.prototype.getHalfHeight = function() {
 Grape2D.Texture.prototype.getBuffer = function() {
 	return this.buffer.canvas;
 };
+
+Grape2D.Texture.prototype.getGlBuffer = function() {
+	return this.glBuffer;
+};
+
+Grape2D.Texture.prototype.setGlBuffer = function(buffer) {
+	this.glBuffer = buffer;
+};
 /**
  * Changes the internal buffer and load an image, with it's
  *   current dimensions. The dimensions.

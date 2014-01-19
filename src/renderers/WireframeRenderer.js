@@ -65,46 +65,46 @@ Grape2D.WireframeRenderer.prototype.renderTexture = function(texture, position) 
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderObject2D = function(obj, camera) {
-	this.renderPoint(obj.getPosition(), camera);
-	obj.getBoundingBox().render(this, camera);
+Grape2D.WireframeRenderer.prototype.renderObject2D = function(obj) {
+	this.renderPoint(obj.getPosition());
+	obj.getBoundingBox().render(this);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderNetworkObject2D = function(obj, pos, camera) {
-	this.renderPoint(obj.getPosition(), camera);
-	obj.getBoundingBox().render(this, camera);
+Grape2D.WireframeRenderer.prototype.renderNetworkObject2D = function(obj, pos) {
+	this.renderPoint(obj.getPosition());
+	obj.getBoundingBox().render(this);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderAABB = function(aabb, camera) {
-	this.renderer.renderAABB(aabb, camera);
+Grape2D.WireframeRenderer.prototype.renderAABB = function(aabb) {
+	this.renderer.renderAABB(aabb);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderCircle = function(circle, camera) {
-	this.renderer.renderCircle(circle, camera);
+Grape2D.WireframeRenderer.prototype.renderCircle = function(circle) {
+	this.renderer.renderCircle(circle);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderPolygon = function(polygon, camera) {
-	this.renderer.renderPolygon(polygon, camera);
+Grape2D.WireframeRenderer.prototype.renderPolygon = function(polygon) {
+	this.renderer.renderPolygon(polygon);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderText = function(text, position) {
-	this.renderer.renderText(text, position);
+Grape2D.WireframeRenderer.prototype.renderText = function(text) {
+	this.renderer.renderText(text);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.start = function() {
-	this.renderer.start();
+Grape2D.WireframeRenderer.prototype.start = function(camera) {
+	this.renderer.start(camera);
 };
 /**
  * @override
@@ -145,24 +145,24 @@ Grape2D.WireframeRenderer.prototype.setColor = function(color) {
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderColoredShape = function(shape, camera) {
-	this.renderer.renderColoredShape(shape, camera);
+Grape2D.WireframeRenderer.prototype.renderColoredShape = function(shape) {
+	this.renderer.renderColoredShape(shape);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderParticle = function(particle, camera) {
-	this.renderer.renderParticle(particle, camera);
+Grape2D.WireframeRenderer.prototype.renderParticle = function(particle) {
+	this.renderer.renderParticle(particle);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderLineSegment = function(start, end, camera) {
-	this.renderer.renderLineSegment(start, end, camera);
+Grape2D.WireframeRenderer.prototype.renderLineSegment = function(start, end) {
+	this.renderer.renderLineSegment(start, end);
 };
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderPoint = function(point, camera) {
-	this.renderer.renderPoint(point, camera);
+Grape2D.WireframeRenderer.prototype.renderPoint = function(point) {
+	this.renderer.renderPoint(point);
 };
