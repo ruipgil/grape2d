@@ -66,7 +66,7 @@ Grape2D.Camera.prototype = {
 	 * @protected
 	 */
 	computeMatrix: function() {
-		this.cM.set(this.transformation);
+		this.cM.setFromMatrix(this.transformation);
 		this.cM.scale(this.scale.getX(), this.scale.getY());
 		this.icM = this.cM.clone().invert();
 	},
