@@ -165,7 +165,7 @@ Grape2D.WebGLRenderer.prototype.setClearColor = function(color) {
  * @public
  */
 Grape2D.WebGLRenderer.prototype.updateProjection = function() {
-	this.projection = Grape2D.Matrix.createFromScale(2 / this.width, 2 / this.height);
+	this.projection = Grape2D.Matrix.createFromScale(2 / this.width, -2 / this.height);
 };
 /**
  * @override
