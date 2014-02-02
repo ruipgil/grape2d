@@ -191,7 +191,7 @@ Grape2D.CanvasRenderer.prototype.renderPolygon = function(polygon) {
  * @override
  */
 Grape2D.CanvasRenderer.prototype.renderText = function(text) {
-	//this.canvas.fillText(text, position.getX(), position.getY());
+	this.renderTexture(text.getBuffer(), text.getPosition());
 };
 /**
  * @override
