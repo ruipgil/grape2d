@@ -23,7 +23,7 @@ Grape2D.Text = function(options) {
 	 * @type {!string}
 	 * @private
 	 */
-	this.text = "";
+	this.text = options.text || "";
 	/**
 	 * Top left position of the text.
 	 *
@@ -62,6 +62,7 @@ Grape2D.Text = function(options) {
 	 * @private
 	 */
 	this.color = options.color || new Grape2D.Color();
+	this.refreshBuffer();
 }
 Grape2D.Text.prototype = Object.create(Grape2D.ITexture.prototype);
 /**
@@ -92,22 +93,28 @@ Grape2D.Text.prototype.getBuffer = function(){
 	return this.buffer;
 };
 /**
- * Gets text exact width.
- *
- * @return {!number} Text exact width.
- * @public
+ * @override
  */
 Grape2D.Text.prototype.getWidth = function(){
-	return this.width;
+	return this.buffer.getWidth();
 };
 /**
- * Gets text approximate height, by multiplying the font height by 1.5
- *
- * @return {!number} Text approxima height.
- * @public
+ * @override
  */
 Grape2D.Text.prototype.getHeight = function(){
-	return this.height;
+	return this.buffer.getHeight();
+};
+/**
+ * @override
+ */
+Grape2D.Text.prototype.getHalfWidth = function(){
+	return this.buffer.getHalfWidth();
+};
+/**
+ * @override
+ */
+Grape2D.Text.prototype.getHalfHeight = function(){
+	return this.buffer.getHalfHeight();
 };
 /**
  * Sets text. Computes the buffer. 
@@ -116,19 +123,36 @@ Grape2D.Text.prototype.getHeight = function(){
  * @public
  */
 Grape2D.Text.prototype.setText = function(text){
-	/*var lines = text.split("\n"),
+	this.text = text;
+	this.refreshBuffer();
+};
+/**
+ * Refresh text buffer.
+ *
+ * @private
+ */
+Grape2D.Text.prototype.refreshBuffer = function(){
+	var lines = this.text.split("\n"),
 		width = -Infinity,
 		buffer = this.buffer.buffer;
+
 	buffer.clear();
-	for(var l=0, line, tw; line=lines[l++];){
-		width = Grape2D.Max(buffer.measureText(line).width, width);
-		buffer.fillText(line, 0, l*this.size*1.5);
+	buffer.setFont(this.size+"px "+this.font);
+	for(var l=0, line; line=lines[l++];){
+		width = Math.max(buffer.measureText(line).width, width);
 	}
-	this.height = lines.length*this.size*1.5;
-	this.width = width;
-	this.buffer.setWidth(this.width);
-	this.buffer.setHeight(this.height);
-	this.text = text;*/
+	buffer.setWidth(width);
+	this.buffer.setWidth(width);
+	buffer.setHeight(lines.length*this.size*1.2);
+	this.buffer.setHeight(lines.length*this.size*1.2);
+
+	buffer.setFont(this.size+"px "+this.font);
+	buffer.setFillStyle(this.color);
+	buffer.setStrokeStyle(this.color);
+
+	for(l=0; line=lines[l++];){
+		buffer.fillText(line, 0, l*this.size);
+	}
 };
 /**
  * Sets text's position.
@@ -139,31 +163,63 @@ Grape2D.Text.prototype.setText = function(text){
 Grape2D.Text.prototype.setPosition = function(position){
 	this.position.set(position);
 };
-
-
+/**
+ * Sets text color.
+ *
+ * @param {!Grape2D.Color} color Color of the text.
+ * @public
+ */
 Grape2D.Text.prototype.setColor = function(color){
 	this.color.set(color);
-	this.buffer.setColor(this.color);
+	this.refreshBuffer();
 };
+/**
+ * Gets text's color.
+ *
+ * @return {!Grape2D.Color} Text color.
+ * @public
+ */
 Grape2D.Text.prototype.getColor = function(){
 	return this.color;
 };
+/**
+ * Sets text size.
+ *
+ * @param {!number} size Size of the text in pixels.
+ * @public
+ */
 Grape2D.Text.prototype.setSize = function(size){
 	this.size = size;
-	this.buffer.setFont(this.size+"px "+this.font);
+	this.refreshBuffer();
 };
+/**
+ * Gets text's size.
+ *
+ * @return {!number} Text size.
+ * @public
+ */
 Grape2D.Text.prototype.getSize = function(){
 	return this.size;
 };
+/**
+ * Sets text font.
+ *
+ * @param {!string} font Font of the text.
+ * @public
+ */
 Grape2D.Text.prototype.setFont = function(font){
 	this.font = font;
-	this.buffer.setFont(this.size+"px "+this.font);
+	this.refreshBuffer();
 };
+/**
+ * Gets text's font.
+ *
+ * @return {!string} Text font.
+ * @public
+ */
 Grape2D.Text.prototype.getFont = function(){
 	return this.font;
 };
-
-
 /**
  * @override
  */
