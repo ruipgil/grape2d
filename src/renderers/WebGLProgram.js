@@ -469,7 +469,7 @@ Grape2D.WebGLProgram.DEFAULT_TEXTR_FS = [
 	"uniform sampler2D uSampler;",
 
 	"void main(void) {",
-	"gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));",
+	"gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.t, vTextureCoord.s));",
 	"}"
 ].join("\n");
 /**
