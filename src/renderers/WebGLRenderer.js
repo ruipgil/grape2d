@@ -490,6 +490,7 @@ Grape2D.WebGLRenderer.prototype.renderPoint = function(point) {
 	this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffer);
 	this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([point.getX(), point.getY()]), this.gl.STATIC_DRAW);
 	this.shaderProgram.setAttribute("vertexPosition");
+	this.shaderProgram.setUniform("vertexColor", this.color.getR(), this.color.getG(), this.color.getB(), this.color.getA());
 	this.setMatrixUniforms();
 	this.gl.drawArrays(this.gl.POINTS, 0, 1);
 };
