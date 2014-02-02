@@ -141,10 +141,12 @@ Grape2D.Text.prototype.refreshBuffer = function(){
 	for(var l=0, line; line=lines[l++];){
 		width = Math.max(buffer.measureText(line).width, width);
 	}
+	width = Grape2D.Math.nextPowerOfTwo(width);
+	var h = Grape2D.Math.nextPowerOfTwo(lines.length*this.size*1.2);
 	buffer.setWidth(width);
 	this.buffer.setWidth(width);
-	buffer.setHeight(lines.length*this.size*1.2);
-	this.buffer.setHeight(lines.length*this.size*1.2);
+	buffer.setHeight(h);
+	this.buffer.setHeight(h);
 
 	buffer.setFont(this.size+"px "+this.font);
 	buffer.setFillStyle(this.color);
@@ -225,4 +227,26 @@ Grape2D.Text.prototype.getFont = function(){
  */
 Grape2D.Text.prototype.render = function(renderer){
 	renderer.renderText(this);
+};
+/**
+ * Gets the text size. This is an experimental method.
+ *
+ * @param  {!string} text Text string.
+ * @param  {!string} font Font of the text.
+ * @return {!Object.<!string, !number>} Object with width and height properties, those of the text.
+ * @public
+ * @static
+ */
+Grape2D.Text.getTextSize = function(text, font){
+	text = text.replace("\n", "<br>");
+	var elm = document.createElement("span");
+	elm.innerHTML = text;
+	elm.style.font = font;
+	elm.hidden = true;
+	document.body.appendChild(elm);
+	document.body.removeChild(elm);
+	return {
+		width: elm.offsetWidth,
+		height: elm.offsetHeight
+	};
 };
