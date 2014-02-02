@@ -344,5 +344,24 @@ Grape2D.Math = {
 	 */
 	isPowerOfTwo: function(x){
 		return (x & (x-1)) == 0;
+	},
+	/**
+	 * Gets the next integer that is power of two.
+	 * Credits to Sean Eron Anderson at {@link http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2}
+	 *
+	 * @param  {!number} v Value.
+	 * @return {!number} Next power of two.
+	 * @public
+	 * @static
+	 */
+	nextPowerOfTwo: function(v){
+		v--;
+		v |= v >> 1;
+		v |= v >> 2;
+		v |= v >> 4;
+		v |= v >> 8;
+		v |= v >> 16;
+		v++;
+		return v;
 	}
 };
