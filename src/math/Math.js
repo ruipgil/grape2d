@@ -332,5 +332,17 @@ Grape2D.Math = {
 	 */
 	sq: function(n) {
 		return n * n;
+	},
+	/**
+	 * Checks whether or not a number is power of two.
+	 *
+	 * @param  {!number} x Number to check.
+	 *
+	 * @return {!boolean} True if it's power of two.
+	 * @public
+	 * @static
+	 */
+	isPowerOfTwo: function(x){
+		return (x & (x-1)) == 0;
 	}
 };
