@@ -33,7 +33,7 @@ Grape2D.CanvasRenderer = function(options) {
 	/**
 	 * Current color mode.
 	 *
-	 * @type {!function(!Grape2D.Color):Grape2D.Canvas}
+	 * @type {!string}
 	 * @private
 	 */
 	this.colorMode = "fill";
@@ -59,7 +59,7 @@ Grape2D.CanvasRenderer = function(options) {
 	/**
 	 * Current camera.
 	 *
-	 * @type {!Grape2D.Camera}
+	 * @type {?Grape2D.Camera}
 	 * @private
 	 */
 	this.camera = null;
