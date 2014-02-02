@@ -46,10 +46,13 @@ Grape2D.Texture = function(options) {
 	/**
 	 * The canvas buffer. It is always a 2D renderer.
 	 *
-	 * @type {!Grape2D.CanvasRenderer}
+	 * @type {!Grape2D.Canvas}
 	 * @private
 	 */
-	this.buffer = new Grape2D.CanvasRenderer();
+	this.buffer = new Grape2D.Canvas({
+		width: this.width,
+		height: this.height
+	});
 	/**
 	 * WebGL buffer. This texture is only suitable to one WegGL context.
 	 * It's planned the introduction of shared resources, then it will
@@ -82,14 +85,20 @@ Grape2D.Texture.prototype.getHeight = function() {
 	return this.height;
 };
 /**
- * @override
+ * Sets the width.
+ *
+ * @param  {!number} width New width.
+ * @public
  */
 Grape2D.Texture.prototype.setWidth = function(width) {
 	this.width = width;
 	this.hwidth = this.width / 2;
 };
 /**
- * @override
+ * Sets the height.
+ *
+ * @param  {!number} height New height.
+ * @public
  */
 Grape2D.Texture.prototype.setHeight = function(height) {
 	this.height = height;

@@ -23,13 +23,6 @@ Grape2D.ITexture.prototype = {
 	 */
 	getHalfWidth: function() {},
 	/**
-	 * Sets the width.
-	 *
-	 * @param  {!number} width New width.
-	 * @public
-	 */
-	setWidth: function(width) {},
-	/**
 	 * Gets height.
 	 *
 	 * @return {!number} Height.
@@ -43,13 +36,6 @@ Grape2D.ITexture.prototype = {
 	 * @public
 	 */
 	getHalfHeight: function() {},
-	/**
-	 * Sets the height.
-	 *
-	 * @param  {!number} height New height.
-	 * @public
-	 */
-	setHeight: function(height) {},
 	/**
 	 * Renderers the texture to a renderer, based upon a camera.
 	 *

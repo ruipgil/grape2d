@@ -22,12 +22,6 @@ Grape2D.VoidTexture.prototype.getHalfWidth = function(){
 /**
  * @override
  */
-Grape2D.VoidTexture.prototype.setWidth = function(width){
-	return;
-};
-/**
- * @override
- */
 Grape2D.VoidTexture.prototype.getHeight = function(){
 	return 0;
 };
@@ -36,12 +30,6 @@ Grape2D.VoidTexture.prototype.getHeight = function(){
  */
 Grape2D.VoidTexture.prototype.getHalfHeight = function(){
 	return 0;
-};
-/**
- * @override
- */
-Grape2D.VoidTexture.prototype.setHeight = function(height){
-	return;
 };
 /**
  * @override
