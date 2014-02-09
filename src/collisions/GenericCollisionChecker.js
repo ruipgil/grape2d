@@ -103,10 +103,10 @@ Grape2D.GenericCollisionChecker.prototype.circleVsPolygon = function(circle, pol
 	for (var i = 0; i < vertexList.length; i++) {
 		axisList.push(circle.getPosition().clone().sub(vertexList[i]).normalize());
 	}
-	var axis, min = Infinity;
+
 	var polyInterval = Grape2D.SATUtils.computeIntervals(vertexList, axisList);
 	var circleInterval = [];
-	for (var i = 0; i < axisList.length; i++) {
+	for (i = 0; i < axisList.length; i++) {
 		circleInterval.push({
 			min: circle.getPosition().dot(axisList[i]) - circle.getRadius(),
 			max: circle.getPosition().dot(axisList[i]) + circle.getRadius()

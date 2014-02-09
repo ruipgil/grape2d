@@ -118,7 +118,6 @@ Grape2D.CollisionResolver.prototype = {
 	 */
 	aabbVsPolygon: function(m) {
 		var temp = m.getA().getBoundingBox();
-		var pos = temp.getPosition();
 		//var aabbAsPolygon = Grape2D.BVFactorySingleton.create(temp);
 		var aabbAsPolygon = new Grape2D.Polygon({
 			vertexList: [
@@ -209,7 +208,7 @@ Grape2D.CollisionResolver.prototype = {
 		var axis, min = Infinity;
 		var polyInterval = Grape2D.SATUtils.computeIntervals(vertexList, axisList);
 		var circleInterval = [];
-		for (var i = 0; i < axisList.length; i++) {
+		for (i = 0; i < axisList.length; i++) {
 			circleInterval.push({
 				min: circle.getPosition().dot(axisList[i]) - circle.getRadius(),
 				max: circle.getPosition().dot(axisList[i]) + circle.getRadius()

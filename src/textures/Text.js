@@ -63,7 +63,7 @@ Grape2D.Text = function(options) {
 	 */
 	this.color = options.color || new Grape2D.Color();
 	this.refreshBuffer();
-}
+};
 Grape2D.Text.prototype = Object.create(Grape2D.ITexture.prototype);
 /**
  * Gets the text.

@@ -81,7 +81,7 @@ Grape2D.WebSocket.prototype = {
 	 */
 	send: function(msg) {
 		if (this.isOpen()) {
-			this.ws.send(msg)
+			this.ws.send(msg);
 			for (var i = 0; i < this.onsendCallback.length; i++) {
 				this.onsendCallback[i](msg);
 			}

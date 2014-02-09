@@ -32,7 +32,7 @@ Grape2D.utils = {
 		if(Grape2D.NODE){
 			return Grape2D.WINDOW.requestAnimationFrame(fn);
 		}else{
-			return requestAnimationFrame(fn);
+			return window.requestAnimationFrame(fn);
 		}
 	},
 	/**
@@ -48,7 +48,7 @@ Grape2D.utils = {
 		if(Grape2D.NODE){
 			return Grape2D.WINDOW.cancelAnimationFrame(op);
 		}else{
-			return cancelAnimationFrame(op);
+			return window.cancelAnimationFrame(op);
 		}
 	},
 };

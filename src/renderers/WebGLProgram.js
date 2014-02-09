@@ -232,26 +232,26 @@ Grape2D.WebGLProgram.prototype.compileSetters = function(wShader) {
  */
 Grape2D.WebGLProgram.prototype.buildAssociationObject = function() {
 	var gl = this.gl,
-		u1i = (function(id) {
-			return (function(value) {
+		u1i = function(id) {
+			return function(value) {
 				gl.uniform1i(id, value);
-			});
-		}),
-		u4vi = (function(id) {
-			return (function(v1, v2, v3, v4) {
+			};
+		},
+		u4vi = function(id) {
+			return function(v1, v2, v3, v4) {
 				gl.uniform4i(id, v1, v2, v3, v4);
-			});
-		}),
-		u3vi = (function(id) {
-			return (function(v1, v2, v3) {
+			};
+		},
+		u3vi = function(id) {
+			return function(v1, v2, v3) {
 				gl.uniform3i(id, v1, v2, v3);
-			});
-		}),
-		u2vi = (function(id) {
-			return (function(v1, v2) {
+			};
+		},
+		u2vi = function(id) {
+			return function(v1, v2) {
 				gl.uniform2i(id, v1, v2);
-			});
-		}),
+			};
+		},
 
 		genErrorMsg = function(msg) {
 			return function(id) {
@@ -259,47 +259,47 @@ Grape2D.WebGLProgram.prototype.buildAssociationObject = function() {
 			};
 		},
 
-		avaa1 = (function(id) {
+		avaa1 = function(id) {
 			//gl.enableVertexAttribArray(id);
-			return (function(stride, offset) {
+			return function(stride, offset) {
 				gl.vertexAttribPointer(id, 1, gl.FLOAT, false, stride || 0, offset || 0);
-			});
-		}),
-		avaa2 = (function(id) {
+			};
+		},
+		avaa2 = function(id) {
 			//gl.enableVertexAttribArray(id);
-			return (function(stride, offset) {
+			return function(stride, offset) {
 				gl.vertexAttribPointer(id, 2, gl.FLOAT, false, stride || 0, offset || 0);
-			});
-		}),
-		avaa3 = (function(id) {
+			};
+		},
+		avaa3 = function(id) {
 			//gl.enableVertexAttribArray(id);
-			return (function(stride, offset) {
+			return function(stride, offset) {
 				gl.vertexAttribPointer(id, 3, gl.FLOAT, false, stride || 0, offset || 0);
-			});
-		}),
-		avaa4 = (function(id) {
+			};
+		},
+		avaa4 = function(id) {
 			//gl.enableVertexAttribArray(id);
-			return (function(stride, offset) {
+			return function(stride, offset) {
 				gl.vertexAttribPointer(id, 4, gl.FLOAT, false, stride || 0, offset || 0);
-			});
-		});
+			};
+		};
 	return {
 		"uniform": {
-			"vec4": (function(id) {
-				return (function(v1, v2, v3, v4) {
+			"vec4": function(id) {
+				return function(v1, v2, v3, v4) {
 					gl.uniform4f(id, v1, v2, v3, v4);
-				});
-			}),
-			"vec3": (function(id) {
-				return (function(v1, v2, v3) {
+				};
+			},
+			"vec3": function(id) {
+				return function(v1, v2, v3) {
 					gl.uniform3f(id, v1, v2, v3);
-				});
-			}),
-			"vec2": (function(id) {
-				return (function(v1, v2) {
+				};
+			},
+			"vec2": function(id) {
+				return function(v1, v2) {
 					gl.uniform2f(id, v1, v2);
-				});
-			}),
+				};
+			},
 			"bvec4": u4vi,
 			"bvec3": u3vi,
 			"bvec2": u2vi,
@@ -308,18 +308,18 @@ Grape2D.WebGLProgram.prototype.buildAssociationObject = function() {
 			"ivec2": u2vi,
 
 			"mat4": genErrorMsg("This version of Grape2D doesn't support mat4 uniforms."),
-			"mat3": (function(id) {
-				return (function(matrix) {
+			"mat3": function(id) {
+				return function(matrix) {
 					gl.uniformMatrix3fv(id, false, matrix.getRaw());
-				});
-			}),
+				};
+			},
 			"mat2": genErrorMsg("This version of Grape2D doesn't support mat3 uniforms."),
 
-			"float": (function(id) {
-				return (function(value) {
+			"float": function(id) {
+				return function(value) {
 					gl.uniform1f(id, value);
-				});
-			}),
+				};
+			},
 			"bool": u1i,
 			"int": u1i,
 			"unsigned int": u1i,
@@ -350,7 +350,7 @@ Grape2D.WebGLProgram.prototype.buildAssociationObject = function() {
 			"sampler2D": avaa1,
 			"samplerCube": avaa1
 		}
-	}
+	};
 };
 /**
  * Creates the default color program, to be used when filling or

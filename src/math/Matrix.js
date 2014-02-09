@@ -74,8 +74,8 @@ Grape2D.Matrix.prototype = {
 	setFromMatrix: function(matrix){
 		var mv = matrix.v;
 		return this.set(
-			mv[0], mv[1], mv[2], 
-			mv[3], mv[4], mv[5], 
+			mv[0], mv[1], mv[2],
+			mv[3], mv[4], mv[5],
 			mv[6], mv[7], mv[8]);
 	},
 	/**
@@ -86,8 +86,9 @@ Grape2D.Matrix.prototype = {
 	 * @public
 	 */
 	add: function(matrix) {
-		for (var i = 0; i < 9; i++)
+		for (var i = 0; i < 9; i++){
 			this.v[i] += matrix.v[i];
+		}
 		return this;
 	},
 	/**
