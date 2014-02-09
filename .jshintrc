@@ -1,0 +1,34 @@
+{
+	"bitwise": false,
+	"camelcase": true,
+	"curly": true,
+	"eqeqeq": false,
+    "-W041": true, //to disable comparing warning
+    "-W030": true, //to disable unexpected assignment at for-loops
+    "-W098": true, //to disable unused function parameter
+	"es3": false,
+	"freeze": true,
+	"immed": true,
+	"latedef": true,
+	"newcap": true,
+	"noarg": false,
+	"noempty": true,
+	"nonbsp": true,
+	"nonew": true,
+	"plusplus": false,
+	//"quotmark": true,
+	"undef": true,
+	"unused": true,
+	
+	"trailing": true,
+	"boss": true,
+	//debug: false,
+    "browser": true,
+    "gcl": true,
+	//devel: true,
+	"node": true,
+	"phantom": true,
+	"globals": {
+		"Grape2D": true
+	}
+}
