@@ -220,8 +220,8 @@ Grape2D.Math = {
 	 * @static
 	 */
 	roundN: function(number, n) {
-		var f = Grape2D.Math.pow(2, 10);
-		return Grape2D.Math.round(n * f) / f;
+		var f = Grape2D.Math.pow(10, n);
+		return Grape2D.Math.round(number * f) / f;
 	},
 	/**
 	 * Generates a random float.
@@ -319,7 +319,7 @@ Grape2D.Math = {
 		if (a.min <= b.min) {
 			return a.max - b.min;
 		} else {
-			return Grape2D.Math.overlaps(b, a);
+			return b.max - a.min;
 		}
 	},
 	/**
@@ -343,7 +343,7 @@ Grape2D.Math = {
 	 * @static
 	 */
 	isPowerOfTwo: function(x){
-		return (x & (x-1)) == 0;
+		return x && !(x & (x - 1));
 	},
 	/**
 	 * Gets the next integer that is power of two.

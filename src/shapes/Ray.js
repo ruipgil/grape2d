@@ -7,9 +7,33 @@
  * @constructor
  */
 Grape2D.Ray = function(start, direction, length){
-	this.start = start;
-	this.direction = direction;
+	/**
+	 * Start position of the ray.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.start = new Grape2D.Vector().set(start);
+	/**
+	 * Direction of the ray.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
+	this.direction = new Grape2D.Vector().set(direction);
+	/**
+	 * Length of the ray.
+	 *
+	 * @type {!number}
+	 * @private
+	 */
 	this.length = length;
+	/**
+	 * End position of the ray.
+	 *
+	 * @type {!Grape2D.Vector}
+	 * @private
+	 */
 	this.end = direction.clone().multiplyByScalar(length).add(start);
 };
 

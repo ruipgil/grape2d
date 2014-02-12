@@ -18,7 +18,10 @@ Grape2D.Shape = function(options) {
 	 * @type {!Grape2D.Vector}
 	 * @protected
 	 */
-	this.position = options.position || new Grape2D.Vector();
+	this.position = new Grape2D.Vector();
+	if(options.position){
+		this.position.set(options.position);
+	}
 };
 
 Grape2D.Shape.prototype = Object.create(Grape2D.IShape.prototype);
