@@ -57,12 +57,26 @@ Grape2D.InputManager = function(renderer) {
 	 */
 	this.click = [];
 	/**
+	 * Start drag callback stack.
+	 *
+	 * @type {!Array.<Function>}
+	 * @private
+	 */
+	this.dragStartClbk = [];
+	/**
 	 * Drag callback stack.
 	 *
 	 * @type {!Array.<Function>}
 	 * @private
 	 */
 	this.drag = [];
+	/**
+	 * Stop drag callback stack.
+	 *
+	 * @type {!Array.<Function>}
+	 * @private
+	 */
+	this.dragStop = [];
 	/**
 	 * Start dragging position.
 	 *
@@ -149,6 +163,7 @@ Grape2D.InputManager.prototype = {
 			that.dragStart.set(e.getPosition());
 			that.isDragging = true;
 		});
+		var dragExecuted = false;
 		this.addMouseMove(function(e) {
 			if (that.isDragging) {
 				var end = new Grape2D.Vector(e.getRaw().pageX, e.getRaw().pageY),
@@ -158,13 +173,38 @@ Grape2D.InputManager.prototype = {
 					list[i](ev);
 				}
 				that.dragStart.set(end);
+				if(!dragExecuted){
+					var startList = that.dragStartClbk;
+					for(var j=0; j<startList.length; j++){
+						startList[j](ev);
+					}
+				}
+				dragExecuted = true;
 			}
 		});
 		this.addMouseUp(function(e) {
+			if(that.isDragging && dragExecuted){
+				var list = that.dragStop,
+					end = new Grape2D.Vector(e.getRaw().pageX, e.getRaw().pageY),
+					ev = new Grape2D.InputManagerDragEvent(e.getRaw(), that.dragStart);
+				for(var i=0; i<list.length; i++){
+					list[i](ev);
+				}
+			}
 			that.isDragging = false;
+			dragExecuted = false;
 		});
 		this.addMouseOut(function(e) {
+			if(that.isDragging && dragExecuted){
+				var list = that.dragStop,
+					end = new Grape2D.Vector(e.getRaw().pageX, e.getRaw().pageY),
+					ev = new Grape2D.InputManagerDragEvent(e.getRaw(), that.dragStart);
+				for(var i=0; i<list.length; i++){
+					list[i](ev);
+				}
+			}
 			that.isDragging = false;
+			dragExecuted = false;
 		});
 	},
 	/**
@@ -523,6 +563,15 @@ Grape2D.InputManager.prototype = {
 		return this.drag;
 	},
 	/**
+	 * Adds a callback to be executed after the drag event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
+	addDragStart: function(callback) {
+		this.dragStartClbk.push(callback);
+	},
+	/**
 	 * Adds a callback to the drag event.
 	 *
 	 * @param  {!Function} callback Callback function.
@@ -530,6 +579,15 @@ Grape2D.InputManager.prototype = {
 	 */
 	addDrag: function(callback) {
 		this.drag.push(callback);
+	},
+	/**
+	 * Adds a callback to be executed after the drag event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
+	addDragStop: function(callback) {
+		this.dragStop.push(callback);
 	},
 	/**
 	 * Removes a callback from the drag callback stack.
