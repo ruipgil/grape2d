@@ -44,6 +44,9 @@ Grape2D.SimpleGame = function(renderer, scene, camera) {
 	 * @private
 	 */
 	this.raf = -1;
+	this.fpsText = new Grape2D.AbsoluteText({
+		text: "0 fps"
+	});
 };
 
 Grape2D.SimpleGame.prototype = Object.create(Grape2D.Game.prototype);
@@ -122,5 +125,6 @@ Grape2D.SimpleGame.prototype.animate = function() {
 	});
 	this.update(dt);
 	this.render();
-	this.renderer.renderText("FPS: "+this.clock.fps, new Grape2D.Vector(10,10));
+	this.fpsText.setText(this.clock.getFps()+" fps"+(this.clock.getFrameCount()%5?"+":""));
+	this.fpsText.render(this.renderer);
 };
