@@ -67,5 +67,14 @@ Grape2D.utils.Clock.prototype = {
 	 */
 	getFps: function(){
 		return this.fps;
+	},
+	/**
+	 * Gets the current frame count.
+	 *
+	 * @return {!number} Frame count.
+	 * @public
+	 */
+	getFrameCount: function(){
+		return this.frameCount;
 	}
 };
