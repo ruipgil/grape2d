@@ -63,6 +63,10 @@ Grape2D.Vector.prototype = {
 	setY: function(y) {
 		this.y = y;
 	},
+	setXY: function(x, y){
+		this.x = x;
+		this.y = y;
+	},
 	/**
 	 * Sets this vector with the same components of another one.
 	 *
