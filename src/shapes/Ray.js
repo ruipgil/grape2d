@@ -88,6 +88,10 @@ Grape2D.Ray.prototype = {
 		return Grape2D.Ray.STATIC_TYPE;
 	}
 };
+Grape2D.Ray.createFromPoints = function(start, end){
+	var direction = end.clone().sub(start).normalize();
+	return new Grape2D.Ray(start, direction, start.distanceTo(end));
+};
 /**
  * Type.
  *
