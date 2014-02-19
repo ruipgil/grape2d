@@ -733,5 +733,8 @@ Grape2D.Canvas.prototype = {
 		for(var i in style){
 			this.canvas.style[i] = style[i];
 		}
+	},
+	getRaw: function(){
+		return this.canvas;
 	}
 };
