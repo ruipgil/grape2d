@@ -16,13 +16,13 @@ module.exports = function(grunt) {
 				jsOutputFile: destMinFile,
 				maxBuffer: 500,
 				options: {
-					compilation_level: 'SIMPLE_OPTIMIZATIONS',
-					language_in: 'ECMASCRIPT5_STRICT',
-					summary_detail_level: 3,
-					warning_level: 'VERBOSE',
-					create_source_map: destMinFile + '.map',
-					source_map_format: 'V3',
-					output_wrapper: '(function(){ %output% })()'
+					"compilation_level": 'SIMPLE_OPTIMIZATIONS',
+					"language_in": 'ECMASCRIPT5_STRICT',
+					"summary_detail_level": 3,
+					"warning_level": 'VERBOSE',
+					"create_source_map": destMinFile + '.map',
+					"source_map_format": 'V3',
+					"output_wrapper": '(function(){ %output% })()'
 				}
 			}
 		},
@@ -37,8 +37,8 @@ module.exports = function(grunt) {
 		concat: {
 			options: {
 				separator: '\n',
-				banner: '(function(){\n',
-				footer: '\n})()'
+				banner: '(function(){\n"use strict";\n',
+				footer: '\n})();'
 			},
 			dist: {
 				src: sourceFiles,
