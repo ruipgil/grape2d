@@ -134,7 +134,7 @@ Grape2D.WebGLRenderer = function(options) {
 	 * @type {!Grape2D.Color}
 	 * @private
 	 */
-	this.color = new Grape2D.Color([0, 255, 0, 1]);
+	this.color = new Grape2D.Color([0, 0, 0, 1]);
 
 	/**
 	 * The current camera in use.
@@ -143,6 +143,10 @@ Grape2D.WebGLRenderer = function(options) {
 	 * @private
 	 */
 	this.camera = null;
+
+	this.rawCamera = new Grape2D.Camera({
+		transformation: Grape2D.Matrix.createFromTranslation(-this.getHalfWidth(), -this.getHalfHeight())
+	});
 
 	//adds the default event listener
 	var that = this;
@@ -263,6 +267,7 @@ Grape2D.WebGLRenderer.prototype.renderTexture = function(texture) {
 	//texture mapping buffer
 	var vertexTextureCoordBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vertexTextureCoordBuffer);
+	//to cache
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
 		0.0, 0.0,
 		1.0, 0.0,
@@ -283,6 +288,7 @@ Grape2D.WebGLRenderer.prototype.renderTexture = function(texture) {
 
 	var vertexIndexBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, vertexIndexBuffer);
+	//to cache
 	var vertexIndices = [
 		0, 1, 2, 0, 2, 3
 	];
@@ -307,7 +313,9 @@ Grape2D.WebGLRenderer.prototype.renderTexture = function(texture) {
  * @override
  */
 Grape2D.WebGLRenderer.prototype.renderObject2D = function(obj) {
+	this.modelView.pushIdentity().translate(obj.getTexturePosition());
 	obj.getTexture().render(this);
+	this.modelView.pop();
 };
 /**
  * @override
@@ -320,16 +328,19 @@ Grape2D.WebGLRenderer.prototype.renderNetworkObject2D = function(obj, pos) {
  */
 Grape2D.WebGLRenderer.prototype.renderAABB = function(aabb) {
 	this.changeProgram(this.colorShaderProgram);
-	var temp = [
-		//1,1
-		aabb.getHalfWidth(), aabb.getHalfHeight(),
-		//1,-1
-		aabb.getHalfWidth(), -aabb.getHalfHeight(),
-		//-1,-1
-		-aabb.getHalfWidth(), -aabb.getHalfHeight(),
-		//-1,1
-		-aabb.getHalfWidth(), aabb.getHalfHeight()
-	];
+	var hw = aabb.getHalfWidth(),
+		hh = aabb.getHalfHeight(),
+		temp = [
+			//1,1
+			hw, hh,
+			//1,-1
+			hw, -hh,
+			//-1,-1
+			-hw, -hh,
+			//-1,1
+			-hw, hh
+		];
+
 	this.modelView.pushIdentity().translate(aabb.getPosition());
 	this.lineRender(new Float32Array(temp), 4);
 	this.modelView.pop();
@@ -338,6 +349,7 @@ Grape2D.WebGLRenderer.prototype.renderAABB = function(aabb) {
  * @override
  */
 Grape2D.WebGLRenderer.prototype.renderCircle = function(circle) {
+	//TODO : have a pre-computed circle, and just scale it properly before draw
 	this.changeProgram(this.colorShaderProgram);
 	var n = Grape2D.WebGLRenderer.CIRCLE_PRECISION,
 		g, n1 = 1 / n,
@@ -379,6 +391,7 @@ Grape2D.WebGLRenderer.prototype.setMatrixUniforms = function() {
 	this.shaderProgram.setUniform("rendererProjectionMatrix", this.projection);
 	this.shaderProgram.setUniform("cameraProjectionMatrix", this.camera.getProjection());
 	this.shaderProgram.setUniform("modelViewMatrix", this.modelView.getHead());
+	this.shaderProgram.setUniform("cameraPosition", this.camera.getLookAt().getX(), this.camera.getLookAt().getY());
 };
 /**
  * @override
@@ -402,6 +415,19 @@ Grape2D.WebGLRenderer.prototype.renderText = function(text) {
 	this.modelView.pushIdentity().translate(text.getPosition());
 	this.renderTexture(text.getBuffer());
 	this.modelView.pop();
+};
+/**
+ * @override
+ */
+Grape2D.WebGLRenderer.prototype.renderAbsoluteText = function(text) {
+	var camera = this.camera;
+	this.camera = this.rawCamera;
+
+	this.modelView.pushIdentity().translate(text.getPosition());
+	this.renderTexture(text.getBuffer());
+	this.modelView.pop();
+
+	this.camera = camera;
 };
 /**
  * @override
@@ -460,7 +486,9 @@ Grape2D.WebGLRenderer.prototype.setColor = function(color) {
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.setStrokeColorMode = function() {};
+Grape2D.WebGLRenderer.prototype.setStrokeColorMode = function() {
+	this.colorMode = this.gl.LINE_LOOP;
+};
 /**
  * @override
  */
