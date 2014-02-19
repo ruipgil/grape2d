@@ -104,10 +104,17 @@ Grape2D.Renderer.prototype = {
 	/**
 	 * Renders text to the renderer.
 	 *
-	 * @param  {!(string|number)} text Text to render.
+	 * @param  {!Grape2D.Text} text Text to render.
 	 * @public
 	 */
 	renderText: function(text) {},
+	/**
+	 * Renders text, on a position absolute to the renderer.
+	 *
+	 * @param  {!Grape2D.AbsoluteText} text Text to render.
+	 * @public
+	 */
+	renderAbsoluteText: function(text) {},
 	/**
 	 * Prepares a render cycle. This method should be called once, at
 	 *   the begining of the rendering cycle.
@@ -177,5 +184,5 @@ Grape2D.Renderer.prototype = {
 	 * @param  {!Grape2D.Vector} point Point position.
 	 * @public
 	 */
-	renderPoint: function(point) {}
+	renderPoint: function(point) {},
 };
