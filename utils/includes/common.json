@@ -78,7 +78,9 @@
 	"./src/textures/ITexture.js",
 	"./src/textures/Texture.js",
 	"./src/textures/VoidTexture.js",
+	"./src/textures/IText.js",
 	"./src/textures/Text.js",
+	"./src/textures/AbsoluteText.js",
 
 	"./src/scenes/Scene.js",
 	"./src/scenes/SceneGroup.js",
