@@ -16,7 +16,7 @@
  * @constructor
  */
 Grape2D.Text = function(options) {
-	Grape2D.ITexture.call(this);
+	Grape2D.IText.call(this);
 	/**
 	 * Text string.
 	 *
@@ -64,7 +64,7 @@ Grape2D.Text = function(options) {
 	this.color = options.color || new Grape2D.Color();
 	this.refreshBuffer();
 };
-Grape2D.Text.prototype = Object.create(Grape2D.ITexture.prototype);
+Grape2D.Text.prototype = Object.create(Grape2D.IText.prototype);
 /**
  * Gets the text.
  *
