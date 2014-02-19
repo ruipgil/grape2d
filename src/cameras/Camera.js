@@ -80,10 +80,12 @@ Grape2D.Camera.prototype = {
 	 * @return {!Grape2D.Vector} A vector in the VCS
 	 * @public
 	 */
-	wcsToViewport: function(renderer, vector) {
-		var v = this.cM.multiplyByVector(vector.clone().sub(this.getLookAt()));
-
-		return v;
+	wcsToViewport: function(vector, modelView) {
+		if(modelView){
+			return this.cM.multiplyByMatrix(modelView).multiplyByVector(vector.clone().sub(this.getLookAt()));
+		}else{
+			return this.cM.multiplyByVector(vector.clone().sub(this.getLookAt()));
+		}
 	},
 	/**
 	 * Applies the transformation, on a vector in the Viewport Coordinate
