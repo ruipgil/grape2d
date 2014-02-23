@@ -112,11 +112,11 @@ describe("Matrix class", function(){
 			var matrix = new Grape2D.Matrix();
 			vectorTest(matrix.multiplyByVector(new Grape2D.Vector(89, -98)), 89, -98);
 			matrix.set(1, 2, 3, 9, 8, 7, 4, 5, 6);
-			vectorTest(matrix.multiplyByVector(new Grape2D.Vector(89, -98)), -107, -17);
+			vectorTest(matrix.multiplyByVector(new Grape2D.Vector(89, -98)), -104, 24);
 		});
 		it("multiplyByScalar", function(){
 			var matrix = new Grape2D.Matrix();
-			matrixTest(matrix.multiplyByScalar(8.8),
+			matrixApTest(matrix.multiplyByScalar(8.8),
 				8.8, 0, 0,
 				0, 8.8, 0,
 				0, 0, 8.8);
@@ -152,22 +152,22 @@ describe("Matrix class", function(){
 			matrix.set(1, 2, 3, 9, 8, 7, 4, 5, 6);
 			expect(temp = m2.multiplyByMatrix(matrix)).not.toBe(m2);
 			matrixTest(temp,
-				39, 13, 47,
-				89, 29, 77,
-				90, 31, 104);
+				28, 30, 32,
+				41, 54, 67,
+				78, 93, 108);
 
 			expect(temp = matrix.multiplyByMatrix(m2)).not.toBe(matrix);
 			matrixTest(temp,
-				28, 30, 20,
-				41, 54, 61,
-				78, 93, 90);
+				39, 13, 47,
+				131, 47, 143,
+				90, 31, 104);
 		});
 		it("selfMultiplyByMatrix", function(){
 			var matrix = new Grape2D.Matrix(),
 				m2 = new Grape2D.Matrix(2, 2, 2, 8, 1, 6, 7, 3, 11);
 
 			expect(m2.selfMultiplyByMatrix(matrix)).toBe(m2);
-			matrixTest(matrix,
+			matrixTest(m2,
 				2, 2, 2,
 				8, 1, 6,
 				7, 3, 11);
@@ -178,19 +178,19 @@ describe("Matrix class", function(){
 				8, 1, 6,
 				7, 3, 11);
 
-			matrix.set(1, 2, 3, 9, 8, 8, 4, 5, 6);
+			matrix.set(1, 2, 3, 9, 8, 7, 4, 5, 6);
 			expect(matrix.selfMultiplyByMatrix(m2)).toBe(matrix);
 			matrixTest(matrix,
 				39, 13, 47,
-				89, 29, 77,
+				131, 47, 143,
 				90, 31, 104);
 
-			matrix.set(1, 2, 3, 9, 8, 8, 4, 5, 6);
+			matrix.set(1, 2, 3, 9, 8, 7, 4, 5, 6);
 			expect(m2.selfMultiplyByMatrix(matrix)).toBe(m2);
-			matrixTest(matrix,
-				28, 30, 20,
-				41, 54, 61,
-				78, 93, 90);
+			matrixTest(m2,
+				28, 30, 32,
+				41, 54, 67,
+				78, 93, 108);
 		});
 		it("translate", function(){
 			var matrix = new Grape2D.Matrix();
@@ -218,10 +218,10 @@ describe("Matrix class", function(){
 			expect(matrix.scale(-8, 9)).toBe(matrix);
 			matrixTest(matrix,
 				-8, 18, 3,
-				-72, 72, 1,
+				-72, 72, 8,
 				-32, 45, 6);
 		});
-		it("rotate", function(){
+		xit("rotate", function(){
 			//TODO
 		});
 		it("transpose", function(){
@@ -237,7 +237,7 @@ describe("Matrix class", function(){
 			matrixTest(matrix,
 				1, 9, 4,
 				2, 8, 5,
-				3, 1, 6);
+				3, 8, 6);
 		});
 	});
 	it("clone", function(){
@@ -258,14 +258,14 @@ describe("Matrix class", function(){
 	});
 	it("createFromTranslation", function(){
 		var matrix = Grape2D.Matrix.createFromTranslation(-9985, 3.2);
-		matrixTest(matrix,
+		matrixApTest(matrix,
 			1, 0, -9985,
 			0, 1, 3.2,
 			0, 0, 1);
 	});
 	it("createFromScale", function(){
-		var matrix = Grape2D.Matrix.createFromTranslation(-9985, 3.2);
-		matrixTest(matrix,
+		var matrix = Grape2D.Matrix.createFromScale(-9985, 3.2);
+		matrixApTest(matrix,
 			-9985, 0, 0,
 			0, 3.2, 0,
 			0, 0, 1);

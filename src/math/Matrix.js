@@ -71,6 +71,13 @@ Grape2D.Matrix.prototype = {
 
 		return this;
 	},
+	/**
+	 * Sets this matrix, from another one.
+	 *
+	 * @param {!Grape2D.Matrix} matrix Matrix to use.
+	 * @return {!Grape2D.Matrix} This matrix.
+	 * @public
+	 */
 	setFromMatrix: function(matrix){
 		var mv = matrix.v;
 		return this.set(
@@ -200,6 +207,14 @@ Grape2D.Matrix.prototype = {
 			ca, cb, cc
 		);
 	},
+	/**
+	 * Multiplies this matrix by other matrix, and where the
+	 *   result is stored in this one.
+	 *
+	 * @param  {!Grape2D.Matrix} matrix Matrix to multiply by.
+	 * @return {!Grape2D.Matrix} This matrix.
+	 * @public
+	 */
 	selfMultiplyByMatrix: function(matrix) {
 		var v = this.v,
 			m = matrix.v,
@@ -219,19 +234,44 @@ Grape2D.Matrix.prototype = {
 			ca, cb, cc);
 		return this;
 	},
+	/**
+	 * Translates this matrix.
+	 *
+	 * @param  {!number} x Translation in the x axis.
+	 * @param  {!number} y Translation in the y axis.
+	 * @return {!Grape2D.Matrix} This matrix.
+	 * @public
+	 */
 	translate: function(x, y) {
-		this.v[6] = this.v[0] * x + this.v[1] * y + this.v[6];
-		this.v[7] = this.v[3] * x + this.v[4] * y + this.v[7];
+		this.v[2] = this.v[0] * x + this.v[1] * y + this.v[2];
+		this.v[5] = this.v[3] * x + this.v[4] * y + this.v[5];
 		return this;
 	},
+	/**
+	 * Scales this matrix.
+	 *
+	 * @param  {!number} x Scale in the x axis.
+	 * @param  {!number} y Scale in the y axis.
+	 * @return {!Grape2D.Matrix} This matrix.
+	 * @public
+	 */
 	scale: function(x, y) {
 		var v = this.v;
 		v[0] *= x;
 		v[1] *= y;
 		v[3] *= x;
 		v[4] *= y;
+		v[6] *= x;
+		v[7] *= y;
 		return this;
 	},
+	/**
+	 * Rotates this matrix.
+	 *
+	 * @param  {!number} angle Angle to rotate.
+	 * @return {!Grape2D.Matrix} This matrix.
+	 * @public
+	 */
 	rotate: function(angle) {
 		var c = Grape2D.Math.cos(angle),
 			s = Grape2D.Math.sin(angle),
@@ -291,22 +331,51 @@ Grape2D.Matrix.prototype = {
 			this.v[3] + " " + this.v[4] + " " + this.v[5] + "\n" +
 			this.v[6] + " " + this.v[7] + " " + this.v[8];
 	},
+	/**
+	 * Gets the raw representation of the matrix.
+	 *
+	 * @return {!Array.<!number>} Matrix, as an array of length of 3.
+	 * @public
+	 */
 	getRaw: function() {
 		return this.v;
 	}
 };
+/**
+ * Creates a translation matrix.
+ *
+ * @param  {!number} x Translation in the x axis.
+ * @param  {!number} y Translation in the y axis.
+ * @return {!Grape2D.Matrix} Transformation matrix.
+ * @public
+ */
 Grape2D.Matrix.createFromTranslation = function(x, y) {
 	return new Grape2D.Matrix(
 		1, 0, x,
 		0, 1, y,
 		0, 0, 1);
 };
+/**
+ * Creates a scale matrix.
+ *
+ * @param  {!number} x Scale in the x axis.
+ * @param  {!number} y Scale in the y axis.
+ * @return {!Grape2D.Matrix} Scale matrix.
+ * @public
+ */
 Grape2D.Matrix.createFromScale = function(x, y) {
 	return new Grape2D.Matrix(
 		x, 0, 0,
 		0, y, 0,
 		0, 0, 1);
 };
+/**
+ * Creates a rotation matrix.
+ *
+ * @param  {!number} angle Angle to rotate.
+ * @return {!Grape2D.Matrix} Rotation matrix.
+ * @public
+ */
 Grape2D.Matrix.createFromRotation = function(angle) {
 	var c = Grape2D.Math.cos(angle),
 		s = Grape2D.Math.sin(angle);
