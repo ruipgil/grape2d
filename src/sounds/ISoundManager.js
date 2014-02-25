@@ -1,0 +1,1 @@
+Grape2D.ISoundManager = function(){};
