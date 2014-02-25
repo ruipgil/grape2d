@@ -99,6 +99,25 @@
 	"./src/utils/TimerDispatcher.js",
 	
 	"./src/utils/debug/TopDownBVHTreeDebugger.js",
-	"./src/utils/debug/NetworkDebugger.js"
+	"./src/utils/debug/NetworkDebugger.js",
+
+	"./src/sounds/ISoundManager.js",
+	"./src/sounds/SoundManager.js",
+	"./src/sounds/SoundManagerSingleton.js",
+	"./src/sounds/SoundIO.js",
+	"./src/sounds/ISound.js",
+	"./src/sounds/Sound.js",
+	"./src/sounds/SoundGain.js",
+	"./src/sounds/SoundDelay.js",
+	"./src/sounds/SoundPanner.js",
+	"./src/sounds/SoundBiquadFilter.js",
+	"./src/sounds/LowpassFilter.js",
+	"./src/sounds/HighpassFilter.js",
+	"./src/sounds/BandpassFilter.js",
+	"./src/sounds/LowshelfFilter.js",
+	"./src/sounds/HighshelfFilter.js",
+	"./src/sounds/PeakingFilter.js",
+	"./src/sounds/NotchFilter.js",
+	"./src/sounds/AllpassFilter.js"
 
 ]
