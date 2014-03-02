@@ -400,7 +400,7 @@ Grape2D.WebGLProgram.DEFAULT_COLOR_VS = [
 	"grape2DMatrixToMat4(rendererProjectionMatrix) * ",
 	"grape2DMatrixToMat4(cameraProjectionMatrix) * ",
 	"grape2DMatrixToMat4(modelViewMatrix) * ",
-	"vec4(vertexPosition, 0.0, 1.0);",
+	"vec4(vertexPosition-cameraPosition, 0.0, 1.0);",
 	"vColor = vertexColor;",
 	"}"
 ].join("\n");
@@ -421,6 +421,9 @@ Grape2D.WebGLProgram.DEFAULT_COLOR_FS = [
 ].join("\n");
 /**
  * Default texture vertex shader.
+ * This code may have a flaw somewhere, because, of the multiplication
+ *   by two that needs to be done to render textures correctly.
+ *   There is still room for improvement over this method.
  *
  * @type {!string}
  * @public
@@ -440,17 +443,17 @@ Grape2D.WebGLProgram.DEFAULT_TEXTR_VS = [
 
 	"vec4 vPos;",
 	"vec4 center;",
+	"mat4 renderer2x;",
 
 	"void main(void) {",
-	"center = grape2DMatrixToMat4(rendererProjectionMatrix) * ",
-	"grape2DMatrixToMat4(cameraProjectionMatrix) * ",
-	"grape2DMatrixToMat4(modelViewMatrix) * ",
-	"vec4(0.0, 0.0, 0.0, 1.0);",
+	"renderer2x = grape2DMatrixToMat4(rendererProjectionMatrix) * ",
+		"mat4(2.0, 0.0, 0.0, 0.0,  0.0, 2.0, 0.0, 0.0,  0.0, 0.0, 1.0, 0.0,  0.0, 0.0, 0.0, 1.0);",
+	"center = renderer2x * ",
+		"grape2DMatrixToMat4(cameraProjectionMatrix) * ",
+		"grape2DMatrixToMat4(modelViewMatrix) * ",
+		"vec4(-cameraPosition, 0.0, 1.0);",
 
-	"vPos = ",
-	"grape2DMatrixToMat4(rendererProjectionMatrix) * ",
-	"grape2DMatrixToMat4(modelViewMatrix) * ",
-	"vec4(vertexPosition, 0.0, 1.0);",
+	"vPos = renderer2x * vec4(vertexPosition, 0.0, 1.0);",
 
 	"gl_Position = vPos+center;",
 	"vTextureCoord = textureCoord;",

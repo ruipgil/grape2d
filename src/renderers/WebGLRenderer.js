@@ -172,7 +172,7 @@ Grape2D.WebGLRenderer.prototype.setClearColor = function(color) {
  * @public
  */
 Grape2D.WebGLRenderer.prototype.updateProjection = function() {
-	this.projection = Grape2D.Matrix.createFromScale(4 / this.width, -4 / this.height);
+	this.projection = Grape2D.Matrix.createFromScale(2 / this.width, -2 / this.height);
 };
 /**
  * @override
@@ -261,8 +261,8 @@ Grape2D.WebGLRenderer.prototype.changeProgram = function(program) {
 Grape2D.WebGLRenderer.prototype.renderTexture = function(texture) {
 	this.changeProgram(this.textureShaderProgram);
 	var scale = 1,
-		hw = texture.getHalfWidth(),
-		hh = texture.getHalfHeight();
+		w = texture.getWidth(),
+		h = texture.getHeight();
 	var gl = this.gl;
 	//texture mapping buffer
 	var vertexTextureCoordBuffer = gl.createBuffer();
@@ -281,9 +281,12 @@ Grape2D.WebGLRenderer.prototype.renderTexture = function(texture) {
 	//object position
 	var vertexPositionBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vertexPositionBuffer);
-	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-hw, -hh, -hw, hh,
-		hw, hh,
-		hw, -hh
+
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+		0, 0,
+		0, h,
+		w, h,
+		w, 0
 	]), gl.STATIC_DRAW);
 
 	var vertexIndexBuffer = gl.createBuffer();
@@ -340,7 +343,6 @@ Grape2D.WebGLRenderer.prototype.renderAABB = function(aabb) {
 			//-1,1
 			-hw, hh
 		];
-
 	this.modelView.pushIdentity().translate(aabb.getPosition());
 	this.lineRender(new Float32Array(temp), 4);
 	this.modelView.pop();
@@ -380,7 +382,7 @@ Grape2D.WebGLRenderer.prototype.lineRender = function(vertexList, n, flag) {
 	this.shaderProgram.setAttribute("vertexPosition");
 	this.setMatrixUniforms();
 	this.shaderProgram.setUniform("vertexColor", this.color.getR(), this.color.getG(), this.color.getB(), this.color.getA());
-	this.gl.drawArrays(flag || this.gl.LINE_LOOP, 0, n);
+	this.gl.drawArrays(this.gl.LINE_LOOP, 0, n);
 };
 /**
  * Sets matrix uniforms.
