@@ -103,6 +103,12 @@ Grape2D.WireframeRenderer.prototype.renderText = function(text) {
 /**
  * @override
  */
+Grape2D.WireframeRenderer.prototype.renderAbsoluteText = function(absoluteText) {
+	this.renderer.renderText(absoluteText);
+};
+/**
+ * @override
+ */
 Grape2D.WireframeRenderer.prototype.start = function(camera) {
 	this.renderer.start(camera);
 };
