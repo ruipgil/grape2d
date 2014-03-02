@@ -59,7 +59,7 @@ Grape2D.Color.RGB_A_REG_EXP = /rgb[a]?\([\s]*(\d{1,3})[\s]*,[\s]*(\d{1,3})[\s]*,
  */
 Grape2D.Color.createFromRgb = function(string){
 	var rg = Grape2D.Color.RGB_A_REG_EXP.exec(string);
-	return new Grape2D.Color([parseInt(rg[1]), parseInt(rg[2]), parseInt(rg[3]), 1]);
+	return new Grape2D.Color([parseInt(rg[1], 10), parseInt(rg[2], 10), parseInt(rg[3], 10), 1]);
 };
 /**
  * Creates a color from a rgba representation.
@@ -71,7 +71,7 @@ Grape2D.Color.createFromRgb = function(string){
  */
 Grape2D.Color.createFromRgba = function(string){
 	var rg = Grape2D.Color.RGB_A_REG_EXP.exec(string);
-	return new Grape2D.Color([parseInt(rg[1]), parseInt(rg[2]), parseInt(rg[3]), parseInt(rg[4])]);
+	return new Grape2D.Color([parseInt(rg[1], 10), parseInt(rg[2], 10), parseInt(rg[3], 10), parseInt(rg[4], 10)]);
 };
 /**
  * Creates a color from an hexadecimal representation.
@@ -93,17 +93,18 @@ Grape2D.Color.createFromHex = function(string){
  * The last two are, somewhat, error tolerant.
  *
  * @param  {!string} string String representation.
- * @return {?Grape2D.Color} Color class, from the representation. It will return null if the string can't parsed.
+ * @return {?Grape2D.Color} Color class, from the representation. It
+ *   will return null if the string can't parsed.
  * @public
  * @static
  */
 Grape2D.Color.createFromString = function(string){
 	var color = null;
-	if(string.startsWidth("#")){
+	if(string.charAt(0) == "#"){
 		color = Grape2D.Color.createFromHex(string);
-	}else if(string.startsWidth("rgba")){
+	}else if(string.substr(0,4) == "rgba"){
 		color = Grape2D.Color.createFromRgba(string);
-	}else if(string.startsWidth("rgb")){
+	}else if(string.substr(0,3) == "rgb"){
 		color = Grape2D.Color.createFromRgb(string);
 	}
 	return color;
