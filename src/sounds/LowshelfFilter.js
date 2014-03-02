@@ -6,7 +6,6 @@ Grape2D.LowshelfFilter = function(frequency, q, gain) {
 	Grape2D.SoundBiquadFilter.call(this);
 	this.setType(3);
 	this.setFrequency(frequency);
-	this.setDetune(detune);
 	this.setQ(q);
 	this.setGain(gain);
 };

@@ -6,7 +6,6 @@ Grape2D.PeakingFilter = function(frequency, q, gain) {
 	Grape2D.SoundBiquadFilter.call(this);
 	this.setType(5);
 	this.setFrequency(frequency);
-	this.setDetune(detune);
 	this.setQ(q);
 	this.setGain(gain);
 };
