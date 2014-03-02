@@ -75,8 +75,10 @@ Grape2D.Camera.prototype = {
 	 * System (WCS), to get a vector in the Viewport (Renderer) Coordinate
 	 * System (VSC).
 	 *
-	 * @param  {!Grape2D.Renderer} renderer The viewport.
 	 * @param  {!Grape2D.Vector} vector Vector in the WCS.
+	 * @param  {!Grape2D.Matrix=} modelView Model view matrix. If it's
+	 *   passed, it will be multiplied by the cameraMatrix and the by
+	 *   the vector to transform to the viewport coordinate system.
 	 * @return {!Grape2D.Vector} A vector in the VCS
 	 * @public
 	 */
