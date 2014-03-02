@@ -2,7 +2,7 @@
  * Delays a sound.
  *
  * @param {!number=} delayTime Delay time.
- * @extends {Grape2D.SoundIO}
+ * @implements {Grape2D.SoundIO}
  * @constructor
  */
 Grape2D.SoundDelay = function(delayTime) {
@@ -13,7 +13,7 @@ Grape2D.SoundDelay = function(delayTime) {
 	 * @private
 	 */
 	this.delay = Grape2D.SoundManagerSingleton.getContext().createDelay(delayTime || 1);
-	this.setDelay(delayTime);
+	this.setDelay(delayTime || 1);
 };
 Grape2D.SoundDelay.prototype = Object.create(Grape2D.SoundIO.prototype);
 /**

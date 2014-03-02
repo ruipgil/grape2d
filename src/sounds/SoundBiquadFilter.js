@@ -1,7 +1,7 @@
 /**
  * Biquad filter.
  *
- * @extends {Grape2D.SoundIO}
+ * @implements {Grape2D.SoundIO}
  * @constructor
  */
 Grape2D.SoundBiquadFilter = function() {
@@ -44,7 +44,7 @@ Grape2D.SoundBiquadFilter.prototype.getFrequency = function() {
 /**
  * Sets biquad frequency.
  *
- * @param {!number} type Biquad's frequency.
+ * @param {!number} frequency Biquad's frequency.
  * @public
  */
 Grape2D.SoundBiquadFilter.prototype.setFrequency = function(frequency) {
@@ -62,7 +62,7 @@ Grape2D.SoundBiquadFilter.prototype.getDetune = function() {
 /**
  * Sets biquad detune.
  *
- * @param {!number} type Biquad's detune.
+ * @param {!number} detune Biquad's detune.
  * @public
  */
 Grape2D.SoundBiquadFilter.prototype.setDetune = function(detune) {
@@ -80,7 +80,7 @@ Grape2D.SoundBiquadFilter.prototype.getQ = function() {
 /**
  * Sets biquad Q.
  *
- * @param {!number} type Biquad's Q.
+ * @param {!number} q Biquad's Q.
  * @public
  */
 Grape2D.SoundBiquadFilter.prototype.setQ = function(q) {
@@ -98,7 +98,7 @@ Grape2D.SoundBiquadFilter.prototype.getGain = function() {
 /**
  * Sets biquad gain.
  *
- * @param {!number} type Biquad's gain.
+ * @param {!number} gain Biquad's gain.
  * @public
  */
 Grape2D.SoundBiquadFilter.prototype.setGain = function(gain) {

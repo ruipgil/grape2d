@@ -1,13 +1,14 @@
 /**
  * Sound input/output interface.
  *
+ * @class
  * @interface
  */
 Grape2D.SoundIO = function(){};
 Grape2D.SoundIO.prototype = {
 	constructor: Grape2D.SoundIO,
 	/**
-	 * Connect this sound output to an {@link Grape2D.SoundIO}
+	 * Connect this sound output to a valid input node.
 	 *
 	 * @param  {!(Grape2D.SoundIO|Grape2D.SoundManager|AudioDestinationNode)} connectTo Input to connect this output.
 	 * @public

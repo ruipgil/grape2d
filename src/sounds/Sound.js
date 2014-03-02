@@ -1,11 +1,11 @@
 /**
  * Sound.
  *
- * @param {!ArrayBuffer=} arrayBuffer ArrayBuffer of the sound.
+ * @param {!AudioBuffer=} audioBuffer ArrayBuffer of the sound.
  * @implements {Grape2D.ISound}
  * @constructor
  */
-Grape2D.Sound = function(arrayBuffer){
+Grape2D.Sound = function(audioBuffer){
 	/**
 	 * Sound source.
 	 *
@@ -27,8 +27,8 @@ Grape2D.Sound = function(arrayBuffer){
 	 * @private
 	 */
 	this.buffer = null;
-	if(arrayBuffer){
-		this.setBuffer(arrayBuffer);
+	if(audioBuffer){
+		this.setBuffer(audioBuffer);
 	}
 	/**
 	 * Output of the sound.

@@ -2,7 +2,7 @@
  * Sound gain.
  *
  * @param {!number=} gain Gain.
- * @extends {Grape2D.SoundIO}
+ * @implements {Grape2D.SoundIO}
  * @constructor
  */
 Grape2D.SoundGain = function(gain) {

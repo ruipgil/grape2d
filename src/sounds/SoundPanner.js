@@ -13,14 +13,14 @@
  * @param {!number} options.coneInnerAngle Cone inner angle.
  * @param {!number} options.coneOuterAngle Cone outer angle.
  * @param {!number} options.coneOuterGain Cone outer gain.
- * @extends {Grape2D.SoundIO}
+ * @implements {Grape2D.SoundIO}
  * @constructor
  */
 Grape2D.SoundPanner = function(options) {
 	/**
 	 * Panner node.
 	 *
-	 * @type {PannerNode}
+	 * @type {!AudioPannerNode}
 	 * @private
 	 */
 	this.panner = Grape2D.SoundManagerSingleton.getContext().createPanner();
@@ -216,16 +216,16 @@ Grape2D.SoundPanner.prototype.setMaxDistance = function(maxDistance) {
  * @return {!number} Rolloff distance.
  * @public
  */
-Grape2D.SoundPanner.prototype.getRollofFactor = function() {
+Grape2D.SoundPanner.prototype.getRolloffFactor = function() {
 	return this.panner.rolloffFactor;
 };
 /**
  * Sets the rolloff factor.
  *
- * @param {!number} rollofffactor Rolloff factor.
+ * @param {!number} rolloffFactor Rolloff factor.
  * @public
  */
-Grape2D.SoundPanner.prototype.setRollofFactor = function(rolloffFactor) {
+Grape2D.SoundPanner.prototype.setRolloffFactor = function(rolloffFactor) {
 	this.panner.rolloffFactor = rolloffFactor;
 };
 /**
@@ -288,6 +288,12 @@ Grape2D.SoundPanner.prototype.setConeOuterGain = function(coneOuterGain) {
 Grape2D.SoundPanner.prototype.connect = function(toConnect) {
 	this.panner.connect(toConnect);
 	return this;
+};
+/**
+ * @override
+ */
+Grape2D.SoundPanner.prototype.getDestination = function() {
+	return this.panner;
 };
 /**
  * Panning model.
