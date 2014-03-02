@@ -334,7 +334,7 @@ Grape2D.Matrix.prototype = {
 	/**
 	 * Gets the raw representation of the matrix.
 	 *
-	 * @return {!Array.<!number>} Matrix, as an array of length of 3.
+	 * @return {!Float32Array} Matrix, as an array of length of 3.
 	 * @public
 	 */
 	getRaw: function() {

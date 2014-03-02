@@ -337,8 +337,8 @@ Grape2D.Math = {
 	 * Checks whether or not a number is power of two.
 	 *
 	 * @param  {!number} x Number to check.
-	 *
-	 * @return {!boolean} True if it's power of two.
+	 * @return {!(boolean|number)} True if it's power of two. Zero if
+	 *   the param is zero. False otherwise.
 	 * @public
 	 * @static
 	 */

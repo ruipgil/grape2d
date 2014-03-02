@@ -16,7 +16,6 @@
  * @constructor
  */
 Grape2D.Text = function(options) {
-	Grape2D.IText.call(this);
 	/**
 	 * Text string.
 	 *

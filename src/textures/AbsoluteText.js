@@ -1,3 +1,10 @@
+/**
+ * Text, where it's position relative to the renderer.
+ *
+ * @param {!Object} options Setup options.
+ * @implements {Grape2D.IText}
+ * @constructor
+ */
 Grape2D.AbsoluteText = function(options){
 	Grape2D.IText.call(this);
 	this.text = new Grape2D.Text(options);
@@ -36,6 +43,12 @@ Grape2D.AbsoluteText.prototype.getWidth = function(){
 };
 Grape2D.AbsoluteText.prototype.setWidth = function(width){
 	this.text.setWidth(width);
+};
+Grape2D.AbsoluteText.prototype.getHeight = function(){
+	return this.text.getHeight();
+};
+Grape2D.AbsoluteText.prototype.setHeight = function(height){
+	this.text.setHeight(height);
 };
 
 Grape2D.AbsoluteText.prototype.getHalfWidth = function(){
