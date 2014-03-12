@@ -161,12 +161,12 @@ describe("Vector class", function(){
 			it("xDistanceTo", function(){
 				expect(vector.xDistanceTo(new Grape2D.Vector(5, 1))).toBe(0);
 				expect(vector.xDistanceTo(new Grape2D.Vector(0, 8))).toBeApproximately(5);
-				expect(vector.xDistanceTo(new Grape2D.Vector(-660, 87345))).toBeApproximately(655);
+				expect(vector.xDistanceTo(new Grape2D.Vector(-660, 87345))).toBeApproximately(665);
 			});
 			it("yDistanceTo", function(){
 				expect(vector.yDistanceTo(new Grape2D.Vector(5, 1))).toBe(0);
 				expect(vector.yDistanceTo(new Grape2D.Vector(0, 8))).toBeApproximately(7);
-				expect(vector.yDistanceTo(new Grape2D.Vector(-660, 87345))).toBeApproximately(87340);
+				expect(vector.yDistanceTo(new Grape2D.Vector(-660, 87345))).toBeApproximately(87344);
 			});
 		});
 		describe("with it's own components", function(){
