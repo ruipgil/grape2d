@@ -1,7 +1,8 @@
 module.exports = function(grunt) {
 	var sourceFiles = grunt.file.readJSON('./utils/includes/common.json'),
 		destMinFile = './build/<%= pkg.name %>.min.js',
-		destFile = './build/<%= pkg.name %>.js';
+		destFile = './build/<%= pkg.name %>.js',
+		karmaFile = 'karma.conf.js';
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('./package.json'),
@@ -44,18 +45,42 @@ module.exports = function(grunt) {
 				src: sourceFiles,
 				dest: destFile,
 			}
+		},
+		jasmine: {
+			pivotal: {
+				src: "build/Grape2D.js",
+				options: {
+					helpers: "tests/jasmine/customMatchers.js",
+					specs: "tests/jasmine/**/*Spec.js"
+				}
+			}
+		},
+		karma: {
+			ci: {
+				configFile: karmaFile,
+				singleRun: true,
+				browsers: ['PhantomJS']
+			},
+			start: {
+				configFile: karmaFile
+			},
+			run: {
+				singleRun: true,
+				configFile: karmaFile
+			}
 		}
-
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-closure-compiler');
 	grunt.loadNpmTasks('grunt-contrib-qunit');
 	grunt.loadNpmTasks('grunt-jsdoc');
+	grunt.loadNpmTasks('grunt-contrib-jasmine');
+	grunt.loadNpmTasks('grunt-karma');
 
 	grunt.registerTask('default', ['concat', 'closure-compiler']);
 	grunt.registerTask('dev', ['concat']);
 	grunt.registerTask('doc', ['jsdoc']);
-	grunt.registerTask('test', ['qunit']);
+	grunt.registerTask('test', ['karma:ci', 'qunit']);
 	grunt.registerTask('all', ['concat', 'closure-compiler', 'jsdoc', 'qunit']);
 };
