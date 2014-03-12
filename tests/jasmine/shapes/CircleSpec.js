@@ -1,7 +1,3 @@
-/* global describe, it, expect, beforeEach, jasmine, xit, xdescribe */
-var Grape2D = require("../../../build/Grape2D.js"),
-	customMatchers = require("../customMatchers.js");
-
 describe("circle shape", function(){
 	it("instantiation", function(){
 		var circle = new Grape2D.Circle({

@@ -3,7 +3,7 @@ var customMatchers = {
 	toBeApproximately: function(util, customEqualityTesters){
 		return {
 			compare: function(actual, expected){
-				var EPSILON = 0.00000001;
+				var EPSILON = 0.00001;
 				if(expected === undefined){
 					expected = '';
 				}
@@ -35,7 +35,3 @@ function addCustomMatchers(){
 		});
 	}
 }
-
-module.exports = {
-	addCustomMatchers: addCustomMatchers
-};

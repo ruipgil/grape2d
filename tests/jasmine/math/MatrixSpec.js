@@ -1,9 +1,5 @@
-/* global describe, it, expect, beforeEach, jasmine, xit, xdescribe */
-var Grape2D = require("../../../build/Grape2D.js"),
-	customMatchers = require("../customMatchers.js");
-
 describe("Matrix class", function(){
-	customMatchers.addCustomMatchers();
+	addCustomMatchers();
 	function matrixTest(matrix, aa, ab, ac, ba, bb, bc, ca, cb, cc){
 		var r = matrix.getRaw();
 		expect(r[0]).toBe(aa);

@@ -1,10 +1,6 @@
-/* global describe, it, expect, beforeEach, jasmine, xit, xdescribe */
-var Grape2D = require("../../../build/Grape2D.js"),
-	customMatchers = require("../customMatchers.js");
-
 describe("Math namespace", function(){
 
-	customMatchers.addCustomMatchers();
+	addCustomMatchers();
 	describe("abs function", function(){
 		it("Zero", function(){
 			expect(Grape2D.Math.abs(0)).toBe(0);
@@ -176,7 +172,7 @@ describe("Math namespace", function(){
 	});
 
 	//TOFIX
-	xdescribe("roundFour function", function(){
+	/*xdescribe("roundFour function", function(){
 		it("Zero", function(){
 			expect(Grape2D.Math.roundFour(0)).toBeApproximately(0);
 		});
@@ -198,7 +194,7 @@ describe("Math namespace", function(){
 		it("Negative float floored", function(){
 			expect(Grape2D.Math.roundFour(-6348.44311215)).toBeApproximately(-6348.4431);
 		});
-	});
+	});*/
 
 	describe("roundN function", function(){
 		describe("with n=0", function(){

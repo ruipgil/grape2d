@@ -1,9 +1,5 @@
-/* global describe, it, expect, beforeEach, jasmine, xit, xdescribe */
-var Grape2D = require("../../../build/Grape2D.js"),
-	customMatchers = require("../customMatchers.js");
-
 describe("Vector class", function(){
-	customMatchers.addCustomMatchers();
+	addCustomMatchers();
 	describe("creation", function(){
 		it("with no params", function(){
 			var vector = new Grape2D.Vector();

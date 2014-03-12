@@ -1,7 +1,3 @@
-/* global describe, it, expect, beforeEach, jasmine, xit, xdescribe */
-var Grape2D = require("../../../build/Grape2D.js"),
-	customMatchers = require("../customMatchers.js");
-
 describe("camera", function(){
 	var camera = new Grape2D.Camera(),
 		renderer = {
@@ -22,7 +18,6 @@ describe("camera", function(){
 		var wcsOriginal = new Grape2D.Vector(),
 			vcs = camera.wcsToViewport(wcsOriginal),
 			wcs = camera.viewportToWcs(renderer, vcs);
-		console.log(wcsOriginal+" >(wcsToViewport)> "+vcs+" >(viewportToWcs)> "+wcs);
 		expect(wcs.getX()).toBe(wcsOriginal.getX()-renderer.getHalfWidth());
 		expect(wcs.getY()).toBe(wcsOriginal.getY()-renderer.getHalfHeight());
 

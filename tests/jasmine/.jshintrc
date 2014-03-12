@@ -1,0 +1,14 @@
+{
+	"extends": "../../.jshintrc",
+	"globals": {
+		"describe": true,
+		"it": true,
+		"expect": true,
+		"beforeEach": true,
+		"jasmine": true,
+		"xit": true,
+		"xdescribe": true,
+		"addCustomMatchers": true,
+		"Grape2D": true
+	}
+}
