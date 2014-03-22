@@ -3,16 +3,18 @@
  * @constructor
  */
 Grape2D.SoundManager = function(){
-	var AContext;
+	/**
+	 * Audio context.
+	 *
+	 * @type {?AudioContext}
+	 * @private
+	 */
+	this.audioContext = null;
 	if(typeof Grape2D.WINDOW.AudioContext != "undefined"){
-		AContext = Grape2D.WINDOW.AudioContext;
+		this.audioContext = new Grape2D.WINDOW.AudioContext();
 	}else if(typeof Grape2D.WINDOW.webkitAudioContext != "undefined"){
-		AContext = Grape2D.WINDOW.webkitAudioContext;
-	}else{
-		throw new Error("Audio is not supported.");
+		this.audioContext = new Grape2D.WINDOW.webkitAudioContext();
 	}
-
-	this.audioContext = new AContext();
 };
 Grape2D.SoundManager.prototype = Object.create(Grape2D.ISoundManager.prototype);
 Grape2D.SoundManager.prototype.getContext = function(){
