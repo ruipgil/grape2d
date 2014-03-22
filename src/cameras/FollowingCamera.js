@@ -1,8 +1,11 @@
 /**
- * Camera that follows an {@link Grape2D.Object2D}, this means that the camera is always looking at the object (the lookAt property is the same as the object)
+ * Camera that follows an {@link Grape2D.Object2D}, this means that
+ *   the camera is always looking at the object (the lookAt property
+ *   is the same as the object).
  *
  * @param  {!Object} options Setup options. See {@link Grape2D.Camera}
- * @param  {!Grape2D.Object2D} options.objectToFollow Object to be followed by the camera.
+ * @param  {!Grape2D.Object2D} options.objectToFollow Object to be
+ *   followed by the camera.
  * @extends {Grape2D.Camera}
  * @constructor
  */
