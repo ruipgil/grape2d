@@ -12,7 +12,5 @@ Thumbs.db
 *.sublime-workspace
 *.ignore
 node_modules
-build/*.report.txt
-build/*.map
-docs/
-docs/api/
+build
+docs
