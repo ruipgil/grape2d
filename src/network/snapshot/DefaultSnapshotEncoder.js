@@ -90,7 +90,7 @@ Grape2D.DefaultSnapshotEncoder.prototype.getSnapshotEncoded = function() {
 	var result = JSON.stringify({
 		time: this.clock.getTime(),
 		networkEvents: this.events,
-		NetworkEntities: this.entities
+		networkEntities: this.entities
 	});
 	this.events = [];
 	this.entities = {};

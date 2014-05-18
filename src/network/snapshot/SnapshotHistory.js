@@ -38,7 +38,7 @@ Grape2D.SnapshotHistory.prototype = {
 		}
 		this.history.push(snapshot);
 		this.history.sort(function(a, b){
-			return a.getTime()-b.getTime();
+			return a.time-b.time;
 		});
 	},
 	/**
