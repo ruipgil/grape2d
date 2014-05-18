@@ -66,20 +66,13 @@ Grape2D.Renderer.prototype = {
 	 */
 	renderTexture: function(texture, position) {},
 	/**
-	 * Renders an object to the renderer.
+	 * Renders an entity to the renderer. Specifically a
+	 *   {@see Grape2D.REntity}.
 	 *
-	 * @param  {!Grape2D.Object2D} obj Object to render.
+	 * @param  {!Grape2D.REntity} entity Entity to render.
 	 * @public
 	 */
-	renderObject2D: function(obj) {},
-	/**
-	 * Renders an network object to the renderer.
-	 *
-	 * @param  {!Grape2D.NetworkObject2D} obj Network object.
-	 * @param  {!Grape2D.Vector} pos Lerped position of the object.
-	 * @public
-	 */
-	renderNetworkObject2D: function(obj, pos) {},
+	renderREntity: function(entity) {},
 	/**
 	 * Renders the wireframe of an AABB.
 	 *
@@ -169,7 +162,7 @@ Grape2D.Renderer.prototype = {
 	 * @param  {!Grape2D.Particle} particle Particle to render.
 	 * @public
 	 */
-	renderParticle: function(particle) {},
+	//renderParticle: function(particle) {},
 	/**
 	 * Renders a line segment to the renderer.
 	 *

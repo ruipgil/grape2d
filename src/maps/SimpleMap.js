@@ -1,18 +1,18 @@
 /**
  * SimpleMap, represents a proof of concept. This is a simple map,
- *   that just implements a simple array to store objects.
+ *   that just implements a simple array to store entities.
  *
  * @implements {Grape2D.Map}
  * @constructor
  */
 Grape2D.SimpleMap = function() {
 	/**
-	 * Objects of the map.
+	 * Entities of the map.
 	 *
-	 * @type {!Array.<Grape2D.Object2D>}
+	 * @type {!Array.<Grape2D.IEntity>}
 	 * @private
 	 */
-	this.objs = [];
+	this.entities = [];
 };
 
 Grape2D.SimpleMap.prototype = Object.create(Grape2D.Map);
@@ -20,27 +20,27 @@ Grape2D.SimpleMap.prototype = Object.create(Grape2D.Map);
 /**
  * @override
  */
-Grape2D.SimpleMap.prototype.add = function(object) {
-	this.objs.push(object);
+Grape2D.SimpleMap.prototype.add = function(entity) {
+	this.entities.push(entity);
 };
 /**
  * @override
  */
-Grape2D.SimpleMap.prototype.remove = function(object) {
-	this.objs.splice(this.objs.indexOf(object), 1);
+Grape2D.SimpleMap.prototype.remove = function(entity) {
+	this.entities.splice(this.entities.indexOf(entity), 1);
 };
 /**
  * @override
  */
 Grape2D.SimpleMap.prototype.query = function(region) {
-	return this.objs;
+	return this.entities;
 };
 /**
  * Not implemented.
  * @override
  */
 Grape2D.SimpleMap.prototype.queryPoint = function(vector) {
-	return this.objs;
+	return this.entities;
 };
 /**
  * Not implemented.
@@ -53,14 +53,14 @@ Grape2D.SimpleMap.prototype.queryRay = function(start, direction, length) {
  * @override
  */
 Grape2D.SimpleMap.prototype.clear = function() {
-	this.objs = [];
+	this.entities = [];
 };
 /**
  * @override
  */
 Grape2D.SimpleMap.prototype.update = function(dt, scene) {
-	for (var i = 0; i < this.objs.length; i++) {
-		this.objs[i].update(dt, scene);
+	for (var i = 0; i < this.entities.length; i++) {
+		this.entities[i].update(dt, scene);
 	}
 };
 /**

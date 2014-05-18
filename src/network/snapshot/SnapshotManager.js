@@ -38,7 +38,7 @@ Grape2D.SnapshotManager = function(clock, history, lerp) {
 	/**
 	 * Current snapshot, being used.
 	 *
-	 * @type {?Grape2D.Snapshot}
+	 * @type {?Object}
 	 * @private
 	 */
 	this.currentSnapshot = null;
@@ -55,20 +55,21 @@ Grape2D.SnapshotManager.prototype = {
 	/**
 	 * Gets the current snapshot.
 	 *
-	 * @return {?Grape2D.Snapshot} Snapshot object.
+	 * @return {?Object} Snapshot object.
 	 * @public
 	 */
 	getSnapshot: function() {
 		return this.currentSnapshot;
 	},
 	/**
-	 * Gets a snapshot object by it's id.
+	 * Gets a network entity by it's id.
 	 *
-	 * @param  {!(number|string)} id Object's id.
-	 * @return {Grape2D.SnapshotNetworkObject2D} Object.
+	 * @param  {!string} id Object's id.
+	 * @return {?Grape2D.INetworkEntity} Network entity, if there's one,
+	 *   or either null or undefined if there's none.
 	 * @public
 	 */
-	getSnapshotNetworkObject2D: function(id) {
+	getNetworkEntity: function(id) {
 		return (this.currentSnapshot ? this.currentSnapshot[id] : null);
 	},
 	/**
@@ -89,7 +90,7 @@ Grape2D.SnapshotManager.prototype = {
 		var time = this.clock.getTime();
 		this.currentSnapshot = this.history.getBefore(time);
 		if (this.currentSnapshot) {
-			this.lerpPercent = (time - this.lerp - this.currentSnapshot.getTime()) / this.iLerp;
+			this.lerpPercent = (time - this.lerp - this.currentSnapshot.getTime()) / this.iLerp; //TOFIX?
 		} else {
 			this.lerpPercent = 0;
 		}

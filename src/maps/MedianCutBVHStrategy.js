@@ -40,7 +40,7 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 
 
 	for (var i = 0; i < objects.length; i++) {
-		temp = objects[i].getBoundingBoxPosition();
+		temp = objects[i].getBoundingBox().getPosition();
 		if (minX > temp.getX()) {
 			minX = temp.getX();
 		}
@@ -64,7 +64,7 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 		axis = minX + Grape2D.Math.abs((maxX - minX) / 2);
 
 		for (i = 0; i < objects.length; i++) {
-			temp = objects[i].getBoundingBoxPosition();
+			temp = objects[i].getBoundingBox().getPosition();
 			if (temp.getX() > axis) {
 				result.right.push(objects[i]);
 			} else {
@@ -75,7 +75,7 @@ Grape2D.MedianCutBVHStrategy.prototype.solve = function(objects) {
 		axis = minY + Grape2D.Math.abs((maxY - minY) / 2);
 
 		for (i = 0; i < objects.length; i++) {
-			temp = objects[i].getBoundingBoxPosition();
+			temp = objects[i].getBoundingBox().getPosition();
 			if (temp.getY() > axis) {
 				result.right.push(objects[i]);
 			} else {

@@ -2,7 +2,7 @@
  * With the top down approach the area of the bounding volume will reduce
  *   at every level.
  *
- * @param  {?Array.<Grape2D.Object2D>} objs List with objects. If objects are provided then tree will be build.
+ * @param  {?Array.<Grape2D.IEntity>} objs List with objects. If objects are provided then tree will be build.
  *
  * @implements {Grape2D.BVHTree}
  * @constructor
@@ -10,7 +10,7 @@
 Grape2D.TopDownBVHTree = function(objs) {
 	/**
 	 * Objects of the tree
-	 * @type {!Array.<Grape2D.Object2D>}
+	 * @type {!Array.<Grape2D.IEntity>}
 	 * @private
 	 */
 	this.objs = objs || [];

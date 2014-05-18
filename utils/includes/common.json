@@ -5,9 +5,8 @@
 	"./src/utils/Utils.js",
 	"./src/utils/Clock.js",
 	"./src/utils/SynchronizedClock.js",
-	"./src/utils/IdGenerator.js",
-	"./src/utils/NumberIdGenerator.js",
-	"./src/utils/StringIdGenerator.js",
+	"./src/utils/UUIDGenerator.js",
+	"./src/utils/UUIDGeneratorSingleton.js",
 	"./src/utils/Color.js",
 
 	"./src/math/Math.js",
@@ -31,16 +30,25 @@
 	"./src/shapes/Polygon.js",
 	"./src/shapes/Ray.js",
 
-	"./src/objects/Object2DProcessor.js",
-	"./src/objects/Object2D.js",
-	"./src/objects/NetworkObject2D.js",
-	"./src/objects/Particle.js",
+	"./src/objects/IEntity.js",
+	"./src/objects/IEntityProcessor.js",
+	"./src/objects/RenderableEntity.js",
+	"./src/objects/Entity.js",
+	"./src/objects/REntity.js",
 
-	"./src/objects/NetworkObject2DIdGeneratorSingleton.js",
+	"./src/objects/INetworkEntity.js",
+	"./src/objects/NetworkEntity.js",
+	"./src/network/snapshot/DefaultSnapshotDecoder.js",
+	"./src/network/snapshot/DefaultSnapshotEncoder.js",
+	"./src/network/snapshot/SnapshotHistory.js",
+	"./src/network/snapshot/SnapshotManager.js",
+	"./src/network/snapshot/SnapshotManagerSingleton.js",
 
-	"./src/particleSystem/ParticleSystem.js",
-	"./src/particleSystem/Emitter.js",
-	"./src/particleSystem/Field.js",
+	"./src/objects/Particle.ignore.js",
+
+	"./src/particleSystem/ParticleSystem.ignore.js",
+	"./src/particleSystem/Emitter.ignore.js",
+	"./src/particleSystem/Field.ignore.js",
 
 	"./src/inputs/InputManager.js",
 	"./src/inputs/InputManagerEvent.js",
@@ -49,7 +57,6 @@
 	"./src/inputs/WASDController.js",
 
 	"./src/cameras/Camera.js",
-	"./src/cameras/AliasingCamera.js",
 	"./src/cameras/FollowingCamera.js",
 
 	"./src/maps/Map.js",
@@ -93,13 +100,12 @@
 	"./src/network/WebSocketMetrics.js",
 	"./src/network/LagSimulator.js",
 
-
 	"./src/utils/MessageDispatcher.js",
 	"./src/utils/JSONMessageDispatcher.js",
 	"./src/utils/TimerDispatcher.js",
 	
-	"./src/utils/debug/TopDownBVHTreeDebugger.js",
-	"./src/utils/debug/NetworkDebugger.js",
+	"./src/utils/debug/TopDownBVHTreeDebugger.ignore.js",
+	"./src/utils/debug/NetworkDebugger.ignore.js",
 
 	"./src/sounds/ISoundManager.js",
 	"./src/sounds/SoundManager.js",

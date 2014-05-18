@@ -6,13 +6,13 @@
  *   box to select it or not for rendering.
  *
  * @param {!Object} options Setup options.
- * @param {!Grape2D.IEntity} options.entity Entity to render.
+ * @param {!Grape2D.RenderableEntity} options.entity Entity to render.
  * @param {!Grape2D.Texture} options.texture Texture to use.
  * @param {!Grape2D.Vector=} options.textureOffset The offset of the
  *   texture, relative to the entity's center. The default
  *   offset is none (0,0). It will copy the object.
  *
- * @extends {Grape2D.IEntity}
+ * @implements {Grape2D.IEntity}
  * @constructor
  */
 Grape2D.REntity = function(options) {
@@ -41,7 +41,7 @@ Grape2D.REntity = function(options) {
 		this.textureOffset.set(options.textureOffset);
 	}
 };
-Grape2D.REntity.prototype = Object.create(Grape2D.Renderable.prototype);
+Grape2D.REntity.prototype = Object.create(Grape2D.IEntity.prototype);
 /**
  * Renders the entity to a renderer.
  *
@@ -109,7 +109,7 @@ Grape2D.REntity.prototype.setTextureOffset = function(textureOffset){
  * @override
  */
 Grape2D.REntity.prototype.getPosition = function(){
-	return this.entity.getPosition();
+	return this.entity.getRenderPosition();
 };
 /**
  * @override
@@ -140,4 +140,16 @@ Grape2D.REntity.prototype.getBoundingBoxOffset = function(){
  */
 Grape2D.REntity.prototype.setBoundingBoxOffset = function(boundingBoxOffset){
 	return this.entity.setBoundingBoxOffset(boundingBoxOffset);
+};
+/**
+ * @override
+ */
+Grape2D.REntity.prototype.update = function(dt){
+	this.entity.update(dt);
+};
+/**
+ * @override
+ */
+Grape2D.REntity.prototype.process = function(processor){
+	processor.processREntity(this);
 };

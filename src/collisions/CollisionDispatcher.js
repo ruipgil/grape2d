@@ -211,8 +211,8 @@ Grape2D.CollisionDispatcher = {
 	 * Dispatches a collision between two primitives.
 	 *
 	 * @param  {!Grape2D.CollisionChecker} cchecker A collision checker.
-	 * @param  {!(Grape2D.Shape|Grape2D.Vector|Grape2D.Ray)} a Shape to test.
-	 * @param  {!(Grape2D.Shape|Grape2D.Vector|Grape2D.Ray)} b Shape to collide with the first
+	 * @param  {!(Grape2D.IShape|Grape2D.Vector|Grape2D.Ray)} a Shape to test.
+	 * @param  {!(Grape2D.IShape|Grape2D.Vector|Grape2D.Ray)} b Shape to collide with the first
 	 *   one, or a point to check it it's inside.
 	 * @return {!boolean} Result of the collision.
 	 * @public

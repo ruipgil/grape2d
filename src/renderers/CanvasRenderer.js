@@ -136,30 +136,26 @@ Grape2D.CanvasRenderer.prototype.renderTexture = function(texture, position) {
 /**
  * @override
  */
-Grape2D.CanvasRenderer.prototype.renderObject2D = function(obj) {
-	this.modelView.pushIdentity().translate(obj.getTexturePosition());
-	obj.getTexture().render(this, this.camera.wcsToViewport(obj.getTexturePosition(), this.modelView.getHead()));
+Grape2D.CanvasRenderer.prototype.renderREntity = function(entity) {
+	/*this.modelView.pushIdentity().translate(entity.getTexturePosition());
+	entity.getTexture().render(this, this.camera.wcsToVcs(entity.getTexturePosition(), this.modelView.getHead()));*/
+	this.modelView.pushIdentity().translate(entity.getPosition()).translate(entity.getTextureOffset());
+	entity.getTexture().render(this, this.camera.wcsToVcs(entity.getPosition(), this.modelView.getHead()));
 	this.modelView.pop();
-};
-/**
- * @override
- */
-Grape2D.CanvasRenderer.prototype.renderNetworkObject2D = function(obj) {
-	this.renderObject2D(obj);
 };
 /**
  * @override
  */
 Grape2D.CanvasRenderer.prototype.renderAABB = function(aabb) {
 	this.canvas.beginPath();
-	var first = this.camera.wcsToViewport(aabb.getMin()),
+	var first = this.camera.wcsToVcs(aabb.getMin()),
 		temp;
 	this.canvas.moveTo(first.getX(), first.getY());
-	temp = this.camera.wcsToViewport(new Grape2D.Vector(aabb.getMaxX(), aabb.getMinY()));
+	temp = this.camera.wcsToVcs(new Grape2D.Vector(aabb.getMaxX(), aabb.getMinY()));
 	this.canvas.lineTo(temp.getX(), temp.getY());
-	temp = this.camera.wcsToViewport(aabb.getMax());
+	temp = this.camera.wcsToVcs(aabb.getMax());
 	this.canvas.lineTo(temp.getX(), temp.getY());
-	temp = this.camera.wcsToViewport(new Grape2D.Vector(aabb.getMinX(), aabb.getMaxY()));
+	temp = this.camera.wcsToVcs(new Grape2D.Vector(aabb.getMinX(), aabb.getMaxY()));
 	this.canvas.lineTo(temp.getX(), temp.getY());
 	this.canvas.lineTo(first.getX(), first.getY());
 	this.canvas[this.colorMode]();
@@ -169,7 +165,7 @@ Grape2D.CanvasRenderer.prototype.renderAABB = function(aabb) {
  * @override
  */
 Grape2D.CanvasRenderer.prototype.renderCircle = function(circle) {
-	var center = this.camera.wcsToViewport(circle.getPosition()),
+	var center = this.camera.wcsToVcs(circle.getPosition()),
 		rr = this.camera.getProjection().multiplyByVector(new Grape2D.Vector(circle.getRadius(), circle.getRadius()));
 
 	this.canvas.beginPath();
@@ -185,14 +181,14 @@ Grape2D.CanvasRenderer.prototype.renderPolygon = function(polygon) {
 		first = center.clone(),
 		list = polygon.getVertexList();
 
-	first = this.camera.wcsToViewport(first.add(list[0]));
+	first = this.camera.wcsToVcs(first.add(list[0]));
 
 	this.canvas.beginPath();
 
 	this.canvas.moveTo(first.getX(), first.getY());
 	for (var i = 1; i < list.length; i++) {
 		temp = center.clone();
-		temp = this.camera.wcsToViewport(temp.add(list[i]));
+		temp = this.camera.wcsToVcs(temp.add(list[i]));
 		this.canvas.lineTo(temp.getX(), temp.getY());
 	}
 
@@ -213,7 +209,7 @@ Grape2D.CanvasRenderer.prototype.renderAbsoluteText = function(text) {
 	var camera = this.camera;
 	this.camera = this.rawCamera;
 	//debugger;
-	this.renderTexture(text.getBuffer(), this.camera.wcsToViewport(text.getPosition()));
+	this.renderTexture(text.getBuffer(), this.camera.wcsToVcs(text.getPosition()));
 	this.camera = camera;
 };
 /**
@@ -280,21 +276,21 @@ Grape2D.CanvasRenderer.prototype.setColor = function(color) {
 	return this;
 };
 /**
- * @override
- */
+ * /override
+ *
 Grape2D.CanvasRenderer.prototype.renderParticle = function(particle) {
-	var center = this.camera.wcsToViewport(particle.getPosition());
+	var center = this.camera.wcsToVcs(particle.getPosition());
 	this.canvas.beginPath();
 	this.canvas.arc(center.x, center.y, 1, 0, Grape2D.Math.PIx2, false);
 	//sets color TODO
 	this.canvas[this.colorMode]();
-};
+};*/
 /**
  * @override
  */
 Grape2D.CanvasRenderer.prototype.renderLineSegment = function(start, end) {
-	var s = this.camera.wcsToViewport(start),
-		e = this.camera.wcsToViewport(end);
+	var s = this.camera.wcsToVcs(start),
+		e = this.camera.wcsToVcs(end);
 	this.canvas.beginPath();
 	this.canvas.moveTo(s.getX(), s.getY());
 	this.canvas.lineTo(e.getX(), e.getY());
@@ -304,7 +300,7 @@ Grape2D.CanvasRenderer.prototype.renderLineSegment = function(start, end) {
  * @override
  */
 Grape2D.CanvasRenderer.prototype.renderPoint = function(point) {
-	var center = this.camera.wcsToViewport(point);
+	var center = this.camera.wcsToVcs(point);
 	this.canvas.beginPath();
 	this.canvas.arc(center.x, center.y, 2, 0, Grape2D.Math.PIx2, false);
 	this.canvas.fill();

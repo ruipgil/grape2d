@@ -37,8 +37,8 @@ Grape2D.CollisionCheckerSingleton = {
 	 *   <code>shapeA.collide(Grape2D.CollisionCheckerSingleton.getInstance(),
 	 *   shapeB);</code>
 	 *
-	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} a Shape or point
-	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} b Another shape or point
+	 * @param  {!(Grape2D.IShape|Grape2D.Vector)} a Shape or point
+	 * @param  {!(Grape2D.IShape|Grape2D.Vector)} b Another shape or point
 	 * @return {!boolean} Result of the collision test.
 	 * @public
 	 * @static

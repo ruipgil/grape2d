@@ -1,6 +1,6 @@
 /**
  * Only renders the wireframe of (the bounding box of)
- *   {@link Grape2D.Object2D}, using another {@link Grape2D.Renderer},
+ *   {@link Grape2D.IEntity}, using another {@link Grape2D.Renderer},
  *   such as {@link Grape2D.CanvasRenderer}. This class is a bridge,
  *   so in fact the renderer provided is the one that is being used.
  *
@@ -65,16 +65,9 @@ Grape2D.WireframeRenderer.prototype.renderTexture = function(texture, position) 
 /**
  * @override
  */
-Grape2D.WireframeRenderer.prototype.renderObject2D = function(obj) {
-	this.renderPoint(obj.getPosition());
-	obj.getBoundingBox().render(this);
-};
-/**
- * @override
- */
-Grape2D.WireframeRenderer.prototype.renderNetworkObject2D = function(obj, pos) {
-	this.renderPoint(obj.getPosition());
-	obj.getBoundingBox().render(this);
+Grape2D.WireframeRenderer.prototype.renderREntity = function(entity) {
+	this.renderPoint(entity.getPosition());
+	entity.getBoundingBox().render(this);
 };
 /**
  * @override
@@ -155,11 +148,11 @@ Grape2D.WireframeRenderer.prototype.renderColoredShape = function(shape) {
 	this.renderer.renderColoredShape(shape);
 };
 /**
- * @override
- */
+ * /override
+ *
 Grape2D.WireframeRenderer.prototype.renderParticle = function(particle) {
 	this.renderer.renderParticle(particle);
-};
+};*/
 /**
  * @override
  */

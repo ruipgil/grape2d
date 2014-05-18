@@ -1,11 +1,19 @@
+var fs = require("fs");
 module.exports = function(grunt) {
 	var sourceFiles = grunt.file.readJSON('./utils/includes/common.json'),
 		destMinFile = './build/<%= pkg.name %>.min.js',
 		destFile = './build/<%= pkg.name %>.js',
 		karmaFile = 'karma.conf.js';
 
+	sourceFiles.forEach(function (file){
+		if(!fs.existsSync(file)) {
+			console.warn("File doesn't exist: "+file+".");
+		}
+	});
+
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('./package.json'),
+		"audioExtern": process.env.CLOSURE_PATH,
 		qunit: {
 			target: {
 				src: ['./tests/qunit/**.html']
@@ -23,7 +31,8 @@ module.exports = function(grunt) {
 					"warning_level": 'VERBOSE',
 					"create_source_map": destMinFile + '.map',
 					"source_map_format": 'V3',
-					"output_wrapper": '(function(){ %output% })()'
+					"output_wrapper": '(function(){ %output% })()',
+					"externs": ['<%= audioExtern %>/contrib/externs/w3c_audio.js', '<%= audioExtern %>/contrib/externs/w3c_rtc.js'],
 				}
 			}
 		},

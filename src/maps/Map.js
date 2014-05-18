@@ -13,14 +13,14 @@ Grape2D.Map.prototype = {
 	/**
 	 * Adds an object to the map.
 	 *
-	 * @param  {!Grape2D.Object2D} obj2d - The object to e added.
+	 * @param  {!Grape2D.IEntity} obj2d - The object to e added.
 	 * @public
 	 */
 	add: function(obj2d){},
 	/**
 	 * Removes an object from the map.
 	 *
-	 * @param  {!Grape2D.Object2D} obj2d - The object to remove.
+	 * @param  {!Grape2D.IEntity} obj2d - The object to remove.
 	 * @public
 	 */
 	remove: function(obj2d){},
@@ -28,7 +28,7 @@ Grape2D.Map.prototype = {
 	 * Query the shape region, in this map.
 	 *
 	 * @param  {!Grape2D.Shape} shape - The shape to query.
-	 * @return {!Array.<Grape2D.Object2D>} All the objects inside the shape.
+	 * @return {!Array.<Grape2D.IEntity>} All the objects inside the shape.
 	 * @public
 	 */
 	query: function(shape){},
@@ -36,7 +36,7 @@ Grape2D.Map.prototype = {
 	 * Query the point in this map.
 	 *
 	 * @param  {!Grape2D.Vector} vector - The vector to query.
-	 * @return {!Array.<Grape2D.Object2D>} All objects that contains the point.
+	 * @return {!Array.<Grape2D.IEntity>} All objects that contains the point.
 	 * @public
 	 */
 	queryPoint: function(vector){},
@@ -46,7 +46,7 @@ Grape2D.Map.prototype = {
 	 * @param  {!Grape2D.Vector} start Ray start position
 	 * @param  {!Grape2D.Vector} direction Direction of the ray
 	 * @param  {!number} length Maximum length of the ray.
-	 * @return {?Grape2D.Object2D} Object that first encounters the ray.
+	 * @return {?Grape2D.IEntity} Object that first encounters the ray.
 	 * @public
 	 */
 	queryRay: function(start, direction, length){},

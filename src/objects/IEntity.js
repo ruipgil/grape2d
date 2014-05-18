@@ -51,11 +51,17 @@ Grape2D.IEntity.prototype = {
 	 */
 	setBoundingBoxOffset: function(boundingBoxOffset){},
 	/**
+	 * Updates the entity.
+	 *
+	 * @param  {!number} dt Time difference since the last update.
+	 * @public
+	 */
+	update: function(dt) {},
+	/**
 	 * Processes this entity in a given processor.
 	 *
 	 * @param  {!Grape2D.IEntityProcessor} processor Processor.
 	 * @public
 	 */
 	process: function(processor){}
-
 };

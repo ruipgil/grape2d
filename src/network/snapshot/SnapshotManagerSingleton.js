@@ -33,15 +33,16 @@ Grape2D.SnapshotManagerSingleton = {
 		return Grape2D.SnapshotManagerSingleton.instance;
 	},
 	/**
-	 * Gets a snapshot object by it's id. A snapshot manager must be set before.
+	 * Gets a snapshot object by it's id. A snapshot manager must be
+	 *   set before.
 	 *
-	 * @param {!(number|string)} id Object's id.
-	 * @return {?Grape2D.SnapshotNetworkObject2D} Object with the id.
+	 * @param {!string} id Network entity's id.
+	 * @return {?Object} Network entity.
 	 * @public
 	 * @static
 	 */
-	getSnapshotNetworkObject2D: function(id){
-		return Grape2D.SnapshotManagerSingleton.instance.getSnapshotNetworkObject2D(id);
+	getNetworkEntity: function(id){
+		return Grape2D.SnapshotManagerSingleton.instance.getNetworkEntity(id);
 	},
 	/**
 	 * Gets the current interpolation percentage.

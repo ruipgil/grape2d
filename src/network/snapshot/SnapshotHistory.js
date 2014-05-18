@@ -1,11 +1,10 @@
 /**
- * This holds a limited history of snapshots received from
- *   the server. The snapshots are organized by the order
- *   received, and hold the current time when they were
- *   received.
+ * This holds a limited history of snapshots received from the server.
+ *   The snapshots are organized by the order received, and hold the
+ *   current time when they were received.
  *
- * @param {!number=} cap Maximum number of entries on the
- *   history. The default value is 10.
+ * @param {!number=} cap Maximum number of entries on the history. The
+ *   default value is 10.
  * @constructor
  */
 Grape2D.SnapshotHistory = function(cap) {
@@ -19,7 +18,7 @@ Grape2D.SnapshotHistory = function(cap) {
 	/**
 	 * List with the history record.
 	 *
-	 * @type {!Array.<!Grape2D.Snapshot>}
+	 * @type {!Array.<!Object>}
 	 * @private
 	 */
 	this.history = [];
@@ -30,7 +29,7 @@ Grape2D.SnapshotHistory.prototype = {
 	 * Adds a snapshot to the history. Discards the older one
 	 *   if it has reached the entry limit.
 	 *
-	 * @param {!Grape2D.Snapshot} snapshot Snapshot received.
+	 * @param {!Object} snapshot Snapshot received.
 	 * @public
 	 */
 	add: function(snapshot) {
@@ -47,13 +46,13 @@ Grape2D.SnapshotHistory.prototype = {
 	 *   given time.
 	 *
 	 * @param  {!number} time Reference time, in milliseconds.
-	 * @return {?Grape2D.Snapshot} A string if it has found a valid
+	 * @return {?Object} A string if it has found a valid
 	 *   snapshot before the time, null otherwise.
 	 * @public
 	 */
 	getBefore: function(time) {
 		for (var i = this.history.length-1; i >= 0; i--) {
-			if (this.history[i].getTime() < time) {
+			if (this.history[i].time < time) {
 				return this.history[i];
 			}
 		}
@@ -64,13 +63,13 @@ Grape2D.SnapshotHistory.prototype = {
 	 *   given time.
 	 *
 	 * @param  {!number} time Reference time, in milliseconds.
-	 * @return {?Grape2D.Snapshot} A string if it has found a valid
+	 * @return {?Object} A string if it has found a valid
 	 *   snapshot after the time, null otherwise.
 	 * @public
 	 */
 	getAfter: function(time) {
 		for (var i = 0; i < this.history.length; i++) {
-			if (this.history[i].getTime() > time) {
+			if (this.history[i].time > time) {
 				return this.history[i];
 			}
 		}
@@ -79,7 +78,7 @@ Grape2D.SnapshotHistory.prototype = {
 	/**
 	 * Gets the history list.
 	 *
-	 * @return {!Array.<!Grape2D.Snapshot>} Snapshot
+	 * @return {!Array.<!Object>} Snapshot
 	 *   history record.
 	 * @public
 	 */

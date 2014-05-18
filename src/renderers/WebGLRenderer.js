@@ -315,16 +315,10 @@ Grape2D.WebGLRenderer.prototype.renderTexture = function(texture) {
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderObject2D = function(obj) {
-	this.modelView.pushIdentity().translate(obj.getTexturePosition());
-	obj.getTexture().render(this);
+Grape2D.WebGLRenderer.prototype.renderREntity = function(entity) {
+	this.modelView.pushIdentity().translate(entity.getPosition()).translate(entity.getTextureOffset());
+	entity.getTexture().render(this);
 	this.modelView.pop();
-};
-/**
- * @override
- */
-Grape2D.WebGLRenderer.prototype.renderNetworkObject2D = function(obj, pos) {
-	return;
 };
 /**
  * @override
@@ -498,12 +492,12 @@ Grape2D.WebGLRenderer.prototype.setFillColorMode = function() {};
 /**
  * @override
  */
-Grape2D.WebGLRenderer.prototype.renderParticle = function(particle) {
+//Grape2D.WebGLRenderer.prototype.renderParticle = function(particle) {
 	/*var center = camera.wcsToViewport(this, particle.getPosition());
 	this.canvas.beginPath();
 	this.canvas.arc(center.x, center.y, 1, 0, Grape2D.Math.PIx2, false);
 	this.canvas.fill();*/
-};
+//};
 /**
  * @override
  */

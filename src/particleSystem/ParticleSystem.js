@@ -1,12 +1,11 @@
 /**
  * Particle system.
  *
- * @extends {Grape2D.Object2D}
+ * @extends {Grape2D.Entity}
  * @constructor
  */
 Grape2D.ParticleSystem = function(){
-	Grape2D.Object2D.call(this, {
-		texture: new Grape2D.VoidTexture(),
+	Grape2D.Entity.call(this, {
 		boundingBox: new Grape2D.AABB({
 			width: 0,
 			height: 0
@@ -60,7 +59,7 @@ Grape2D.ParticleSystem = function(){
 	this.maxy = -Infinity;
 };
 
-Grape2D.ParticleSystem.prototype = Object.create(Grape2D.Object2D.prototype);
+Grape2D.ParticleSystem.prototype = Object.create(Grape2D.Entity.prototype);
 /**
  * Adds an emitter to the system.
  *

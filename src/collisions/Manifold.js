@@ -1,28 +1,28 @@
 /**
  * Manifold class.
  *
- * @param {!Grape2D.Object2D} a Object.
- * @param {!Grape2D.Object2D} b Object.
+ * @param {!Grape2D.IEntity} a Entity.
+ * @param {!Grape2D.IEntity} b Entity.
  * @constructor
  */
 Grape2D.Manifold = function(a, b) {
 	/**
-	 * Object.
+	 * Entity.
 	 *
-	 * @type {!Grape2D.Object2D}
+	 * @type {!Grape2D.IEntity}
 	 * @private
 	 */
 	this.a = a;
 	/**
-	 * Object.
+	 * Entity.
 	 *
-	 * @type {!Grape2D.Object2D}
+	 * @type {!Grape2D.IEntity}
 	 * @private
 	 */
 	this.b = b;
 	/**
 	 * Penetration between the two
-	 *   {@link Grape2D.Object}s bounding box
+	 *   {@link Grape2D.IEntity}s bounding box
 	 *   ({@link Grape2D.Shape}).
 	 *
 	 * @type {!number}
@@ -42,43 +42,43 @@ Grape2D.Manifold = function(a, b) {
 Grape2D.Manifold.prototype = {
 	constructor: Grape2D.Manifold,
 	/**
-	 * Gets the first object.
+	 * Gets the first entity.
 	 *
-	 * @return {!Grape2D.Object2D} First object.
+	 * @return {!Grape2D.IEntity} First entity.
 	 * @public
 	 */
 	getA: function() {
 		return this.a;
 	},
 	/**
-	 * Sets the first object.
+	 * Sets the first entity.
 	 *
-	 * @param {!Grape2D.Object2D} a First object.
+	 * @param {!Grape2D.IEntity} a First entity.
 	 * @public
 	 */
 	setA: function(a) {
 		this.a = a;
 	},
 	/**
-	 * Gets the second object.
+	 * Gets the second entity.
 	 *
-	 * @return {!Grape2D.Object2D} Second object.
+	 * @return {!Grape2D.IEntity} Second entity.
 	 * @public
 	 */
 	getB: function() {
 		return this.b;
 	},
 	/**
-	 * Sets the second object.
+	 * Sets the second entity.
 	 *
-	 * @param {!Grape2D.Object2D} b Second object.
+	 * @param {!Grape2D.IEntity} b Second entity.
 	 * @public
 	 */
 	setB: function(b) {
 		this.b = b;
 	},
 	/**
-	 * Gets the penetration between the two objects.
+	 * Gets the penetration between the two entities.
 	 *   This only returns the stored information,
 	 *   no calculation is done by this method.
 	 *
@@ -89,7 +89,7 @@ Grape2D.Manifold.prototype = {
 		return this.penetration;
 	},
 	/**
-	 * Sets the penetration between the two objects.
+	 * Sets the penetration between the two entities.
 	 *
 	 * @param {!number} penetration Penetration
 	 *   distance.
@@ -100,7 +100,7 @@ Grape2D.Manifold.prototype = {
 	},
 	/**
 	 * Gets the normal of the penetration of between
-	 *   the two objects.
+	 *   the two entities.
 	 *
 	 * @return {!Grape2D.Vector} Normal vector.
 	 * @public
@@ -110,7 +110,7 @@ Grape2D.Manifold.prototype = {
 	},
 	/**
 	 * Sets the normal of the penetration of between
-	 *   the two objects.
+	 *   the two entities.
 	 *
 	 * @param {!Grape2D.Vector} normal Normal vector.
 	 * @public
@@ -119,7 +119,7 @@ Grape2D.Manifold.prototype = {
 		this.normal.set(normal);
 	},
 	/**
-	 * Inverts the manifold. It changes the objects
+	 * Inverts the manifold. It changes the entities
 	 *   a and b, and changes the direction of the
 	 *   normal.
 	 *

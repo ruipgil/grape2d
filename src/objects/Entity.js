@@ -19,7 +19,7 @@
  *   the bounding box, relative to the entity center. The default
  *   offset is none (0,0). It will copy the object.
  *
- * @implements {Grape2D.IEntity}
+ * @implements {Grape2D.RenderableEntity}
  * @constructor
  */
 Grape2D.Entity = function(options) {
@@ -54,6 +54,12 @@ Grape2D.Entity = function(options) {
 	this.computeBoundingBoxPosition();
 };
 Grape2D.Entity.prototype = Object.create(Grape2D.IEntity.prototype);
+/**
+ * @override
+ */
+Grape2D.Entity.prototype.getRenderPosition = function(){
+	return this.position;
+};
 /**
  * @override
  */
@@ -93,11 +99,17 @@ Grape2D.Entity.prototype.setBoundingBoxOffset = function(boundingBoxOffset){
 	this.computeBoundingBoxPosition();
 };
 /**
- * @override
+ * Computes the bounding box position.
+ *
+ * @private
  */
 Grape2D.Entity.prototype.computeBoundingBoxPosition = function(){
 	this.boundingBox.setPosition(this.position.clone().add(this.boundingBoxOffset));
 };
+/**
+ * @override
+ */
+Grape2D.Entity.prototype.update = function(dt){};
 /**
  * @override
  */

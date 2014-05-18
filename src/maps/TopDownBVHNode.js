@@ -1,14 +1,14 @@
 /**
  * Node of a top down BVH.
  *
- * @param  {?Grape2D.TopDownBVHNode} parent Parent node, or null, it it's
- *   the root node.
- * @param  {!Array.<Grape2D.Object2D>} objects Objects to be added to the
- *   node.
+ * @param  {?Grape2D.TopDownBVHNode} parent Parent node, or null, it
+ *   it's the root node.
+ * @param  {!Array.<Grape2D.IEntity>} entities Entities to be added to
+ *   the node.
  *
  * @constructor
  */
-Grape2D.TopDownBVHNode = function(parent, objects) {
+Grape2D.TopDownBVHNode = function(parent, entities) {
 	/**
 	 * Bounding volume.
 	 *
@@ -24,9 +24,9 @@ Grape2D.TopDownBVHNode = function(parent, objects) {
 	 */
 	this.leaf = false;
 	/**
-	 * Objects of a leaf.
+	 * Entities of a leaf.
 	 *
-	 * @type {!Array.<Grape2D.Object2D>}
+	 * @type {!Array.<Grape2D.IEntity>}
 	 * @private
 	 */
 	this.objects = [];
@@ -61,7 +61,7 @@ Grape2D.TopDownBVHNode = function(parent, objects) {
 	this.depth = parent ? parent.getDepth() + 1 : 0;
 	//computes what kind of node this is,
 	//and what to do with it.
-	this.compute(objects);
+	this.compute(entities);
 };
 
 Grape2D.TopDownBVHNode.prototype = {
@@ -69,7 +69,7 @@ Grape2D.TopDownBVHNode.prototype = {
 	/**
 	 * Makes this instance a leaf or a node.
 	 *
-	 * @param  {!Array.<Grape2D.Object2D>} objects List of objects
+	 * @param  {!Array.<Grape2D.IEntity>} objects List of objects
 	 *   to separate through the node.
 	 * @public
 	 */
@@ -134,7 +134,7 @@ Grape2D.TopDownBVHNode.prototype = {
 	/**
 	 * Gets the objects, if it's a leaf.
 	 *
-	 * @return {!Array.<Grape2D.Object2D>} List of the objects.
+	 * @return {!Array.<Grape2D.IEntity>} List of the objects.
 	 * @public
 	 */
 	getObjects: function() {
@@ -162,11 +162,11 @@ Grape2D.TopDownBVHNode.prototype = {
 	},
 	/**
 	 * Queries a shape or a point to find if it is colliding.
-	 *   If so, returns the {@link Grape2D.Object2D} that are colliding with
+	 *   If so, returns the {@see Grape2D.IEntity} that are colliding with
 	 *   the shape.
 	 *
 	 * @param  {!(Grape2D.Shape|Grape2D.Vector)} shape Shape of to query.
-	 * @return {!Array.<Grape2D.Object2D>} Objects that are colliding with
+	 * @return {!Array.<Grape2D.IEntity>} Objects that are colliding with
 	 *   the shape.
 	 */
 	query: function(shape) {
