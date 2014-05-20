@@ -1,5 +1,8 @@
 var fs = require("fs");
 module.exports = function(grunt) {
+
+	require('load-grunt-tasks')(grunt);
+
 	var sourceFiles = grunt.file.readJSON('./utils/includes/common.json'),
 		destMinFile = './build/<%= pkg.name %>.min.js',
 		destFile = './build/<%= pkg.name %>.js',
@@ -7,13 +10,13 @@ module.exports = function(grunt) {
 
 	sourceFiles.forEach(function (file){
 		if(!fs.existsSync(file)) {
-			console.warn("File doesn't exist: "+file+".");
+			grunt.log.warn("File doesn't exist: "+file+".");
 		}
 	});
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('./package.json'),
-		"audioExtern": process.env.CLOSURE_PATH,
+		closure: process.env.CLOSURE_PATH,
 		qunit: {
 			target: {
 				src: ['./tests/qunit/**.html']
@@ -32,7 +35,7 @@ module.exports = function(grunt) {
 					"create_source_map": destMinFile + '.map',
 					"source_map_format": 'V3',
 					"output_wrapper": '(function(){ %output% })()',
-					"externs": ['<%= audioExtern %>/contrib/externs/w3c_audio.js', '<%= audioExtern %>/contrib/externs/w3c_rtc.js'],
+					"externs": ['<%= closure %>/contrib/externs/w3c_audio.js', '<%= closure %>/contrib/externs/w3c_rtc.js']
 				}
 			}
 		},
@@ -77,19 +80,22 @@ module.exports = function(grunt) {
 				singleRun: true,
 				configFile: karmaFile
 			}
+		},
+		clean: {
+			build: ["./build/"],
+			docs: ["./docs/"]
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-closure-compiler');
-	grunt.loadNpmTasks('grunt-contrib-qunit');
-	grunt.loadNpmTasks('grunt-jsdoc');
-	grunt.loadNpmTasks('grunt-contrib-jasmine');
-	grunt.loadNpmTasks('grunt-karma');
+	grunt.registerTask('default', ['build']);
+	grunt.registerTask('dev', 'Concatenate source files.', ['clean:build', 'concat']);
+	grunt.registerTask('build', 'Builds files from source. A simple concatenation version and a minified and optimized version.', ['dev', 'closure-compiler']);
+	grunt.registerTask('test', 'Runs unit tests once.', ['dev', 'karma:ci', 'qunit']);
+	grunt.registerTask('doc', 'Creates documentation from source.', ['clean:docs', 'jsdoc']);
+	grunt.registerTask('start-test', 'Starts karma, it watches source files and test them everytime they change.', ['dev', 'karma:start']);
+	grunt.registerTask('all', 'Builds, tests and creates the documentation.' ,['build', 'test', 'jsdoc']);
 
-	grunt.registerTask('default', ['concat', 'closure-compiler']);
-	grunt.registerTask('dev', ['concat']);
-	grunt.registerTask('doc', ['jsdoc']);
-	grunt.registerTask('test', ['karma:ci', 'qunit']);
-	grunt.registerTask('all', ['concat', 'closure-compiler', 'jsdoc', 'qunit']);
+	// updates version, builds, tests, generates documentation, git commands
+	// grunt.registerTask('release', []);
+
 };
