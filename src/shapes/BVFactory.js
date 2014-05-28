@@ -1,5 +1,5 @@
 /**
- * Creates bounding volumes based in an input object.
+ * Creates a bounding volume based on a given shape.
  *
  * @class
  * @interface
@@ -9,7 +9,7 @@ Grape2D.BVFactory = function() {};
 Grape2D.BVFactory.prototype = {
 	constructor: Grape2D.BVFactory,
 	/**
-	 * Creates a shape, based on the type set, from an {@link Grape2D.AABB}.
+	 * Creates a shape, based on the type set, from an {@see Grape2D.AABB}.
 	 * 
 	 * @param  {!Grape2D.AABB} aabb The object.
 	 * @return {!Grape2D.Shape} Shape based on the type of the factory.
@@ -17,7 +17,7 @@ Grape2D.BVFactory.prototype = {
 	 */
 	createFromAABB: function(aabb) {},
 	/**
-	 * Creates a shape, based on the type set, from an {@link Grape2D.Circle}.
+	 * Creates a shape, based on the type set, from an {@see Grape2D.Circle}.
 	 * 
 	 * @param  {!Grape2D.Circle} circle The object.
 	 * @return {!Grape2D.Shape} Shape based on the type of the factory.
@@ -25,7 +25,7 @@ Grape2D.BVFactory.prototype = {
 	 */
 	createFromCircle: function(circle) {},
 	/**
-	 * Creates a shape, based on the type set, from an {@link Grape2D.Polygon}.
+	 * Creates a shape, based on the type set, from an {@see Grape2D.Polygon}.
 	 * 
 	 * @param  {!Grape2D.Polygon} polygon The object.
 	 * @return {!Grape2D.Shape} Shape based on the type of the factory.

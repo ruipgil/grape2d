@@ -32,7 +32,7 @@ Grape2D.AabbBVFactory.prototype.createFromPolygon = function(polygon) {
 		maxX = -Infinity,
 		minY = +Infinity,
 		maxY = -Infinity,
-		list = polygon.getVertexList(),
+		list = polygon.getComputedVertexList(),
 		temp, x, y;
 
 
@@ -47,7 +47,7 @@ Grape2D.AabbBVFactory.prototype.createFromPolygon = function(polygon) {
 		if (minY > temp.getY()) {
 			minY = temp.getY();
 		}
-		if (maxX < temp.getY()) {
+		if (maxY < temp.getY()) {
 			maxY = temp.getY();
 		}
 	}
@@ -56,7 +56,7 @@ Grape2D.AabbBVFactory.prototype.createFromPolygon = function(polygon) {
 	y = maxY - minY;
 
 	return new Grape2D.AABB({
-		position: new Grape2D.Vector((x / 2) + x, (y / 2) + y),
+		position: new Grape2D.Vector(minX + (x / 2), minY + (y / 2)),
 		width: x,
 		height: y
 	});
