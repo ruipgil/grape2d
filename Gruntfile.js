@@ -90,9 +90,9 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', ['build']);
 	grunt.registerTask('dev', 'Concatenate source files.', ['clean:build', 'concat']);
 	grunt.registerTask('build', 'Builds files from source. A simple concatenation version and a minified and optimized version.', ['dev', 'closure-compiler']);
-	grunt.registerTask('test', 'Runs unit tests once.', ['dev', 'karma:ci', 'qunit']);
+	grunt.registerTask('unit', 'Runs unit tests once.', ['dev', 'karma:ci', 'qunit']);
 	grunt.registerTask('doc', 'Creates documentation from source.', ['clean:docs', 'jsdoc']);
-	grunt.registerTask('start-test', 'Starts karma, it watches source files and test them everytime they change.', ['dev', 'karma:start']);
+	grunt.registerTask('test', 'Starts karma, it watches source files and test them everytime they change.', ['dev', 'karma:start']);
 	grunt.registerTask('all', 'Builds, tests and creates the documentation.' ,['build', 'test', 'jsdoc']);
 
 	// updates version, builds, tests, generates documentation, git commands
