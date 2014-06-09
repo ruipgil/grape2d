@@ -173,9 +173,9 @@ Grape2D.InputManager.prototype = {
 					list[i](ev);
 				}
 				that.dragStart.set(end);
-				if(!dragExecuted){
+				if (!dragExecuted) {
 					var startList = that.dragStartClbk;
-					for(var j=0; j<startList.length; j++){
+					for (var j = 0; j < startList.length; j++) {
 						startList[j](ev);
 					}
 				}
@@ -183,11 +183,11 @@ Grape2D.InputManager.prototype = {
 			}
 		});
 		this.addMouseUp(function(e) {
-			if(that.isDragging && dragExecuted){
+			if (that.isDragging && dragExecuted) {
 				var list = that.dragStop,
 					end = new Grape2D.Vector(e.getRaw().pageX, e.getRaw().pageY),
 					ev = new Grape2D.InputManagerDragEvent(e.getRaw(), that.dragStart);
-				for(var i=0; i<list.length; i++){
+				for (var i = 0; i < list.length; i++) {
 					list[i](ev);
 				}
 			}
@@ -195,11 +195,11 @@ Grape2D.InputManager.prototype = {
 			dragExecuted = false;
 		});
 		this.addMouseOut(function(e) {
-			if(that.isDragging && dragExecuted){
+			if (that.isDragging && dragExecuted) {
 				var list = that.dragStop,
 					end = new Grape2D.Vector(e.getRaw().pageX, e.getRaw().pageY),
 					ev = new Grape2D.InputManagerDragEvent(e.getRaw(), that.dragStart);
-				for(var i=0; i<list.length; i++){
+				for (var i = 0; i < list.length; i++) {
 					list[i](ev);
 				}
 			}
@@ -476,7 +476,7 @@ Grape2D.InputManager.prototype = {
 	 * @public
 	 */
 	getKeyUpBindStack: function() {
-		return this.keyDown;
+		return this.keyUp;
 	},
 	/**
 	 * Adds a callback to the key up event.
@@ -563,15 +563,6 @@ Grape2D.InputManager.prototype = {
 		return this.drag;
 	},
 	/**
-	 * Adds a callback to be executed after the drag event.
-	 *
-	 * @param  {!Function} callback Callback function.
-	 * @public
-	 */
-	addDragStart: function(callback) {
-		this.dragStartClbk.push(callback);
-	},
-	/**
 	 * Adds a callback to the drag event.
 	 *
 	 * @param  {!Function} callback Callback function.
@@ -579,15 +570,6 @@ Grape2D.InputManager.prototype = {
 	 */
 	addDrag: function(callback) {
 		this.drag.push(callback);
-	},
-	/**
-	 * Adds a callback to be executed after the drag event.
-	 *
-	 * @param  {!Function} callback Callback function.
-	 * @public
-	 */
-	addDragStop: function(callback) {
-		this.dragStop.push(callback);
 	},
 	/**
 	 * Removes a callback from the drag callback stack.
@@ -599,6 +581,68 @@ Grape2D.InputManager.prototype = {
 		var indx = this.drag.indexOf(callback);
 		if (indx >= 0) {
 			this.drag.splice(this.drag.indexOf(callback), 1);
+		}
+	},
+	/**
+	 * Gets the drag start callback stack, that is binded to the
+	 *   renderer.
+	 *
+	 * @return {!Array.<Function>} Callback stack.
+	 * @public
+	 */
+	getDragStartBindStack: function() {
+		return this.dragStartClbk;
+	},
+	/**
+	 * Adds a callback to be executed after the drag event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
+	addDragStart: function(callback) {
+		this.dragStartClbk.push(callback);
+	},
+	/**
+	 * Removes a callback from the drag start callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
+	removeDragStart: function(callback) {
+		var indx = this.dragStartClbk.indexOf(callback);
+		if (indx >= 0) {
+			this.dragStartClbk.splice(this.dragStartClbk.indexOf(callback), 1);
+		}
+	},
+	/**
+	 * Gets the drag stop callback stack, that is binded to the
+	 *   renderer.
+	 *
+	 * @return {!Array.<Function>} Callback stack.
+	 * @public
+	 */
+	getDragStopBindStack: function() {
+		return this.dragStop;
+	},
+	/**
+	 * Adds a callback to be executed after the drag event.
+	 *
+	 * @param  {!Function} callback Callback function.
+	 * @public
+	 */
+	addDragStop: function(callback) {
+		this.dragStop.push(callback);
+	},
+	/**
+	 * Removes a callback from the drag stop callback stack.
+	 *
+	 * @param  {!Function} callback Function to remove
+	 * @public
+	 */
+	removeDragStop: function(callback) {
+		var indx = this.dragStop.indexOf(callback);
+		if (indx >= 0) {
+			this.dragStop.splice(this.dragStop.indexOf(callback), 1);
 		}
 	},
 	/**
