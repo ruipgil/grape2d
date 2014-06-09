@@ -1,4 +1,5 @@
 describe("AabbBVFactory", function() {
+	addCustomMatchers();
 	var f = new Grape2D.AabbBVFactory(),
 		compareAABBs = function(result, expected, same) {
 			expect(result.getPosition().equals(expected.getPosition())).toBeTruthy();
@@ -67,7 +68,7 @@ describe("AabbBVFactory", function() {
 
 	//TODO
 	//it("create scene BV", function() {});
-	
+
 	describe("merge", function() {
 		var quadrants = [
 			new Grape2D.Vector(),
